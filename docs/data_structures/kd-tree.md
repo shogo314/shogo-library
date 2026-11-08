@@ -8,13 +8,15 @@ documentation_of: //src/data_structures/kd-tree.hpp
 ```cpp
 std::vector<std::pair<long long, long long>> points = { {2, 1}, {2, 2}, {4, 2}, {6, 2} };
 KDTree<long long> kd(points);
-auto ids = kd.enumerate(2, 5, 0, 5);  // 2 <= x < 5 かつ 0 <= y < 5 の点の添字: 0, 1, 2 (順不同)
-long long k = kd.count(2, 5, 0, 5);   // 3
+auto ids = kd.enumerate(Rectangle(2LL, 0LL, 5LL, 5LL));  // 2 <= x < 5 かつ 0 <= y < 5 の点の添字: 0, 1, 2 (順不同)
+long long k = kd.count(Rectangle(2LL, 0LL, 5LL, 5LL));   // 3
 ```
 
 長方形は半開区間 $[x_l, x_r) \times [y_l, y_r)$ で指定します。閉区間で与えられたら、整数座標なら右端に 1 を足してください。
 
 `enumerate` が返す添字は順不同です。必要なら並べ替えてください。
+
+領域 `rect` は [Rectangle](../geometry/rectangle.hpp) で渡します。座標の順序は `(left, bottom, right, top)` です。
 
 ## メンバ関数
 
@@ -22,8 +24,8 @@ long long k = kd.count(2, 5, 0, 5);   // 3
 |---|---|---|
 | `KDTree(points)` | 点 `i` の座標が `points[i] = {x, y}` (`std::pair<T, T>`) の kd-tree を作る | $O(n \log n)$ |
 | `size()` | 点の個数 | $O(1)$ |
-| `enumerate(xl, xr, yl, yr)` | $x_l \le x < x_r$ かつ $y_l \le y < y_r$ の点の添字 (`std::vector<long long>`、順不同) | $O(\sqrt{n} + k)$ ($k$ は列挙する個数) |
-| `count(xl, xr, yl, yr)` | $x_l \le x < x_r$ かつ $y_l \le y < y_r$ の点の個数 | $O(\sqrt{n})$ |
+| `enumerate(rect)` | $x_l \le x < x_r$ かつ $y_l \le y < y_r$ の点の添字 (`std::vector<long long>`、順不同) | $O(\sqrt{n} + k)$ ($k$ は列挙する個数) |
+| `count(rect)` | $x_l \le x < x_r$ かつ $y_l \le y < y_r$ の点の個数 | $O(\sqrt{n})$ |
 
 ## 関連
 

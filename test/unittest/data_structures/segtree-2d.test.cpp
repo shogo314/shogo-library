@@ -53,7 +53,7 @@ int main() {
                     if (lx <= p.first && p.first < rx && ly <= p.second && p.second < ry) es += v;
                 for (auto [p, v] : vm)
                     if (lx <= p.first && p.first < rx && ly <= p.second && p.second < ry) em = std::max(em, v);
-                if (sum.prod(lx, rx, ly, ry) != es || mx.prod(lx, rx, ly, ry) != em) ok = false;
+                if (sum.prod(Rectangle(lx, ly, rx, ry)) != es || mx.prod(Rectangle(lx, ly, rx, ry)) != em) ok = false;
             }
         }
     }

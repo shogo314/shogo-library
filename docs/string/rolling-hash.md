@@ -75,16 +75,18 @@ for (int i = 0; i < n; i++) {
 std::vector<std::string> g = {"abab", "baba", "abab"};
 RollingHash2D rh2;
 auto h = rh2.build(g);
-bool eq = rh2.query(h, 0, 0, 2, 2) == rh2.query(h, 1, 1, 3, 3);  // {"ab", "ba"} == {"ab", "ba"}: true
+bool eq = rh2.query(h, Grid(2, 2)) == rh2.query(h, Grid({1, 3}, {1, 3}));  // {"ab", "ba"} == {"ab", "ba"}: true
 
 auto pos = pattern_match_2d(g, std::vector<std::string>{"ba", "ab"});  // {(0, 1), (1, 0), (1, 2)}
 ```
+
+`region` は [Grid](../utility/range.hpp) で指定します。行・列とも `step = 1`、始点は終点以下で、範囲は元の表の内側である必要があります。
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `RollingHash2D(base1 = 0, base2 = 0)` | 行方向・列方向の基数を指定して作る (0 ならランダム) | $O(1)$ |
 | `build(grid)` | $(H + 1) \times (W + 1)$ の表 `h` (`h[i][j]` は左上 `i` 行 `j` 列のハッシュ) | $O(HW)$ |
-| `query(h, i1, j1, i2, j2)` | 行 $[i_1, i_2)$、列 $[j_1, j_2)$ の長方形のハッシュ | $O(1)$ (初回は長さ分) |
+| `query(h, region)` | `Grid` の行・列の範囲のハッシュ (`step` は両方 1) | $O(1)$ (初回は長さ分) |
 
 ## 関数
 

@@ -13,6 +13,6 @@ int main() {
     while (q--) {
         Vector p0, p1, p2, p3;
         std::cin >> p0 >> p1 >> p2 >> p3;
-        std::cout << *segment_intersection(p0, p1, p2, p3) << std::endl;
+        std::cout << *segment_intersection(Segment(p0, p1), Segment(p2, p3)) << std::endl;
     }
 }

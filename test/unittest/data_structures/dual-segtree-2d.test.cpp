@@ -30,8 +30,8 @@ int main() {
                 if (lx > rx) std::swap(lx, rx);
                 if (ly > ry) std::swap(ly, ry);
                 long long v = static_cast<long long>(rng() % 41) - 20;
-                add.apply(lx, rx, ly, ry, v);
-                mn.apply(lx, rx, ly, ry, v);
+                add.apply(Rectangle(lx, ly, rx, ry), v);
+                mn.apply(Rectangle(lx, ly, rx, ry), v);
                 for (auto& [p, x] : va)
                     if (lx <= p.first && p.first < rx && ly <= p.second && p.second < ry) x += v;
                 for (auto& [p, x] : vm)

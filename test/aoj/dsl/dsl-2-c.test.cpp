@@ -21,7 +21,7 @@ int main() {
         long long sx, tx, sy, ty;
         std::cin >> sx >> tx >> sy >> ty;
         // 閉区間なので、半開区間に直す
-        auto ids = kd.enumerate(sx, tx + 1, sy, ty + 1);
+        auto ids = kd.enumerate(Rectangle(sx, sy, tx + 1, ty + 1));
         std::sort(ids.begin(), ids.end());
         for (long long i : ids) std::cout << i << '\n';
         std::cout << '\n';

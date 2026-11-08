@@ -3,18 +3,20 @@
 #include <iostream>
 #include <vector>
 
+#include "../../../src/geometry/rectangle.hpp"
 #include "../../../src/utility/container_func.hpp"
+#include "../../../src/utility/range.hpp"
 #include "../../../src/utility/vector_func.hpp"
 
 int main() {
     int n;
     std::cin >> n;
-    std::vector<long long> x1(n), y1(n), x2(n), y2(n);
+    std::vector<Rectangle<long long>> rects(n);
     std::vector<long long> xs, ys;
     for (int i = 0; i < n; i++) {
-        std::cin >> x1[i] >> y1[i] >> x2[i] >> y2[i];
-        xs.push_back(x1[i]), xs.push_back(x2[i]);
-        ys.push_back(y1[i]), ys.push_back(y2[i]);
+        std::cin >> rects[i];
+        xs.push_back(rects[i].left), xs.push_back(rects[i].right);
+        ys.push_back(rects[i].bottom), ys.push_back(rects[i].top);
     }
     // 座標圧縮
     xs = unique(xs);
@@ -22,18 +24,15 @@ int main() {
     int w = xs.size(), h = ys.size();
     std::vector<std::vector<int>> imos(w, std::vector<int>(h));
     for (int i = 0; i < n; i++) {
-        int a = bisect_left(xs, x1[i]), b = bisect_left(xs, x2[i]);
-        int c = bisect_left(ys, y1[i]), d = bisect_left(ys, y2[i]);
+        int a = bisect_left(xs, rects[i].left), b = bisect_left(xs, rects[i].right);
+        int c = bisect_left(ys, rects[i].bottom), d = bisect_left(ys, rects[i].top);
         imos[a][c]++, imos[a][d]--, imos[b][c]--, imos[b][d]++;
     }
-    for (int i = 0; i < w; i++)
-        for (int j = 1; j < h; j++) imos[i][j] += imos[i][j - 1];
-    for (int i = 1; i < w; i++)
-        for (int j = 0; j < h; j++) imos[i][j] += imos[i - 1][j];
+    for (auto [i, j] : Grid(Range(w), Range(1, h))) imos[i][j] += imos[i][j - 1];
+    for (auto [i, j] : Grid(Range(1, w), Range(h))) imos[i][j] += imos[i - 1][j];
     long long ans = 0;
-    for (int i = 0; i + 1 < w; i++)
-        for (int j = 0; j + 1 < h; j++) {
-            if (imos[i][j] > 0) ans += (xs[i + 1] - xs[i]) * (ys[j + 1] - ys[j]);
-        }
+    for (auto [i, j] : Grid(w - 1, h - 1)) {
+        if (imos[i][j] > 0) ans += (xs[i + 1] - xs[i]) * (ys[j + 1] - ys[j]);
+    }
     std::cout << ans << '\n';
 }

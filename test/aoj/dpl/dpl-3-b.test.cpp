@@ -13,5 +13,5 @@ int main() {
     std::vector<std::vector<int>> c(h, std::vector<int>(w));
     for (auto& row : c)
         for (auto& x : row) std::cin >> x;
-    std::cout << largest_rectangle(h, w, [&](long long i, long long j) { return c[i][j] == 0; }) << '\n';
+    std::cout << largest_rectangle(Grid(h, w), [&](long long i, long long j) { return c[i][j] == 0; }) << '\n';
 }

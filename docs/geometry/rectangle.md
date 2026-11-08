@@ -40,4 +40,6 @@ Rectangle r(0.5, -1.0, 2.0, 1.5);   // Rectangle<double>
 ## 関連
 
 - 複数の長方形の面積は [長方形の和集合の面積](rectangle-union.hpp)
+- 長方形内の点の列挙・個数は [kd-tree](../data_structures/kd-tree.hpp)
+- 長方形内の値の積は [2次元セグメント木](../data_structures/segtree-2d.hpp)、長方形への作用は [2次元双対セグメント木](../data_structures/dual-segtree-2d.hpp)
 - 格子の行・列の範囲は [Range と Grid](../utility/range.hpp)

@@ -3,7 +3,7 @@ title: 幾何ベクトル
 documentation_of: //src/geometry/vector.hpp
 ---
 
-点・ベクトルを表す `Vector<T = double, Dim = 2>` と、内積・外積です。幾何の関数は、話題ごとに [直線・線分](segment.hpp)・[多角形](polygon.hpp)・[最近点対・最遠点対](point-pair.hpp) などに分けてあります。
+点・ベクトルを表す `Vector<T = double, Dim = 2>` と、内積・外積です。幾何の関数は、話題ごとに [線分](segment.hpp)・[多角形](polygon.hpp)・[最近点対・最遠点対](point-pair.hpp) などに分けてあります。
 
 ```cpp
 using P = Vector<long long>;
@@ -43,11 +43,20 @@ Vector<double, 3> u(1.0, 0.0, 0.0), w = cross(u, Vector<double, 3>(0.0, 1.0, 0.0
 |---|---|:-:|---|
 | `cross(p, q)` | 外積。2次元ではスカラー (符号付き面積)、3次元ではベクトル | ✓ | $O(1)$ |
 
+## 3 点の位置関係
+
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `ccw(a, b, c)` | 2 次元の 3 点の位置関係。1: 反時計回り、-1: 時計回り、2: `c, a, b` の順に一直線上、-2: `a, b, c` の順に一直線上、0: `c` が線分 `ab` 上 | $O(1)$ |
+
+整数型でも使えます。内積・外積は座標型に収まる必要があり、浮動小数点型の判定では誤差を考慮しません。
+
 ## 関連
 
-- 2 次元の点・直線・線分 (交差判定、交点、射影、距離) は [直線・線分](segment.hpp)
+- 直線 (平行判定・射影・交点) は [直線](line.hpp)、線分 (交差判定・距離) は [線分](segment.hpp)
 - 多角形 (面積、重心、内外判定、凸包、切断) は [多角形](polygon.hpp)
+- 3 頂点をまとめる型は [三角形](triangle.hpp) の `Triangle<T, Dim>`
 - 最近点対・最遠点対は [最近点対・最遠点対](point-pair.hpp)
 - 円は [円](circle.hpp)、偏角ソートは [偏角](angle.hpp) の `Angle` (`Angle(p) < Angle(q)` で比べる)
-- 3 次元の点・直線・平面は [3 次元の直線・線分・平面](segment-3d.hpp)、球は [球](sphere.hpp)
+- 平面は [平面](plane.hpp)、球は [球](sphere.hpp)
 - 傾きや比を誤差なく比べるには [有理数](../math/rational.hpp)

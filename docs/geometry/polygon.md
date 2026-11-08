@@ -26,7 +26,7 @@ int k = polygon_contains(hull, P(0, 0));  // 0: 外部、1: 辺上、2: 内部
 | `polygon_contains(poly, p)` | 点が多角形 (反時計回り) の 0: 外部、1: 辺上、2: 内部 | ✓ | $O(n)$ |
 | `convex_hull(ps, include_straight = false)` | 凸包 (反時計回り)。`include_straight` で 180 度の頂点を含めるか選ぶ | ✓ | $O(n \log n)$ |
 | `select_convex(ps, include_straight = false)` | 順番を保った半凸包。x の昇順なら下凸包、降順なら上凸包 | ✓ | $O(n)$ |
-| `convex_cut(poly, p1, p2)` | 凸多角形 (反時計回り) を直線 $p_1 p_2$ で切った、直線の左側 ($p_1$ から $p_2$ を見て左) の凸多角形。左側に何もなければ空 | 浮動小数点型のみ | $O(n)$ |
+| `convex_cut(poly, p1, p2)` | 凸多角形 (反時計回り) を異なる 2 点で指定する直線 $p_1 p_2$ で切った、直線の左側 ($p_1$ から $p_2$ を見て左) の凸多角形。左側に何もなければ空。`p1 == p2` は assert で落ちる | 浮動小数点型のみ | $O(n)$ |
 
 ## 部分多角形の面積と重心 `PolygonMoment<T>`
 
@@ -55,6 +55,6 @@ m.centroid();  // 重心
 
 ## 関連
 
-- 点・ベクトルの型は [幾何ベクトル](vector.hpp)、直線・線分は [直線・線分](segment.hpp)
+- 点・ベクトルの型は [幾何ベクトル](vector.hpp)、直線は [直線](line.hpp)、線分は [線分](segment.hpp)
 - 凸包を使う最遠点対は [最近点対・最遠点対](point-pair.hpp)
 - 円と多角形の共通部分の面積は [円](circle.hpp) の `circle_polygon_intersection_area`

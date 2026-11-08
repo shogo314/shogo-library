@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "../../../src/geometry/segment.hpp"
+#include "../../../src/geometry/line.hpp"
 #include "../../../src/geometry/vector.hpp"
 
 int main() {
@@ -11,8 +11,8 @@ int main() {
     while (q--) {
         Vector<long long> p0, p1, p2, p3;
         std::cin >> p0 >> p1 >> p2 >> p3;
-        std::cout << (is_parallel(p0, p1, p2, p3) ? 2 : is_orthogonal(p0, p1, p2, p3) ? 1
-                                                                                      : 0)
+        std::cout << (is_parallel(Line(p0, p1), Line(p2, p3)) ? 2 : is_orthogonal(Line(p0, p1), Line(p2, p3)) ? 1
+                                                                                                              : 0)
                   << '\n';
     }
 }

@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "../algebra/acted-monoid.hpp"
+#include "../geometry/rectangle.hpp"
 
 /**
  * @brief 2次元双対セグメント木 (取得する点を先読みする)
@@ -83,7 +84,8 @@ class DualSegTree2D {
     /**
      * @brief [lx, rx) x [ly, ry) にある点の値に f を作用させる O(log^2 P)
      */
-    void apply(long long lx, long long rx, long long ly, long long ry, const F& f) {
+    void apply(const Rectangle<long long>& rect, const F& f) {
+        const auto& [lx, ly, rx, ry] = rect;
         assert(lx <= rx && ly <= ry);
         int l = static_cast<int>(std::lower_bound(xs.begin(), xs.end(), lx) - xs.begin()) + n;
         int r = static_cast<int>(std::lower_bound(xs.begin(), xs.end(), rx) - xs.begin()) + n;

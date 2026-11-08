@@ -7,7 +7,7 @@ documentation_of: //src/geometry/axis-parallel-segments.hpp
 
 ```cpp
 using P = Vector<long long>;
-std::vector<std::pair<P, P>> segs = {
+std::vector<Segment<long long>> segs = {
     {P(2, 2), P(2, 5)},  // 垂直
     {P(1, 3), P(5, 3)},  // 水平
 };
@@ -24,8 +24,8 @@ y の小さい順に走査し、そのときの y をまたいでいる垂直な
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `axis_parallel_intersection_count(segs)` | 共有点を持つ (水平な線分, 垂直な線分) の組の個数 (`long long`)。`segs` は端点の組 `std::pair<Vector<T, 2>, Vector<T, 2>>` のリスト | $O(n \log n)$ |
+| `axis_parallel_intersection_count(segs)` | 共有点を持つ (水平な線分, 垂直な線分) の組の個数 (`long long`)。`segs` は`Segment<T>` のリスト | $O(n \log n)$ |
 
 ## 関連
 
-- 一般の 2 本の線分の交差判定は [直線・線分](segment.hpp) の `segments_intersect`
+- 一般の 2 本の線分の交差判定は [線分](segment.hpp) の `segments_intersect`

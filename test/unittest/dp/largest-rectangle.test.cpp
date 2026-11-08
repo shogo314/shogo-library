@@ -46,7 +46,11 @@ int main() {
                         rect = std::max(rect, static_cast<long long>(i2 - i1 + 1) * (j2 - j1 + 1));
                         if (i2 - i1 == j2 - j1) square = std::max(square, static_cast<long long>(i2 - i1 + 1));
                     }
-        if (largest_rectangle(h, w, f) != rect || largest_square(h, w, f) != square) ok = false;
+        if (largest_rectangle(Grid(h, w), f) != rect || largest_square(Grid(h, w), f) != square) ok = false;
+        // 原点や step が違っても、マスの並びとして同じ結果になる
+        const Grid shifted(Range(7, 7 - 2 * h, -2), Range(-3, -3 + 3 * w, 3));
+        auto shifted_f = [&](long long i, long long j) { return f(shifted.rows.index(i), shifted.cols.index(j)); };
+        if (largest_rectangle(shifted, shifted_f) != rect || largest_square(shifted, shifted_f) != square) ok = false;
     }
     if (ok) std::cout << "Hello World" << std::endl;
 }

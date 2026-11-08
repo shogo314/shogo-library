@@ -9,6 +9,6 @@
 int main() {
     Vector a, b, c;
     std::cin >> a >> b >> c;
-    Circle res = circumcircle(a, b, c);
+    Circle res = circumcircle(Triangle(a, b, c));
     std::cout << std::fixed << std::setprecision(10) << res.c << ' ' << res.r << '\n';
 }

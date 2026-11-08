@@ -11,6 +11,6 @@ int main() {
     while (q--) {
         Vector<long long> p0, p1, p2, p3;
         std::cin >> p0 >> p1 >> p2 >> p3;
-        std::cout << (segments_intersect(p0, p1, p2, p3) ? 1 : 0) << std::endl;
+        std::cout << (segments_intersect(Segment(p0, p1), Segment(p2, p3)) ? 1 : 0) << std::endl;
     }
 }

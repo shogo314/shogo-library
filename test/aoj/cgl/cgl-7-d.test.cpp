@@ -14,7 +14,7 @@ int main() {
     while (q--) {
         Vector p1, p2;
         std::cin >> p1 >> p2;
-        auto ps = circle_line_intersection(c, p1, p2);
+        auto ps = circle_line_intersection(c, Line(p1, p2));
         // 接するときは同じ点を 2 回出力する
         std::cout << ps.front() << ' ' << ps.back() << '\n';
     }

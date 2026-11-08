@@ -14,13 +14,14 @@ int main() {
     // 値を聞かれる点を先読みし、長方形への加算をそのまま作用させる
     struct Query {
         int type;
-        long long l, d, r, u, w;
+        Rectangle<long long> rect;
+        long long x, y, w;
     };
     std::vector<Query> qs;
     for (int i = 0; i < n; i++) {
         long long l, d, r, u, w;
         std::cin >> l >> d >> r >> u >> w;
-        qs.push_back({0, l, d, r, u, w});
+        qs.push_back({0, Rectangle(l, d, r, u), 0, 0, w});
     }
     std::vector<std::pair<long long, long long>> points;
     for (int i = 0; i < q; i++) {
@@ -29,20 +30,20 @@ int main() {
         if (t == 0) {
             long long l, d, r, u, w;
             std::cin >> l >> d >> r >> u >> w;
-            qs.push_back({0, l, d, r, u, w});
+            qs.push_back({0, Rectangle(l, d, r, u), 0, 0, w});
         } else {
             long long x, y;
             std::cin >> x >> y;
-            qs.push_back({1, x, y, 0, 0, 0});
+            qs.push_back({1, {}, x, y, 0});
             points.emplace_back(x, y);
         }
     }
     RAddQ2D<long long> seg(points);
     for (const auto& c : qs) {
         if (c.type == 0) {
-            seg.apply(c.l, c.r, c.d, c.u, c.w);
+            seg.apply(c.rect, c.w);
         } else {
-            std::cout << seg.get(c.l, c.d) << '\n';
+            std::cout << seg.get(c.x, c.y) << '\n';
         }
     }
 }

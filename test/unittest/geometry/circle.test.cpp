@@ -43,18 +43,19 @@ int main() {
         for (const auto& p : ps) ok = ok && on_circle(c1, p) && on_circle(c2, p);
 
         // 共通接線の本数は位置関係 (共通接線の本数) と一致し、各直線は両方の円に接する
-        auto ts2 = same ? std::vector<std::pair<P, P>>{} : common_tangents(c1, c2);
+        auto ts2 = same ? std::vector<CommonTangent<double>>{} : common_tangents(c1, c2);
         ok = ok && static_cast<int>(ts2.size()) == (ci1.c == ci2.c ? 0 : rel);
-        for (const auto& [p, q] : ts2) {
-            P dir = p == q ? P(-(p - c1.c)[1], (p - c1.c)[0]) : q - p;
+        for (const auto& [line, p, q] : ts2) {
+            P dir = line.p2 - line.p1;
+            ok = ok && near(distance_point_line(line, c1.c), c1.r) && near(distance_point_line(line, c2.c), c2.r);
             ok = ok && on_circle(c1, p) && on_circle(c2, q) && near(dot(p - c1.c, dir), 0) && near(dot(q - c2.c, dir), 0);
         }
 
         // 円と直線の交点は円周上と直線上にあり、個数は中心と直線の距離で決まる
         P p1(rndd(), rndd()), p2(rndd(), rndd());
         if (p1 != p2) {
-            auto qs = circle_line_intersection(c1, p1, p2);
-            double d = distance_point_line(p1, p2, c1.c);
+            auto qs = circle_line_intersection(c1, Line(p1, p2));
+            double d = distance_point_line(Line(p1, p2), c1.c);
             int expected = d > c1.r + 1e-9 ? 0 : d > c1.r - 1e-9 ? 1
                                                                  : 2;
             ok = ok && static_cast<int>(qs.size()) == expected;
@@ -72,10 +73,28 @@ int main() {
         // 内接円は 3 辺に接し、外接円は 3 頂点を通る
         P a(rndd(), rndd()), b(rndd(), rndd()), c(rndd(), rndd());
         if (cross(b - a, c - a) != 0) {
-            Circle in = incircle(a, b, c), out = circumcircle(a, b, c);
-            ok = ok && near(distance_point_line(a, b, in.c), in.r) && near(distance_point_line(b, c, in.c), in.r) && near(distance_point_line(c, a, in.c), in.r);
+            Circle in = incircle(Triangle(a, b, c)), out = circumcircle(Triangle(a, b, c));
+            ok = ok && near(distance_point_line(Line(a, b), in.c), in.r) && near(distance_point_line(Line(b, c), in.c), in.r) && near(distance_point_line(Line(c, a), in.c), in.r);
             ok = ok && on_circle(out, a) && on_circle(out, b) && on_circle(out, c);
         }
+    }
+
+    // 外接・内接で接点が一致しても、有効な Line が得られる
+    for (const auto& other : {Circle(P(2, 0), 1.0), Circle(P(1, 0), 2.0)}) {
+        Circle unit(P(0, 0), 1.0);
+        bool shared = false;
+        for (const auto& tangent : common_tangents(unit, other)) {
+            ok = ok && tangent.line.p1 != tangent.line.p2;
+            ok = ok && near(distance_point_line(tangent.line, unit.c), unit.r);
+            ok = ok && near(distance_point_line(tangent.line, other.c), other.r);
+            shared |= tangent.contact1 == tangent.contact2;
+        }
+        ok = ok && shared;
+    }
+
+    // 単位方向を足すと丸めで消える大きな座標でも、接線の 2 点は一致しない
+    for (const auto& tangent : common_tangents(Circle(P(1e18, 0), 0.5), Circle(P(1e18, 1), 0.5))) {
+        ok = ok && tangent.line.p1 != tangent.line.p2;
     }
 
     // 2 つの円の共通部分の面積と、円と多角形 (多角形は中心が原点の正方形) の共通部分の面積

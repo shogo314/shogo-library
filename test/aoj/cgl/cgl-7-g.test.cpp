@@ -10,5 +10,5 @@ int main() {
     Circle c1, c2;
     std::cin >> c1 >> c2;
     std::cout << std::fixed << std::setprecision(10);
-    for (const auto& [p, q] : common_tangents(c1, c2)) std::cout << p << '\n';
+    for (const auto& tangent : common_tangents(c1, c2)) std::cout << tangent.contact1 << '\n';
 }

@@ -40,7 +40,7 @@ int main(void) {
         if (t == 0) {
             seg.apply(a, b, c);
         } else {
-            std::cout << seg.prod(a, c, b, d) << '\n';
+            std::cout << seg.prod(Rectangle(a, b, c, d)) << '\n';
         }
     }
 }

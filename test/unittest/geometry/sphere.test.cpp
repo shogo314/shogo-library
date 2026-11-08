@@ -14,7 +14,7 @@
 #include <random>
 #include <vector>
 
-#include "../../../src/geometry/segment-3d.hpp"
+#include "../../../src/geometry/line.hpp"
 #include "../../../src/geometry/vector.hpp"
 
 using D = Vector<double, 3>;
@@ -33,21 +33,36 @@ int main() {
     auto rp = [&]() { return D(uni(rng), uni(rng), uni(rng)); };
     const double pi = std::acos(-1.0);
 
+    // x 座標が同じ場合も y、z の順に比較し、直線の向きによらず並べる
+    for (int axis = 0; axis < 3; ++axis) {
+        D u;
+        u[axis] = 1;
+        const Sphere unit(D(), 2.0);
+        const std::vector<D> expected = {-u * 2.0, u * 2.0};
+        check(sphere_line_intersection(unit, Line(u, -u)) == expected, "sphere_line_intersection (軸方向の辞書順)");
+        check(sphere_line_intersection(unit, Line(-u, u)) == expected, "sphere_line_intersection (軸方向の逆順)");
+    }
+
     for (int rep = 0; rep < 20000 && ok; rep++) {
         // 球と直線
         {
             Sphere s(rp(), pos(rng));
             D p1 = rp(), p2 = rp();
-            auto xs = sphere_line_intersection(s, p1, p2);
-            double d = distance_point_line(p1, p2, s.c);
+            auto xs = sphere_line_intersection(s, Line(p1, p2));
+            double d = distance_point_line(Line(p1, p2), s.c);
             check(xs.size() == (d > s.r + 1e-9 ? 0u : d >= s.r - 1e-9 ? 1u
                                                                       : 2u),
                   "sphere_line_intersection (個数)");
             for (auto& x : xs) {
                 check(std::abs((x - s.c).abs() - s.r) < 1e-6, "sphere_line_intersection (球面上)");
-                check(distance_point_line(p1, p2, x) < 1e-6, "sphere_line_intersection (直線上)");
+                check(distance_point_line(Line(p1, p2), x) < 1e-6, "sphere_line_intersection (直線上)");
             }
-            if (xs.size() == 2) check(dot(p2 - p1, xs[1] - xs[0]) > 0, "sphere_line_intersection (p1 から p2 の向きの順)");
+            if (xs.size() == 2) check(xs[0] < xs[1], "sphere_line_intersection (座標の辞書順)");
+            const auto reversed = sphere_line_intersection(s, Line(p2, p1));
+            check(xs.size() == reversed.size(), "sphere_line_intersection (逆向きの個数)");
+            for (long long i = 0; i < static_cast<long long>(xs.size()) && i < static_cast<long long>(reversed.size()); ++i) {
+                check((xs[i] - reversed[i]).abs() < 1e-6, "sphere_line_intersection (逆向きでも同じ順序)");
+            }
         }
         // 球と球
         {

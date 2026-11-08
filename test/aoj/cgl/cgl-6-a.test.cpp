@@ -11,7 +11,7 @@ int main() {
     std::ios::sync_with_stdio(false);
     int n;
     std::cin >> n;
-    std::vector<std::pair<Vector<long long>, Vector<long long>>> segs(n);
+    std::vector<Segment<long long>> segs(n);
     for (auto& [p, q] : segs) std::cin >> p >> q;
     std::cout << axis_parallel_intersection_count(segs) << '\n';
 }

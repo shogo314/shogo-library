@@ -166,7 +166,7 @@ int main() {
             bool same = true;
             for (int i = 0; i < i2 - i1; i++)
                 for (int j = 0; j < j2 - j1; j++) same &= text[i1 + i][j1 + j] == text[a + i][b + j];
-            bool eq = rh2.query(th, i1, j1, i2, j2) == rh2.query(th, a, b, a + i2 - i1, b + j2 - j1);
+            bool eq = rh2.query(th, Grid({i1, i2}, {j1, j2})) == rh2.query(th, Grid({a, a + i2 - i1}, {b, b + j2 - j1}));
             if (eq != same) ok = false;
         }
         std::vector<std::pair<long long, long long>> expected;

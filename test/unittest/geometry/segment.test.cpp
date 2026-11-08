@@ -45,41 +45,41 @@ int main() {
         ok = ok && (ab == cd) == (cross(b - a, c - a) == 0 && cross(b - a, d - a) == 0);
         ok = ok && (ab != cd) == !(ab == cd);
 
-        ok = ok && is_parallel(a, b, c, d) == (cross(b - a, d - c) == 0);
-        ok = ok && is_orthogonal(a, b, c, d) == (dot(b - a, d - c) == 0);
+        ok = ok && is_parallel(Line(a, b), Line(c, d)) == (cross(b - a, d - c) == 0);
+        ok = ok && is_orthogonal(Line(a, b), Line(c, d)) == (dot(b - a, d - c) == 0);
 
         // 射影は直線上にあり、p との差が直線に垂直。反射は射影を中点とする
-        P h = projection(pa, pb, pc);
+        P h = projection(Line(pa, pb), pc);
         ok = ok && near(cross(pb - pa, h - pa), 0) && near(dot(pb - pa, h - pc), 0);
-        P r = reflection(pa, pb, pc);
+        P r = reflection(Line(pa, pb), pc);
         ok = ok && near(r[0] + pc[0], 2 * h[0]) && near(r[1] + pc[1], 2 * h[1]);
 
         // 交点は両方の直線上にある
-        auto x = line_intersection(pa, pb, pc, pd);
-        if (is_parallel(a, b, c, d)) {
+        auto x = line_intersection(Line(pa, pb), Line(pc, pd));
+        if (is_parallel(Line(a, b), Line(c, d))) {
             ok = ok && !x;
         } else {
             ok = ok && x && near(cross(pb - pa, *x - pa), 0) && near(cross(pd - pc, *x - pc), 0);
         }
 
         // 点と直線の距離は、射影までの距離
-        ok = ok && near(distance_point_line(a, b, c), (h - pc).abs());
+        ok = ok && near(distance_point_line(Line(a, b), c), (h - pc).abs());
         // 点と線分の距離を、線分上の点を細かく調べた最小値と比べる
         auto brute_point_segment = [&](P p1, P p2, P p) {
             double best = 1e18;
             for (int i = 0; i <= 2000; i++) best = std::min(best, (p1 + (p2 - p1) * (i / 2000.0) - p).abs());
             return best;
         };
-        double dps = distance_point_segment(a, b, c);
+        double dps = distance_point_segment(Segment(a, b), c);
         ok = ok && dps <= brute_point_segment(pa, pb, pc) + 1e-9 && dps >= brute_point_segment(pa, pb, pc) - 1e-2;
         // 線分どうしの距離: 交わるなら 0、そうでなければ端点と線分の距離の最小値以下
-        double dss = distance_segments(a, b, c, d);
-        if (segments_intersect(a, b, c, d)) {
+        double dss = distance_segments(Segment(a, b), Segment(c, d));
+        if (segments_intersect(Segment(a, b), Segment(c, d))) {
             ok = ok && dss == 0;
         } else {
-            ok = ok && dss > 0 && near(dss, std::min({distance_point_segment(a, b, c), distance_point_segment(a, b, d), distance_point_segment(c, d, a), distance_point_segment(c, d, b)}));
+            ok = ok && dss > 0 && near(dss, std::min({distance_point_segment(Segment(a, b), c), distance_point_segment(Segment(a, b), d), distance_point_segment(Segment(c, d), a), distance_point_segment(Segment(c, d), b)}));
         }
-        ok = ok && near(distance_segments(pa, pb, pc, pd), dss);
+        ok = ok && near(distance_segments(Segment(pa, pb), Segment(pc, pd)), dss);
     }
 
     // 直線は選んだ点や方向によらず一致し、線分は端点の順序によらず一致する
@@ -109,9 +109,9 @@ int main() {
 
     // 例
     ok = ok && ccw(L(0, 0), L(2, 0), L(1, 1)) == 1 && ccw(L(0, 0), L(2, 0), L(3, 0)) == -2;
-    P h = projection(P(0.0, 0.0), P(3.0, 4.0), P(2.0, 5.0));
+    P h = projection(Line(P(0.0, 0.0), P(3.0, 4.0)), P(2.0, 5.0));
     ok = ok && near(h[0], 3.12) && near(h[1], 4.16);
-    ok = ok && near(distance_point_line(L(0, 0), L(2, 0), L(5, 3)), 3) && near(distance_point_segment(L(0, 0), L(2, 0), L(5, 4)), 5);
+    ok = ok && near(distance_point_line(Line(L(0, 0), L(2, 0)), L(5, 3)), 3) && near(distance_point_segment(Segment(L(0, 0), L(2, 0)), L(5, 4)), 5);
 
     if (ok)
         std::cout << "Hello World" << std::endl;

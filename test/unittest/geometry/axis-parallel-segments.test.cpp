@@ -20,18 +20,18 @@ int main() {
     for (int rep = 0; rep < 3000 && ok; rep++) {
         int n = rng() % 12 + 1, w = rng() % 2 ? 4 : 30;
         auto rnd = [&] { return static_cast<long long>(rng() % (2 * w + 1)) - w; };
-        std::vector<std::pair<P, P>> segs(n);
+        std::vector<Segment<long long>> segs(n);
         std::vector<bool> vertical(n);
         for (int i = 0; i < n; i++) {
             long long a = rnd(), b = rnd(), c = rnd();
             if (b == c) c++;
             vertical[i] = rng() % 2;
-            segs[i] = vertical[i] ? std::make_pair(P(a, b), P(a, c)) : std::make_pair(P(b, a), P(c, a));
+            segs[i] = vertical[i] ? Segment(P(a, b), P(a, c)) : Segment(P(b, a), P(c, a));
         }
         long long expected = 0;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (!vertical[i] && vertical[j] && segments_intersect(segs[i].first, segs[i].second, segs[j].first, segs[j].second)) expected++;
+                if (!vertical[i] && vertical[j] && segments_intersect(segs[i], segs[j])) expected++;
             }
         }
         if (axis_parallel_intersection_count(segs) != expected) ok = false;

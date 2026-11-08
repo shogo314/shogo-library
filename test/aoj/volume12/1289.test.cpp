@@ -24,10 +24,9 @@ int main() {
             D q;
             for (int i = 0; i < n; i++) {
                 if (i == last) continue;
-                for (const D& x : sphere_line_intersection(s[i], o, o + dir)) {
+                for (const D& x : sphere_line_intersection(s[i], Line(o, o + dir))) {
                     double t = dot(x - o, dir);
                     if (t > 1e-9 && (hit == -1 || t < best)) hit = i, best = t, q = x;
-                    if (t > 1e-9) break;  // 光線の向きに並んでいるので、最初の点だけ見ればよい
                 }
             }
             if (hit == -1) break;

@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "../algebra/monoid.hpp"
+#include "../geometry/rectangle.hpp"
 
 /**
  * @brief 2次元セグメント木 (更新する点を先読みする領域木)
@@ -144,7 +145,8 @@ class SegTree2D {
     /**
      * @brief [lx, rx) x [ly, ry) にある点の値の総積を返す
      */
-    S prod(long long lx, long long rx, long long ly, long long ry) const {
+    S prod(const Rectangle<long long>& rect) const {
+        const auto& [lx, ly, rx, ry] = rect;
         assert(lx <= rx && ly <= ry);
         int l = static_cast<int>(std::lower_bound(xs.begin(), xs.end(), lx) - xs.begin()) + n;
         int r = static_cast<int>(std::lower_bound(xs.begin(), xs.end(), rx) - xs.begin()) + n;

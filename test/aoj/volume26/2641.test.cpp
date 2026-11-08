@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../../../src/geometry/segment-3d.hpp"
+#include "../../../src/geometry/segment.hpp"
 
 int main() {
     int n, q;
@@ -14,10 +14,11 @@ int main() {
     while (q--) {
         Vector<long long, 3> s, t;
         std::cin >> s >> t;
+        const Segment segment(s, t);
         long long sum = 0;
         // 接する場合も貫通の魔法が要る。座標が整数なので、距離と半径が等しくない場合の差は 1e-10 より大きい
         for (int i = 0; i < n; i++) {
-            if (distance_point_segment(s, t, c[i]) <= r[i] + 1e-11) sum += l[i];
+            if (distance_point_segment(segment, c[i]) <= r[i] + 1e-11) sum += l[i];
         }
         std::cout << sum << '\n';
     }

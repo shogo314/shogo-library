@@ -2,11 +2,11 @@
 
 #include <iostream>
 
-#include "../../../src/geometry/segment-3d.hpp"
+#include "../../../src/geometry/triangle.hpp"
 
 int main() {
     Vector<long long, 3> s, t, a, b, c;
     std::cin >> s >> t >> a >> b >> c;
     // バリアは周 (頂点を含む) でもはね返し、敵がバリア上にいても当たらない
-    std::cout << (segment_triangle_intersect(s, t, a, b, c) ? "MISS" : "HIT") << '\n';
+    std::cout << (segment_triangle_intersect(Segment(s, t), Triangle(a, b, c)) ? "MISS" : "HIT") << '\n';
 }

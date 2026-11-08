@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "../../../src/data_structures/lazy-segtree.hpp"
+#include "../../../src/geometry/rectangle.hpp"
 
 // x 方向に走査し、y 方向の各区間が何枚の長方形に覆われているかを持つ
 // 覆う枚数の符号を反転して、区間加算・区間最大値とその個数 (個数は y 方向の長さ) で持つ
@@ -13,7 +14,7 @@
 int main() {
     int n;
     std::cin >> n;
-    std::vector<std::array<long long, 4>> rect(n);
+    std::vector<Rectangle<long long>> rect(n);
     std::vector<long long> ys;
     ys.reserve(2 * n);
     for (auto& [l, d, r, u] : rect) {

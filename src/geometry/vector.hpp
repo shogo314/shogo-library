@@ -352,3 +352,22 @@ constexpr Vector<T, 3> cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs) n
     ret[2] = lhs[0] * rhs[1] - lhs[1] * rhs[0];
     return ret;
 }
+
+/**
+ * @brief 3点の位置関係 (counter-clockwise)
+ *
+ * 整数型でも使える。浮動小数点型では誤差を考えずに比較する
+ *
+ * @tparam T 座標の型
+ * @return int 1: a→b→c が反時計回り, -1: 時計回り, 2: c, a, b の順に一直線上, -2: a, b, c の順に一直線上, 0: c が線分 ab 上
+ */
+template <typename T>
+constexpr int ccw(const Vector<T, 2>& a, const Vector<T, 2>& b, const Vector<T, 2>& c) {
+    Vector<T, 2> u = b - a, v = c - a;
+    T cr = cross(u, v);
+    if (cr > 0) return 1;
+    if (cr < 0) return -1;
+    if (dot(u, v) < 0) return 2;
+    if (u.squared_norm() < v.squared_norm()) return -2;
+    return 0;
+}

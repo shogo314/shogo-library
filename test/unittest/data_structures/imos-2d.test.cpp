@@ -24,7 +24,7 @@ int main() {
             if (i1 > i2) std::swap(i1, i2);
             if (j1 > j2) std::swap(j1, j2);
             long long x = static_cast<long long>(rng() % 21) - 10;
-            imos.add(i1, j1, i2, j2, x);
+            imos.add(Grid({i1, i2}, {j1, j2}), x);
             for (int i = i1; i < i2; i++)
                 for (int j = j1; j < j2; j++) g[i][j] += x;
         }

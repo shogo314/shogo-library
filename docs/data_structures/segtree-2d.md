@@ -10,7 +10,7 @@ std::vector<std::pair<long long, long long>> points = { {0, 1}, {2, 3}, {-100000
 RSumQ2D<long long> seg(points);
 seg.apply(0, 1, 5);
 seg.apply(2, 3, 7);
-seg.prod(0, 3, 0, 4);  // [0, 3) x [0, 4) の和: 12
+seg.prod(Rectangle<>(0, 0, 3, 4));  // [0, 3) x [0, 4) の和: 12
 seg.get(2, 3);         // 7
 ```
 
@@ -30,6 +30,8 @@ seg.get(2, 3);         // 7
 | `RMinQ2D<S>` | `SegTree2D<monoid::Min<S>>` | 長方形の最小値 |
 | `RSumQ2D<S>` | `SegTree2D<monoid::Sum<S>>` | 長方形の和 |
 
+領域 `rect` は [Rectangle](../geometry/rectangle.hpp) で渡します。座標の順序は `(left, bottom, right, top)` です。
+
 ## メンバ関数
 
 $P$ を渡した点の数とします。
@@ -40,7 +42,7 @@ $P$ を渡した点の数とします。
 | `get(x, y)` | $(x, y)$ の値 | $O(\log P)$ |
 | `set(x, y, v)` | $(x, y)$ を `v` に更新 | $O(\log^2 P)$ |
 | `apply(x, y, v)` | $(x, y)$ を `op(get(x, y), v)` に更新 | $O(\log^2 P)$ |
-| `prod(lx, rx, ly, ry)` | $[l_x, r_x) \times [l_y, r_y)$ にある点の値の積 | $O(\log^2 P)$ |
+| `prod(rect)` | $[l_x, r_x) \times [l_y, r_y)$ にある点の値の積 | $O(\log^2 P)$ |
 
 メモリは $O(P \log P)$ です。
 

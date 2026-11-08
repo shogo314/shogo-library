@@ -12,7 +12,7 @@
 
 #include "../algebra/group.hpp"
 #include "../data_structures/fenwick-tree.hpp"
-#include "vector.hpp"
+#include "segment.hpp"
 
 /**
  * @brief 水平か垂直な線分だけがあるとき、水平な線分と垂直な線分が共有点を持つ組の個数 (走査線) O(n log n)
@@ -23,7 +23,7 @@
  * @return long long 共有点を持つ (水平な線分, 垂直な線分) の組の個数
  */
 template <typename T>
-long long axis_parallel_intersection_count(const std::vector<std::pair<Vector<T, 2>, Vector<T, 2>>>& segments) {
+long long axis_parallel_intersection_count(const std::vector<Segment<T>>& segments) {
     std::vector<T> xs;
     // (y, 種類, x1, x2)。種類は 0: 垂直な線分の始まり、1: 水平な線分、2: 垂直な線分の終わり (同じ y ではこの順に処理する)
     std::vector<std::tuple<T, int, T, T>> events;

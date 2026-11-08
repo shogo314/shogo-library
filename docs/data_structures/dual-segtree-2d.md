@@ -8,8 +8,8 @@ documentation_of: //src/data_structures/dual-segtree-2d.hpp
 ```cpp
 std::vector<std::pair<long long, long long>> points = { {1, 2}, {3, 4}, {-1000000000000, 0} };  // get する点 (x, y)
 RAddQ2D<long long> seg(points);
-seg.apply(0, 4, 0, 3, 5);  // [0, 4) x [0, 3) に 5 を足す
-seg.apply(1, 4, 2, 5, 7);  // [1, 4) x [2, 5) に 7 を足す
+seg.apply(Rectangle<>(0, 0, 4, 3), 5);  // [0, 4) x [0, 3) に 5 を足す
+seg.apply(Rectangle<>(1, 2, 4, 5), 7);  // [1, 4) x [2, 5) に 7 を足す
 seg.get(1, 2);             // 12
 seg.get(3, 4);             // 7
 
@@ -35,6 +35,8 @@ RChminQ2D<int> seg2(points, 1000000000);  // 長方形 chmin、初期値を指�
 
 [双対セグメント木](dual-segtree.hpp) の別名と同じく、`mapping` が区間の長さを使わない `Min` 系を実体にしています。
 
+領域 `rect` は [Rectangle](../geometry/rectangle.hpp) で渡します。座標の順序は `(left, bottom, right, top)` です。
+
 ## メンバ関数
 
 $P$ を渡した点の数とします。
@@ -43,7 +45,7 @@ $P$ を渡した点の数とします。
 |---|---|---|
 | `DualSegTree2D<A>(points)` | 点の列 `points` を先読みする。各点は `S()` で初期化 | $O(P \log P)$ |
 | `DualSegTree2D<A>(points, x)` | 各点を `x` で初期化 | $O(P \log P)$ |
-| `apply(lx, rx, ly, ry, f)` | $[l_x, r_x) \times [l_y, r_y)$ にある点の値に `f` を作用 | $O(\log^2 P)$ |
+| `apply(rect, f)` | $[l_x, r_x) \times [l_y, r_y)$ にある点の値に `f` を作用 | $O(\log^2 P)$ |
 | `get(x, y)` | $(x, y)$ の値 | $O(\log^2 P)$ |
 
 メモリは $O(P \log P)$ です。

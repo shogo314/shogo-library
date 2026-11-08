@@ -24,15 +24,15 @@ int main() {
         for (int q = 0; q < 30 && ok; q++) {
             long long xl = static_cast<long long>(rng() % (2 * w + 3)) - w - 1, xr = static_cast<long long>(rng() % (2 * w + 3)) - w - 1;
             long long yl = static_cast<long long>(rng() % (2 * w + 3)) - w - 1, yr = static_cast<long long>(rng() % (2 * w + 3)) - w - 1;
-            if (rng() % 4 && xl > xr) std::swap(xl, xr);
-            if (rng() % 4 && yl > yr) std::swap(yl, yr);
+            if (xl > xr) std::swap(xl, xr);
+            if (yl > yr) std::swap(yl, yr);
             std::vector<long long> expected;
             for (int i = 0; i < n; i++) {
                 if (xl <= p[i].first && p[i].first < xr && yl <= p[i].second && p[i].second < yr) expected.push_back(i);
             }
-            auto ids = kd.enumerate(xl, xr, yl, yr);
+            auto ids = kd.enumerate(Rectangle(xl, yl, xr, yr));
             std::sort(ids.begin(), ids.end());
-            if (ids != expected || kd.count(xl, xr, yl, yr) != static_cast<long long>(expected.size())) ok = false;
+            if (ids != expected || kd.count(Rectangle(xl, yl, xr, yr)) != static_cast<long long>(expected.size())) ok = false;
         }
     }
     if (ok) std::cout << "Hello World" << std::endl;

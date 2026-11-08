@@ -213,6 +213,7 @@ std::vector<Vector<T, 2>> convex_hull(const std::vector<Vector<T, 2>>& _points, 
 template <typename T>
 std::vector<Vector<T, 2>> convex_cut(const std::vector<Vector<T, 2>>& polygon, const Vector<T, 2>& p1, const Vector<T, 2>& p2) {
     static_assert(std::is_floating_point_v<T>, "convex_cut: T must be a floating point type");
+    assert(p1 != p2 && "convex_cut: degenerate line");
     std::vector<Vector<T, 2>> res;
     const int n = static_cast<int>(polygon.size());
     for (int i = 0; i < n; i++) {

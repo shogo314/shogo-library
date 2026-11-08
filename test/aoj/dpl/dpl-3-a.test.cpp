@@ -13,6 +13,6 @@ int main() {
     std::vector<std::vector<int>> c(h, std::vector<int>(w));
     for (auto& row : c)
         for (auto& x : row) std::cin >> x;
-    long long s = largest_square(h, w, [&](long long i, long long j) { return c[i][j] == 0; });
+    long long s = largest_square(Grid(h, w), [&](long long i, long long j) { return c[i][j] == 0; });
     std::cout << s * s << '\n';
 }

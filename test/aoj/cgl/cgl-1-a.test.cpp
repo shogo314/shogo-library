@@ -4,17 +4,18 @@
 #include <iomanip>
 #include <iostream>
 
-#include "../../../src/geometry/segment.hpp"
+#include "../../../src/geometry/line.hpp"
 #include "../../../src/geometry/vector.hpp"
 
 int main() {
     Vector p1, p2;
     int q;
     std::cin >> p1 >> p2 >> q;
+    const Line line(p1, p2);
     std::cout << std::fixed << std::setprecision(10);
     while (q--) {
         Vector p;
         std::cin >> p;
-        std::cout << projection(p1, p2, p) << '\n';
+        std::cout << projection(line, p) << '\n';
     }
 }

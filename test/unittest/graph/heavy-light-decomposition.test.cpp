@@ -6,10 +6,15 @@
 #include "../../../src/graph/heavy-light-decomposition.hpp"
 
 #include <algorithm>
+#include <cassert>
 #include <iostream>
+#include <iterator>
 #include <random>
 #include <utility>
 #include <vector>
+#if __cplusplus >= 202002L
+#include <ranges>
+#endif
 
 #include "../../../src/graph/graph.hpp"
 #include "../../../src/graph/tree.hpp"
@@ -121,6 +126,72 @@ int main() {
             }
         }
     }
+
+    // 多数の light edge をまたぐパスでも、順序・退避状態・iterator のコピーを保つ。
+    {
+        constexpr long long n = 65535;
+        Tree<> tree(n);
+        for (long long v = 1; v < n; v++) tree.add_edge((v - 1) / 2, v);
+        HeavyLightDecomposition hld(tree);
+        for (auto [u, v] : std::vector<std::pair<long long, long long>>{{0, n - 1}, {n - 1, 0}, {n / 2, n - 1}, {n - 1, n - 1}}) {
+            for (bool edge : {false, true}) {
+                auto make_range = [&] { return hld.path(u, v, edge); };
+                const auto range = make_range();
+                auto copied = range;
+                auto moved = std::move(copied);
+                std::vector<HeavyLightDecomposition::PathSegment> segments(range.begin(), range.end());
+                auto same = [](const auto& a, const auto& b) { return a.l == b.l && a.r == b.r && a.reverse == b.reverse; };
+                // range の一時オブジェクトがなくなっても iterator は自分の走査状態を持つ。
+                auto it = make_range().begin();
+                for (const auto& segment : segments) {
+                    auto independent = it;
+                    auto assigned = range.end();
+                    assigned = it;
+                    ok = ok && same(*it++, segment) && same(*independent, segment) && same(*assigned, segment);
+                    ++independent;
+                    ++assigned;
+                    ok = ok && independent == it && assigned == it;
+                }
+                ok = ok && it == range.end();
+                for (int rep = 0; rep < 2; rep++) {
+                    const std::vector<HeavyLightDecomposition::PathSegment> again(moved.begin(), moved.end());
+                    ok = ok && again.size() == segments.size() && std::equal(segments.begin(), segments.end(), again.begin(), same);
+                }
+                ok = ok && std::distance(range.begin(), range.end()) == static_cast<long long>(segments.size());
+                if (!segments.empty()) {
+                    for (const auto segment : range) {
+                        ok = ok && same(segment, segments.front());
+                        break;
+                    }
+                }
+                std::vector<long long> expanded, expected, down;
+                for (auto [l, r, reverse] : range) {
+                    if (reverse) {
+                        for (long long i = r; i-- > l;) expanded.push_back(hld.vertex(i));
+                    } else {
+                        for (long long i = l; i < r; i++) expanded.push_back(hld.vertex(i));
+                    }
+                }
+                long long a = u, b = v;
+                while (a != b) {
+                    if (hld.depth(a) >= hld.depth(b)) {
+                        expected.push_back(a);
+                        a = hld.parent(a);
+                    } else {
+                        down.push_back(b);
+                        b = hld.parent(b);
+                    }
+                }
+                if (!edge) expected.push_back(a);
+                expected.insert(expected.end(), down.rbegin(), down.rend());
+                ok = ok && expanded == expected;
+#if __cplusplus >= 202002L
+                static_assert(std::ranges::input_range<decltype(range)>);
+#endif
+            }
+        }
+    }
+    assert(ok);
 
     if (ok)
         std::cout << "Hello World" << std::endl;

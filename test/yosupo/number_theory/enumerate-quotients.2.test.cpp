@@ -8,7 +8,8 @@
 int main() {
     long long n;
     std::cin >> n;
-    auto qs = enumerate_quotients(n);
+    auto range = enumerate_quotients(n);
+    std::vector<QuotientRange> qs(range.begin(), range.end());
     // 商の昇順に出力する
     std::cout << qs.size() << '\n';
     for (int i = static_cast<int>(qs.size()) - 1; i >= 0; i--) std::cout << qs[i].q << " \n"[i == 0];

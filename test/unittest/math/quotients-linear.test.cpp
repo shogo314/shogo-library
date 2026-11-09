@@ -5,11 +5,15 @@
 #include <limits>
 #include <random>
 #include <vector>
+#if __cplusplus >= 202002L
+#include <ranges>
+#endif
 
 #include "../../../src/math/quotients.hpp"
 
 void check(long long n, long long m, long long a, long long b, const std::vector<QuotientRange>& expected) {
-    const auto actual = enumerate_quotients_linear(n, m, a, b);
+    const auto range = enumerate_quotients_linear(n, m, a, b);
+    const std::vector<QuotientRange> actual(range.begin(), range.end());
     assert(actual.size() == expected.size());
     for (long long i = 0; i < static_cast<long long>(actual.size()); i++) {
         assert(actual[i].q == expected[i].q && actual[i].l == expected[i].l && actual[i].r == expected[i].r);
@@ -35,6 +39,10 @@ void check_naive(long long n, long long m, long long a, long long b) {
     check(n, m, a, b, expected);
 }
 
+#if __cplusplus >= 202002L
+static_assert(std::ranges::input_range<decltype(enumerate_quotients_linear(10, 3, 1, 0))>);
+#endif
+
 int main() {
     for (long long n = 0; n <= 8; n++) {
         for (long long m = 1; m <= 6; m++) {
@@ -58,5 +66,14 @@ int main() {
     check_naive(100, hi, lo, lo);
     check_naive(2, 1, lo, 0);
     check_naive(2, hi, 1, lo);
+    check_naive(100, hi, 1, lo);
+    check_naive(100, hi, 1, hi);
+    check_naive(2, 1, 1, hi - 1);
+    check(0, 1, 1, hi, {});
+    check(hi, hi, 1, hi, {{1, 0, hi}});
+    const auto huge = enumerate_quotients_linear(hi, 1, 1, 0);
+    auto first = huge.begin(), copy = first;
+    assert((*first++).q == 0 && (*first).q == 1 && (*copy).q == 0);
+    assert((*huge.begin()).q == 0);
     std::cout << "Hello World\n";
 }

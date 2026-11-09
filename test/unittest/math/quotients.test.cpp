@@ -5,13 +5,24 @@
 
 #include "../../../src/math/quotients.hpp"
 
+#include <cassert>
 #include <iostream>
+#include <iterator>
+#include <limits>
 #include <vector>
+#if __cplusplus >= 202002L
+#include <ranges>
+#endif
+
+#if __cplusplus >= 202002L
+static_assert(std::ranges::input_range<decltype(enumerate_quotients(10))>);
+#endif
 
 int main() {
     bool ok = true;
     for (long long n = 0; n <= 3000 && ok; n++) {
-        auto qs = enumerate_quotients(n);
+        auto range = enumerate_quotients(n);
+        std::vector<QuotientRange> qs(range.begin(), range.end());
         // 区間が 1 から n までを隙間なく覆い、区間の中で商が q に等しく、隣の区間とは商が異なる
         long long next = 1;
         for (int k = 0; k < static_cast<int>(qs.size()); k++) {
@@ -39,7 +50,12 @@ int main() {
     ok = ok && q == std::vector<long long>{10, 5, 3, 2, 1} && l == std::vector<long long>{1, 2, 3, 4, 6};
     ok = ok && r == std::vector<long long>{2, 3, 4, 6, 11};
     // 大きい n でも区間の個数は 2 sqrt(n) 程度
-    ok = ok && enumerate_quotients(1000000000000LL).size() == 1999999;
+    auto large = enumerate_quotients(1000000000000LL);
+    ok = ok && std::distance(large.begin(), large.end()) == 1999999;
+    const auto huge = enumerate_quotients(std::numeric_limits<long long>::max() - 1);
+    auto first = huge.begin(), copy = first;
+    assert((*first++).l == 1 && (*first).l == 2 && (*copy).l == 1);
+    assert((*huge.begin()).l == 1);
 
     if (ok)
         std::cout << "Hello World" << std::endl;

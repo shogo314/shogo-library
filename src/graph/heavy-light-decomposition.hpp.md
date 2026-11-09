@@ -47,35 +47,36 @@ data:
     links: []
   bundledCode: "#line 2 \"src/graph/heavy-light-decomposition.hpp\"\n\n/**\n * @file\
     \ heavy-light-decomposition.hpp\n * @brief HL \u5206\u89E3 (Heavy-Light Decomposition)\n\
-    \ */\n\n#include <algorithm>\n#include <cassert>\n#include <utility>\n#include\
-    \ <vector>\n\n#line 2 \"src/graph/tree.hpp\"\n\n/**\n * @file tree.hpp\n * @brief\
-    \ \u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n */\n\n#line 10\
-    \ \"src/graph/tree.hpp\"\n#include <stack>\n#include <type_traits>\n#line 14 \"\
-    src/graph/tree.hpp\"\n\n#line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file graph.hpp\n\
-    \ * @brief \u30B0\u30E9\u30D5\n */\n\n#line 9 \"src/graph/graph.hpp\"\n#include\
-    \ <iostream>\n#line 12 \"src/graph/graph.hpp\"\n\n/**\n * @brief \u30B0\u30E9\u30D5\
-    \u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\u30B3\u30B9\
-    \u30C8\u306E\u578B \u7701\u7565\u3057\u305F\u3089 long long (\u91CD\u307F\u306E\
-    \u548C\u3084\u672A\u5230\u9054\u3092\u8868\u3059 max / 4 \u304C\u3042\u3075\u308C\
-    \u306B\u304F\u3044\u3088\u3046\u306B)\n */\ntemplate <typename Cost = long long>\n\
-    class Graph {\n   public:\n    /**\n     * @brief \u6709\u5411\u8FBA\u306E\u69CB\
-    \u9020\u4F53\n     *\n     * operator long long()\u3092\u5B9A\u7FA9\u3057\u3066\
-    \u3044\u308B\u306E\u3067\u3001\u6574\u6570\u578B\u306B\u30AD\u30E3\u30B9\u30C8\
-    \u3059\u308B\u3068\u52DD\u624B\u306Bdst\u306B\u306A\u308B\n     * \u4F8B\u3048\
-    \u3070\u3001\n     * for (auto& e : g[v]) \u3092\u3059\u308B\u3068\u3001v\u304B\
-    \u3089\u51FA\u308B\u8FBA\u304C\u5217\u6319\u3055\u308C\u308B\u304C\u3001\n   \
-    \  * for (long long dst : g[v]) \u3068\u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\
-    \u308B\u8FBA\u306E\u884C\u304D\u5148\u304C\u5217\u6319\u3055\u308C\u308B\n   \
-    \  */\n    struct Edge {\n        long long src = -1;  //!< \u59CB\u70B9\n   \
-    \     long long dst = -1;  //!< \u7D42\u70B9\n        Cost cost = {};      //!<\
-    \ \u30B3\u30B9\u30C8\n        long long id = -1;   //!< \u8FBA\u306E\u756A\u53F7\
-    (\u8FFD\u52A0\u3055\u308C\u305F\u9806\u3001\u7121\u5411\u8FBA\u306E\u5834\u5408\
-    \u306Fid\u304C\u540C\u3058\u3067\u65B9\u5411\u304C\u9006\u306E\u3082\u306E\u304C\
-    2\u3064\u5B58\u5728\u3059\u308B)\n        Edge() = default;\n        Edge(long\
-    \ long src, long long dst, Cost cost = 1, long long id = -1) : src(src), dst(dst),\
-    \ cost(cost), id(id) {}\n        operator long long() const { return dst; }\n\
-    \    };\n\n   private:\n    long long n;                       //!< \u9802\u70B9\
-    \u6570\n    long long m;                       //!< \u8FBA\u6570\n    std::vector<std::vector<Edge>>\
+    \ */\n\n#include <algorithm>\n#include <array>\n#include <cassert>\n#include <cstddef>\n\
+    #include <iterator>\n#include <limits>\n#include <utility>\n#include <vector>\n\
+    \n#line 2 \"src/graph/tree.hpp\"\n\n/**\n * @file tree.hpp\n * @brief \u6728\u306E\
+    \u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n */\n\n#line 10 \"src/graph/tree.hpp\"\
+    \n#include <stack>\n#include <type_traits>\n#line 14 \"src/graph/tree.hpp\"\n\n\
+    #line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file graph.hpp\n * @brief \u30B0\u30E9\
+    \u30D5\n */\n\n#line 9 \"src/graph/graph.hpp\"\n#include <iostream>\n#line 12\
+    \ \"src/graph/graph.hpp\"\n\n/**\n * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\
+    \u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u578B\
+    \ \u7701\u7565\u3057\u305F\u3089 long long (\u91CD\u307F\u306E\u548C\u3084\u672A\
+    \u5230\u9054\u3092\u8868\u3059 max / 4 \u304C\u3042\u3075\u308C\u306B\u304F\u3044\
+    \u3088\u3046\u306B)\n */\ntemplate <typename Cost = long long>\nclass Graph {\n\
+    \   public:\n    /**\n     * @brief \u6709\u5411\u8FBA\u306E\u69CB\u9020\u4F53\
+    \n     *\n     * operator long long()\u3092\u5B9A\u7FA9\u3057\u3066\u3044\u308B\
+    \u306E\u3067\u3001\u6574\u6570\u578B\u306B\u30AD\u30E3\u30B9\u30C8\u3059\u308B\
+    \u3068\u52DD\u624B\u306Bdst\u306B\u306A\u308B\n     * \u4F8B\u3048\u3070\u3001\
+    \n     * for (auto& e : g[v]) \u3092\u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\
+    \u308B\u8FBA\u304C\u5217\u6319\u3055\u308C\u308B\u304C\u3001\n     * for (long\
+    \ long dst : g[v]) \u3068\u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\
+    \u306E\u884C\u304D\u5148\u304C\u5217\u6319\u3055\u308C\u308B\n     */\n    struct\
+    \ Edge {\n        long long src = -1;  //!< \u59CB\u70B9\n        long long dst\
+    \ = -1;  //!< \u7D42\u70B9\n        Cost cost = {};      //!< \u30B3\u30B9\u30C8\
+    \n        long long id = -1;   //!< \u8FBA\u306E\u756A\u53F7(\u8FFD\u52A0\u3055\
+    \u308C\u305F\u9806\u3001\u7121\u5411\u8FBA\u306E\u5834\u5408\u306Fid\u304C\u540C\
+    \u3058\u3067\u65B9\u5411\u304C\u9006\u306E\u3082\u306E\u304C2\u3064\u5B58\u5728\
+    \u3059\u308B)\n        Edge() = default;\n        Edge(long long src, long long\
+    \ dst, Cost cost = 1, long long id = -1) : src(src), dst(dst), cost(cost), id(id)\
+    \ {}\n        operator long long() const { return dst; }\n    };\n\n   private:\n\
+    \    long long n;                       //!< \u9802\u70B9\u6570\n    long long\
+    \ m;                       //!< \u8FBA\u6570\n    std::vector<std::vector<Edge>>\
     \ g;  //!< \u30B0\u30E9\u30D5\u306E\u96A3\u63A5\u30EA\u30B9\u30C8\u8868\u73FE\n\
     \n   public:\n    /**\n     * @brief \u30C7\u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\
     \u30B9\u30C8\u30E9\u30AF\u30BF\n     */\n    Graph() : n(0), m(0), g(0) {}\n \
@@ -375,7 +376,7 @@ data:
     \        for (long long i = 0; i < h - 1; i++) {\n            for (long long j\
     \ = 0; j < n; j++) {\n                if (doubling_par[i][j] != -1) {\n      \
     \              doubling_par[i + 1][j] = doubling_par[i][doubling_par[i][j]];\n\
-    \                }\n            }\n        }\n    }\n};\n#line 14 \"src/graph/heavy-light-decomposition.hpp\"\
+    \                }\n            }\n        }\n    }\n};\n#line 18 \"src/graph/heavy-light-decomposition.hpp\"\
     \n\n/**\n * @brief HL \u5206\u89E3 (Heavy-Light Decomposition)\n *\n * \u6728\u306E\
     \u9802\u70B9\u3092\u3001\u3069\u306E\u30D1\u30B9\u3082 O(log n) \u500B\u306E\u533A\
     \u9593\u306B\u5206\u304B\u308C\u3001\u3069\u306E\u90E8\u5206\u6728\u3082 1 \u3064\
@@ -462,34 +463,92 @@ data:
     \     assert(0 <= u && u < n && 0 <= v && v < n && k >= 0);\n        long long\
     \ w = lca(u, v);\n        long long du = dep[u] - dep[w], dv = dep[v] - dep[w];\n\
     \        if (k <= du) return hop(u, k);\n        if (k <= du + dv) return hop(v,\
-    \ du + dv - k);\n        return -1;\n    }\n\n    /**\n     * @brief u \u304B\u3089\
-    \ v \u3078\u306E\u30D1\u30B9\u3092\u3001\u5217\u306E\u533A\u9593\u306B\u5206\u3051\
-    \u3066 u \u5074\u304B\u3089\u9806\u306B\u4E26\u3079\u308B O(log n)\n     *\n \
-    \    * \u5404\u8981\u7D20\u306F\u534A\u958B\u533A\u9593 [l, r) \u3068\u5411\u304D\
-    \ reverse \u3092\u6301\u3064 PathSegment\n     * reverse \u304C false \u306A\u3089\
-    \ index \u306E\u6607\u9806\u3001true \u306A\u3089\u964D\u9806 (\u6839\u306B\u8FD1\
-    \u3065\u304F\u5411\u304D) \u306B\u305F\u3069\u308B\n     * \u4EA4\u63DB\u6CD5\u5247\
-    \u304C\u6210\u308A\u7ACB\u305F\u306A\u3044\u6F14\u7B97\u3067\u306F\u3001reverse\
-    \ \u304C true \u306E\u533A\u9593\u306F\u9006\u9806\u306E\u7A4D\u3092\u4F7F\u3046\
-    \n     * @param edge true \u306A\u3089\u8FBA\u306B\u3064\u3044\u3066\u306E\u30D1\
-    \u30B9\u306B\u3059\u308B\u3002\u8FBA (parent(v), v) \u3092 index(v) \u756A\u76EE\
-    \u306B\u5BFE\u5FDC\u3055\u305B\u3001lca \u306E\u4F4D\u7F6E\u3092\u542B\u3081\u306A\
-    \u3044\n     */\n    std::vector<PathSegment> path(long long u, long long v, bool\
-    \ edge = false) const {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n\
-    \        std::vector<PathSegment> up, down;\n        while (head[u] != head[v])\
-    \ {\n            if (dep[head[u]] >= dep[head[v]]) {\n                up.push_back({in[head[u]],\
-    \ in[u] + 1, true});\n                u = par[head[u]];\n            } else {\n\
-    \                down.push_back({in[head[v]], in[v] + 1, false});\n          \
-    \      v = par[head[v]];\n            }\n        }\n        if (dep[u] >= dep[v])\
-    \ {\n            // v \u304C lca\n            long long l = in[v] + edge;\n  \
-    \          if (l <= in[u]) up.push_back({l, in[u] + 1, true});\n        } else\
-    \ {\n            // u \u304C lca\n            long long l = in[u] + edge;\n  \
-    \          if (l <= in[v]) down.push_back({l, in[v] + 1, false});\n        }\n\
-    \        up.insert(up.end(), down.rbegin(), down.rend());\n        return up;\n\
-    \    }\n};\n"
+    \ du + dv - k);\n        return -1;\n    }\n\n   private:\n    class PathEnumeration\
+    \ {\n        const HeavyLightDecomposition* hld;\n        int u, v;\n        bool\
+    \ edge;\n\n       public:\n        PathEnumeration(const HeavyLightDecomposition*\
+    \ hld, long long u, long long v, bool edge)\n            : hld(hld), u(static_cast<int>(u)),\
+    \ v(static_cast<int>(v)), edge(edge) {}\n\n        class iterator {\n        \
+    \    struct Interval {\n                int l, r;\n            };\n          \
+    \  const HeavyLightDecomposition* hld = nullptr;\n            int u = 0, v = 0,\
+    \ top = 0;\n            bool edge = false, ascending = true, done = true;\n  \
+    \          // v \u5074\u304B\u3089\u96C6\u3081\u305F\u533A\u9593\u3092\u9006\u9806\
+    \u306B\u8FD4\u3059\u3002light edge \u3092\u8D8A\u3048\u308B\u305F\u3073\u306B\u90E8\
+    \u5206\u6728\u306E\u5927\u304D\u3055\u306F\u500D\u4EE5\u4E0A\u306B\u306A\u308B\
+    \u3002\n            // \u672A\u4F7F\u7528\u306E\u8981\u7D20\u306F\u521D\u671F\u5316\
+    \u305B\u305A\u3001iterator \u306E\u30B3\u30D4\u30FC\u3067\u3082 [0, top) \u3060\
+    \u3051\u3092\u30B3\u30D4\u30FC\u3059\u308B\u3002\n            std::array<Interval,\
+    \ std::numeric_limits<long long>::digits> pending;\n            PathSegment current{0,\
+    \ 0, false};\n\n           public:\n            using value_type = PathSegment;\n\
+    \            using difference_type = std::ptrdiff_t;\n            using reference\
+    \ = value_type;\n            using pointer = void;\n            using iterator_category\
+    \ = std::input_iterator_tag;\n\n            iterator() = default;\n          \
+    \  iterator(const HeavyLightDecomposition* hld, long long u, long long v, bool\
+    \ edge)\n                : hld(hld), u(static_cast<int>(u)), v(static_cast<int>(v)),\
+    \ edge(edge), done(false) { ++*this; }\n            iterator(const iterator& other)\n\
+    \                : hld(other.hld), u(other.u), v(other.v), top(other.top), edge(other.edge),\
+    \ ascending(other.ascending), done(other.done), current(other.current) {\n   \
+    \             std::copy_n(other.pending.begin(), top, pending.begin());\n    \
+    \        }\n            iterator& operator=(const iterator& other) {\n       \
+    \         if (this != &other) {\n                    hld = other.hld;\n      \
+    \              u = other.u;\n                    v = other.v;\n              \
+    \      top = other.top;\n                    edge = other.edge;\n            \
+    \        ascending = other.ascending;\n                    done = other.done;\n\
+    \                    current = other.current;\n                    std::copy_n(other.pending.begin(),\
+    \ top, pending.begin());\n                }\n                return *this;\n \
+    \           }\n            value_type operator*() const { return current; }\n\
+    \            iterator& operator++() {\n                if (ascending) {\n    \
+    \                while (hld->head[u] != hld->head[v]) {\n                    \
+    \    if (hld->dep[hld->head[u]] >= hld->dep[hld->head[v]]) {\n               \
+    \             current = {hld->in[hld->head[u]], hld->in[u] + 1, true};\n     \
+    \                       u = hld->par[hld->head[u]];\n                        \
+    \    return *this;\n                        }\n                        pending[top++]\
+    \ = {hld->in[hld->head[v]], hld->in[v] + 1};\n                        v = hld->par[hld->head[v]];\n\
+    \                    }\n                    ascending = false;\n             \
+    \       if (hld->dep[u] >= hld->dep[v]) {\n                        const long\
+    \ long l = hld->in[v] + edge;\n                        if (l <= hld->in[u]) {\n\
+    \                            current = {l, hld->in[u] + 1, true};\n          \
+    \                  return *this;\n                        }\n                \
+    \    } else {\n                        const long long l = hld->in[u] + edge;\n\
+    \                        if (l <= hld->in[v]) {\n                            current\
+    \ = {l, hld->in[v] + 1, false};\n                            return *this;\n \
+    \                       }\n                    }\n                }\n        \
+    \        if (top > 0) {\n                    const auto [l, r] = pending[--top];\n\
+    \                    current = {l, r, false};\n                } else {\n    \
+    \                done = true;\n                }\n                return *this;\n\
+    \            }\n            // \u5F8C\u7F6E increment \u3067\u306F\u3001\u9000\
+    \u907F\u3057\u305F\u533A\u9593\u3092\u30B3\u30D4\u30FC\u305B\u305A\u3001\u5909\
+    \u66F4\u524D\u306E\u5024\u3060\u3051\u3092\u8FD4\u3059\u3002\n            struct\
+    \ Postfix {\n                value_type value;\n                value_type operator*()\
+    \ const { return value; }\n            };\n            Postfix operator++(int)\
+    \ {\n                const Postfix previous{current};\n                ++*this;\n\
+    \                return previous;\n            }\n            bool operator==(const\
+    \ iterator& other) const {\n                if (done || other.done) return done\
+    \ == other.done;\n                return hld == other.hld && current.l == other.current.l\
+    \ && current.r == other.current.r && current.reverse == other.current.reverse;\n\
+    \            }\n            bool operator!=(const iterator& other) const { return\
+    \ !(*this == other); }\n        };\n\n        iterator begin() const { return\
+    \ iterator(hld, u, v, edge); }\n        iterator end() const { return iterator();\
+    \ }\n    };\n\n   public:\n    /**\n     * @brief u \u304B\u3089 v \u3078\u306E\
+    \u30D1\u30B9\u306E\u533A\u9593\u3092 u \u5074\u304B\u3089\u9806\u306B\u9045\u5EF6\
+    \u5217\u6319\u3059\u308B\u3002\u69CB\u7BC9 O(1)\u3001\u5168\u8D70\u67FB O(log\
+    \ n)\n     *\n     * \u5404\u8981\u7D20\u306F\u534A\u958B\u533A\u9593 [l, r) \u3068\
+    \u5411\u304D reverse \u3092\u6301\u3064 PathSegment\n     * reverse \u304C false\
+    \ \u306A\u3089 index \u306E\u6607\u9806\u3001true \u306A\u3089\u964D\u9806 (\u6839\
+    \u306B\u8FD1\u3065\u304F\u5411\u304D) \u306B\u305F\u3069\u308B\n     * \u4EA4\u63DB\
+    \u6CD5\u5247\u304C\u6210\u308A\u7ACB\u305F\u306A\u3044\u6F14\u7B97\u3067\u306F\
+    \u3001reverse \u304C true \u306E\u533A\u9593\u306F\u9006\u9806\u306E\u7A4D\u3092\
+    \u4F7F\u3046\n     * @pre \u8D70\u67FB\u4E2D\u306F\u3001\u3053\u306E HeavyLightDecomposition\
+    \ \u3092\u6709\u52B9\u306A\u307E\u307E\u4FDD\u6301\u3057\u3001\u5909\u66F4\u3057\
+    \u306A\u3044\u3053\u3068\n     * @param edge true \u306A\u3089\u8FBA\u306B\u3064\
+    \u3044\u3066\u306E\u30D1\u30B9\u306B\u3059\u308B\u3002\u8FBA (parent(v), v) \u3092\
+    \ index(v) \u756A\u76EE\u306B\u5BFE\u5FDC\u3055\u305B\u3001lca \u306E\u4F4D\u7F6E\
+    \u3092\u542B\u3081\u306A\u3044\n     */\n    auto path(long long u, long long\
+    \ v, bool edge = false) const {\n        assert(0 <= u && u < n && 0 <= v && v\
+    \ < n);\n        return PathEnumeration(this, u, v, edge);\n    }\n};\n"
   code: "#pragma once\n\n/**\n * @file heavy-light-decomposition.hpp\n * @brief HL\
     \ \u5206\u89E3 (Heavy-Light Decomposition)\n */\n\n#include <algorithm>\n#include\
-    \ <cassert>\n#include <utility>\n#include <vector>\n\n#include \"tree.hpp\"\n\n\
+    \ <array>\n#include <cassert>\n#include <cstddef>\n#include <iterator>\n#include\
+    \ <limits>\n#include <utility>\n#include <vector>\n\n#include \"tree.hpp\"\n\n\
     /**\n * @brief HL \u5206\u89E3 (Heavy-Light Decomposition)\n *\n * \u6728\u306E\
     \u9802\u70B9\u3092\u3001\u3069\u306E\u30D1\u30B9\u3082 O(log n) \u500B\u306E\u533A\
     \u9593\u306B\u5206\u304B\u308C\u3001\u3069\u306E\u90E8\u5206\u6728\u3082 1 \u3064\
@@ -576,31 +635,88 @@ data:
     \     assert(0 <= u && u < n && 0 <= v && v < n && k >= 0);\n        long long\
     \ w = lca(u, v);\n        long long du = dep[u] - dep[w], dv = dep[v] - dep[w];\n\
     \        if (k <= du) return hop(u, k);\n        if (k <= du + dv) return hop(v,\
-    \ du + dv - k);\n        return -1;\n    }\n\n    /**\n     * @brief u \u304B\u3089\
-    \ v \u3078\u306E\u30D1\u30B9\u3092\u3001\u5217\u306E\u533A\u9593\u306B\u5206\u3051\
-    \u3066 u \u5074\u304B\u3089\u9806\u306B\u4E26\u3079\u308B O(log n)\n     *\n \
-    \    * \u5404\u8981\u7D20\u306F\u534A\u958B\u533A\u9593 [l, r) \u3068\u5411\u304D\
-    \ reverse \u3092\u6301\u3064 PathSegment\n     * reverse \u304C false \u306A\u3089\
-    \ index \u306E\u6607\u9806\u3001true \u306A\u3089\u964D\u9806 (\u6839\u306B\u8FD1\
-    \u3065\u304F\u5411\u304D) \u306B\u305F\u3069\u308B\n     * \u4EA4\u63DB\u6CD5\u5247\
-    \u304C\u6210\u308A\u7ACB\u305F\u306A\u3044\u6F14\u7B97\u3067\u306F\u3001reverse\
-    \ \u304C true \u306E\u533A\u9593\u306F\u9006\u9806\u306E\u7A4D\u3092\u4F7F\u3046\
-    \n     * @param edge true \u306A\u3089\u8FBA\u306B\u3064\u3044\u3066\u306E\u30D1\
-    \u30B9\u306B\u3059\u308B\u3002\u8FBA (parent(v), v) \u3092 index(v) \u756A\u76EE\
-    \u306B\u5BFE\u5FDC\u3055\u305B\u3001lca \u306E\u4F4D\u7F6E\u3092\u542B\u3081\u306A\
-    \u3044\n     */\n    std::vector<PathSegment> path(long long u, long long v, bool\
-    \ edge = false) const {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n\
-    \        std::vector<PathSegment> up, down;\n        while (head[u] != head[v])\
-    \ {\n            if (dep[head[u]] >= dep[head[v]]) {\n                up.push_back({in[head[u]],\
-    \ in[u] + 1, true});\n                u = par[head[u]];\n            } else {\n\
-    \                down.push_back({in[head[v]], in[v] + 1, false});\n          \
-    \      v = par[head[v]];\n            }\n        }\n        if (dep[u] >= dep[v])\
-    \ {\n            // v \u304C lca\n            long long l = in[v] + edge;\n  \
-    \          if (l <= in[u]) up.push_back({l, in[u] + 1, true});\n        } else\
-    \ {\n            // u \u304C lca\n            long long l = in[u] + edge;\n  \
-    \          if (l <= in[v]) down.push_back({l, in[v] + 1, false});\n        }\n\
-    \        up.insert(up.end(), down.rbegin(), down.rend());\n        return up;\n\
-    \    }\n};\n"
+    \ du + dv - k);\n        return -1;\n    }\n\n   private:\n    class PathEnumeration\
+    \ {\n        const HeavyLightDecomposition* hld;\n        int u, v;\n        bool\
+    \ edge;\n\n       public:\n        PathEnumeration(const HeavyLightDecomposition*\
+    \ hld, long long u, long long v, bool edge)\n            : hld(hld), u(static_cast<int>(u)),\
+    \ v(static_cast<int>(v)), edge(edge) {}\n\n        class iterator {\n        \
+    \    struct Interval {\n                int l, r;\n            };\n          \
+    \  const HeavyLightDecomposition* hld = nullptr;\n            int u = 0, v = 0,\
+    \ top = 0;\n            bool edge = false, ascending = true, done = true;\n  \
+    \          // v \u5074\u304B\u3089\u96C6\u3081\u305F\u533A\u9593\u3092\u9006\u9806\
+    \u306B\u8FD4\u3059\u3002light edge \u3092\u8D8A\u3048\u308B\u305F\u3073\u306B\u90E8\
+    \u5206\u6728\u306E\u5927\u304D\u3055\u306F\u500D\u4EE5\u4E0A\u306B\u306A\u308B\
+    \u3002\n            // \u672A\u4F7F\u7528\u306E\u8981\u7D20\u306F\u521D\u671F\u5316\
+    \u305B\u305A\u3001iterator \u306E\u30B3\u30D4\u30FC\u3067\u3082 [0, top) \u3060\
+    \u3051\u3092\u30B3\u30D4\u30FC\u3059\u308B\u3002\n            std::array<Interval,\
+    \ std::numeric_limits<long long>::digits> pending;\n            PathSegment current{0,\
+    \ 0, false};\n\n           public:\n            using value_type = PathSegment;\n\
+    \            using difference_type = std::ptrdiff_t;\n            using reference\
+    \ = value_type;\n            using pointer = void;\n            using iterator_category\
+    \ = std::input_iterator_tag;\n\n            iterator() = default;\n          \
+    \  iterator(const HeavyLightDecomposition* hld, long long u, long long v, bool\
+    \ edge)\n                : hld(hld), u(static_cast<int>(u)), v(static_cast<int>(v)),\
+    \ edge(edge), done(false) { ++*this; }\n            iterator(const iterator& other)\n\
+    \                : hld(other.hld), u(other.u), v(other.v), top(other.top), edge(other.edge),\
+    \ ascending(other.ascending), done(other.done), current(other.current) {\n   \
+    \             std::copy_n(other.pending.begin(), top, pending.begin());\n    \
+    \        }\n            iterator& operator=(const iterator& other) {\n       \
+    \         if (this != &other) {\n                    hld = other.hld;\n      \
+    \              u = other.u;\n                    v = other.v;\n              \
+    \      top = other.top;\n                    edge = other.edge;\n            \
+    \        ascending = other.ascending;\n                    done = other.done;\n\
+    \                    current = other.current;\n                    std::copy_n(other.pending.begin(),\
+    \ top, pending.begin());\n                }\n                return *this;\n \
+    \           }\n            value_type operator*() const { return current; }\n\
+    \            iterator& operator++() {\n                if (ascending) {\n    \
+    \                while (hld->head[u] != hld->head[v]) {\n                    \
+    \    if (hld->dep[hld->head[u]] >= hld->dep[hld->head[v]]) {\n               \
+    \             current = {hld->in[hld->head[u]], hld->in[u] + 1, true};\n     \
+    \                       u = hld->par[hld->head[u]];\n                        \
+    \    return *this;\n                        }\n                        pending[top++]\
+    \ = {hld->in[hld->head[v]], hld->in[v] + 1};\n                        v = hld->par[hld->head[v]];\n\
+    \                    }\n                    ascending = false;\n             \
+    \       if (hld->dep[u] >= hld->dep[v]) {\n                        const long\
+    \ long l = hld->in[v] + edge;\n                        if (l <= hld->in[u]) {\n\
+    \                            current = {l, hld->in[u] + 1, true};\n          \
+    \                  return *this;\n                        }\n                \
+    \    } else {\n                        const long long l = hld->in[u] + edge;\n\
+    \                        if (l <= hld->in[v]) {\n                            current\
+    \ = {l, hld->in[v] + 1, false};\n                            return *this;\n \
+    \                       }\n                    }\n                }\n        \
+    \        if (top > 0) {\n                    const auto [l, r] = pending[--top];\n\
+    \                    current = {l, r, false};\n                } else {\n    \
+    \                done = true;\n                }\n                return *this;\n\
+    \            }\n            // \u5F8C\u7F6E increment \u3067\u306F\u3001\u9000\
+    \u907F\u3057\u305F\u533A\u9593\u3092\u30B3\u30D4\u30FC\u305B\u305A\u3001\u5909\
+    \u66F4\u524D\u306E\u5024\u3060\u3051\u3092\u8FD4\u3059\u3002\n            struct\
+    \ Postfix {\n                value_type value;\n                value_type operator*()\
+    \ const { return value; }\n            };\n            Postfix operator++(int)\
+    \ {\n                const Postfix previous{current};\n                ++*this;\n\
+    \                return previous;\n            }\n            bool operator==(const\
+    \ iterator& other) const {\n                if (done || other.done) return done\
+    \ == other.done;\n                return hld == other.hld && current.l == other.current.l\
+    \ && current.r == other.current.r && current.reverse == other.current.reverse;\n\
+    \            }\n            bool operator!=(const iterator& other) const { return\
+    \ !(*this == other); }\n        };\n\n        iterator begin() const { return\
+    \ iterator(hld, u, v, edge); }\n        iterator end() const { return iterator();\
+    \ }\n    };\n\n   public:\n    /**\n     * @brief u \u304B\u3089 v \u3078\u306E\
+    \u30D1\u30B9\u306E\u533A\u9593\u3092 u \u5074\u304B\u3089\u9806\u306B\u9045\u5EF6\
+    \u5217\u6319\u3059\u308B\u3002\u69CB\u7BC9 O(1)\u3001\u5168\u8D70\u67FB O(log\
+    \ n)\n     *\n     * \u5404\u8981\u7D20\u306F\u534A\u958B\u533A\u9593 [l, r) \u3068\
+    \u5411\u304D reverse \u3092\u6301\u3064 PathSegment\n     * reverse \u304C false\
+    \ \u306A\u3089 index \u306E\u6607\u9806\u3001true \u306A\u3089\u964D\u9806 (\u6839\
+    \u306B\u8FD1\u3065\u304F\u5411\u304D) \u306B\u305F\u3069\u308B\n     * \u4EA4\u63DB\
+    \u6CD5\u5247\u304C\u6210\u308A\u7ACB\u305F\u306A\u3044\u6F14\u7B97\u3067\u306F\
+    \u3001reverse \u304C true \u306E\u533A\u9593\u306F\u9006\u9806\u306E\u7A4D\u3092\
+    \u4F7F\u3046\n     * @pre \u8D70\u67FB\u4E2D\u306F\u3001\u3053\u306E HeavyLightDecomposition\
+    \ \u3092\u6709\u52B9\u306A\u307E\u307E\u4FDD\u6301\u3057\u3001\u5909\u66F4\u3057\
+    \u306A\u3044\u3053\u3068\n     * @param edge true \u306A\u3089\u8FBA\u306B\u3064\
+    \u3044\u3066\u306E\u30D1\u30B9\u306B\u3059\u308B\u3002\u8FBA (parent(v), v) \u3092\
+    \ index(v) \u756A\u76EE\u306B\u5BFE\u5FDC\u3055\u305B\u3001lca \u306E\u4F4D\u7F6E\
+    \u3092\u542B\u3081\u306A\u3044\n     */\n    auto path(long long u, long long\
+    \ v, bool edge = false) const {\n        assert(0 <= u && u < n && 0 <= v && v\
+    \ < n);\n        return PathEnumeration(this, u, v, edge);\n    }\n};\n"
   dependsOn:
   - src/graph/tree.hpp
   - src/graph/graph.hpp
@@ -608,7 +724,7 @@ data:
   path: src/graph/heavy-light-decomposition.hpp
   requiredBy:
   - src/graph/auxiliary-tree.hpp
-  timestamp: '2026-11-09 05:14:57+09:00'
+  timestamp: '2026-11-10 03:47:45+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/graph/auxiliary-tree.test.cpp
@@ -641,7 +757,18 @@ auto [l, r] = hld.subtree(v);          // 部分木の和は ft.prod(l, r)
 
 ## パスの分解 `path(u, v, edge = false)`
 
-`u` から `v` へのパスを列の区間に分け、`u` 側から順に並べたリストを返します。各要素は `HeavyLightDecomposition::PathSegment {l, r, reverse}` です。区間は常に `l < r` の半開区間 `[l, r)` で、`reverse = false` なら `l` から `r - 1` へ、`true` なら `r - 1` から `l` へたどります。頂点のパスでは `u = v` のときも 1 頂点の区間を返し、辺のパスでは空のリストを返します。
+`u` から `v` へのパスを列の区間に分け、`u` 側から順に遅延列挙する range を返します。各要素は `HeavyLightDecomposition::PathSegment {l, r, reverse}` です。区間は常に `l < r` の半開区間 `[l, r)` で、`reverse = false` なら `l` から `r - 1` へ、`true` なら `r - 1` から `l` へたどります。頂点のパスでは `u = v` のときも 1 頂点の区間を返し、辺のパスでは空の range を返します。
+
+range は値を返す input iterator を持ちます。`u` 側の区間を順次返し、`v` 側の区間だけを固定長バッファに退避して逆順に返すため、ヒープ確保はありません。退避する区間数は $O(\log n)$ です。途中で `break` すると残りの走査は行いませんが、最初の区間を返すまでに `v` 側の区間を退避する場合があります。
+
+同じ range を繰り返し走査でき、iterator のコピーも独立して進められます。iterator のコピーには退避中の区間数に比例する時間がかかります。後置 increment は変更前の値を参照するプロキシを返し、退避した区間のコピーを省きます。走査中は元の `HeavyLightDecomposition` を有効なまま保持し、変更しないでください。
+
+`size()`・添字アクセス・逆順走査はありません。保存が必要なら、明示的に `vector` に変換します。
+
+```cpp
+auto segments = hld.path(u, v);
+std::vector<HeavyLightDecomposition::PathSegment> saved(segments.begin(), segments.end());
+```
 
 1 次関数の合成のように交換法則が成り立たない演算では、向きを区別します。index の昇順に適用するセグメント木と、降順に適用するセグメント木の 2 本を用意します。`monoid::Composite` の積は $f \circ g$ ($g$ を先に適用) なので、昇順に適用する側は積の順序を逆にした `monoid::Reverse` を使います。
 
@@ -661,7 +788,7 @@ for (auto [l, r, reverse] : hld.path(u, v)) x = reverse ? backward.prod(l, r)(x)
 | `index(v)` / `vertex(i)` | 頂点 `v` の列での位置 / 列の `i` 番目の頂点 | $O(1)$ |
 | `parent(v)` / `depth(v)` / `subtree_size(v)` | 親 (根は `-1`) / 深さ (辺の本数) / 部分木の頂点数 | $O(1)$ |
 | `subtree(v)` | `v` の部分木に対応する区間 `[l, r)` | $O(1)$ |
-| `path(u, v, edge = false)` | `u` から `v` へのパスに対応する半開区間と向きを持つ `PathSegment` のリスト (上の説明を参照) | $O(\log n)$ |
+| `path(u, v, edge = false)` | `u` から `v` へのパスに対応する半開区間と向きを持つ `PathSegment` の遅延 range (上の説明を参照) | 構築 $O(1)$、全走査 $O(\log n)$ |
 | `lca(u, v)` | 最小共通祖先 | $O(\log n)$ |
 | `dist(u, v)` | `u` と `v` の間の辺の本数 | $O(\log n)$ |
 | `hop(v, k)` | `v` から根の方へ `k` 本進んだ頂点 (なければ `-1`) | $O(\log n)$ |

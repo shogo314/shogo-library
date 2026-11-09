@@ -28,7 +28,8 @@ data:
     \u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\
     \u3059\u308B\n\n#line 2 \"src/graph/heavy-light-decomposition.hpp\"\n\n/**\n *\
     \ @file heavy-light-decomposition.hpp\n * @brief HL \u5206\u89E3 (Heavy-Light\
-    \ Decomposition)\n */\n\n#include <algorithm>\n#include <cassert>\n#include <utility>\n\
+    \ Decomposition)\n */\n\n#include <algorithm>\n#include <array>\n#include <cassert>\n\
+    #include <cstddef>\n#include <iterator>\n#include <limits>\n#include <utility>\n\
     #include <vector>\n\n#line 2 \"src/graph/tree.hpp\"\n\n/**\n * @file tree.hpp\n\
     \ * @brief \u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n */\n\
     \n#line 10 \"src/graph/tree.hpp\"\n#include <stack>\n#include <type_traits>\n\
@@ -356,7 +357,7 @@ data:
     \        for (long long i = 0; i < h - 1; i++) {\n            for (long long j\
     \ = 0; j < n; j++) {\n                if (doubling_par[i][j] != -1) {\n      \
     \              doubling_par[i + 1][j] = doubling_par[i][doubling_par[i][j]];\n\
-    \                }\n            }\n        }\n    }\n};\n#line 14 \"src/graph/heavy-light-decomposition.hpp\"\
+    \                }\n            }\n        }\n    }\n};\n#line 18 \"src/graph/heavy-light-decomposition.hpp\"\
     \n\n/**\n * @brief HL \u5206\u89E3 (Heavy-Light Decomposition)\n *\n * \u6728\u306E\
     \u9802\u70B9\u3092\u3001\u3069\u306E\u30D1\u30B9\u3082 O(log n) \u500B\u306E\u533A\
     \u9593\u306B\u5206\u304B\u308C\u3001\u3069\u306E\u90E8\u5206\u6728\u3082 1 \u3064\
@@ -443,105 +444,91 @@ data:
     \     assert(0 <= u && u < n && 0 <= v && v < n && k >= 0);\n        long long\
     \ w = lca(u, v);\n        long long du = dep[u] - dep[w], dv = dep[v] - dep[w];\n\
     \        if (k <= du) return hop(u, k);\n        if (k <= du + dv) return hop(v,\
-    \ du + dv - k);\n        return -1;\n    }\n\n    /**\n     * @brief u \u304B\u3089\
-    \ v \u3078\u306E\u30D1\u30B9\u3092\u3001\u5217\u306E\u533A\u9593\u306B\u5206\u3051\
-    \u3066 u \u5074\u304B\u3089\u9806\u306B\u4E26\u3079\u308B O(log n)\n     *\n \
-    \    * \u5404\u8981\u7D20\u306F\u534A\u958B\u533A\u9593 [l, r) \u3068\u5411\u304D\
-    \ reverse \u3092\u6301\u3064 PathSegment\n     * reverse \u304C false \u306A\u3089\
-    \ index \u306E\u6607\u9806\u3001true \u306A\u3089\u964D\u9806 (\u6839\u306B\u8FD1\
-    \u3065\u304F\u5411\u304D) \u306B\u305F\u3069\u308B\n     * \u4EA4\u63DB\u6CD5\u5247\
-    \u304C\u6210\u308A\u7ACB\u305F\u306A\u3044\u6F14\u7B97\u3067\u306F\u3001reverse\
-    \ \u304C true \u306E\u533A\u9593\u306F\u9006\u9806\u306E\u7A4D\u3092\u4F7F\u3046\
-    \n     * @param edge true \u306A\u3089\u8FBA\u306B\u3064\u3044\u3066\u306E\u30D1\
-    \u30B9\u306B\u3059\u308B\u3002\u8FBA (parent(v), v) \u3092 index(v) \u756A\u76EE\
-    \u306B\u5BFE\u5FDC\u3055\u305B\u3001lca \u306E\u4F4D\u7F6E\u3092\u542B\u3081\u306A\
-    \u3044\n     */\n    std::vector<PathSegment> path(long long u, long long v, bool\
-    \ edge = false) const {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n\
-    \        std::vector<PathSegment> up, down;\n        while (head[u] != head[v])\
-    \ {\n            if (dep[head[u]] >= dep[head[v]]) {\n                up.push_back({in[head[u]],\
-    \ in[u] + 1, true});\n                u = par[head[u]];\n            } else {\n\
-    \                down.push_back({in[head[v]], in[v] + 1, false});\n          \
-    \      v = par[head[v]];\n            }\n        }\n        if (dep[u] >= dep[v])\
-    \ {\n            // v \u304C lca\n            long long l = in[v] + edge;\n  \
-    \          if (l <= in[u]) up.push_back({l, in[u] + 1, true});\n        } else\
-    \ {\n            // u \u304C lca\n            long long l = in[u] + edge;\n  \
-    \          if (l <= in[v]) down.push_back({l, in[v] + 1, false});\n        }\n\
-    \        up.insert(up.end(), down.rbegin(), down.rend());\n        return up;\n\
-    \    }\n};\n#line 7 \"test/unittest/graph/heavy-light-decomposition.test.cpp\"\
-    \n\n#line 10 \"test/unittest/graph/heavy-light-decomposition.test.cpp\"\n#include\
-    \ <random>\n#line 13 \"test/unittest/graph/heavy-light-decomposition.test.cpp\"\
-    \n\n#line 16 \"test/unittest/graph/heavy-light-decomposition.test.cpp\"\n\nint\
-    \ main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int rep\
-    \ = 0; rep < 500 && ok; rep++) {\n        int n = rng() % 30 + 1;\n        int\
-    \ root = rng() % n;\n        // \u30E9\u30F3\u30C0\u30E0\u306A\u6728 (\u7D30\u9577\
-    \u3044\u6728\u3082\u4F5C\u308B)\n        std::vector<int> perm(n);\n        for\
-    \ (int i = 0; i < n; i++) perm[i] = i;\n        std::shuffle(perm.begin(), perm.end(),\
-    \ rng);\n        Graph<int> g(n);\n        Tree<int> t(n);\n        bool line\
-    \ = rng() % 4 == 0;\n        for (int i = 1; i < n; i++) {\n            int p\
-    \ = line ? i - 1 : rng() % i;\n            g.add_edge(perm[i], perm[p]);\n   \
-    \         t.add_edge(perm[i], perm[p]);\n        }\n        HeavyLightDecomposition\
-    \ hld(t, root);\n\n        // \u611A\u76F4: \u6839\u304B\u3089\u306E\u89AA\u3068\
-    \u6DF1\u3055\n        std::vector<int> par(n, -1), dep(n, 0), bfs = {root};\n\
-    \        for (int i = 0; i < static_cast<int>(bfs.size()); i++) {\n          \
-    \  int v = bfs[i];\n            for (int u : g[v]) {\n                if (u ==\
-    \ par[v]) continue;\n                par[u] = v, dep[u] = dep[v] + 1;\n      \
-    \          bfs.push_back(u);\n            }\n        }\n        auto naive_path\
-    \ = [&](int u, int v) {\n            std::vector<int> a, b;\n            while\
-    \ (u != v) {\n                if (dep[u] >= dep[v])\n                    a.push_back(u),\
-    \ u = par[u];\n                else\n                    b.push_back(v), v = par[v];\n\
-    \            }\n            a.push_back(u);\n            a.insert(a.end(), b.rbegin(),\
-    \ b.rend());\n            return a;\n        };\n\n        // index \u306F 0,\
-    \ ..., n-1 \u306E\u4E26\u3079\u66FF\u3048\u3067\u3001vertex \u304C\u305D\u306E\
-    \u9006\n        std::vector<bool> seen(n);\n        for (int v = 0; v < n; v++)\
-    \ {\n            int i = hld.index(v);\n            if (i < 0 || i >= n || seen[i]\
-    \ || hld.vertex(i) != v)\n                ok = false;\n            else\n    \
-    \            seen[i] = true;\n            if (hld.parent(v) != par[v] || hld.depth(v)\
-    \ != dep[v]) ok = false;\n        }\n        // \u90E8\u5206\u6728: \u533A\u9593\
-    \ [l, r) \u306E\u9802\u70B9\u304C v \u306E\u5B50\u5B6B\u3068\u4E00\u81F4\u3059\
-    \u308B\n        for (int v = 0; v < n; v++) {\n            auto [l, r] = hld.subtree(v);\n\
-    \            if (r - l != hld.subtree_size(v)) ok = false;\n            for (int\
-    \ u = 0; u < n; u++) {\n                int x = u;\n                while (x !=\
-    \ -1 && x != v) x = par[x];\n                bool desc = x == v;\n           \
-    \     if (desc != (l <= hld.index(u) && hld.index(u) < r)) ok = false;\n     \
-    \       }\n        }\n        for (int u = 0; u < n; u++) {\n            for (int\
-    \ v = 0; v < n; v++) {\n                auto p = naive_path(u, v);\n         \
-    \       int d = p.size() - 1;\n                int w = *std::min_element(p.begin(),\
-    \ p.end(), [&](int a, int b) { return dep[a] < dep[b]; });\n                if\
-    \ (hld.lca(u, v) != w || hld.dist(u, v) != d) ok = false;\n                for\
-    \ (int k = 0; k <= d + 1; k++) {\n                    int expect = k <= d ? p[k]\
-    \ : -1;\n                    if (hld.jump(u, v, k) != expect) ok = false;\n  \
-    \              }\n                // path \u304C\u8FD4\u3059\u533A\u9593\u3092\
-    \u3064\u306A\u3052\u308B\u3068\u3001u \u304B\u3089 v \u3078\u306E\u9802\u70B9\u306E\
-    \u5217\u306B\u306A\u308B\n                std::vector<int> got, got_edge;\n  \
-    \              for (auto [l, r, reverse] : hld.path(u, v)) {\n               \
-    \     if (!(0 <= l && l < r && r <= n)) ok = false;\n                    if (reverse)\
-    \ {\n                        for (long long i = r; i-- > l;) got.push_back(hld.vertex(i));\n\
-    \                    } else {\n                        for (long long i = l; i\
-    \ < r; i++) got.push_back(hld.vertex(i));\n                    }\n           \
-    \     }\n                if (got != p) ok = false;\n                // \u8FBA\u306E\
-    \u30D1\u30B9: lca \u3092\u9664\u3044\u305F\u9802\u70B9 (\u305D\u306E\u9802\u70B9\
-    \u3068\u89AA\u3092\u7D50\u3076\u8FBA) \u306E\u5217\n                for (auto\
-    \ [l, r, reverse] : hld.path(u, v, true)) {\n                    if (!(0 <= l\
-    \ && l < r && r <= n)) ok = false;\n                    if (reverse) {\n     \
-    \                   for (long long i = r; i-- > l;) got_edge.push_back(hld.vertex(i));\n\
-    \                    } else {\n                        for (long long i = l; i\
-    \ < r; i++) got_edge.push_back(hld.vertex(i));\n                    }\n      \
-    \          }\n                std::vector<int> expect_edge;\n                for\
-    \ (int x : p) {\n                    if (x != w) expect_edge.push_back(x);\n \
-    \               }\n                if (got_edge != expect_edge) ok = false;\n\
-    \            }\n            for (int k = 0; k <= n; k++) {\n                int\
-    \ x = u;\n                for (int i = 0; i < k && x != -1; i++) x = par[x];\n\
-    \                if (hld.hop(u, k) != x) ok = false;\n            }\n        }\n\
-    \    }\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n  \
-    \  else\n        std::cerr << \"failed\" << std::endl;\n}\n"
-  code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
-    \n\n// HeavyLightDecomposition \u3092\u3001\u89AA\u3092 1 \u3064\u305A\u3064\u305F\
-    \u3069\u308B\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u30E9\u30F3\u30C0\u30E0\u306B\
-    \u6BD4\u3079\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\
-    \u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\
-    \u3059\u308B\n\n#include \"../../../src/graph/heavy-light-decomposition.hpp\"\n\
-    \n#include <algorithm>\n#include <iostream>\n#include <random>\n#include <utility>\n\
-    #include <vector>\n\n#include \"../../../src/graph/graph.hpp\"\n#include \"../../../src/graph/tree.hpp\"\
+    \ du + dv - k);\n        return -1;\n    }\n\n   private:\n    class PathEnumeration\
+    \ {\n        const HeavyLightDecomposition* hld;\n        int u, v;\n        bool\
+    \ edge;\n\n       public:\n        PathEnumeration(const HeavyLightDecomposition*\
+    \ hld, long long u, long long v, bool edge)\n            : hld(hld), u(static_cast<int>(u)),\
+    \ v(static_cast<int>(v)), edge(edge) {}\n\n        class iterator {\n        \
+    \    struct Interval {\n                int l, r;\n            };\n          \
+    \  const HeavyLightDecomposition* hld = nullptr;\n            int u = 0, v = 0,\
+    \ top = 0;\n            bool edge = false, ascending = true, done = true;\n  \
+    \          // v \u5074\u304B\u3089\u96C6\u3081\u305F\u533A\u9593\u3092\u9006\u9806\
+    \u306B\u8FD4\u3059\u3002light edge \u3092\u8D8A\u3048\u308B\u305F\u3073\u306B\u90E8\
+    \u5206\u6728\u306E\u5927\u304D\u3055\u306F\u500D\u4EE5\u4E0A\u306B\u306A\u308B\
+    \u3002\n            // \u672A\u4F7F\u7528\u306E\u8981\u7D20\u306F\u521D\u671F\u5316\
+    \u305B\u305A\u3001iterator \u306E\u30B3\u30D4\u30FC\u3067\u3082 [0, top) \u3060\
+    \u3051\u3092\u30B3\u30D4\u30FC\u3059\u308B\u3002\n            std::array<Interval,\
+    \ std::numeric_limits<long long>::digits> pending;\n            PathSegment current{0,\
+    \ 0, false};\n\n           public:\n            using value_type = PathSegment;\n\
+    \            using difference_type = std::ptrdiff_t;\n            using reference\
+    \ = value_type;\n            using pointer = void;\n            using iterator_category\
+    \ = std::input_iterator_tag;\n\n            iterator() = default;\n          \
+    \  iterator(const HeavyLightDecomposition* hld, long long u, long long v, bool\
+    \ edge)\n                : hld(hld), u(static_cast<int>(u)), v(static_cast<int>(v)),\
+    \ edge(edge), done(false) { ++*this; }\n            iterator(const iterator& other)\n\
+    \                : hld(other.hld), u(other.u), v(other.v), top(other.top), edge(other.edge),\
+    \ ascending(other.ascending), done(other.done), current(other.current) {\n   \
+    \             std::copy_n(other.pending.begin(), top, pending.begin());\n    \
+    \        }\n            iterator& operator=(const iterator& other) {\n       \
+    \         if (this != &other) {\n                    hld = other.hld;\n      \
+    \              u = other.u;\n                    v = other.v;\n              \
+    \      top = other.top;\n                    edge = other.edge;\n            \
+    \        ascending = other.ascending;\n                    done = other.done;\n\
+    \                    current = other.current;\n                    std::copy_n(other.pending.begin(),\
+    \ top, pending.begin());\n                }\n                return *this;\n \
+    \           }\n            value_type operator*() const { return current; }\n\
+    \            iterator& operator++() {\n                if (ascending) {\n    \
+    \                while (hld->head[u] != hld->head[v]) {\n                    \
+    \    if (hld->dep[hld->head[u]] >= hld->dep[hld->head[v]]) {\n               \
+    \             current = {hld->in[hld->head[u]], hld->in[u] + 1, true};\n     \
+    \                       u = hld->par[hld->head[u]];\n                        \
+    \    return *this;\n                        }\n                        pending[top++]\
+    \ = {hld->in[hld->head[v]], hld->in[v] + 1};\n                        v = hld->par[hld->head[v]];\n\
+    \                    }\n                    ascending = false;\n             \
+    \       if (hld->dep[u] >= hld->dep[v]) {\n                        const long\
+    \ long l = hld->in[v] + edge;\n                        if (l <= hld->in[u]) {\n\
+    \                            current = {l, hld->in[u] + 1, true};\n          \
+    \                  return *this;\n                        }\n                \
+    \    } else {\n                        const long long l = hld->in[u] + edge;\n\
+    \                        if (l <= hld->in[v]) {\n                            current\
+    \ = {l, hld->in[v] + 1, false};\n                            return *this;\n \
+    \                       }\n                    }\n                }\n        \
+    \        if (top > 0) {\n                    const auto [l, r] = pending[--top];\n\
+    \                    current = {l, r, false};\n                } else {\n    \
+    \                done = true;\n                }\n                return *this;\n\
+    \            }\n            // \u5F8C\u7F6E increment \u3067\u306F\u3001\u9000\
+    \u907F\u3057\u305F\u533A\u9593\u3092\u30B3\u30D4\u30FC\u305B\u305A\u3001\u5909\
+    \u66F4\u524D\u306E\u5024\u3060\u3051\u3092\u8FD4\u3059\u3002\n            struct\
+    \ Postfix {\n                value_type value;\n                value_type operator*()\
+    \ const { return value; }\n            };\n            Postfix operator++(int)\
+    \ {\n                const Postfix previous{current};\n                ++*this;\n\
+    \                return previous;\n            }\n            bool operator==(const\
+    \ iterator& other) const {\n                if (done || other.done) return done\
+    \ == other.done;\n                return hld == other.hld && current.l == other.current.l\
+    \ && current.r == other.current.r && current.reverse == other.current.reverse;\n\
+    \            }\n            bool operator!=(const iterator& other) const { return\
+    \ !(*this == other); }\n        };\n\n        iterator begin() const { return\
+    \ iterator(hld, u, v, edge); }\n        iterator end() const { return iterator();\
+    \ }\n    };\n\n   public:\n    /**\n     * @brief u \u304B\u3089 v \u3078\u306E\
+    \u30D1\u30B9\u306E\u533A\u9593\u3092 u \u5074\u304B\u3089\u9806\u306B\u9045\u5EF6\
+    \u5217\u6319\u3059\u308B\u3002\u69CB\u7BC9 O(1)\u3001\u5168\u8D70\u67FB O(log\
+    \ n)\n     *\n     * \u5404\u8981\u7D20\u306F\u534A\u958B\u533A\u9593 [l, r) \u3068\
+    \u5411\u304D reverse \u3092\u6301\u3064 PathSegment\n     * reverse \u304C false\
+    \ \u306A\u3089 index \u306E\u6607\u9806\u3001true \u306A\u3089\u964D\u9806 (\u6839\
+    \u306B\u8FD1\u3065\u304F\u5411\u304D) \u306B\u305F\u3069\u308B\n     * \u4EA4\u63DB\
+    \u6CD5\u5247\u304C\u6210\u308A\u7ACB\u305F\u306A\u3044\u6F14\u7B97\u3067\u306F\
+    \u3001reverse \u304C true \u306E\u533A\u9593\u306F\u9006\u9806\u306E\u7A4D\u3092\
+    \u4F7F\u3046\n     * @pre \u8D70\u67FB\u4E2D\u306F\u3001\u3053\u306E HeavyLightDecomposition\
+    \ \u3092\u6709\u52B9\u306A\u307E\u307E\u4FDD\u6301\u3057\u3001\u5909\u66F4\u3057\
+    \u306A\u3044\u3053\u3068\n     * @param edge true \u306A\u3089\u8FBA\u306B\u3064\
+    \u3044\u3066\u306E\u30D1\u30B9\u306B\u3059\u308B\u3002\u8FBA (parent(v), v) \u3092\
+    \ index(v) \u756A\u76EE\u306B\u5BFE\u5FDC\u3055\u305B\u3001lca \u306E\u4F4D\u7F6E\
+    \u3092\u542B\u3081\u306A\u3044\n     */\n    auto path(long long u, long long\
+    \ v, bool edge = false) const {\n        assert(0 <= u && u < n && 0 <= v && v\
+    \ < n);\n        return PathEnumeration(this, u, v, edge);\n    }\n};\n#line 7\
+    \ \"test/unittest/graph/heavy-light-decomposition.test.cpp\"\n\n#line 12 \"test/unittest/graph/heavy-light-decomposition.test.cpp\"\
+    \n#include <random>\n#line 15 \"test/unittest/graph/heavy-light-decomposition.test.cpp\"\
+    \n#if __cplusplus >= 202002L\n#include <ranges>\n#endif\n\n#line 21 \"test/unittest/graph/heavy-light-decomposition.test.cpp\"\
     \n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int\
     \ rep = 0; rep < 500 && ok; rep++) {\n        int n = rng() % 30 + 1;\n      \
     \  int root = rng() % n;\n        // \u30E9\u30F3\u30C0\u30E0\u306A\u6728 (\u7D30\
@@ -603,8 +590,171 @@ data:
     \            }\n            for (int k = 0; k <= n; k++) {\n                int\
     \ x = u;\n                for (int i = 0; i < k && x != -1; i++) x = par[x];\n\
     \                if (hld.hop(u, k) != x) ok = false;\n            }\n        }\n\
-    \    }\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n  \
-    \  else\n        std::cerr << \"failed\" << std::endl;\n}\n"
+    \    }\n\n    // \u591A\u6570\u306E light edge \u3092\u307E\u305F\u3050\u30D1\u30B9\
+    \u3067\u3082\u3001\u9806\u5E8F\u30FB\u9000\u907F\u72B6\u614B\u30FBiterator \u306E\
+    \u30B3\u30D4\u30FC\u3092\u4FDD\u3064\u3002\n    {\n        constexpr long long\
+    \ n = 65535;\n        Tree<> tree(n);\n        for (long long v = 1; v < n; v++)\
+    \ tree.add_edge((v - 1) / 2, v);\n        HeavyLightDecomposition hld(tree);\n\
+    \        for (auto [u, v] : std::vector<std::pair<long long, long long>>{{0, n\
+    \ - 1}, {n - 1, 0}, {n / 2, n - 1}, {n - 1, n - 1}}) {\n            for (bool\
+    \ edge : {false, true}) {\n                auto make_range = [&] { return hld.path(u,\
+    \ v, edge); };\n                const auto range = make_range();\n           \
+    \     auto copied = range;\n                auto moved = std::move(copied);\n\
+    \                std::vector<HeavyLightDecomposition::PathSegment> segments(range.begin(),\
+    \ range.end());\n                auto same = [](const auto& a, const auto& b)\
+    \ { return a.l == b.l && a.r == b.r && a.reverse == b.reverse; };\n          \
+    \      // range \u306E\u4E00\u6642\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u304C\u306A\
+    \u304F\u306A\u3063\u3066\u3082 iterator \u306F\u81EA\u5206\u306E\u8D70\u67FB\u72B6\
+    \u614B\u3092\u6301\u3064\u3002\n                auto it = make_range().begin();\n\
+    \                for (const auto& segment : segments) {\n                    auto\
+    \ independent = it;\n                    auto assigned = range.end();\n      \
+    \              assigned = it;\n                    ok = ok && same(*it++, segment)\
+    \ && same(*independent, segment) && same(*assigned, segment);\n              \
+    \      ++independent;\n                    ++assigned;\n                    ok\
+    \ = ok && independent == it && assigned == it;\n                }\n          \
+    \      ok = ok && it == range.end();\n                for (int rep = 0; rep <\
+    \ 2; rep++) {\n                    const std::vector<HeavyLightDecomposition::PathSegment>\
+    \ again(moved.begin(), moved.end());\n                    ok = ok && again.size()\
+    \ == segments.size() && std::equal(segments.begin(), segments.end(), again.begin(),\
+    \ same);\n                }\n                ok = ok && std::distance(range.begin(),\
+    \ range.end()) == static_cast<long long>(segments.size());\n                if\
+    \ (!segments.empty()) {\n                    for (const auto segment : range)\
+    \ {\n                        ok = ok && same(segment, segments.front());\n   \
+    \                     break;\n                    }\n                }\n     \
+    \           std::vector<long long> expanded, expected, down;\n               \
+    \ for (auto [l, r, reverse] : range) {\n                    if (reverse) {\n \
+    \                       for (long long i = r; i-- > l;) expanded.push_back(hld.vertex(i));\n\
+    \                    } else {\n                        for (long long i = l; i\
+    \ < r; i++) expanded.push_back(hld.vertex(i));\n                    }\n      \
+    \          }\n                long long a = u, b = v;\n                while (a\
+    \ != b) {\n                    if (hld.depth(a) >= hld.depth(b)) {\n         \
+    \               expected.push_back(a);\n                        a = hld.parent(a);\n\
+    \                    } else {\n                        down.push_back(b);\n  \
+    \                      b = hld.parent(b);\n                    }\n           \
+    \     }\n                if (!edge) expected.push_back(a);\n                expected.insert(expected.end(),\
+    \ down.rbegin(), down.rend());\n                ok = ok && expanded == expected;\n\
+    #if __cplusplus >= 202002L\n                static_assert(std::ranges::input_range<decltype(range)>);\n\
+    #endif\n            }\n        }\n    }\n    assert(ok);\n\n    if (ok)\n    \
+    \    std::cout << \"Hello World\" << std::endl;\n    else\n        std::cerr <<\
+    \ \"failed\" << std::endl;\n}\n"
+  code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
+    \n\n// HeavyLightDecomposition \u3092\u3001\u89AA\u3092 1 \u3064\u305A\u3064\u305F\
+    \u3069\u308B\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u30E9\u30F3\u30C0\u30E0\u306B\
+    \u6BD4\u3079\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\
+    \u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\
+    \u3059\u308B\n\n#include \"../../../src/graph/heavy-light-decomposition.hpp\"\n\
+    \n#include <algorithm>\n#include <cassert>\n#include <iostream>\n#include <iterator>\n\
+    #include <random>\n#include <utility>\n#include <vector>\n#if __cplusplus >= 202002L\n\
+    #include <ranges>\n#endif\n\n#include \"../../../src/graph/graph.hpp\"\n#include\
+    \ \"../../../src/graph/tree.hpp\"\n\nint main() {\n    std::mt19937 rng(314);\n\
+    \    bool ok = true;\n    for (int rep = 0; rep < 500 && ok; rep++) {\n      \
+    \  int n = rng() % 30 + 1;\n        int root = rng() % n;\n        // \u30E9\u30F3\
+    \u30C0\u30E0\u306A\u6728 (\u7D30\u9577\u3044\u6728\u3082\u4F5C\u308B)\n      \
+    \  std::vector<int> perm(n);\n        for (int i = 0; i < n; i++) perm[i] = i;\n\
+    \        std::shuffle(perm.begin(), perm.end(), rng);\n        Graph<int> g(n);\n\
+    \        Tree<int> t(n);\n        bool line = rng() % 4 == 0;\n        for (int\
+    \ i = 1; i < n; i++) {\n            int p = line ? i - 1 : rng() % i;\n      \
+    \      g.add_edge(perm[i], perm[p]);\n            t.add_edge(perm[i], perm[p]);\n\
+    \        }\n        HeavyLightDecomposition hld(t, root);\n\n        // \u611A\
+    \u76F4: \u6839\u304B\u3089\u306E\u89AA\u3068\u6DF1\u3055\n        std::vector<int>\
+    \ par(n, -1), dep(n, 0), bfs = {root};\n        for (int i = 0; i < static_cast<int>(bfs.size());\
+    \ i++) {\n            int v = bfs[i];\n            for (int u : g[v]) {\n    \
+    \            if (u == par[v]) continue;\n                par[u] = v, dep[u] =\
+    \ dep[v] + 1;\n                bfs.push_back(u);\n            }\n        }\n \
+    \       auto naive_path = [&](int u, int v) {\n            std::vector<int> a,\
+    \ b;\n            while (u != v) {\n                if (dep[u] >= dep[v])\n  \
+    \                  a.push_back(u), u = par[u];\n                else\n       \
+    \             b.push_back(v), v = par[v];\n            }\n            a.push_back(u);\n\
+    \            a.insert(a.end(), b.rbegin(), b.rend());\n            return a;\n\
+    \        };\n\n        // index \u306F 0, ..., n-1 \u306E\u4E26\u3079\u66FF\u3048\
+    \u3067\u3001vertex \u304C\u305D\u306E\u9006\n        std::vector<bool> seen(n);\n\
+    \        for (int v = 0; v < n; v++) {\n            int i = hld.index(v);\n  \
+    \          if (i < 0 || i >= n || seen[i] || hld.vertex(i) != v)\n           \
+    \     ok = false;\n            else\n                seen[i] = true;\n       \
+    \     if (hld.parent(v) != par[v] || hld.depth(v) != dep[v]) ok = false;\n   \
+    \     }\n        // \u90E8\u5206\u6728: \u533A\u9593 [l, r) \u306E\u9802\u70B9\
+    \u304C v \u306E\u5B50\u5B6B\u3068\u4E00\u81F4\u3059\u308B\n        for (int v\
+    \ = 0; v < n; v++) {\n            auto [l, r] = hld.subtree(v);\n            if\
+    \ (r - l != hld.subtree_size(v)) ok = false;\n            for (int u = 0; u <\
+    \ n; u++) {\n                int x = u;\n                while (x != -1 && x !=\
+    \ v) x = par[x];\n                bool desc = x == v;\n                if (desc\
+    \ != (l <= hld.index(u) && hld.index(u) < r)) ok = false;\n            }\n   \
+    \     }\n        for (int u = 0; u < n; u++) {\n            for (int v = 0; v\
+    \ < n; v++) {\n                auto p = naive_path(u, v);\n                int\
+    \ d = p.size() - 1;\n                int w = *std::min_element(p.begin(), p.end(),\
+    \ [&](int a, int b) { return dep[a] < dep[b]; });\n                if (hld.lca(u,\
+    \ v) != w || hld.dist(u, v) != d) ok = false;\n                for (int k = 0;\
+    \ k <= d + 1; k++) {\n                    int expect = k <= d ? p[k] : -1;\n \
+    \                   if (hld.jump(u, v, k) != expect) ok = false;\n           \
+    \     }\n                // path \u304C\u8FD4\u3059\u533A\u9593\u3092\u3064\u306A\
+    \u3052\u308B\u3068\u3001u \u304B\u3089 v \u3078\u306E\u9802\u70B9\u306E\u5217\u306B\
+    \u306A\u308B\n                std::vector<int> got, got_edge;\n              \
+    \  for (auto [l, r, reverse] : hld.path(u, v)) {\n                    if (!(0\
+    \ <= l && l < r && r <= n)) ok = false;\n                    if (reverse) {\n\
+    \                        for (long long i = r; i-- > l;) got.push_back(hld.vertex(i));\n\
+    \                    } else {\n                        for (long long i = l; i\
+    \ < r; i++) got.push_back(hld.vertex(i));\n                    }\n           \
+    \     }\n                if (got != p) ok = false;\n                // \u8FBA\u306E\
+    \u30D1\u30B9: lca \u3092\u9664\u3044\u305F\u9802\u70B9 (\u305D\u306E\u9802\u70B9\
+    \u3068\u89AA\u3092\u7D50\u3076\u8FBA) \u306E\u5217\n                for (auto\
+    \ [l, r, reverse] : hld.path(u, v, true)) {\n                    if (!(0 <= l\
+    \ && l < r && r <= n)) ok = false;\n                    if (reverse) {\n     \
+    \                   for (long long i = r; i-- > l;) got_edge.push_back(hld.vertex(i));\n\
+    \                    } else {\n                        for (long long i = l; i\
+    \ < r; i++) got_edge.push_back(hld.vertex(i));\n                    }\n      \
+    \          }\n                std::vector<int> expect_edge;\n                for\
+    \ (int x : p) {\n                    if (x != w) expect_edge.push_back(x);\n \
+    \               }\n                if (got_edge != expect_edge) ok = false;\n\
+    \            }\n            for (int k = 0; k <= n; k++) {\n                int\
+    \ x = u;\n                for (int i = 0; i < k && x != -1; i++) x = par[x];\n\
+    \                if (hld.hop(u, k) != x) ok = false;\n            }\n        }\n\
+    \    }\n\n    // \u591A\u6570\u306E light edge \u3092\u307E\u305F\u3050\u30D1\u30B9\
+    \u3067\u3082\u3001\u9806\u5E8F\u30FB\u9000\u907F\u72B6\u614B\u30FBiterator \u306E\
+    \u30B3\u30D4\u30FC\u3092\u4FDD\u3064\u3002\n    {\n        constexpr long long\
+    \ n = 65535;\n        Tree<> tree(n);\n        for (long long v = 1; v < n; v++)\
+    \ tree.add_edge((v - 1) / 2, v);\n        HeavyLightDecomposition hld(tree);\n\
+    \        for (auto [u, v] : std::vector<std::pair<long long, long long>>{{0, n\
+    \ - 1}, {n - 1, 0}, {n / 2, n - 1}, {n - 1, n - 1}}) {\n            for (bool\
+    \ edge : {false, true}) {\n                auto make_range = [&] { return hld.path(u,\
+    \ v, edge); };\n                const auto range = make_range();\n           \
+    \     auto copied = range;\n                auto moved = std::move(copied);\n\
+    \                std::vector<HeavyLightDecomposition::PathSegment> segments(range.begin(),\
+    \ range.end());\n                auto same = [](const auto& a, const auto& b)\
+    \ { return a.l == b.l && a.r == b.r && a.reverse == b.reverse; };\n          \
+    \      // range \u306E\u4E00\u6642\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u304C\u306A\
+    \u304F\u306A\u3063\u3066\u3082 iterator \u306F\u81EA\u5206\u306E\u8D70\u67FB\u72B6\
+    \u614B\u3092\u6301\u3064\u3002\n                auto it = make_range().begin();\n\
+    \                for (const auto& segment : segments) {\n                    auto\
+    \ independent = it;\n                    auto assigned = range.end();\n      \
+    \              assigned = it;\n                    ok = ok && same(*it++, segment)\
+    \ && same(*independent, segment) && same(*assigned, segment);\n              \
+    \      ++independent;\n                    ++assigned;\n                    ok\
+    \ = ok && independent == it && assigned == it;\n                }\n          \
+    \      ok = ok && it == range.end();\n                for (int rep = 0; rep <\
+    \ 2; rep++) {\n                    const std::vector<HeavyLightDecomposition::PathSegment>\
+    \ again(moved.begin(), moved.end());\n                    ok = ok && again.size()\
+    \ == segments.size() && std::equal(segments.begin(), segments.end(), again.begin(),\
+    \ same);\n                }\n                ok = ok && std::distance(range.begin(),\
+    \ range.end()) == static_cast<long long>(segments.size());\n                if\
+    \ (!segments.empty()) {\n                    for (const auto segment : range)\
+    \ {\n                        ok = ok && same(segment, segments.front());\n   \
+    \                     break;\n                    }\n                }\n     \
+    \           std::vector<long long> expanded, expected, down;\n               \
+    \ for (auto [l, r, reverse] : range) {\n                    if (reverse) {\n \
+    \                       for (long long i = r; i-- > l;) expanded.push_back(hld.vertex(i));\n\
+    \                    } else {\n                        for (long long i = l; i\
+    \ < r; i++) expanded.push_back(hld.vertex(i));\n                    }\n      \
+    \          }\n                long long a = u, b = v;\n                while (a\
+    \ != b) {\n                    if (hld.depth(a) >= hld.depth(b)) {\n         \
+    \               expected.push_back(a);\n                        a = hld.parent(a);\n\
+    \                    } else {\n                        down.push_back(b);\n  \
+    \                      b = hld.parent(b);\n                    }\n           \
+    \     }\n                if (!edge) expected.push_back(a);\n                expected.insert(expected.end(),\
+    \ down.rbegin(), down.rend());\n                ok = ok && expanded == expected;\n\
+    #if __cplusplus >= 202002L\n                static_assert(std::ranges::input_range<decltype(range)>);\n\
+    #endif\n            }\n        }\n    }\n    assert(ok);\n\n    if (ok)\n    \
+    \    std::cout << \"Hello World\" << std::endl;\n    else\n        std::cerr <<\
+    \ \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/graph/heavy-light-decomposition.hpp
   - src/graph/tree.hpp
@@ -612,7 +762,7 @@ data:
   isVerificationFile: true
   path: test/unittest/graph/heavy-light-decomposition.test.cpp
   requiredBy: []
-  timestamp: '2026-11-09 05:14:57+09:00'
+  timestamp: '2026-11-10 03:47:45+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/graph/heavy-light-decomposition.test.cpp

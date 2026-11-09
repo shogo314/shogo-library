@@ -50,6 +50,9 @@ data:
     path: test/unittest/dp/largest-rectangle.test.cpp
     title: test/unittest/dp/largest-rectangle.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/string/aho-corasick.test.cpp
+    title: test/unittest/string/aho-corasick.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/string/rolling-hash.test.cpp
     title: test/unittest/string/rolling-hash.test.cpp
   - icon: ':heavy_check_mark:'
@@ -704,6 +707,7 @@ data:
   - test/unittest/utility/repr.test.cpp
   - test/unittest/data_structures/imos-2d.test.cpp
   - test/unittest/string/rolling-hash.test.cpp
+  - test/unittest/string/aho-corasick.test.cpp
   - test/aoj/itp1/itp1-7-b.test.cpp
   - test/aoj/volume11/1160.test.cpp
   - test/aoj/dpl/dpl-3-a.test.cpp

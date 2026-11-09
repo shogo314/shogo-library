@@ -28,36 +28,37 @@ data:
     \u3068\u305D\u306E LCA \u3060\u3051\u3092\u6B8B\u3057\u3066\u5727\u7E2E\u3057\u305F\
     \u6728)\n */\n\n#include <algorithm>\n#include <cassert>\n#include <vector>\n\n\
     #line 2 \"src/graph/heavy-light-decomposition.hpp\"\n\n/**\n * @file heavy-light-decomposition.hpp\n\
-    \ * @brief HL \u5206\u89E3 (Heavy-Light Decomposition)\n */\n\n#line 10 \"src/graph/heavy-light-decomposition.hpp\"\
-    \n#include <utility>\n#line 12 \"src/graph/heavy-light-decomposition.hpp\"\n\n\
-    #line 2 \"src/graph/tree.hpp\"\n\n/**\n * @file tree.hpp\n * @brief \u6728\u306E\
-    \u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n */\n\n#line 10 \"src/graph/tree.hpp\"\
-    \n#include <stack>\n#include <type_traits>\n#line 14 \"src/graph/tree.hpp\"\n\n\
-    #line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file graph.hpp\n * @brief \u30B0\u30E9\
-    \u30D5\n */\n\n#line 9 \"src/graph/graph.hpp\"\n#include <iostream>\n#line 12\
-    \ \"src/graph/graph.hpp\"\n\n/**\n * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\
-    \u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u578B\
-    \ \u7701\u7565\u3057\u305F\u3089 long long (\u91CD\u307F\u306E\u548C\u3084\u672A\
-    \u5230\u9054\u3092\u8868\u3059 max / 4 \u304C\u3042\u3075\u308C\u306B\u304F\u3044\
-    \u3088\u3046\u306B)\n */\ntemplate <typename Cost = long long>\nclass Graph {\n\
-    \   public:\n    /**\n     * @brief \u6709\u5411\u8FBA\u306E\u69CB\u9020\u4F53\
-    \n     *\n     * operator long long()\u3092\u5B9A\u7FA9\u3057\u3066\u3044\u308B\
-    \u306E\u3067\u3001\u6574\u6570\u578B\u306B\u30AD\u30E3\u30B9\u30C8\u3059\u308B\
-    \u3068\u52DD\u624B\u306Bdst\u306B\u306A\u308B\n     * \u4F8B\u3048\u3070\u3001\
-    \n     * for (auto& e : g[v]) \u3092\u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\
-    \u308B\u8FBA\u304C\u5217\u6319\u3055\u308C\u308B\u304C\u3001\n     * for (long\
-    \ long dst : g[v]) \u3068\u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\
-    \u306E\u884C\u304D\u5148\u304C\u5217\u6319\u3055\u308C\u308B\n     */\n    struct\
-    \ Edge {\n        long long src = -1;  //!< \u59CB\u70B9\n        long long dst\
-    \ = -1;  //!< \u7D42\u70B9\n        Cost cost = {};      //!< \u30B3\u30B9\u30C8\
-    \n        long long id = -1;   //!< \u8FBA\u306E\u756A\u53F7(\u8FFD\u52A0\u3055\
-    \u308C\u305F\u9806\u3001\u7121\u5411\u8FBA\u306E\u5834\u5408\u306Fid\u304C\u540C\
-    \u3058\u3067\u65B9\u5411\u304C\u9006\u306E\u3082\u306E\u304C2\u3064\u5B58\u5728\
-    \u3059\u308B)\n        Edge() = default;\n        Edge(long long src, long long\
-    \ dst, Cost cost = 1, long long id = -1) : src(src), dst(dst), cost(cost), id(id)\
-    \ {}\n        operator long long() const { return dst; }\n    };\n\n   private:\n\
-    \    long long n;                       //!< \u9802\u70B9\u6570\n    long long\
-    \ m;                       //!< \u8FBA\u6570\n    std::vector<std::vector<Edge>>\
+    \ * @brief HL \u5206\u89E3 (Heavy-Light Decomposition)\n */\n\n#line 9 \"src/graph/heavy-light-decomposition.hpp\"\
+    \n#include <array>\n#line 11 \"src/graph/heavy-light-decomposition.hpp\"\n#include\
+    \ <cstddef>\n#include <iterator>\n#include <limits>\n#include <utility>\n#line\
+    \ 16 \"src/graph/heavy-light-decomposition.hpp\"\n\n#line 2 \"src/graph/tree.hpp\"\
+    \n\n/**\n * @file tree.hpp\n * @brief \u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\
+    \u30EC\u30FC\u30C8\n */\n\n#line 10 \"src/graph/tree.hpp\"\n#include <stack>\n\
+    #include <type_traits>\n#line 14 \"src/graph/tree.hpp\"\n\n#line 2 \"src/graph/graph.hpp\"\
+    \n\n/**\n * @file graph.hpp\n * @brief \u30B0\u30E9\u30D5\n */\n\n#line 9 \"src/graph/graph.hpp\"\
+    \n#include <iostream>\n#line 12 \"src/graph/graph.hpp\"\n\n/**\n * @brief \u30B0\
+    \u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\
+    \u30B3\u30B9\u30C8\u306E\u578B \u7701\u7565\u3057\u305F\u3089 long long (\u91CD\
+    \u307F\u306E\u548C\u3084\u672A\u5230\u9054\u3092\u8868\u3059 max / 4 \u304C\u3042\
+    \u3075\u308C\u306B\u304F\u3044\u3088\u3046\u306B)\n */\ntemplate <typename Cost\
+    \ = long long>\nclass Graph {\n   public:\n    /**\n     * @brief \u6709\u5411\
+    \u8FBA\u306E\u69CB\u9020\u4F53\n     *\n     * operator long long()\u3092\u5B9A\
+    \u7FA9\u3057\u3066\u3044\u308B\u306E\u3067\u3001\u6574\u6570\u578B\u306B\u30AD\
+    \u30E3\u30B9\u30C8\u3059\u308B\u3068\u52DD\u624B\u306Bdst\u306B\u306A\u308B\n\
+    \     * \u4F8B\u3048\u3070\u3001\n     * for (auto& e : g[v]) \u3092\u3059\u308B\
+    \u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\u304C\u5217\u6319\u3055\u308C\u308B\
+    \u304C\u3001\n     * for (long long dst : g[v]) \u3068\u3059\u308B\u3068\u3001\
+    v\u304B\u3089\u51FA\u308B\u8FBA\u306E\u884C\u304D\u5148\u304C\u5217\u6319\u3055\
+    \u308C\u308B\n     */\n    struct Edge {\n        long long src = -1;  //!< \u59CB\
+    \u70B9\n        long long dst = -1;  //!< \u7D42\u70B9\n        Cost cost = {};\
+    \      //!< \u30B3\u30B9\u30C8\n        long long id = -1;   //!< \u8FBA\u306E\
+    \u756A\u53F7(\u8FFD\u52A0\u3055\u308C\u305F\u9806\u3001\u7121\u5411\u8FBA\u306E\
+    \u5834\u5408\u306Fid\u304C\u540C\u3058\u3067\u65B9\u5411\u304C\u9006\u306E\u3082\
+    \u306E\u304C2\u3064\u5B58\u5728\u3059\u308B)\n        Edge() = default;\n    \
+    \    Edge(long long src, long long dst, Cost cost = 1, long long id = -1) : src(src),\
+    \ dst(dst), cost(cost), id(id) {}\n        operator long long() const { return\
+    \ dst; }\n    };\n\n   private:\n    long long n;                       //!< \u9802\
+    \u70B9\u6570\n    long long m;                       //!< \u8FBA\u6570\n    std::vector<std::vector<Edge>>\
     \ g;  //!< \u30B0\u30E9\u30D5\u306E\u96A3\u63A5\u30EA\u30B9\u30C8\u8868\u73FE\n\
     \n   public:\n    /**\n     * @brief \u30C7\u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\
     \u30B9\u30C8\u30E9\u30AF\u30BF\n     */\n    Graph() : n(0), m(0), g(0) {}\n \
@@ -357,7 +358,7 @@ data:
     \        for (long long i = 0; i < h - 1; i++) {\n            for (long long j\
     \ = 0; j < n; j++) {\n                if (doubling_par[i][j] != -1) {\n      \
     \              doubling_par[i + 1][j] = doubling_par[i][doubling_par[i][j]];\n\
-    \                }\n            }\n        }\n    }\n};\n#line 14 \"src/graph/heavy-light-decomposition.hpp\"\
+    \                }\n            }\n        }\n    }\n};\n#line 18 \"src/graph/heavy-light-decomposition.hpp\"\
     \n\n/**\n * @brief HL \u5206\u89E3 (Heavy-Light Decomposition)\n *\n * \u6728\u306E\
     \u9802\u70B9\u3092\u3001\u3069\u306E\u30D1\u30B9\u3082 O(log n) \u500B\u306E\u533A\
     \u9593\u306B\u5206\u304B\u308C\u3001\u3069\u306E\u90E8\u5206\u6728\u3082 1 \u3064\
@@ -444,76 +445,134 @@ data:
     \     assert(0 <= u && u < n && 0 <= v && v < n && k >= 0);\n        long long\
     \ w = lca(u, v);\n        long long du = dep[u] - dep[w], dv = dep[v] - dep[w];\n\
     \        if (k <= du) return hop(u, k);\n        if (k <= du + dv) return hop(v,\
-    \ du + dv - k);\n        return -1;\n    }\n\n    /**\n     * @brief u \u304B\u3089\
-    \ v \u3078\u306E\u30D1\u30B9\u3092\u3001\u5217\u306E\u533A\u9593\u306B\u5206\u3051\
-    \u3066 u \u5074\u304B\u3089\u9806\u306B\u4E26\u3079\u308B O(log n)\n     *\n \
-    \    * \u5404\u8981\u7D20\u306F\u534A\u958B\u533A\u9593 [l, r) \u3068\u5411\u304D\
-    \ reverse \u3092\u6301\u3064 PathSegment\n     * reverse \u304C false \u306A\u3089\
-    \ index \u306E\u6607\u9806\u3001true \u306A\u3089\u964D\u9806 (\u6839\u306B\u8FD1\
-    \u3065\u304F\u5411\u304D) \u306B\u305F\u3069\u308B\n     * \u4EA4\u63DB\u6CD5\u5247\
-    \u304C\u6210\u308A\u7ACB\u305F\u306A\u3044\u6F14\u7B97\u3067\u306F\u3001reverse\
-    \ \u304C true \u306E\u533A\u9593\u306F\u9006\u9806\u306E\u7A4D\u3092\u4F7F\u3046\
-    \n     * @param edge true \u306A\u3089\u8FBA\u306B\u3064\u3044\u3066\u306E\u30D1\
-    \u30B9\u306B\u3059\u308B\u3002\u8FBA (parent(v), v) \u3092 index(v) \u756A\u76EE\
-    \u306B\u5BFE\u5FDC\u3055\u305B\u3001lca \u306E\u4F4D\u7F6E\u3092\u542B\u3081\u306A\
-    \u3044\n     */\n    std::vector<PathSegment> path(long long u, long long v, bool\
-    \ edge = false) const {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n\
-    \        std::vector<PathSegment> up, down;\n        while (head[u] != head[v])\
-    \ {\n            if (dep[head[u]] >= dep[head[v]]) {\n                up.push_back({in[head[u]],\
-    \ in[u] + 1, true});\n                u = par[head[u]];\n            } else {\n\
-    \                down.push_back({in[head[v]], in[v] + 1, false});\n          \
-    \      v = par[head[v]];\n            }\n        }\n        if (dep[u] >= dep[v])\
-    \ {\n            // v \u304C lca\n            long long l = in[v] + edge;\n  \
-    \          if (l <= in[u]) up.push_back({l, in[u] + 1, true});\n        } else\
-    \ {\n            // u \u304C lca\n            long long l = in[u] + edge;\n  \
-    \          if (l <= in[v]) down.push_back({l, in[v] + 1, false});\n        }\n\
-    \        up.insert(up.end(), down.rbegin(), down.rend());\n        return up;\n\
-    \    }\n};\n#line 14 \"src/graph/auxiliary-tree.hpp\"\n\n/**\n * @brief Auxiliary\
-    \ Tree (\u6307\u5B9A\u3057\u305F\u9802\u70B9\u3068\u305D\u306E LCA \u3060\u3051\
-    \u3092\u6B8B\u3057\u3066\u5727\u7E2E\u3057\u305F\u6728)\n *\n * k \u500B\u306E\
-    \u9802\u70B9\u3092\u6307\u5B9A\u3059\u308B\u3068\u3001\u305D\u308C\u3089\u3068\
-    \u3001\u305D\u308C\u3089\u306E LCA \u3060\u3051\u3092\u9802\u70B9\u3068\u3059\u308B\
-    \u6728 (\u9802\u70B9\u306F 2k - 1 \u500B\u4EE5\u4E0B) \u3092 O(k log n) \u3067\
-    \u4F5C\u308B\n * \u5727\u7E2E\u3057\u305F\u6728\u306E\u8FBA\u306F\u3001\u5143\u306E\
-    \u6728\u306E\u30D1\u30B9\u3092 1 \u672C\u306E\u8FBA\u306B\u307E\u3068\u3081\u305F\
-    \u3082\u306E\u3002LCA \u3084\u8DDD\u96E2\u306F hld() \u3067\u6C42\u3081\u308B\n\
-    \ * \u4F8B:\n * AuxiliaryTree aux(tree, 0);\n * auto t = aux.build({3, 5, 8});\n\
-    \ * // t.vertices[i] \u306E\u89AA\u306F t.vertices[t.parent[i]] (\u6839\u306F\
-    \ t.parent[0] == -1)\n * for (long long i = t.size() - 1; i > 0; i--) dp[t.parent[i]]\
-    \ += dp[i];  // \u5B50\u304B\u3089\u89AA\u3078\u306E DP\n */\nclass AuxiliaryTree\
-    \ {\n    HeavyLightDecomposition hld_;\n\n   public:\n    /**\n     * @brief build\
-    \ \u306E\u623B\u308A\u5024\n     * vertices \u306F HL \u5206\u89E3\u306E\u5217\
-    \u306E\u9806 (DFS \u306E\u884C\u304D\u304C\u3051\u9806\u306E 1 \u3064) \u306B\u4E26\
-    \u3076\u306E\u3067\u3001parent[i] < i (\u6839\u306F 0 \u756A\u76EE\u3067 parent[0]\
-    \ = -1)\n     */\n    struct Result {\n        std::vector<long long> vertices;\
-    \  //!< \u5727\u7E2E\u3057\u305F\u6728\u306E\u9802\u70B9 (\u5143\u306E\u6728\u306E\
-    \u9802\u70B9\u756A\u53F7)\n        std::vector<long long> parent;    //!< \u89AA\
-    \u306E\u3001vertices \u306E\u4E2D\u3067\u306E\u6DFB\u5B57 (\u6839\u306F -1)\n\
-    \        long long size() const { return vertices.size(); }\n    };\n\n    /**\n\
-    \     * @brief \u6728 tree \u3092\u6839 root \u3067\u524D\u8A08\u7B97\u3059\u308B\
-    \ O(n)\n     */\n    template <typename Cost>\n    explicit AuxiliaryTree(const\
-    \ Tree<Cost>& tree, long long root = 0) : hld_(tree, root) {}\n\n    /**\n   \
-    \  * @brief \u9802\u70B9 vs (\u91CD\u8907\u3057\u3066\u3082\u3088\u3044) \u3068\
-    \u305D\u306E LCA \u3060\u3051\u3092\u6B8B\u3057\u305F\u6728\u3092\u4F5C\u308B\
-    \ O(k log n) (k \u306F vs \u306E\u500B\u6570)\n     * vs \u304C\u7A7A\u306A\u3089\
-    \u3001\u9802\u70B9\u306E\u306A\u3044\u6728\u3092\u8FD4\u3059\n     */\n    Result\
-    \ build(std::vector<long long> vs) const {\n        auto by_order = [&](long long\
-    \ a, long long b) { return hld_.index(a) < hld_.index(b); };\n        std::sort(vs.begin(),\
-    \ vs.end(), by_order);\n        vs.erase(std::unique(vs.begin(), vs.end()), vs.end());\n\
-    \        // DFS \u9806\u3067\u96A3\u308A\u5408\u3046\u9802\u70B9\u306E LCA \u3092\
-    \u8DB3\u3059\u3068\u3001LCA \u306B\u3064\u3044\u3066\u9589\u3058\u308B\n     \
-    \   const long long k = vs.size();\n        for (long long i = 0; i + 1 < k; i++)\
-    \ vs.push_back(hld_.lca(vs[i], vs[i + 1]));\n        std::sort(vs.begin(), vs.end(),\
-    \ by_order);\n        vs.erase(std::unique(vs.begin(), vs.end()), vs.end());\n\
-    \        Result res;\n        res.vertices = vs;\n        res.parent.assign(vs.size(),\
-    \ -1);\n        // DFS \u9806\u3067 1 \u3064\u524D\u306E\u9802\u70B9\u3068\u306E\
-    \ LCA \u304C\u89AA\u306B\u306A\u308B\n        for (long long i = 1; i < static_cast<long\
-    \ long>(vs.size()); i++) {\n            long long p = hld_.lca(vs[i - 1], vs[i]);\n\
-    \            res.parent[i] = std::lower_bound(vs.begin(), vs.end(), p, by_order)\
-    \ - vs.begin();\n        }\n        return res;\n    }\n\n    /**\n     * @brief\
-    \ \u524D\u8A08\u7B97\u306B\u4F7F\u3063\u305F HL \u5206\u89E3 (LCA \u3084\u8DDD\
-    \u96E2\u3001\u6DF1\u3055\u3092\u6C42\u3081\u308B\u306E\u306B\u4F7F\u3046)\n  \
-    \   */\n    const HeavyLightDecomposition& hld() const { return hld_; }\n};\n"
+    \ du + dv - k);\n        return -1;\n    }\n\n   private:\n    class PathEnumeration\
+    \ {\n        const HeavyLightDecomposition* hld;\n        int u, v;\n        bool\
+    \ edge;\n\n       public:\n        PathEnumeration(const HeavyLightDecomposition*\
+    \ hld, long long u, long long v, bool edge)\n            : hld(hld), u(static_cast<int>(u)),\
+    \ v(static_cast<int>(v)), edge(edge) {}\n\n        class iterator {\n        \
+    \    struct Interval {\n                int l, r;\n            };\n          \
+    \  const HeavyLightDecomposition* hld = nullptr;\n            int u = 0, v = 0,\
+    \ top = 0;\n            bool edge = false, ascending = true, done = true;\n  \
+    \          // v \u5074\u304B\u3089\u96C6\u3081\u305F\u533A\u9593\u3092\u9006\u9806\
+    \u306B\u8FD4\u3059\u3002light edge \u3092\u8D8A\u3048\u308B\u305F\u3073\u306B\u90E8\
+    \u5206\u6728\u306E\u5927\u304D\u3055\u306F\u500D\u4EE5\u4E0A\u306B\u306A\u308B\
+    \u3002\n            // \u672A\u4F7F\u7528\u306E\u8981\u7D20\u306F\u521D\u671F\u5316\
+    \u305B\u305A\u3001iterator \u306E\u30B3\u30D4\u30FC\u3067\u3082 [0, top) \u3060\
+    \u3051\u3092\u30B3\u30D4\u30FC\u3059\u308B\u3002\n            std::array<Interval,\
+    \ std::numeric_limits<long long>::digits> pending;\n            PathSegment current{0,\
+    \ 0, false};\n\n           public:\n            using value_type = PathSegment;\n\
+    \            using difference_type = std::ptrdiff_t;\n            using reference\
+    \ = value_type;\n            using pointer = void;\n            using iterator_category\
+    \ = std::input_iterator_tag;\n\n            iterator() = default;\n          \
+    \  iterator(const HeavyLightDecomposition* hld, long long u, long long v, bool\
+    \ edge)\n                : hld(hld), u(static_cast<int>(u)), v(static_cast<int>(v)),\
+    \ edge(edge), done(false) { ++*this; }\n            iterator(const iterator& other)\n\
+    \                : hld(other.hld), u(other.u), v(other.v), top(other.top), edge(other.edge),\
+    \ ascending(other.ascending), done(other.done), current(other.current) {\n   \
+    \             std::copy_n(other.pending.begin(), top, pending.begin());\n    \
+    \        }\n            iterator& operator=(const iterator& other) {\n       \
+    \         if (this != &other) {\n                    hld = other.hld;\n      \
+    \              u = other.u;\n                    v = other.v;\n              \
+    \      top = other.top;\n                    edge = other.edge;\n            \
+    \        ascending = other.ascending;\n                    done = other.done;\n\
+    \                    current = other.current;\n                    std::copy_n(other.pending.begin(),\
+    \ top, pending.begin());\n                }\n                return *this;\n \
+    \           }\n            value_type operator*() const { return current; }\n\
+    \            iterator& operator++() {\n                if (ascending) {\n    \
+    \                while (hld->head[u] != hld->head[v]) {\n                    \
+    \    if (hld->dep[hld->head[u]] >= hld->dep[hld->head[v]]) {\n               \
+    \             current = {hld->in[hld->head[u]], hld->in[u] + 1, true};\n     \
+    \                       u = hld->par[hld->head[u]];\n                        \
+    \    return *this;\n                        }\n                        pending[top++]\
+    \ = {hld->in[hld->head[v]], hld->in[v] + 1};\n                        v = hld->par[hld->head[v]];\n\
+    \                    }\n                    ascending = false;\n             \
+    \       if (hld->dep[u] >= hld->dep[v]) {\n                        const long\
+    \ long l = hld->in[v] + edge;\n                        if (l <= hld->in[u]) {\n\
+    \                            current = {l, hld->in[u] + 1, true};\n          \
+    \                  return *this;\n                        }\n                \
+    \    } else {\n                        const long long l = hld->in[u] + edge;\n\
+    \                        if (l <= hld->in[v]) {\n                            current\
+    \ = {l, hld->in[v] + 1, false};\n                            return *this;\n \
+    \                       }\n                    }\n                }\n        \
+    \        if (top > 0) {\n                    const auto [l, r] = pending[--top];\n\
+    \                    current = {l, r, false};\n                } else {\n    \
+    \                done = true;\n                }\n                return *this;\n\
+    \            }\n            // \u5F8C\u7F6E increment \u3067\u306F\u3001\u9000\
+    \u907F\u3057\u305F\u533A\u9593\u3092\u30B3\u30D4\u30FC\u305B\u305A\u3001\u5909\
+    \u66F4\u524D\u306E\u5024\u3060\u3051\u3092\u8FD4\u3059\u3002\n            struct\
+    \ Postfix {\n                value_type value;\n                value_type operator*()\
+    \ const { return value; }\n            };\n            Postfix operator++(int)\
+    \ {\n                const Postfix previous{current};\n                ++*this;\n\
+    \                return previous;\n            }\n            bool operator==(const\
+    \ iterator& other) const {\n                if (done || other.done) return done\
+    \ == other.done;\n                return hld == other.hld && current.l == other.current.l\
+    \ && current.r == other.current.r && current.reverse == other.current.reverse;\n\
+    \            }\n            bool operator!=(const iterator& other) const { return\
+    \ !(*this == other); }\n        };\n\n        iterator begin() const { return\
+    \ iterator(hld, u, v, edge); }\n        iterator end() const { return iterator();\
+    \ }\n    };\n\n   public:\n    /**\n     * @brief u \u304B\u3089 v \u3078\u306E\
+    \u30D1\u30B9\u306E\u533A\u9593\u3092 u \u5074\u304B\u3089\u9806\u306B\u9045\u5EF6\
+    \u5217\u6319\u3059\u308B\u3002\u69CB\u7BC9 O(1)\u3001\u5168\u8D70\u67FB O(log\
+    \ n)\n     *\n     * \u5404\u8981\u7D20\u306F\u534A\u958B\u533A\u9593 [l, r) \u3068\
+    \u5411\u304D reverse \u3092\u6301\u3064 PathSegment\n     * reverse \u304C false\
+    \ \u306A\u3089 index \u306E\u6607\u9806\u3001true \u306A\u3089\u964D\u9806 (\u6839\
+    \u306B\u8FD1\u3065\u304F\u5411\u304D) \u306B\u305F\u3069\u308B\n     * \u4EA4\u63DB\
+    \u6CD5\u5247\u304C\u6210\u308A\u7ACB\u305F\u306A\u3044\u6F14\u7B97\u3067\u306F\
+    \u3001reverse \u304C true \u306E\u533A\u9593\u306F\u9006\u9806\u306E\u7A4D\u3092\
+    \u4F7F\u3046\n     * @pre \u8D70\u67FB\u4E2D\u306F\u3001\u3053\u306E HeavyLightDecomposition\
+    \ \u3092\u6709\u52B9\u306A\u307E\u307E\u4FDD\u6301\u3057\u3001\u5909\u66F4\u3057\
+    \u306A\u3044\u3053\u3068\n     * @param edge true \u306A\u3089\u8FBA\u306B\u3064\
+    \u3044\u3066\u306E\u30D1\u30B9\u306B\u3059\u308B\u3002\u8FBA (parent(v), v) \u3092\
+    \ index(v) \u756A\u76EE\u306B\u5BFE\u5FDC\u3055\u305B\u3001lca \u306E\u4F4D\u7F6E\
+    \u3092\u542B\u3081\u306A\u3044\n     */\n    auto path(long long u, long long\
+    \ v, bool edge = false) const {\n        assert(0 <= u && u < n && 0 <= v && v\
+    \ < n);\n        return PathEnumeration(this, u, v, edge);\n    }\n};\n#line 14\
+    \ \"src/graph/auxiliary-tree.hpp\"\n\n/**\n * @brief Auxiliary Tree (\u6307\u5B9A\
+    \u3057\u305F\u9802\u70B9\u3068\u305D\u306E LCA \u3060\u3051\u3092\u6B8B\u3057\u3066\
+    \u5727\u7E2E\u3057\u305F\u6728)\n *\n * k \u500B\u306E\u9802\u70B9\u3092\u6307\
+    \u5B9A\u3059\u308B\u3068\u3001\u305D\u308C\u3089\u3068\u3001\u305D\u308C\u3089\
+    \u306E LCA \u3060\u3051\u3092\u9802\u70B9\u3068\u3059\u308B\u6728 (\u9802\u70B9\
+    \u306F 2k - 1 \u500B\u4EE5\u4E0B) \u3092 O(k log n) \u3067\u4F5C\u308B\n * \u5727\
+    \u7E2E\u3057\u305F\u6728\u306E\u8FBA\u306F\u3001\u5143\u306E\u6728\u306E\u30D1\
+    \u30B9\u3092 1 \u672C\u306E\u8FBA\u306B\u307E\u3068\u3081\u305F\u3082\u306E\u3002\
+    LCA \u3084\u8DDD\u96E2\u306F hld() \u3067\u6C42\u3081\u308B\n * \u4F8B:\n * AuxiliaryTree\
+    \ aux(tree, 0);\n * auto t = aux.build({3, 5, 8});\n * // t.vertices[i] \u306E\
+    \u89AA\u306F t.vertices[t.parent[i]] (\u6839\u306F t.parent[0] == -1)\n * for\
+    \ (long long i = t.size() - 1; i > 0; i--) dp[t.parent[i]] += dp[i];  // \u5B50\
+    \u304B\u3089\u89AA\u3078\u306E DP\n */\nclass AuxiliaryTree {\n    HeavyLightDecomposition\
+    \ hld_;\n\n   public:\n    /**\n     * @brief build \u306E\u623B\u308A\u5024\n\
+    \     * vertices \u306F HL \u5206\u89E3\u306E\u5217\u306E\u9806 (DFS \u306E\u884C\
+    \u304D\u304C\u3051\u9806\u306E 1 \u3064) \u306B\u4E26\u3076\u306E\u3067\u3001\
+    parent[i] < i (\u6839\u306F 0 \u756A\u76EE\u3067 parent[0] = -1)\n     */\n  \
+    \  struct Result {\n        std::vector<long long> vertices;  //!< \u5727\u7E2E\
+    \u3057\u305F\u6728\u306E\u9802\u70B9 (\u5143\u306E\u6728\u306E\u9802\u70B9\u756A\
+    \u53F7)\n        std::vector<long long> parent;    //!< \u89AA\u306E\u3001vertices\
+    \ \u306E\u4E2D\u3067\u306E\u6DFB\u5B57 (\u6839\u306F -1)\n        long long size()\
+    \ const { return vertices.size(); }\n    };\n\n    /**\n     * @brief \u6728 tree\
+    \ \u3092\u6839 root \u3067\u524D\u8A08\u7B97\u3059\u308B O(n)\n     */\n    template\
+    \ <typename Cost>\n    explicit AuxiliaryTree(const Tree<Cost>& tree, long long\
+    \ root = 0) : hld_(tree, root) {}\n\n    /**\n     * @brief \u9802\u70B9 vs (\u91CD\
+    \u8907\u3057\u3066\u3082\u3088\u3044) \u3068\u305D\u306E LCA \u3060\u3051\u3092\
+    \u6B8B\u3057\u305F\u6728\u3092\u4F5C\u308B O(k log n) (k \u306F vs \u306E\u500B\
+    \u6570)\n     * vs \u304C\u7A7A\u306A\u3089\u3001\u9802\u70B9\u306E\u306A\u3044\
+    \u6728\u3092\u8FD4\u3059\n     */\n    Result build(std::vector<long long> vs)\
+    \ const {\n        auto by_order = [&](long long a, long long b) { return hld_.index(a)\
+    \ < hld_.index(b); };\n        std::sort(vs.begin(), vs.end(), by_order);\n  \
+    \      vs.erase(std::unique(vs.begin(), vs.end()), vs.end());\n        // DFS\
+    \ \u9806\u3067\u96A3\u308A\u5408\u3046\u9802\u70B9\u306E LCA \u3092\u8DB3\u3059\
+    \u3068\u3001LCA \u306B\u3064\u3044\u3066\u9589\u3058\u308B\n        const long\
+    \ long k = vs.size();\n        for (long long i = 0; i + 1 < k; i++) vs.push_back(hld_.lca(vs[i],\
+    \ vs[i + 1]));\n        std::sort(vs.begin(), vs.end(), by_order);\n        vs.erase(std::unique(vs.begin(),\
+    \ vs.end()), vs.end());\n        Result res;\n        res.vertices = vs;\n   \
+    \     res.parent.assign(vs.size(), -1);\n        // DFS \u9806\u3067 1 \u3064\u524D\
+    \u306E\u9802\u70B9\u3068\u306E LCA \u304C\u89AA\u306B\u306A\u308B\n        for\
+    \ (long long i = 1; i < static_cast<long long>(vs.size()); i++) {\n          \
+    \  long long p = hld_.lca(vs[i - 1], vs[i]);\n            res.parent[i] = std::lower_bound(vs.begin(),\
+    \ vs.end(), p, by_order) - vs.begin();\n        }\n        return res;\n    }\n\
+    \n    /**\n     * @brief \u524D\u8A08\u7B97\u306B\u4F7F\u3063\u305F HL \u5206\u89E3\
+    \ (LCA \u3084\u8DDD\u96E2\u3001\u6DF1\u3055\u3092\u6C42\u3081\u308B\u306E\u306B\
+    \u4F7F\u3046)\n     */\n    const HeavyLightDecomposition& hld() const { return\
+    \ hld_; }\n};\n"
   code: "#pragma once\n\n/**\n * @file auxiliary-tree.hpp\n * @brief Auxiliary Tree\
     \ (\u865A\u6811\u3001\u6307\u5B9A\u3057\u305F\u9802\u70B9\u3068\u305D\u306E LCA\
     \ \u3060\u3051\u3092\u6B8B\u3057\u3066\u5727\u7E2E\u3057\u305F\u6728)\n */\n\n\
@@ -571,7 +630,7 @@ data:
   isVerificationFile: false
   path: src/graph/auxiliary-tree.hpp
   requiredBy: []
-  timestamp: '2026-11-09 05:14:57+09:00'
+  timestamp: '2026-11-10 03:47:45+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/graph/auxiliary-tree.test.cpp

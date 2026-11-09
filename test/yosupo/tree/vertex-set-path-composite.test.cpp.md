@@ -568,7 +568,7 @@ data:
     /**\n * @brief RangeGcdQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename\
     \ S>\nusing RGcdQ = SegTree<monoid::Gcd<S>>;\n#line 2 \"src/graph/heavy-light-decomposition.hpp\"\
     \n\n/**\n * @file heavy-light-decomposition.hpp\n * @brief HL \u5206\u89E3 (Heavy-Light\
-    \ Decomposition)\n */\n\n#line 12 \"src/graph/heavy-light-decomposition.hpp\"\n\
+    \ Decomposition)\n */\n\n#line 16 \"src/graph/heavy-light-decomposition.hpp\"\n\
     \n#line 2 \"src/graph/tree.hpp\"\n\n/**\n * @file tree.hpp\n * @brief \u6728\u306E\
     \u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n */\n\n#line 10 \"src/graph/tree.hpp\"\
     \n#include <stack>\n#line 14 \"src/graph/tree.hpp\"\n\n#line 2 \"src/graph/graph.hpp\"\
@@ -895,7 +895,7 @@ data:
     \        for (long long i = 0; i < h - 1; i++) {\n            for (long long j\
     \ = 0; j < n; j++) {\n                if (doubling_par[i][j] != -1) {\n      \
     \              doubling_par[i + 1][j] = doubling_par[i][doubling_par[i][j]];\n\
-    \                }\n            }\n        }\n    }\n};\n#line 14 \"src/graph/heavy-light-decomposition.hpp\"\
+    \                }\n            }\n        }\n    }\n};\n#line 18 \"src/graph/heavy-light-decomposition.hpp\"\
     \n\n/**\n * @brief HL \u5206\u89E3 (Heavy-Light Decomposition)\n *\n * \u6728\u306E\
     \u9802\u70B9\u3092\u3001\u3069\u306E\u30D1\u30B9\u3082 O(log n) \u500B\u306E\u533A\
     \u9593\u306B\u5206\u304B\u308C\u3001\u3069\u306E\u90E8\u5206\u6728\u3082 1 \u3064\
@@ -982,63 +982,121 @@ data:
     \     assert(0 <= u && u < n && 0 <= v && v < n && k >= 0);\n        long long\
     \ w = lca(u, v);\n        long long du = dep[u] - dep[w], dv = dep[v] - dep[w];\n\
     \        if (k <= du) return hop(u, k);\n        if (k <= du + dv) return hop(v,\
-    \ du + dv - k);\n        return -1;\n    }\n\n    /**\n     * @brief u \u304B\u3089\
-    \ v \u3078\u306E\u30D1\u30B9\u3092\u3001\u5217\u306E\u533A\u9593\u306B\u5206\u3051\
-    \u3066 u \u5074\u304B\u3089\u9806\u306B\u4E26\u3079\u308B O(log n)\n     *\n \
-    \    * \u5404\u8981\u7D20\u306F\u534A\u958B\u533A\u9593 [l, r) \u3068\u5411\u304D\
-    \ reverse \u3092\u6301\u3064 PathSegment\n     * reverse \u304C false \u306A\u3089\
-    \ index \u306E\u6607\u9806\u3001true \u306A\u3089\u964D\u9806 (\u6839\u306B\u8FD1\
-    \u3065\u304F\u5411\u304D) \u306B\u305F\u3069\u308B\n     * \u4EA4\u63DB\u6CD5\u5247\
-    \u304C\u6210\u308A\u7ACB\u305F\u306A\u3044\u6F14\u7B97\u3067\u306F\u3001reverse\
-    \ \u304C true \u306E\u533A\u9593\u306F\u9006\u9806\u306E\u7A4D\u3092\u4F7F\u3046\
-    \n     * @param edge true \u306A\u3089\u8FBA\u306B\u3064\u3044\u3066\u306E\u30D1\
-    \u30B9\u306B\u3059\u308B\u3002\u8FBA (parent(v), v) \u3092 index(v) \u756A\u76EE\
-    \u306B\u5BFE\u5FDC\u3055\u305B\u3001lca \u306E\u4F4D\u7F6E\u3092\u542B\u3081\u306A\
-    \u3044\n     */\n    std::vector<PathSegment> path(long long u, long long v, bool\
-    \ edge = false) const {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n\
-    \        std::vector<PathSegment> up, down;\n        while (head[u] != head[v])\
-    \ {\n            if (dep[head[u]] >= dep[head[v]]) {\n                up.push_back({in[head[u]],\
-    \ in[u] + 1, true});\n                u = par[head[u]];\n            } else {\n\
-    \                down.push_back({in[head[v]], in[v] + 1, false});\n          \
-    \      v = par[head[v]];\n            }\n        }\n        if (dep[u] >= dep[v])\
-    \ {\n            // v \u304C lca\n            long long l = in[v] + edge;\n  \
-    \          if (l <= in[u]) up.push_back({l, in[u] + 1, true});\n        } else\
-    \ {\n            // u \u304C lca\n            long long l = in[u] + edge;\n  \
-    \          if (l <= in[v]) down.push_back({l, in[v] + 1, false});\n        }\n\
-    \        up.insert(up.end(), down.rbegin(), down.rend());\n        return up;\n\
-    \    }\n};\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief\
-    \ \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\
-    \u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\n#include\
-    \ <cstdint>\n#line 14 \"src/math/modint.hpp\"\n\n#line 16 \"src/math/modint.hpp\"\
-    \n\nnamespace internal_modint {\n// clang-format off\nstatic constexpr std::uint16_t\
-    \ prime32_bases[] {\n    15591,  2018,  166, 7429,  8064, 16045, 10503,  4399,\
-    \  1949,  1295, 2776,  3620,   560,  3128,  5212,  2657,\n     2300,  2021, 4652,\
-    \ 1471,  9336,  4018,  2398, 20462, 10277,  8028, 2213,  6219,   620,  3763, \
-    \ 4852,  5012,\n     3185,  1333, 6227, 5298,  1074,  2391,  5113,  7061,   803,\
-    \  1269, 3875,   422,   751,   580,  4729, 10239,\n      746,  2951,  556, 2206,\
-    \  3778,   481,  1522,  3476,   481,  2487, 3266,  5633,   488,  3373,  6441,\
-    \  3344,\n       17, 15105, 1490, 4154,  2036,  1882,  1813,   467,  3307, 14042,\
-    \ 6371,   658,  1005,   903,   737,  1887,\n     7447,  1888, 2848, 1784,  7559,\
-    \  3400,   951, 13969,  4304,   177,   41, 19875,  3110, 13221,  8726,   571,\n\
-    \     7043,  6943, 1199,  352,  6435,   165,  1169,  3315,   978,   233, 3003,\
-    \  2562,  2994, 10587, 10030,  2377,\n     1902,  5354, 4447, 1555,   263, 27027,\
-    \  2283,   305,   669,  1912,  601,  6186,   429,  1930, 14873,  1784,\n     1661,\
-    \   524, 3577,  236,  2360,  6146,  2850, 55637,  1753,  4178, 8466,   222,  2579,\
-    \  2743,  2031,  2226,\n     2276,   374, 2132,  813, 23788,  1610,  4422,  5159,\
-    \  1725,  3597, 3366, 14336,   579,   165,  1375, 10018,\n    12616,  9816, 1371,\
-    \  536,  1867, 10864,   857,  2206,  5788,   434, 8085, 17618,   727,  3639, \
-    \ 1595,  4944,\n     2129,  2029, 8195, 8344,  6232,  9183,  8126,  1870,  3296,\
-    \  7455, 8947, 25017,   541, 19115,   368,   566,\n     5674,   411,  522, 1027,\
-    \  8215,  2050,  6544, 10049,   614,   774, 2333,  3007, 35201,  4706,  1152,\
-    \  1785,\n     1028,  1540, 3743,  493,  4474,  2521, 26845,  8354,   864, 18915,\
-    \ 5465,  2447,    42,  4511,  1660,   166,\n     1249,  6259, 2553,  304,   272,\
-    \  7286,    73,  6554,   899,  2816, 5197, 13330,  7054,  2818,  3199,   811,\n\
-    \      922,   350, 7514, 4452,  3449,  2663,  4708,   418,  1621,  1171, 3471,\
-    \    88, 11345,   412,  1559,   194,\n};\n// clang-format on\n\nstatic constexpr\
-    \ bool is_SPRP(std::uint32_t n, std::uint32_t a) noexcept {\n    std::uint32_t\
-    \ d = n - 1;\n    std::uint32_t s = 0;\n    while ((d & 1) == 0) {\n        ++s;\n\
-    \        d >>= 1;\n    }\n    std::uint64_t cur = 1;\n    std::uint64_t pw = d;\n\
-    \    while (pw) {\n        if (pw & 1) cur = (cur * a) % n;\n        a = (static_cast<std::uint64_t>(a)\
+    \ du + dv - k);\n        return -1;\n    }\n\n   private:\n    class PathEnumeration\
+    \ {\n        const HeavyLightDecomposition* hld;\n        int u, v;\n        bool\
+    \ edge;\n\n       public:\n        PathEnumeration(const HeavyLightDecomposition*\
+    \ hld, long long u, long long v, bool edge)\n            : hld(hld), u(static_cast<int>(u)),\
+    \ v(static_cast<int>(v)), edge(edge) {}\n\n        class iterator {\n        \
+    \    struct Interval {\n                int l, r;\n            };\n          \
+    \  const HeavyLightDecomposition* hld = nullptr;\n            int u = 0, v = 0,\
+    \ top = 0;\n            bool edge = false, ascending = true, done = true;\n  \
+    \          // v \u5074\u304B\u3089\u96C6\u3081\u305F\u533A\u9593\u3092\u9006\u9806\
+    \u306B\u8FD4\u3059\u3002light edge \u3092\u8D8A\u3048\u308B\u305F\u3073\u306B\u90E8\
+    \u5206\u6728\u306E\u5927\u304D\u3055\u306F\u500D\u4EE5\u4E0A\u306B\u306A\u308B\
+    \u3002\n            // \u672A\u4F7F\u7528\u306E\u8981\u7D20\u306F\u521D\u671F\u5316\
+    \u305B\u305A\u3001iterator \u306E\u30B3\u30D4\u30FC\u3067\u3082 [0, top) \u3060\
+    \u3051\u3092\u30B3\u30D4\u30FC\u3059\u308B\u3002\n            std::array<Interval,\
+    \ std::numeric_limits<long long>::digits> pending;\n            PathSegment current{0,\
+    \ 0, false};\n\n           public:\n            using value_type = PathSegment;\n\
+    \            using difference_type = std::ptrdiff_t;\n            using reference\
+    \ = value_type;\n            using pointer = void;\n            using iterator_category\
+    \ = std::input_iterator_tag;\n\n            iterator() = default;\n          \
+    \  iterator(const HeavyLightDecomposition* hld, long long u, long long v, bool\
+    \ edge)\n                : hld(hld), u(static_cast<int>(u)), v(static_cast<int>(v)),\
+    \ edge(edge), done(false) { ++*this; }\n            iterator(const iterator& other)\n\
+    \                : hld(other.hld), u(other.u), v(other.v), top(other.top), edge(other.edge),\
+    \ ascending(other.ascending), done(other.done), current(other.current) {\n   \
+    \             std::copy_n(other.pending.begin(), top, pending.begin());\n    \
+    \        }\n            iterator& operator=(const iterator& other) {\n       \
+    \         if (this != &other) {\n                    hld = other.hld;\n      \
+    \              u = other.u;\n                    v = other.v;\n              \
+    \      top = other.top;\n                    edge = other.edge;\n            \
+    \        ascending = other.ascending;\n                    done = other.done;\n\
+    \                    current = other.current;\n                    std::copy_n(other.pending.begin(),\
+    \ top, pending.begin());\n                }\n                return *this;\n \
+    \           }\n            value_type operator*() const { return current; }\n\
+    \            iterator& operator++() {\n                if (ascending) {\n    \
+    \                while (hld->head[u] != hld->head[v]) {\n                    \
+    \    if (hld->dep[hld->head[u]] >= hld->dep[hld->head[v]]) {\n               \
+    \             current = {hld->in[hld->head[u]], hld->in[u] + 1, true};\n     \
+    \                       u = hld->par[hld->head[u]];\n                        \
+    \    return *this;\n                        }\n                        pending[top++]\
+    \ = {hld->in[hld->head[v]], hld->in[v] + 1};\n                        v = hld->par[hld->head[v]];\n\
+    \                    }\n                    ascending = false;\n             \
+    \       if (hld->dep[u] >= hld->dep[v]) {\n                        const long\
+    \ long l = hld->in[v] + edge;\n                        if (l <= hld->in[u]) {\n\
+    \                            current = {l, hld->in[u] + 1, true};\n          \
+    \                  return *this;\n                        }\n                \
+    \    } else {\n                        const long long l = hld->in[u] + edge;\n\
+    \                        if (l <= hld->in[v]) {\n                            current\
+    \ = {l, hld->in[v] + 1, false};\n                            return *this;\n \
+    \                       }\n                    }\n                }\n        \
+    \        if (top > 0) {\n                    const auto [l, r] = pending[--top];\n\
+    \                    current = {l, r, false};\n                } else {\n    \
+    \                done = true;\n                }\n                return *this;\n\
+    \            }\n            // \u5F8C\u7F6E increment \u3067\u306F\u3001\u9000\
+    \u907F\u3057\u305F\u533A\u9593\u3092\u30B3\u30D4\u30FC\u305B\u305A\u3001\u5909\
+    \u66F4\u524D\u306E\u5024\u3060\u3051\u3092\u8FD4\u3059\u3002\n            struct\
+    \ Postfix {\n                value_type value;\n                value_type operator*()\
+    \ const { return value; }\n            };\n            Postfix operator++(int)\
+    \ {\n                const Postfix previous{current};\n                ++*this;\n\
+    \                return previous;\n            }\n            bool operator==(const\
+    \ iterator& other) const {\n                if (done || other.done) return done\
+    \ == other.done;\n                return hld == other.hld && current.l == other.current.l\
+    \ && current.r == other.current.r && current.reverse == other.current.reverse;\n\
+    \            }\n            bool operator!=(const iterator& other) const { return\
+    \ !(*this == other); }\n        };\n\n        iterator begin() const { return\
+    \ iterator(hld, u, v, edge); }\n        iterator end() const { return iterator();\
+    \ }\n    };\n\n   public:\n    /**\n     * @brief u \u304B\u3089 v \u3078\u306E\
+    \u30D1\u30B9\u306E\u533A\u9593\u3092 u \u5074\u304B\u3089\u9806\u306B\u9045\u5EF6\
+    \u5217\u6319\u3059\u308B\u3002\u69CB\u7BC9 O(1)\u3001\u5168\u8D70\u67FB O(log\
+    \ n)\n     *\n     * \u5404\u8981\u7D20\u306F\u534A\u958B\u533A\u9593 [l, r) \u3068\
+    \u5411\u304D reverse \u3092\u6301\u3064 PathSegment\n     * reverse \u304C false\
+    \ \u306A\u3089 index \u306E\u6607\u9806\u3001true \u306A\u3089\u964D\u9806 (\u6839\
+    \u306B\u8FD1\u3065\u304F\u5411\u304D) \u306B\u305F\u3069\u308B\n     * \u4EA4\u63DB\
+    \u6CD5\u5247\u304C\u6210\u308A\u7ACB\u305F\u306A\u3044\u6F14\u7B97\u3067\u306F\
+    \u3001reverse \u304C true \u306E\u533A\u9593\u306F\u9006\u9806\u306E\u7A4D\u3092\
+    \u4F7F\u3046\n     * @pre \u8D70\u67FB\u4E2D\u306F\u3001\u3053\u306E HeavyLightDecomposition\
+    \ \u3092\u6709\u52B9\u306A\u307E\u307E\u4FDD\u6301\u3057\u3001\u5909\u66F4\u3057\
+    \u306A\u3044\u3053\u3068\n     * @param edge true \u306A\u3089\u8FBA\u306B\u3064\
+    \u3044\u3066\u306E\u30D1\u30B9\u306B\u3059\u308B\u3002\u8FBA (parent(v), v) \u3092\
+    \ index(v) \u756A\u76EE\u306B\u5BFE\u5FDC\u3055\u305B\u3001lca \u306E\u4F4D\u7F6E\
+    \u3092\u542B\u3081\u306A\u3044\n     */\n    auto path(long long u, long long\
+    \ v, bool edge = false) const {\n        assert(0 <= u && u < n && 0 <= v && v\
+    \ < n);\n        return PathEnumeration(this, u, v, edge);\n    }\n};\n#line 2\
+    \ \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\
+    \u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\
+    \u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\n#include <cstdint>\n#line 14 \"\
+    src/math/modint.hpp\"\n\n#line 16 \"src/math/modint.hpp\"\n\nnamespace internal_modint\
+    \ {\n// clang-format off\nstatic constexpr std::uint16_t prime32_bases[] {\n \
+    \   15591,  2018,  166, 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,\
+    \  3620,   560,  3128,  5212,  2657,\n     2300,  2021, 4652, 1471,  9336,  4018,\
+    \  2398, 20462, 10277,  8028, 2213,  6219,   620,  3763,  4852,  5012,\n     3185,\
+    \  1333, 6227, 5298,  1074,  2391,  5113,  7061,   803,  1269, 3875,   422,  \
+    \ 751,   580,  4729, 10239,\n      746,  2951,  556, 2206,  3778,   481,  1522,\
+    \  3476,   481,  2487, 3266,  5633,   488,  3373,  6441,  3344,\n       17, 15105,\
+    \ 1490, 4154,  2036,  1882,  1813,   467,  3307, 14042, 6371,   658,  1005,  \
+    \ 903,   737,  1887,\n     7447,  1888, 2848, 1784,  7559,  3400,   951, 13969,\
+    \  4304,   177,   41, 19875,  3110, 13221,  8726,   571,\n     7043,  6943, 1199,\
+    \  352,  6435,   165,  1169,  3315,   978,   233, 3003,  2562,  2994, 10587, 10030,\
+    \  2377,\n     1902,  5354, 4447, 1555,   263, 27027,  2283,   305,   669,  1912,\
+    \  601,  6186,   429,  1930, 14873,  1784,\n     1661,   524, 3577,  236,  2360,\
+    \  6146,  2850, 55637,  1753,  4178, 8466,   222,  2579,  2743,  2031,  2226,\n\
+    \     2276,   374, 2132,  813, 23788,  1610,  4422,  5159,  1725,  3597, 3366,\
+    \ 14336,   579,   165,  1375, 10018,\n    12616,  9816, 1371,  536,  1867, 10864,\
+    \   857,  2206,  5788,   434, 8085, 17618,   727,  3639,  1595,  4944,\n     2129,\
+    \  2029, 8195, 8344,  6232,  9183,  8126,  1870,  3296,  7455, 8947, 25017,  \
+    \ 541, 19115,   368,   566,\n     5674,   411,  522, 1027,  8215,  2050,  6544,\
+    \ 10049,   614,   774, 2333,  3007, 35201,  4706,  1152,  1785,\n     1028,  1540,\
+    \ 3743,  493,  4474,  2521, 26845,  8354,   864, 18915, 5465,  2447,    42,  4511,\
+    \  1660,   166,\n     1249,  6259, 2553,  304,   272,  7286,    73,  6554,   899,\
+    \  2816, 5197, 13330,  7054,  2818,  3199,   811,\n      922,   350, 7514, 4452,\
+    \  3449,  2663,  4708,   418,  1621,  1171, 3471,    88, 11345,   412,  1559,\
+    \   194,\n};\n// clang-format on\n\nstatic constexpr bool is_SPRP(std::uint32_t\
+    \ n, std::uint32_t a) noexcept {\n    std::uint32_t d = n - 1;\n    std::uint32_t\
+    \ s = 0;\n    while ((d & 1) == 0) {\n        ++s;\n        d >>= 1;\n    }\n\
+    \    std::uint64_t cur = 1;\n    std::uint64_t pw = d;\n    while (pw) {\n   \
+    \     if (pw & 1) cur = (cur * a) % n;\n        a = (static_cast<std::uint64_t>(a)\
     \ * a) % n;\n        pw >>= 1;\n    }\n    if (cur == 1) return true;\n    for\
     \ (std::uint32_t r = 0; r < s; ++r) {\n        if (cur == n - 1) return true;\n\
     \        cur = (cur * cur) % n;\n    }\n    return false;\n}\n\n// 32\u30D3\u30C3\
@@ -1295,7 +1353,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/tree/vertex-set-path-composite.test.cpp
   requiredBy: []
-  timestamp: '2026-11-09 05:14:57+09:00'
+  timestamp: '2026-11-10 03:47:45+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/tree/vertex-set-path-composite.test.cpp

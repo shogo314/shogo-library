@@ -83,6 +83,8 @@ for (long long i = 0; i < 63; i++) sum += bit_count_upto(n, i);
 | `subsets_of_size(mask, k)` | `mask` の部分集合のうち、ちょうど $k$ 個のビットが立つものを昇順に。$k >$ `popcount(mask)` なら何も列挙しない | $O(k \binom{\mathrm{popcount}(mask)}{k})$ |
 | `subset_pairs(n)` | $n$ ビットのすべての集合 $S$ と、その部分集合 $T$ の組 $(S, T)$ (`std::pair<long long, long long>`) を、$S$ は 0 から昇順、各 $S$ の中で $T$ は $S$ から 0 まで降順に。$n \le 62$ | $O(3^n)$ |
 
+列挙の戻り値は C++17 でも iterator の組から `vector` に変換でき、C++20 以降では `forward_range` として標準の ranges アルゴリズムや views で使えます。`bits`・`add_one`・`remove_one`・`subset_pairs` の iterator は走査状態を持ち、ほかの列挙の iterator は元の列挙オブジェクトを参照するため、走査中はそのオブジェクトを有効なまま保持してください。
+
 `add_one` と `remove_one` は、構造化束縛で位置と集合を受け取れます。巡回セールスマン問題のように、1 つずつ要素を足していく bit DP の遷移に使えます。
 
 ```cpp

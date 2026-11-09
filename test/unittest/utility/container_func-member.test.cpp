@@ -41,6 +41,16 @@ struct WithReversed : Base {
     std::vector<int> reversed() const { return {43}; }
 };
 
+struct PrivateMax : Base {
+   private:
+    int max() const { return 0; }
+};
+struct DeletedMax : Base {
+    int max() const = delete;
+};
+static_assert(!has_max_v<PrivateMax> && !has_max_v<DeletedMax>);
+static_assert(has_max<WithMax>::value && has_max_v<WithMax>);
+
 int main() {
     bool ok = true;
     auto check = [&](bool cond, const char* what) {
@@ -60,6 +70,7 @@ int main() {
     check(product_xor(WithProductXor{}) == 3000, "product_xor はメンバ関数 product_xor を呼ぶ");
     check(sorted(WithSorted{}) == std::vector<int>{42}, "sorted はメンバ関数 sorted を呼ぶ");
     check(reversed(WithReversed{}) == std::vector<int>{43}, "reversed はメンバ関数 reversed を呼ぶ");
+    check(max(PrivateMax{}) == 3 && max(DeletedMax{}) == 3, "呼べないメンバは検出しない");
     check(sum(Base{}) == 6 && product(Base{}) == 6 && product_xor(Base{}) == 0, "メンバ関数を持たない型");
 
     if (ok) std::cout << "Hello World" << std::endl;

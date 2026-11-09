@@ -5,12 +5,16 @@
 // Range::contains の step = 1 の近道も、愚直な判定と比べる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include <algorithm>
 #include <cstdlib>
 #include <iostream>
 #include <iterator>
 #include <random>
 #include <utility>
 #include <vector>
+#if __cplusplus >= 202002L
+#include <ranges>
+#endif
 
 #include "../../../src/utility/range.hpp"
 #if __cplusplus >= 202002L
@@ -48,6 +52,11 @@ static_assert(std::is_same_v<std::iterator_traits<Grid::const_iterator>::iterato
 #if __cplusplus >= 202002L
 static_assert(std::forward_iterator<Grid::const_iterator>);
 static_assert(std::ranges::forward_range<Grid> && std::ranges::sized_range<Grid>);
+#endif
+
+#if __cplusplus >= 202002L
+static_assert(std::ranges::forward_range<const Grid>);
+static_assert(std::ranges::forward_range<Grid::Neighbors>);
 #endif
 
 int main() {
@@ -163,5 +172,18 @@ int main() {
     }
 #endif
 
+#if __cplusplus >= 202002L
+    {
+        const Grid grid(3, 4);
+        auto diagonal = grid | std::views::filter([](auto p) { return p.first == p.second; });
+        std::vector<Grid::value_type> actual;
+        std::ranges::copy(diagonal, std::back_inserter(actual));
+        if (actual != std::vector<Grid::value_type>{{0, 0}, {1, 1}, {2, 2}}) ok = false;
+        auto neighbors = grid.neighbors4(1, 1) | std::views::transform([](auto p) { return p.first * 4 + p.second; });
+        std::vector<long long> ids;
+        std::ranges::copy(neighbors, std::back_inserter(ids));
+        if (ids != std::vector<long long>{1, 4, 6, 9}) ok = false;
+    }
+#endif
     if (ok) std::cout << "Hello World" << std::endl;
 }

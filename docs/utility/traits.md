@@ -8,9 +8,15 @@ documentation_of: //src/utility/traits.hpp
 ```cpp
 static_assert(is_range_v<std::vector<int>>);
 static_assert(has_sum_v<Range>);
+#if __cplusplus >= 202002L
+template <std::integral T>
+#else
 template <class T, ENABLE_IF_T(std::is_integral_v<T>)>
+#endif
 T twice(T x) { return x * 2; }
 ```
+
+C++20 以降ではメンバ検出を concept・`requires` 式で実装し、C++17 では SFINAE を使います。公開される `has_f<T>` と `has_f_v<T>` の使い方は同じです。`is_range_v` は `begin`・`end` の存在を調べる型特性で、標準の `std::ranges::range` とは要件が異なります。
 
 ## 型特性
 

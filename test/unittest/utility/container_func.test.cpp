@@ -8,10 +8,12 @@
 #include <algorithm>
 #include <functional>
 #include <iostream>
+#include <memory>
 #include <numeric>
 #include <random>
 #include <set>
 #include <string>
+#include <type_traits>
 #include <vector>
 
 bool ok = true;
@@ -22,6 +24,17 @@ void check(bool cond, const char* what) {
         ok = false;
     }
 }
+
+template <class C, class F, class P, class = void>
+struct CanSort : std::false_type {};
+template <class C, class F, class P>
+struct CanSort<C, F, P, std::void_t<decltype(::sort(std::declval<C&>(), std::declval<F>(), std::declval<P>()))>> : std::true_type {};
+struct NotAProjection {};
+struct VoidComparison {
+    void operator()(long long, long long) const {}
+};
+static_assert(!CanSort<std::vector<long long>, VoidComparison, internal_traits::identity>::value);
+static_assert(!CanSort<std::vector<long long>, std::less<>, NotAProjection>::value);
 
 int main() {
     std::mt19937_64 rng(314);
@@ -214,6 +227,41 @@ int main() {
     check(hamming_distance(std::string("karolin"), std::string("kathrin")) == 3, "hamming_distance(string)");
     check(hamming_distance(std::vector<int>{1, 2, 3}, std::vector<long long>{1, 0, 3}) == 1, "hamming_distance(vector)");
     check(hamming_distance(std::string(""), std::string("")) == 0, "hamming_distance 空");
+
+    // ranges::sort/reverse の要件を満たさない proxy iterator も、従来どおり使える。
+    {
+        std::vector<bool> values = {true, false, true, false};
+        sort(values);
+        check(values == std::vector<bool>{false, false, true, true}, "sort(vector<bool>)");
+        reverse(values);
+        check(values == std::vector<bool>{true, true, false, false}, "reverse(vector<bool>)");
+    }
+    // comparator/projection はコピー可能でなくてもよい。
+    {
+        struct Compare {
+            std::unique_ptr<int> count = std::make_unique<int>(0);
+            bool operator()(long long a, long long b) {
+                ++*count;
+                return a < b;
+            }
+        };
+        struct Project {
+            std::unique_ptr<int> value = std::make_unique<int>(-1);
+            long long operator()(long long x) { return x * *value; }
+        };
+        std::vector<long long> values = {1, 3, 2};
+        sort(values, Compare{}, Project{});
+        check(values == std::vector<long long>{3, 2, 1}, "move-only comparator/projection");
+    }
+    // std::ranges::less の追加要件に依存しない。
+    {
+        struct LessOnly {
+            long long value;
+            bool operator<(const LessOnly& other) const { return value < other.value; }
+        };
+        const std::vector<LessOnly> values = {{3}, {1}, {2}};
+        check(min(values).value == 1 && max(values).value == 3, "min/max with operator< only");
+    }
 
     if (ok) std::cout << "Hello World" << std::endl;
 }

@@ -14,6 +14,8 @@
 #include <utility>
 #include <vector>
 
+#include "../../../src/utility/range.hpp"
+
 using Model = std::map<int, long long>;
 
 static_assert(!std::is_assignable_v<decltype((std::declval<Counter<int>&>().lower_bound(0)->second)), long long>);
@@ -206,5 +208,13 @@ int main() {
         check(frequency.empty(), "frequency reference follows clearing");
     }
 
+    {
+        const Range values(0, 10, 2);
+        Counter<long long> inferred(values);
+        check(inferred.size() == 5 && inferred.total() == 5 && inferred.get(4) == 1 && inferred.get(3) == 0, "Range constructor");
+        Counter<std::string> key(std::string("abc"));
+        Counter<std::string> copy(key);
+        check(copy.get("abc") == 1 && copy.total() == 1, "range-like key and copy constructor");
+    }
     if (ok) std::cout << "Hello World" << std::endl;
 }

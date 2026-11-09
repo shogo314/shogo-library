@@ -17,6 +17,15 @@ Range(10).product_xor();  // 0 ^ 1 ^ ... ^ 9 = 1
 
 `sum`、`max` などのメンバ関数を持つので、[コンテナに対する関数](container_func.hpp) の `sum(r)`、`max(r)` などから呼ぶと $O(1)$ で計算されます。
 
+C++20 以降では `Range` は `random_access_range`、`Grid` と近傍列挙は `forward_range` として、標準の ranges アルゴリズムで使えます。`Range` の iterator は値を返し、自分の走査状態を持つので元の `Range` の寿命に依存しません。`Grid` と近傍列挙の iterator は元のオブジェクトを参照します。
+
+`Range`・`Grid` はメンバが不変で代入できないため、views に接続するときは変数に受けてから使います。
+
+```cpp
+Range r(10);
+auto even = r | std::views::filter([](long long x) { return x % 2 == 0; });
+```
+
 ## メンバ関数
 
 | 関数 | 説明 | 計算量 |

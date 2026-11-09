@@ -209,5 +209,10 @@ int main() {
     check(iota(0).empty(), "iota(0)");
     check((std::vector<int>{1, 2} | 0).empty(), "v | 0");
 
+    {
+        const std::vector<__int128_t> indices = {2, 0, 1};
+        check(inverse_permutation(indices) == std::vector<long long>{1, 2, 0}, "integral constraint accepts __int128");
+        check(select(std::vector<int>{10, 20, 30}, indices) == std::vector<int>{30, 10, 20}, "select with __int128 indices");
+    }
     if (ok) std::cout << "Hello World" << std::endl;
 }

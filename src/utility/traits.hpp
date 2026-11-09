@@ -13,16 +13,25 @@
 #include <utility>
 
 #if __cplusplus >= 202002L
+#include <concepts>
 #include <ranges>
 #endif
 
 namespace internal_traits {
 using std::begin, std::end;
 
+#if __cplusplus >= 202002L
+template <class T>
+    struct is_range_impl : std::bool_constant < requires(T& t) {
+    begin(t);
+    end(t);
+}>{};
+#else
 template <class T, class = void>
 struct is_range_impl : std::false_type {};
 template <class T>
 struct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>> : std::true_type {};
+#endif
 
 // サイズ付き範囲から要素を直接構築するコンストラクタで共有する。
 #if __cplusplus >= 202002L
@@ -66,6 +75,27 @@ struct is_range : internal_traits::is_range_impl<T>::type {};
 template <class T>
 inline constexpr bool is_range_v = is_range<T>::value;
 
+#if __cplusplus >= 202002L
+#define HAS_METHOD(func_name)                                                                   \
+    namespace internal_traits {                                                                 \
+    template <class T>                                                                          \
+    concept has_##func_name##_impl = requires { std::declval<T>().func_name(); };               \
+    }                                                                                           \
+    template <class T>                                                                          \
+    struct has_##func_name : std::bool_constant<internal_traits::has_##func_name##_impl<T>> {}; \
+    template <class T>                                                                          \
+    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;
+
+#define HAS_METHOD_ARG(func_name)                                                                  \
+    namespace internal_traits {                                                                    \
+    template <class T, class U>                                                                    \
+    concept has_##func_name##_impl = requires { std::declval<T>().func_name(std::declval<U>()); }; \
+    }                                                                                              \
+    template <class T, class U>                                                                    \
+    struct has_##func_name : std::bool_constant<internal_traits::has_##func_name##_impl<T, U>> {}; \
+    template <class T, class U>                                                                    \
+    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;
+#else
 #define HAS_METHOD(func_name)                                                              \
     namespace internal_traits {                                                            \
     template <class T, class = void>                                                       \
@@ -91,6 +121,7 @@ inline constexpr bool is_range_v = is_range<T>::value;
     struct has_##func_name : internal_traits::has_##func_name##_impl<T, U>::type {};                           \
     template <class T, typename U>                                                                             \
     inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;
+#endif
 
 HAS_METHOD(repr)
 HAS_METHOD(type_str)

@@ -45,7 +45,12 @@ std::vector<long long> rank(const std::vector<T>& v, F comp = F(), P proj = P())
 /**
  * @brief 逆置換 (ret[p[i]] = i)。p は 0, ..., n-1 の置換であること
  */
+#if __cplusplus >= 202002L
+template <typename I>
+    requires(std::integral<I>)
+#else
 template <typename I, ENABLE_IF_T(std::is_integral_v<I>)>
+#endif
 std::vector<long long> inverse_permutation(const std::vector<I>& p) {
     const long long n = p.size();
     std::vector<long long> ret(n, -1);
@@ -60,7 +65,12 @@ std::vector<long long> inverse_permutation(const std::vector<I>& p) {
 /**
  * @brief {v[idx[0]], v[idx[1]], ...} (Uiua の select)
  */
+#if __cplusplus >= 202002L
+template <typename T, typename I>
+    requires(std::integral<I>)
+#else
 template <typename T, typename I, ENABLE_IF_T(std::is_integral_v<I>)>
+#endif
 std::vector<T> select(const std::vector<T>& v, const std::vector<I>& idx) {
     std::vector<T> ret;
     ret.reserve(idx.size());
@@ -94,7 +104,12 @@ inline std::vector<T> operator--(std::vector<T>& v, int) {
     return res;
 }
 
+#if __cplusplus >= 202002L
+template <typename T, typename U>
+    requires(std::convertible_to<U, T>)
+#else
 template <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>
+#endif
 inline std::vector<T>& operator+=(std::vector<T>& v1, const std::vector<U>& v2) {
     if (v2.size() > v1.size()) {
         v1.resize(v2.size());
@@ -105,13 +120,23 @@ inline std::vector<T>& operator+=(std::vector<T>& v1, const std::vector<U>& v2) 
     return v1;
 }
 
+#if __cplusplus >= 202002L
+template <typename T, typename U>
+    requires(std::convertible_to<U, T>)
+#else
 template <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>
+#endif
 inline std::vector<T> operator+(const std::vector<T>& v1, const std::vector<U>& v2) {
     std::vector<T> res(v1);
     return res += v2;
 }
 
+#if __cplusplus >= 202002L
+template <typename T, typename U>
+    requires(std::convertible_to<U, T>)
+#else
 template <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>
+#endif
 inline std::vector<T>& operator+=(std::vector<T>& v, const U& u) {
     for (T& e : v) {
         e += u;
@@ -119,19 +144,34 @@ inline std::vector<T>& operator+=(std::vector<T>& v, const U& u) {
     return v;
 }
 
+#if __cplusplus >= 202002L
+template <typename T, typename U>
+    requires(std::convertible_to<U, T>)
+#else
 template <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>
+#endif
 inline std::vector<T> operator+(const std::vector<T>& v, const U& u) {
     std::vector<T> res(v);
     return res += u;
 }
 
+#if __cplusplus >= 202002L
+template <typename T, typename U>
+    requires(std::convertible_to<U, T>)
+#else
 template <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>
+#endif
 inline std::vector<T> operator+(const U& u, const std::vector<T>& v) {
     std::vector<T> res(v);
     return res += u;
 }
 
+#if __cplusplus >= 202002L
+template <typename T, typename U>
+    requires(std::convertible_to<U, T>)
+#else
 template <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>
+#endif
 inline std::vector<T>& operator*=(std::vector<T>& v1, const std::vector<U>& v2) {
     if (v2.size() > v1.size()) {
         v1.resize(v2.size());
@@ -145,13 +185,23 @@ inline std::vector<T>& operator*=(std::vector<T>& v1, const std::vector<U>& v2) 
     return v1;
 }
 
+#if __cplusplus >= 202002L
+template <typename T, typename U>
+    requires(std::convertible_to<U, T>)
+#else
 template <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>
+#endif
 inline std::vector<T> operator*(const std::vector<T>& v1, const std::vector<U>& v2) {
     std::vector<T> res(v1);
     return res *= v2;
 }
 
+#if __cplusplus >= 202002L
+template <typename T, typename U>
+    requires(std::convertible_to<U, T>)
+#else
 template <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>
+#endif
 inline std::vector<T>& operator*=(std::vector<T>& v, const U& u) {
     for (T& e : v) {
         e *= u;
@@ -159,13 +209,23 @@ inline std::vector<T>& operator*=(std::vector<T>& v, const U& u) {
     return v;
 }
 
+#if __cplusplus >= 202002L
+template <typename T, typename U>
+    requires(std::convertible_to<U, T>)
+#else
 template <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>
+#endif
 inline std::vector<T> operator*(const std::vector<T>& v, const U& u) {
     std::vector<T> res(v);
     return res *= u;
 }
 
+#if __cplusplus >= 202002L
+template <typename T, typename U>
+    requires(std::convertible_to<U, T>)
+#else
 template <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>
+#endif
 inline std::vector<T> operator*(const U& u, const std::vector<T>& v) {
     std::vector<T> res(v);
     return res *= u;
@@ -183,12 +243,22 @@ inline std::vector<T>& extend(std::vector<T>& v1, const std::vector<U>& v2) {
     return v1;
 }
 
+#if __cplusplus >= 202002L
+template <typename T, typename U>
+    requires(std::convertible_to<U, T>)
+#else
 template <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>
+#endif
 inline std::vector<T>& operator|=(std::vector<T>& v1, const std::vector<U>& v2) {
     return extend(v1, v2);
 }
 
+#if __cplusplus >= 202002L
+template <typename T, typename U>
+    requires(std::integral<U>)
+#else
 template <typename T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>
+#endif
 inline std::vector<T>& operator|=(std::vector<T>& v, const U& u) {
     if constexpr (std::is_signed_v<U>) assert(u >= 0);
     std::vector<T> w(v);
@@ -199,13 +269,23 @@ inline std::vector<T>& operator|=(std::vector<T>& v, const U& u) {
     return v;
 }
 
+#if __cplusplus >= 202002L
+template <typename T, typename U>
+    requires(std::integral<U>)
+#else
 template <typename T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>
+#endif
 inline std::vector<T> operator|(const std::vector<T>& v, const U& u) {
     std::vector<T> res(v);
     return res |= u;
 }
 
+#if __cplusplus >= 202002L
+template <typename T, typename U>
+    requires(std::integral<U>)
+#else
 template <typename T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>
+#endif
 inline std::vector<T> operator|(const U& u, const std::vector<T>& v) {
     std::vector<T> res(v);
     return res |= u;
@@ -227,7 +307,12 @@ std::vector<T> cumulative_sum(std::vector<T> v) {
     return ret;
 }
 
+#if __cplusplus >= 202002L
+template <typename T>
+    requires(std::integral<T>)
+#else
 template <typename T, ENABLE_IF_T(std::is_integral_v<T>)>
+#endif
 std::vector<T> iota(T n) {
     assert(n >= 0);
     std::vector<T> ret(n);

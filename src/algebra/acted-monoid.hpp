@@ -25,6 +25,7 @@
 
 #include "monoid.hpp"
 
+#if __cplusplus < 202002L
 namespace internal_acted_monoid {
 template <typename A, typename = void>
 struct has_mapping_lr : std::false_type {};
@@ -35,6 +36,7 @@ struct has_mapping_sz : std::false_type {};
 template <typename A>
 struct has_mapping_sz<A, std::void_t<decltype(std::declval<const A&>().mapping(std::declval<const typename A::F&>(), std::declval<const typename A::S&>(), 0))>> : std::true_type {};
 }  // namespace internal_acted_monoid
+#endif
 
 namespace acted_monoid {
 
@@ -44,9 +46,17 @@ namespace acted_monoid {
  */
 template <typename A>
 constexpr auto apply_mapping(const A& a, const typename A::F& f, const typename A::S& x, long long l, long long r) {
+#if __cplusplus >= 202002L
+    if constexpr (requires { a.mapping(f, x, l, r); }) {
+#else
     if constexpr (internal_acted_monoid::has_mapping_lr<A>::value) {
+#endif
         return a.mapping(f, x, l, r);
+#if __cplusplus >= 202002L
+    } else if constexpr (requires { a.mapping(f, x, r - l); }) {
+#else
     } else if constexpr (internal_acted_monoid::has_mapping_sz<A>::value) {
+#endif
         return a.mapping(f, x, r - l);
     } else {
         return a.mapping(f, x);

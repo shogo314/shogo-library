@@ -11,6 +11,9 @@
 #include <random>
 #include <string>
 #include <vector>
+#if __cplusplus >= 202002L
+#include <ranges>
+#endif
 
 using ll = long long;
 
@@ -35,6 +38,11 @@ std::vector<ll> by_iteration(const Range& r) {
 static_assert(Range(0, 10, 3).size() == 4);
 static_assert(Range(10, 0, -3).sum() == 22);
 static_assert(Range(5).max() == 4);
+
+#if __cplusplus >= 202002L
+static_assert(std::ranges::random_access_range<const Range>);
+static_assert(std::ranges::sized_range<const Range>);
+#endif
 
 int main() {
     std::mt19937_64 rng(314);
@@ -172,6 +180,35 @@ int main() {
             check(it != r.end(), "!= end");
         }
         check(r.begin() + n == r.end(), "begin + size == end");
+    }
+
+    {
+        Range ascending(-5, 12, 3), descending(10, 0, -3);
+        Range::const_iterator assigned;
+        assigned = ascending.begin();
+        check(*assigned == -5, "default iterator assignment");
+        assigned = descending.begin();
+        check(*assigned == 10, "different range assignment");
+        auto independent = Range(2, 12, 3).begin();
+        check(*independent == 2 && independent[2] == 8, "iterator owns its state");
+        for (const auto& r : {ascending, descending}) {
+            for (ll i = 0; i <= r.size(); i++) {
+                for (ll j = 0; j <= r.size(); j++) {
+                    auto a = r.begin() + i, b = r.begin() + j;
+                    check((a < b) == (i < j) && (a > b) == (i > j) && (a <= b) == (i <= j) && (a >= b) == (i >= j), "iterator ordering");
+                    if (j < r.size()) check(a[j - i] == r[j], "iterator []");
+                }
+            }
+        }
+#if __cplusplus >= 202002L
+        auto selected = descending | std::views::filter([](ll x) { return x % 2 != 0; }) | std::views::transform([](ll x) { return 2 * x; });
+        std::vector<ll> got;
+        std::ranges::copy(selected, std::back_inserter(got));
+        check(got == std::vector<ll>{14, 2}, "filter / transform");
+        check(std::ranges::equal(ascending | std::views::reverse, ascending.reversed()), "views::reverse");
+        check(std::ranges::lower_bound(ascending, 0) - ascending.begin() == 2, "ranges::lower_bound");
+        check(std::ranges::distance(descending) == descending.size(), "ranges::distance");
+#endif
     }
 
     // product_xor (負を含まない列)

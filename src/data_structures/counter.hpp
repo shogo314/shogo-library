@@ -43,8 +43,14 @@ struct Counter {
      * @brief 範囲の要素を数える
      * Counter 自身と key_type (std::string など範囲でもあるもの) はこちらで受け取らない
      */
+#if __cplusplus >= 202002L
+    template <class C>
+        requires(!std::same_as<std::decay_t<C>, Counter> && !std::convertible_to<C, key_type> &&
+                 requires(C& c) { std::begin(c); std::end(c); })
+#else
     template <class C, ENABLE_IF_T(!std::is_same_v<std::decay_t<C>, Counter> && !std::is_convertible_v<C, key_type>),
               class = decltype(std::begin(std::declval<C&>()), std::end(std::declval<C&>()))>
+#endif
     explicit Counter(C&& v) {
         for (const key_type& a : v) {
             inc(a, 1);

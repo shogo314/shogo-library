@@ -14,6 +14,9 @@
 #include <type_traits>
 #include <utility>
 #include <vector>
+#if __cplusplus >= 202002L
+#include <ranges>
+#endif
 
 bool ok = true;
 
@@ -316,6 +319,40 @@ int main() {
         static_assert(sum == (5 + 9 + 12) + (0 + 11 + 10 + 22 + 20 + 33 + 32 + 31 + 30));
         static_assert(has_single_bit(64) && !has_single_bit(0) && !has_single_bit(6));
         static_assert(gray_code(5) == 7 && inverse_gray_code(7) == 5 && rotate_left(0b0011, 3, 4) == 0b1001);
+    }
+
+    {
+        auto verify_range = [&](auto range, const auto& expected) {
+            using Value = decltype(*range.begin());
+            check(std::vector<Value>(range.begin(), range.end()) == expected, "iterator range constructor");
+            auto it = range.begin(), independent = it;
+            decltype(it) assigned;
+            assigned = it;
+            if (it != range.end()) {
+                const auto first = *it++;
+                check(first == *independent && first == *assigned, "copy / postfix increment");
+                ++independent;
+                check(it == independent, "independent iterators");
+            }
+#if __cplusplus >= 202002L
+            static_assert(std::ranges::forward_range<decltype(range)>);
+            static_assert(std::ranges::viewable_range<decltype(range)>);
+            auto selected = std::move(range) | std::views::filter([](const auto&) { return true; });
+            std::vector<Value> actual;
+            std::ranges::copy(selected, std::back_inserter(actual));
+            check(actual == expected, "rvalue range / views::filter");
+#endif
+        };
+        verify_range(subsets(5), std::vector<long long>{5, 4, 1, 0});
+        verify_range(supersets(1, 3), std::vector<long long>{1, 3, 5, 7});
+        verify_range(bits(5), std::vector<long long>{0, 2});
+        verify_range(bits(0), std::vector<long long>{});
+        verify_range(combinations_mask(3, 2), std::vector<long long>{3, 5, 6});
+        verify_range(combinations_mask(2, 3), std::vector<long long>{});
+        verify_range(subsets_of_size(5, 1), std::vector<long long>{1, 4});
+        verify_range(add_one(1, 3), std::vector<std::pair<long long, long long>>{{1, 3}, {2, 5}});
+        verify_range(remove_one(5), std::vector<std::pair<long long, long long>>{{0, 4}, {2, 1}});
+        verify_range(subset_pairs(1), std::vector<std::pair<long long, long long>>{{0, 0}, {1, 1}, {1, 0}});
     }
 
     // 0 のときは C++20 の <bit> と同じ値

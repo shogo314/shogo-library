@@ -1175,8 +1175,12 @@ data:
     \ {\n        if (r - l == 1) return {nums[l], dens[l]};\n        long long m =\
     \ (l + r) / 2;\n        auto [a, b] = self(self, l, m);\n        auto [c, d] =\
     \ self(self, m, r);\n        return {a * d + c * b, b * d};\n    };\n    return\
-    \ rec(rec, 0, nums.size());\n}\n\ntemplate <class R>\nFPS(R&&) -> FPS<internal_traits::range_value_t<R>>;\n\
-    #line 14 \"src/math/polynomial-roots.hpp\"\n\nnamespace internal_polynomial_roots\
+    \ rec(rec, 0, nums.size());\n}\n\n// C++23 \u3067\u306F\u7D99\u627F\u3057\u305F\
+    \ vector \u306E\u63A8\u8AD6\u30AC\u30A4\u30C9\u3082\u5019\u88DC\u306B\u306A\u308B\
+    \u305F\u3081\u3001vector \u304B\u3089\u306E\u63A8\u8AD6\u3092\u660E\u793A\u3059\
+    \u308B\u3002\ntemplate <typename mint>\nFPS(std::vector<mint>) -> FPS<mint>;\n\
+    \ntemplate <class R>\nFPS(R&&) -> FPS<internal_traits::range_value_t<R>>;\n#line\
+    \ 14 \"src/math/polynomial-roots.hpp\"\n\nnamespace internal_polynomial_roots\
     \ {\n// 1 \u6B21\u306E\u56E0\u5B50\u306E\u7A4D g (\u6839\u306F\u76F8\u7570\u306A\
     \u308A 0 \u3067\u306A\u3044) \u3092\u3001\u6839\u3054\u3068\u306B\u5206\u3051\u3066\
     \ res \u306B\u5165\u308C\u308B\ntemplate <typename mint>\nvoid split(const FPS<mint>&\
@@ -1316,7 +1320,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/polynomial-roots.test.cpp
   requiredBy: []
-  timestamp: '2026-11-09 04:54:19+09:00'
+  timestamp: '2026-11-10 03:56:42+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/polynomial-roots.test.cpp

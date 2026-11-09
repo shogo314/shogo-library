@@ -1173,8 +1173,12 @@ data:
     \ {\n        if (r - l == 1) return {nums[l], dens[l]};\n        long long m =\
     \ (l + r) / 2;\n        auto [a, b] = self(self, l, m);\n        auto [c, d] =\
     \ self(self, m, r);\n        return {a * d + c * b, b * d};\n    };\n    return\
-    \ rec(rec, 0, nums.size());\n}\n\ntemplate <class R>\nFPS(R&&) -> FPS<internal_traits::range_value_t<R>>;\n\
-    #line 13 \"test/unittest/math/fps-gcd.test.cpp\"\n\nbool ok = true;\nvoid check(bool\
+    \ rec(rec, 0, nums.size());\n}\n\n// C++23 \u3067\u306F\u7D99\u627F\u3057\u305F\
+    \ vector \u306E\u63A8\u8AD6\u30AC\u30A4\u30C9\u3082\u5019\u88DC\u306B\u306A\u308B\
+    \u305F\u3081\u3001vector \u304B\u3089\u306E\u63A8\u8AD6\u3092\u660E\u793A\u3059\
+    \u308B\u3002\ntemplate <typename mint>\nFPS(std::vector<mint>) -> FPS<mint>;\n\
+    \ntemplate <class R>\nFPS(R&&) -> FPS<internal_traits::range_value_t<R>>;\n#line\
+    \ 13 \"test/unittest/math/fps-gcd.test.cpp\"\n\nbool ok = true;\nvoid check(bool\
     \ cond, const char* what) {\n    if (!cond && ok) std::cerr << \"failed: \" <<\
     \ what << std::endl;\n    if (!cond) ok = false;\n}\n\ntemplate <typename mint>\n\
     FPS<mint> monic(FPS<mint> f) {\n    f.normalize();\n    if (!f.empty()) f /= f.back();\n\
@@ -1261,7 +1265,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/fps-gcd.test.cpp
   requiredBy: []
-  timestamp: '2026-11-09 04:54:19+09:00'
+  timestamp: '2026-11-10 03:56:42+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/fps-gcd.test.cpp

@@ -1161,9 +1161,13 @@ data:
     \ {\n        if (r - l == 1) return {nums[l], dens[l]};\n        long long m =\
     \ (l + r) / 2;\n        auto [a, b] = self(self, l, m);\n        auto [c, d] =\
     \ self(self, m, r);\n        return {a * d + c * b, b * d};\n    };\n    return\
-    \ rec(rec, 0, nums.size());\n}\n\ntemplate <class R>\nFPS(R&&) -> FPS<internal_traits::range_value_t<R>>;\n\
-    #line 4 \"test/yosupo/enumerative_combinatorics/partition-function.2.test.cpp\"\
-    \n\nusing mint = modint998244353;\n\nint main() {\n    long long n;\n    std::cin\
+    \ rec(rec, 0, nums.size());\n}\n\n// C++23 \u3067\u306F\u7D99\u627F\u3057\u305F\
+    \ vector \u306E\u63A8\u8AD6\u30AC\u30A4\u30C9\u3082\u5019\u88DC\u306B\u306A\u308B\
+    \u305F\u3081\u3001vector \u304B\u3089\u306E\u63A8\u8AD6\u3092\u660E\u793A\u3059\
+    \u308B\u3002\ntemplate <typename mint>\nFPS(std::vector<mint>) -> FPS<mint>;\n\
+    \ntemplate <class R>\nFPS(R&&) -> FPS<internal_traits::range_value_t<R>>;\n#line\
+    \ 4 \"test/yosupo/enumerative_combinatorics/partition-function.2.test.cpp\"\n\n\
+    using mint = modint998244353;\n\nint main() {\n    long long n;\n    std::cin\
     \ >> n;\n    FPS<mint> f(n + 1, 0);\n    for (int i = 0;; i++) {\n        if (i\
     \ * (3 * i - 1) > n * 2) break;\n        f[i * (3 * i - 1) / 2] = (i % 2 ? -1\
     \ : 1);\n    }\n    for (int i = -1;; i--) {\n        if (i * (3 * i - 1) > n\
@@ -1188,7 +1192,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/enumerative_combinatorics/partition-function.2.test.cpp
   requiredBy: []
-  timestamp: '2026-11-09 04:54:19+09:00'
+  timestamp: '2026-11-10 03:56:42+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/enumerative_combinatorics/partition-function.2.test.cpp

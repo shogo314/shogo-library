@@ -1174,16 +1174,20 @@ data:
     \ {\n        if (r - l == 1) return {nums[l], dens[l]};\n        long long m =\
     \ (l + r) / 2;\n        auto [a, b] = self(self, l, m);\n        auto [c, d] =\
     \ self(self, m, r);\n        return {a * d + c * b, b * d};\n    };\n    return\
-    \ rec(rec, 0, nums.size());\n}\n\ntemplate <class R>\nFPS(R&&) -> FPS<internal_traits::range_value_t<R>>;\n\
-    #line 16 \"src/math/sparse-fps.hpp\"\n\nnamespace internal_sparse_fps {\n// f\
-    \ \u306E 0 \u3067\u306A\u3044\u9805 (\u6B21\u6570, \u4FC2\u6570) \u3092\u3001\u6B21\
-    \u6570 min_deg \u4EE5\u4E0A\u306E\u3082\u306E\u3060\u3051\u96C6\u3081\u308B\n\
-    template <typename mint>\nstd::vector<std::pair<long long, mint>> nonzero(const\
-    \ FPS<mint>& f, long long min_deg = 0) {\n    std::vector<std::pair<long long,\
-    \ mint>> res;\n    for (long long i = min_deg; i < static_cast<long long>(f.size());\
-    \ i++)\n        if (f[i] != 0) res.emplace_back(i, f[i]);\n    return res;\n}\n\
-    // f_0 != 0 \u306E f \u306B\u3064\u3044\u3066\u3001g = f^e (e \u306F mint) \u306E\
-    \u5148\u982D n \u9805\u3002f g' = e f' g \u306E\u4FC2\u6570\u3092\u6BD4\u3079\u3066\
+    \ rec(rec, 0, nums.size());\n}\n\n// C++23 \u3067\u306F\u7D99\u627F\u3057\u305F\
+    \ vector \u306E\u63A8\u8AD6\u30AC\u30A4\u30C9\u3082\u5019\u88DC\u306B\u306A\u308B\
+    \u305F\u3081\u3001vector \u304B\u3089\u306E\u63A8\u8AD6\u3092\u660E\u793A\u3059\
+    \u308B\u3002\ntemplate <typename mint>\nFPS(std::vector<mint>) -> FPS<mint>;\n\
+    \ntemplate <class R>\nFPS(R&&) -> FPS<internal_traits::range_value_t<R>>;\n#line\
+    \ 16 \"src/math/sparse-fps.hpp\"\n\nnamespace internal_sparse_fps {\n// f \u306E\
+    \ 0 \u3067\u306A\u3044\u9805 (\u6B21\u6570, \u4FC2\u6570) \u3092\u3001\u6B21\u6570\
+    \ min_deg \u4EE5\u4E0A\u306E\u3082\u306E\u3060\u3051\u96C6\u3081\u308B\ntemplate\
+    \ <typename mint>\nstd::vector<std::pair<long long, mint>> nonzero(const FPS<mint>&\
+    \ f, long long min_deg = 0) {\n    std::vector<std::pair<long long, mint>> res;\n\
+    \    for (long long i = min_deg; i < static_cast<long long>(f.size()); i++)\n\
+    \        if (f[i] != 0) res.emplace_back(i, f[i]);\n    return res;\n}\n// f_0\
+    \ != 0 \u306E f \u306B\u3064\u3044\u3066\u3001g = f^e (e \u306F mint) \u306E\u5148\
+    \u982D n \u9805\u3002f g' = e f' g \u306E\u4FC2\u6570\u3092\u6BD4\u3079\u3066\
     \ 1 \u9805\u305A\u3064\u6C42\u3081\u308B\n// f_0 n g_n = \u03A3_{i >= 1} f_i g_{n-i}\
     \ (e i - (n - i))\ntemplate <typename mint>\nFPS<mint> pow_nonzero_constant(const\
     \ FPS<mint>& f, mint e, mint g0, long long n) {\n    using C = Combination<mint>;\n\
@@ -1336,7 +1340,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/sparse-fps.test.cpp
   requiredBy: []
-  timestamp: '2026-11-09 04:54:19+09:00'
+  timestamp: '2026-11-10 03:56:42+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/sparse-fps.test.cpp

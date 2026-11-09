@@ -1179,8 +1179,12 @@ data:
     \ {\n        if (r - l == 1) return {nums[l], dens[l]};\n        long long m =\
     \ (l + r) / 2;\n        auto [a, b] = self(self, l, m);\n        auto [c, d] =\
     \ self(self, m, r);\n        return {a * d + c * b, b * d};\n    };\n    return\
-    \ rec(rec, 0, nums.size());\n}\n\ntemplate <class R>\nFPS(R&&) -> FPS<internal_traits::range_value_t<R>>;\n\
-    #line 12 \"test/unittest/math/fps.test.cpp\"\n\n#line 15 \"test/unittest/math/fps.test.cpp\"\
+    \ rec(rec, 0, nums.size());\n}\n\n// C++23 \u3067\u306F\u7D99\u627F\u3057\u305F\
+    \ vector \u306E\u63A8\u8AD6\u30AC\u30A4\u30C9\u3082\u5019\u88DC\u306B\u306A\u308B\
+    \u305F\u3081\u3001vector \u304B\u3089\u306E\u63A8\u8AD6\u3092\u660E\u793A\u3059\
+    \u308B\u3002\ntemplate <typename mint>\nFPS(std::vector<mint>) -> FPS<mint>;\n\
+    \ntemplate <class R>\nFPS(R&&) -> FPS<internal_traits::range_value_t<R>>;\n#line\
+    \ 12 \"test/unittest/math/fps.test.cpp\"\n\n#line 15 \"test/unittest/math/fps.test.cpp\"\
     \n#include <forward_list>\n#line 18 \"test/unittest/math/fps.test.cpp\"\n#include\
     \ <list>\n#include <random>\n#include <sstream>\n#include <string>\n#line 24 \"\
     test/unittest/math/fps.test.cpp\"\n\nusing mint = static_modint<998244353>;\n\
@@ -1220,9 +1224,16 @@ data:
     \ != 1) ok = false;\n    F empty_range(std::array<int, 0>{});\n    if (!empty_range.empty())\
     \ ok = false;\n    const P coefficients{1, -2, 0};\n    FPS deduced(coefficients);\n\
     \    static_assert(std::is_same_v<decltype(deduced), F>);\n    if (deduced !=\
-    \ F{1, -2, 0}) ok = false;\n    static_assert(!std::is_constructible_v<F, std::forward_list<int>&>);\n\
-    \    static_assert(!std::is_constructible_v<F, std::array<std::string, 3>&>);\n\
-    #if __cplusplus >= 202002L\n    static_assert(std::ranges::input_range<InputCoefficients>\
+    \ F{1, -2, 0}) ok = false;\n    P mutable_coefficients = coefficients;\n    FPS\
+    \ deduced_mutable(mutable_coefficients);\n    FPS deduced_temporary(P{1, -2, 0});\n\
+    \    FPS deduced_const_rvalue(std::move(coefficients));\n    FPS deduced_copy(deduced);\n\
+    \    FPS deduced_move(std::move(deduced_copy));\n    static_assert(std::is_same_v<decltype(deduced_mutable),\
+    \ F>);\n    static_assert(std::is_same_v<decltype(deduced_temporary), F>);\n \
+    \   static_assert(std::is_same_v<decltype(deduced_const_rvalue), F>);\n    static_assert(std::is_same_v<decltype(deduced_move),\
+    \ F>);\n    if (deduced_mutable != deduced || deduced_temporary != deduced ||\
+    \ deduced_const_rvalue != deduced || deduced_move != deduced) ok = false;\n  \
+    \  static_assert(!std::is_constructible_v<F, std::forward_list<int>&>);\n    static_assert(!std::is_constructible_v<F,\
+    \ std::array<std::string, 3>&>);\n#if __cplusplus >= 202002L\n    static_assert(std::ranges::input_range<InputCoefficients>\
     \ && std::ranges::sized_range<InputCoefficients>);\n    static_assert(!std::ranges::forward_range<InputCoefficients>);\n\
     \    verify_range(std::views::iota(0, 3) | std::views::transform([&](int i) {\
     \ return raw[i]; }));\n#endif\n    static_assert(std::is_constructible_v<F, const\
@@ -1461,9 +1472,16 @@ data:
     \ != 1) ok = false;\n    F empty_range(std::array<int, 0>{});\n    if (!empty_range.empty())\
     \ ok = false;\n    const P coefficients{1, -2, 0};\n    FPS deduced(coefficients);\n\
     \    static_assert(std::is_same_v<decltype(deduced), F>);\n    if (deduced !=\
-    \ F{1, -2, 0}) ok = false;\n    static_assert(!std::is_constructible_v<F, std::forward_list<int>&>);\n\
-    \    static_assert(!std::is_constructible_v<F, std::array<std::string, 3>&>);\n\
-    #if __cplusplus >= 202002L\n    static_assert(std::ranges::input_range<InputCoefficients>\
+    \ F{1, -2, 0}) ok = false;\n    P mutable_coefficients = coefficients;\n    FPS\
+    \ deduced_mutable(mutable_coefficients);\n    FPS deduced_temporary(P{1, -2, 0});\n\
+    \    FPS deduced_const_rvalue(std::move(coefficients));\n    FPS deduced_copy(deduced);\n\
+    \    FPS deduced_move(std::move(deduced_copy));\n    static_assert(std::is_same_v<decltype(deduced_mutable),\
+    \ F>);\n    static_assert(std::is_same_v<decltype(deduced_temporary), F>);\n \
+    \   static_assert(std::is_same_v<decltype(deduced_const_rvalue), F>);\n    static_assert(std::is_same_v<decltype(deduced_move),\
+    \ F>);\n    if (deduced_mutable != deduced || deduced_temporary != deduced ||\
+    \ deduced_const_rvalue != deduced || deduced_move != deduced) ok = false;\n  \
+    \  static_assert(!std::is_constructible_v<F, std::forward_list<int>&>);\n    static_assert(!std::is_constructible_v<F,\
+    \ std::array<std::string, 3>&>);\n#if __cplusplus >= 202002L\n    static_assert(std::ranges::input_range<InputCoefficients>\
     \ && std::ranges::sized_range<InputCoefficients>);\n    static_assert(!std::ranges::forward_range<InputCoefficients>);\n\
     \    verify_range(std::views::iota(0, 3) | std::views::transform([&](int i) {\
     \ return raw[i]; }));\n#endif\n    static_assert(std::is_constructible_v<F, const\
@@ -1653,7 +1671,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/fps.test.cpp
   requiredBy: []
-  timestamp: '2026-11-09 04:54:19+09:00'
+  timestamp: '2026-11-10 03:56:42+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/fps.test.cpp

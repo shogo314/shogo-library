@@ -77,19 +77,20 @@ data:
     , flush=True)\n\n\ndef main():\n    parser = argparse.ArgumentParser(description=__doc__)\n\
     \    parser.add_argument(\"checks\", nargs=\"+\", choices=[\"headers\", \"unittests\"\
     , \"sanitizers\", \"docs\"])\n    parser.add_argument(\"--std\", choices=[\"gnu++17\"\
-    , \"gnu++20\"], default=\"gnu++17\")\n    parser.add_argument(\"--cxx\", default=\"\
-    g++\")\n    parser.add_argument(\"--jobs\", type=int, default=2)\n    args = parser.parse_args()\n\
-    \    if args.jobs < 1:\n        parser.error(\"--jobs must be positive\")\n  \
-    \  # Path \u306E\u5217\u6319\u3082\u542B\u3081\u3001\u3069\u306E\u30C7\u30A3\u30EC\
-    \u30AF\u30C8\u30EA\u304B\u3089\u8D77\u52D5\u3057\u3066\u3082\u540C\u3058\u5BFE\
-    \u8C61\u3092\u691C\u8A3C\u3059\u308B\u3002\n    os.chdir(ROOT)\n    try:\n   \
-    \     for check in args.checks:\n            if check == \"headers\":\n      \
-    \          check_headers(args.cxx, args.std, args.jobs)\n            elif check\
-    \ == \"unittests\":\n                check_unittests(args.cxx, args.std, args.jobs)\n\
-    \            elif check == \"sanitizers\":\n                check_unittests(args.cxx,\
-    \ args.std, args.jobs, sanitizers=True)\n            else:\n                check_docs()\n\
-    \    except RuntimeError as error:\n        parser.exit(1, f\"{error}\\n\")\n\n\
-    \nif __name__ == \"__main__\":\n    main()\n"
+    , \"gnu++20\", \"gnu++23\"], default=\"gnu++17\")\n    parser.add_argument(\"\
+    --cxx\", default=\"g++\")\n    parser.add_argument(\"--jobs\", type=int, default=2)\n\
+    \    args = parser.parse_args()\n    if args.jobs < 1:\n        parser.error(\"\
+    --jobs must be positive\")\n    # Path \u306E\u5217\u6319\u3082\u542B\u3081\u3001\
+    \u3069\u306E\u30C7\u30A3\u30EC\u30AF\u30C8\u30EA\u304B\u3089\u8D77\u52D5\u3057\
+    \u3066\u3082\u540C\u3058\u5BFE\u8C61\u3092\u691C\u8A3C\u3059\u308B\u3002\n   \
+    \ os.chdir(ROOT)\n    try:\n        for check in args.checks:\n            if\
+    \ check == \"headers\":\n                check_headers(args.cxx, args.std, args.jobs)\n\
+    \            elif check == \"unittests\":\n                check_unittests(args.cxx,\
+    \ args.std, args.jobs)\n            elif check == \"sanitizers\":\n          \
+    \      check_unittests(args.cxx, args.std, args.jobs, sanitizers=True)\n     \
+    \       else:\n                check_docs()\n    except RuntimeError as error:\n\
+    \        parser.exit(1, f\"{error}\\n\")\n\n\nif __name__ == \"__main__\":\n \
+    \   main()\n"
   dependsOn: []
   isVerificationFile: false
   path: tools/check_library.py

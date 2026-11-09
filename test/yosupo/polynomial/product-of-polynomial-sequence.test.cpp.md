@@ -1162,15 +1162,19 @@ data:
     \ {\n        if (r - l == 1) return {nums[l], dens[l]};\n        long long m =\
     \ (l + r) / 2;\n        auto [a, b] = self(self, l, m);\n        auto [c, d] =\
     \ self(self, m, r);\n        return {a * d + c * b, b * d};\n    };\n    return\
-    \ rec(rec, 0, nums.size());\n}\n\ntemplate <class R>\nFPS(R&&) -> FPS<internal_traits::range_value_t<R>>;\n\
-    #line 8 \"test/yosupo/polynomial/product-of-polynomial-sequence.test.cpp\"\n\n\
-    using mint = modint998244353;\n\nint main() {\n    std::cin.tie(nullptr);\n  \
-    \  std::ios::sync_with_stdio(false);\n    int n;\n    std::cin >> n;\n    std::vector<FPS<mint>>\
-    \ fs(n);\n    long long total = 0;\n    for (auto& f : fs) {\n        int d;\n\
-    \        std::cin >> d;\n        total += d;\n        f.resize(d + 1);\n     \
-    \   for (auto& x : f) std::cin >> x;\n    }\n    FPS<mint> g = polynomial_product(fs);\n\
-    \    g.resize(total + 1);\n    for (long long i = 0; i <= total; i++) std::cout\
-    \ << g[i] << (i == total ? '\\n' : ' ');\n}\n"
+    \ rec(rec, 0, nums.size());\n}\n\n// C++23 \u3067\u306F\u7D99\u627F\u3057\u305F\
+    \ vector \u306E\u63A8\u8AD6\u30AC\u30A4\u30C9\u3082\u5019\u88DC\u306B\u306A\u308B\
+    \u305F\u3081\u3001vector \u304B\u3089\u306E\u63A8\u8AD6\u3092\u660E\u793A\u3059\
+    \u308B\u3002\ntemplate <typename mint>\nFPS(std::vector<mint>) -> FPS<mint>;\n\
+    \ntemplate <class R>\nFPS(R&&) -> FPS<internal_traits::range_value_t<R>>;\n#line\
+    \ 8 \"test/yosupo/polynomial/product-of-polynomial-sequence.test.cpp\"\n\nusing\
+    \ mint = modint998244353;\n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
+    \    int n;\n    std::cin >> n;\n    std::vector<FPS<mint>> fs(n);\n    long long\
+    \ total = 0;\n    for (auto& f : fs) {\n        int d;\n        std::cin >> d;\n\
+    \        total += d;\n        f.resize(d + 1);\n        for (auto& x : f) std::cin\
+    \ >> x;\n    }\n    FPS<mint> g = polynomial_product(fs);\n    g.resize(total\
+    \ + 1);\n    for (long long i = 0; i <= total; i++) std::cout << g[i] << (i ==\
+    \ total ? '\\n' : ' ');\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/product_of_polynomial_sequence\"\
     \n\n#include <iostream>\n#include <vector>\n\n#include \"../../../src/math/fps.hpp\"\
     \n#include \"../../../src/math/modint.hpp\"\n\nusing mint = modint998244353;\n\
@@ -1191,7 +1195,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/polynomial/product-of-polynomial-sequence.test.cpp
   requiredBy: []
-  timestamp: '2026-11-09 04:54:19+09:00'
+  timestamp: '2026-11-10 03:56:42+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/polynomial/product-of-polynomial-sequence.test.cpp

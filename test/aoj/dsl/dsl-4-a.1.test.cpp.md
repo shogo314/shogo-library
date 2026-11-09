@@ -41,15 +41,18 @@ data:
     #line 14 \"src/geometry/vector.hpp\"\n#include <utility>\n\n#line 2 \"src/utility/traits.hpp\"\
     \n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n\
     #include <functional>\n#include <iterator>\n#include <set>\n#line 14 \"src/utility/traits.hpp\"\
-    \n\n#if __cplusplus >= 202002L\n#include <ranges>\n#endif\n\nnamespace internal_traits\
-    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
-    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
-    \ end(std::declval<T&>()))>> : std::true_type {};\n\n// \u30B5\u30A4\u30BA\u4ED8\
-    \u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\u3059\
-    \u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\u308B\
-    \u3002\n#if __cplusplus >= 202002L\ntemplate <class R, class S>\nconcept sized_constructible_range\
-    \ = std::ranges::input_range<R> && std::ranges::sized_range<R> &&\n          \
-    \                          std::is_constructible_v<S, std::ranges::range_reference_t<R>>;\n\
+    \n\n#if __cplusplus >= 202002L\n#include <concepts>\n#include <ranges>\n#endif\n\
+    \nnamespace internal_traits {\nusing std::begin, std::end;\n\n#if __cplusplus\
+    \ >= 202002L\ntemplate <class T>\n    struct is_range_impl : std::bool_constant\
+    \ < requires(T& t) {\n    begin(t);\n    end(t);\n}>{};\n#else\ntemplate <class\
+    \ T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class\
+    \ T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n#endif\n\n// \u30B5\u30A4\u30BA\
+    \u4ED8\u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\
+    \u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\
+    \u308B\u3002\n#if __cplusplus >= 202002L\ntemplate <class R, class S>\nconcept\
+    \ sized_constructible_range = std::ranges::input_range<R> && std::ranges::sized_range<R>\
+    \ &&\n                                    std::is_constructible_v<S, std::ranges::range_reference_t<R>>;\n\
     \ntemplate <class R>\nauto range_size(R& r) {\n    return std::ranges::size(r);\n\
     }\ntemplate <class R>\nauto range_begin(R& r) {\n    return std::ranges::begin(r);\n\
     }\ntemplate <class R>\nusing range_value_t = std::ranges::range_value_t<R>;\n\
@@ -64,13 +67,35 @@ data:
     \    : std::is_constructible<S, decltype(*begin(std::declval<R&>()))> {};\n#endif\n\
     }  // namespace internal_traits\n\ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
     \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
-    \n#define HAS_METHOD(func_name)                                              \
-    \                \\\n    namespace internal_traits {                         \
-    \                                   \\\n    template <class T, class = void> \
-    \                                                      \\\n    struct has_##func_name##_impl\
-    \ : std::false_type {};                                    \\\n    template <class\
-    \ T>                                                                     \\\n\
-    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
+    \n#if __cplusplus >= 202002L\n#define HAS_METHOD(func_name)                  \
+    \                                                 \\\n    namespace internal_traits\
+    \ {                                                                 \\\n    template\
+    \ <class T>                                                                  \
+    \        \\\n    concept has_##func_name##_impl = requires { std::declval<T>().func_name();\
+    \ };               \\\n    }                                                 \
+    \                                          \\\n    template <class T>        \
+    \                                                                  \\\n    struct\
+    \ has_##func_name : std::bool_constant<internal_traits::has_##func_name##_impl<T>>\
+    \ {}; \\\n    template <class T>                                             \
+    \                             \\\n    inline constexpr bool has_##func_name##_v\
+    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
+    \                                                        \\\n    namespace internal_traits\
+    \ {                                                                    \\\n  \
+    \  template <class T, class U>                                               \
+    \                     \\\n    concept has_##func_name##_impl = requires { std::declval<T>().func_name(std::declval<U>());\
+    \ }; \\\n    }                                                               \
+    \                               \\\n    template <class T, class U>          \
+    \                                                          \\\n    struct has_##func_name\
+    \ : std::bool_constant<internal_traits::has_##func_name##_impl<T, U>> {}; \\\n\
+    \    template <class T, class U>                                             \
+    \                       \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T,\
+    \ U>::value;\n#else\n#define HAS_METHOD(func_name)                           \
+    \                                   \\\n    namespace internal_traits {      \
+    \                                                      \\\n    template <class\
+    \ T, class = void>                                                       \\\n\
+    \    struct has_##func_name##_impl : std::false_type {};                     \
+    \               \\\n    template <class T>                                   \
+    \                                  \\\n    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
     \ \\\n        : std::true_type {};                                           \
     \                    \\\n    }                                               \
     \                                       \\\n    template <class T>           \
@@ -94,11 +119,11 @@ data:
     \ U>::type {};                           \\\n    template <class T, typename U>\
     \                                                                            \
     \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
-    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
-    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
-    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
-    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
-    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
+    #endif\n\nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\n\
+    HAS_METHOD(max)\nHAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\n\
+    HAS_METHOD(product)\nHAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\n\
+    HAS_METHOD_ARG(lower_bound)\nHAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr)\
+    \ std::enable_if_t<expr, std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
     \nnamespace internal_traits {\n// \u5C04\u5F71 (proj) \u306E\u65E2\u5B9A\u5024\
     \n#if __cplusplus >= 202002L\nusing identity = std::identity;\n#else\nstruct identity\
     \ {\n    using is_transparent = void;\n    template <class T>\n    constexpr T&&\
@@ -285,11 +310,31 @@ data:
     \ max, sum \u306A\u3069)\n */\n\n#include <algorithm>\n#line 12 \"src/utility/container_func.hpp\"\
     \n#include <initializer_list>\n#line 14 \"src/utility/container_func.hpp\"\n#include\
     \ <numeric>\n#line 17 \"src/utility/container_func.hpp\"\n\n#line 19 \"src/utility/container_func.hpp\"\
-    \n\n#define METHOD_EXPAND(func)                                        \\\n  \
-    \  template <typename T, ENABLE_IF_T(has_##func##_v<T>)>          \\\n    inline\
-    \ constexpr auto func(const T& t) -> decltype(t.func()) { \\\n        return t.func();\
-    \                                           \\\n    }\n\n#define METHOD_AND_FUNC_ARG_EXPAND(func)\
-    \                                  \\\n    template <typename T, typename U, ENABLE_IF_T(has_##func##_v<T,\
+    \n\n#if __cplusplus >= 202002L\n#define METHOD_EXPAND(func)         \\\n    template\
+    \ <typename T>           \\\n        requires(has_##func##_v<T>) \\\n    inline\
+    \ constexpr auto func(const T& t) -> decltype(t.func()) { return t.func(); }\n\
+    \n#define METHOD_AND_FUNC_ARG_EXPAND(func)                                   \
+    \                            \\\n    template <typename T, typename U>       \
+    \                                                           \\\n        requires(has_##func##_v<T,\
+    \ U>)                                                                 \\\n   \
+    \ inline constexpr auto func(const T& t, const U& u) -> decltype(t.func(u)) {\
+    \ return t.func(u); }    \\\n    template <typename T, typename U>           \
+    \                                                       \\\n        requires(!has_##func##_v<T,\
+    \ U>)                                                                \\\n    inline\
+    \ constexpr auto func(const T& t, const U& u) -> decltype(std::func(t.begin(),\
+    \ t.end(), u)) { \\\n        if constexpr (requires { std::ranges::func(t, u);\
+    \ }) {                                         \\\n            return std::ranges::func(t,\
+    \ u);                                                            \\\n        }\
+    \ else {                                                                     \
+    \                  \\\n            return std::func(t.begin(), t.end(), u);  \
+    \                                                 \\\n        }              \
+    \                                                                            \
+    \    \\\n    }\n#else\n#define METHOD_EXPAND(func)                           \
+    \             \\\n    template <typename T, ENABLE_IF_T(has_##func##_v<T>)>  \
+    \        \\\n    inline constexpr auto func(const T& t) -> decltype(t.func())\
+    \ { \\\n        return t.func();                                           \\\n\
+    \    }\n\n#define METHOD_AND_FUNC_ARG_EXPAND(func)                           \
+    \       \\\n    template <typename T, typename U, ENABLE_IF_T(has_##func##_v<T,\
     \ U>)>  \\\n    inline constexpr auto func(const T& t, const U& u)           \
     \         \\\n        -> decltype(t.func(u)) {                               \
     \           \\\n        return t.func(u);                                    \
@@ -298,59 +343,93 @@ data:
     \ U>)> \\\n    inline constexpr auto func(const T& t, const U& u)            \
     \        \\\n        -> decltype(std::func(t.begin(), t.end(), u)) {         \
     \          \\\n        return std::func(t.begin(), t.end(), u);              \
-    \            \\\n    }\n\nMETHOD_EXPAND(reversed)\ntemplate <class C, ENABLE_IF_T(!has_reversed_v<C>)>\n\
-    inline constexpr C reversed(C t) {\n    std::reverse(t.begin(), t.end());\n  \
-    \  return t;\n}\n\nnamespace internal_container_func {\n// comp(proj(a), proj(b))\
-    \ \u3067\u6BD4\u3079\u3089\u308C\u308B\u304B\ntemplate <class C, class F, class\
-    \ P, class = void>\nstruct is_projected_comp : std::false_type {};\ntemplate <class\
-    \ C, class F, class P>\nstruct is_projected_comp<C, F, P, std::void_t<std::invoke_result_t<P&,\
-    \ const mem_value_type<C>&>>>\n    : std::is_invocable_r<bool, F&, std::invoke_result_t<P&,\
-    \ const mem_value_type<C>&>, std::invoke_result_t<P&, const mem_value_type<C>&>>\
-    \ {};\n}  // namespace internal_container_func\n\nMETHOD_EXPAND(sorted)\ntemplate\
-    \ <class C, class F = std::less<>, class P = internal_traits::identity, ENABLE_IF_T(!has_sorted_v<C>\
-    \ && internal_container_func::is_projected_comp<C, F, P>::value)>\ninline constexpr\
-    \ C sorted(C t, F comp = F(), P proj = P()) {\n    std::sort(t.begin(), t.end(),\
-    \ [&](const mem_value_type<C>& a, const mem_value_type<C>& b) {\n        return\
-    \ std::invoke(comp, std::invoke(proj, a), std::invoke(proj, b));\n    });\n  \
-    \  return t;\n}\n\ntemplate <class C, class F = std::less<>, class P = internal_traits::identity,\
-    \ ENABLE_IF_T(internal_container_func::is_projected_comp<C, F, P>::value)>\ninline\
-    \ constexpr void sort(C& t, F comp = F(), P proj = P()) {\n    std::sort(t.begin(),\
-    \ t.end(), [&](const mem_value_type<C>& a, const mem_value_type<C>& b) {\n   \
-    \     return std::invoke(comp, std::invoke(proj, a), std::invoke(proj, b));\n\
-    \    });\n}\n// sort(c, {}, proj) \u7528\u3002std::vector \u306A\u3069\u3067\u306F\
-    \ ADL \u3067 std::sort(first, last, comp) \u3082\u5019\u88DC\u306B\u306A\u308A\
+    \            \\\n    }\n#endif\n\nMETHOD_EXPAND(reversed)\n#if __cplusplus >=\
+    \ 202002L\ntemplate <class C>\n    requires(!has_reversed_v<C>)\n#else\ntemplate\
+    \ <class C, ENABLE_IF_T(!has_reversed_v<C>)>\n#endif\ninline constexpr C reversed(C\
+    \ t) {\n#if __cplusplus >= 202002L\n    if constexpr (requires { std::ranges::reverse(t);\
+    \ }) {\n        std::ranges::reverse(t);\n    } else\n#endif\n    {\n        std::reverse(t.begin(),\
+    \ t.end());\n    }\n    return t;\n}\n\nnamespace internal_container_func {\n\
+    // comp(proj(a), proj(b)) \u3067\u6BD4\u3079\u3089\u308C\u308B\u304B\n#if __cplusplus\
+    \ >= 202002L\ntemplate <class C, class F, class P>\nconcept projected_comp = requires(F&\
+    \ comp, P& proj, const typename C::value_type& value) {\n    { std::invoke(comp,\
+    \ std::invoke(proj, value), std::invoke(proj, value)) } -> std::convertible_to<bool>;\n\
+    };\n#else\ntemplate <class C, class F, class P, class = void>\nstruct is_projected_comp\
+    \ : std::false_type {};\ntemplate <class C, class F, class P>\nstruct is_projected_comp<C,\
+    \ F, P, std::void_t<std::invoke_result_t<P&, const mem_value_type<C>&>>>\n   \
+    \ : std::is_invocable_r<bool, F&, std::invoke_result_t<P&, const mem_value_type<C>&>,\
+    \ std::invoke_result_t<P&, const mem_value_type<C>&>> {};\n#endif\n// ranges \u3067\
+    \u6271\u3048\u308B iterator \u3067\u306F\u5C04\u5F71\u3092\u76F4\u63A5\u6E21\u3059\
+    \u3002vector<bool> \u306A\u3069\u306F\u5F93\u6765\u306E\u30A2\u30EB\u30B4\u30EA\
+    \u30BA\u30E0\u3092\u4F7F\u3046\u3002\ntemplate <class C, class F, class P>\nconstexpr\
+    \ void sort(C& values, F& comp, P& proj) {\n#if __cplusplus >= 202002L\n    if\
+    \ constexpr (requires { std::ranges::sort(values, std::ref(comp), std::ref(proj));\
+    \ }) {\n        std::ranges::sort(values, std::ref(comp), std::ref(proj));\n \
+    \   } else\n#endif\n    {\n        std::sort(values.begin(), values.end(), [&](const\
+    \ mem_value_type<C>& a, const mem_value_type<C>& b) {\n            return std::invoke(comp,\
+    \ std::invoke(proj, a), std::invoke(proj, b));\n        });\n    }\n}\n}  // namespace\
+    \ internal_container_func\n\nMETHOD_EXPAND(sorted)\n#if __cplusplus >= 202002L\n\
+    template <class C, class F = std::less<>, class P = internal_traits::identity>\n\
+    \    requires(!has_sorted_v<C> && internal_container_func::projected_comp<C, F,\
+    \ P>)\n#else\ntemplate <class C, class F = std::less<>, class P = internal_traits::identity,\
+    \ ENABLE_IF_T(!has_sorted_v<C> && internal_container_func::is_projected_comp<C,\
+    \ F, P>::value)>\n#endif\ninline constexpr C sorted(C t, F comp = F(), P proj\
+    \ = P()) {\n    internal_container_func::sort(t, comp, proj);\n    return t;\n\
+    }\n\n#if __cplusplus >= 202002L\ntemplate <class C, class F = std::less<>, class\
+    \ P = internal_traits::identity>\n    requires(internal_container_func::projected_comp<C,\
+    \ F, P>)\n#else\ntemplate <class C, class F = std::less<>, class P = internal_traits::identity,\
+    \ ENABLE_IF_T(internal_container_func::is_projected_comp<C, F, P>::value)>\n#endif\n\
+    inline constexpr void sort(C& t, F comp = F(), P proj = P()) {\n    internal_container_func::sort(t,\
+    \ comp, proj);\n}\n// sort(c, {}, proj) \u7528\u3002std::vector \u306A\u3069\u3067\
+    \u306F ADL \u3067 std::sort(first, last, comp) \u3082\u5019\u88DC\u306B\u306A\u308A\
     \u3001\n// {} \u3092 F \u3067\u53D7\u3051\u308B\u3068 std::sort \u304C\u9078\u3070\
     \u308C\u308B\u306E\u3067\u3001{} \u304C\u6A19\u6E96\u5909\u63DB\u3067\u6E21\u308B\
-    \ std::nullptr_t \u3067\u53D7\u3051\u308B\ntemplate <class C, class P, ENABLE_IF_T(internal_container_func::is_projected_comp<C,\
-    \ std::less<>, P>::value)>\ninline constexpr void sort(C& t, std::nullptr_t, P\
-    \ proj) {\n    sort(t, std::less<>(), proj);\n}\n\ntemplate <class C>\ninline\
-    \ constexpr void reverse(C& t) {\n    std::reverse(t.begin(), t.end());\n}\n\n\
-    METHOD_EXPAND(max)\ntemplate <class C, ENABLE_IF_T(!has_max_v<C> && is_sorted_container_v<C>)>\n\
-    inline constexpr mem_value_type<C> max(const C& v) {\n    assert(v.begin() !=\
-    \ v.end());\n    return *v.rbegin();\n}\ntemplate <class C, ENABLE_IF_T(!has_max_v<C>\
-    \ && !is_sorted_container_v<C>)>\ninline constexpr mem_value_type<C> max(const\
-    \ C& v) {\n    assert(v.begin() != v.end());\n    return *std::max_element(v.begin(),\
-    \ v.end());\n}\ntemplate <typename T>\ninline constexpr T max(const std::initializer_list<T>&\
-    \ v) {\n    return std::max(v);\n}\n\nMETHOD_EXPAND(min)\ntemplate <class C, ENABLE_IF_T(!has_min_v<C>\
-    \ && is_sorted_container_v<C>)>\ninline constexpr mem_value_type<C> min(const\
-    \ C& v) {\n    assert(v.begin() != v.end());\n    return *v.begin();\n}\ntemplate\
-    \ <class C, ENABLE_IF_T(!has_min_v<C> && !is_sorted_container_v<C>)>\ninline constexpr\
-    \ mem_value_type<C> min(const C& v) {\n    assert(v.begin() != v.end());\n   \
-    \ return *std::min_element(v.begin(), v.end());\n}\ntemplate <typename T>\ninline\
-    \ constexpr T min(const std::initializer_list<T>& v) {\n    return std::min(v);\n\
-    }\n\nMETHOD_EXPAND(sum)\ntemplate <class C, ENABLE_IF_T(!has_sum_v<C>)>\ninline\
-    \ constexpr mem_value_type<C> sum(const C& v) {\n    return std::accumulate(v.begin(),\
+    \ std::nullptr_t \u3067\u53D7\u3051\u308B\n#if __cplusplus >= 202002L\ntemplate\
+    \ <class C, class P>\n    requires(internal_container_func::projected_comp<C,\
+    \ std::less<>, P>)\n#else\ntemplate <class C, class P, ENABLE_IF_T(internal_container_func::is_projected_comp<C,\
+    \ std::less<>, P>::value)>\n#endif\ninline constexpr void sort(C& t, std::nullptr_t,\
+    \ P proj) {\n    sort(t, std::less<>(), proj);\n}\n\ntemplate <class C>\ninline\
+    \ constexpr void reverse(C& t) {\n#if __cplusplus >= 202002L\n    if constexpr\
+    \ (requires { std::ranges::reverse(t); }) {\n        std::ranges::reverse(t);\n\
+    \    } else\n#endif\n    {\n        std::reverse(t.begin(), t.end());\n    }\n\
+    }\n\nMETHOD_EXPAND(max)\n#if __cplusplus >= 202002L\ntemplate <class C>\n    requires(!has_max_v<C>\
+    \ && is_sorted_container_v<C>)\n#else\ntemplate <class C, ENABLE_IF_T(!has_max_v<C>\
+    \ && is_sorted_container_v<C>)>\n#endif\ninline constexpr mem_value_type<C> max(const\
+    \ C& v) {\n    assert(v.begin() != v.end());\n    return *v.rbegin();\n}\n#if\
+    \ __cplusplus >= 202002L\ntemplate <class C>\n    requires(!has_max_v<C> && !is_sorted_container_v<C>)\n\
+    #else\ntemplate <class C, ENABLE_IF_T(!has_max_v<C> && !is_sorted_container_v<C>)>\n\
+    #endif\ninline constexpr mem_value_type<C> max(const C& v) {\n    assert(v.begin()\
+    \ != v.end());\n#if __cplusplus >= 202002L\n    if constexpr (requires { std::ranges::max_element(v,\
+    \ std::less<>{}); }) {\n        return *std::ranges::max_element(v, std::less<>{});\n\
+    \    } else\n#endif\n    {\n        return *std::max_element(v.begin(), v.end());\n\
+    \    }\n}\ntemplate <typename T>\ninline constexpr T max(const std::initializer_list<T>&\
+    \ v) {\n    return std::max(v);\n}\n\nMETHOD_EXPAND(min)\n#if __cplusplus >= 202002L\n\
+    template <class C>\n    requires(!has_min_v<C> && is_sorted_container_v<C>)\n\
+    #else\ntemplate <class C, ENABLE_IF_T(!has_min_v<C> && is_sorted_container_v<C>)>\n\
+    #endif\ninline constexpr mem_value_type<C> min(const C& v) {\n    assert(v.begin()\
+    \ != v.end());\n    return *v.begin();\n}\n#if __cplusplus >= 202002L\ntemplate\
+    \ <class C>\n    requires(!has_min_v<C> && !is_sorted_container_v<C>)\n#else\n\
+    template <class C, ENABLE_IF_T(!has_min_v<C> && !is_sorted_container_v<C>)>\n\
+    #endif\ninline constexpr mem_value_type<C> min(const C& v) {\n    assert(v.begin()\
+    \ != v.end());\n#if __cplusplus >= 202002L\n    if constexpr (requires { std::ranges::min_element(v,\
+    \ std::less<>{}); }) {\n        return *std::ranges::min_element(v, std::less<>{});\n\
+    \    } else\n#endif\n    {\n        return *std::min_element(v.begin(), v.end());\n\
+    \    }\n}\ntemplate <typename T>\ninline constexpr T min(const std::initializer_list<T>&\
+    \ v) {\n    return std::min(v);\n}\n\nMETHOD_EXPAND(sum)\n#if __cplusplus >= 202002L\n\
+    template <class C>\n    requires(!has_sum_v<C>)\n#else\ntemplate <class C, ENABLE_IF_T(!has_sum_v<C>)>\n\
+    #endif\ninline constexpr mem_value_type<C> sum(const C& v) {\n    return std::accumulate(v.begin(),\
     \ v.end(), mem_value_type<C>{});\n}\ntemplate <typename T>\ninline constexpr T\
     \ sum(const std::initializer_list<T>& v) {\n    return std::accumulate(v.begin(),\
-    \ v.end(), T{});\n}\n\nMETHOD_EXPAND(product)\ntemplate <class C, ENABLE_IF_T(!has_product_v<C>)>\n\
-    inline constexpr mem_value_type<C> product(const C& v) {\n    return std::accumulate(v.begin(),\
+    \ v.end(), T{});\n}\n\nMETHOD_EXPAND(product)\n#if __cplusplus >= 202002L\ntemplate\
+    \ <class C>\n    requires(!has_product_v<C>)\n#else\ntemplate <class C, ENABLE_IF_T(!has_product_v<C>)>\n\
+    #endif\ninline constexpr mem_value_type<C> product(const C& v) {\n    return std::accumulate(v.begin(),\
     \ v.end(), mem_value_type<C>{1}, std::multiplies<mem_value_type<C>>());\n}\ntemplate\
     \ <typename T>\ninline constexpr T product(const std::initializer_list<T>& v)\
     \ {\n    return std::accumulate(v.begin(), v.end(), T{1}, std::multiplies<T>());\n\
-    }\n\nMETHOD_EXPAND(product_xor)\ntemplate <class C, ENABLE_IF_T(!has_product_xor_v<C>)>\n\
-    inline constexpr mem_value_type<C> product_xor(const C& v) {\n    return std::accumulate(v.begin(),\
-    \ v.end(), mem_value_type<C>{0}, std::bit_xor<mem_value_type<C>>());\n}\ntemplate\
-    \ <typename T>\ninline constexpr T product_xor(const std::initializer_list<T>&\
+    }\n\nMETHOD_EXPAND(product_xor)\n#if __cplusplus >= 202002L\ntemplate <class C>\n\
+    \    requires(!has_product_xor_v<C>)\n#else\ntemplate <class C, ENABLE_IF_T(!has_product_xor_v<C>)>\n\
+    #endif\ninline constexpr mem_value_type<C> product_xor(const C& v) {\n    return\
+    \ std::accumulate(v.begin(), v.end(), mem_value_type<C>{0}, std::bit_xor<mem_value_type<C>>());\n\
+    }\ntemplate <typename T>\ninline constexpr T product_xor(const std::initializer_list<T>&\
     \ v) {\n    return std::accumulate(v.begin(), v.end(), T{0}, std::bit_xor<T>());\n\
     }\n\nMETHOD_AND_FUNC_ARG_EXPAND(count)\nMETHOD_AND_FUNC_ARG_EXPAND(find)\nMETHOD_AND_FUNC_ARG_EXPAND(lower_bound)\n\
     METHOD_AND_FUNC_ARG_EXPAND(upper_bound)\n\ntemplate <class C, typename T>\ninline\
@@ -394,9 +473,10 @@ data:
     \ a = std::begin(s);\n    auto b = std::begin(t);\n    long long n = std::end(s)\
     \ - a;\n    assert(n == std::end(t) - b);\n    long long res = 0;\n    for (long\
     \ long i = 0; i < n; i++) {\n        if (!(a[i] == b[i])) res++;\n    }\n    return\
-    \ res;\n}\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
-    inline constexpr mem_value_type<C> mex(const C& v) {\n    std::vector<bool> b(v.size()\
-    \ + 1);\n    for (const auto& a : v) {\n        if (0 <= a && static_cast<std::size_t>(a)\
+    \ res;\n}\n\n#if __cplusplus >= 202002L\ntemplate <class C>\n    requires(std::integral<mem_value_type<C>>)\n\
+    #else\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
+    #endif\ninline constexpr mem_value_type<C> mex(const C& v) {\n    std::vector<bool>\
+    \ b(v.size() + 1);\n    for (const auto& a : v) {\n        if (0 <= a && static_cast<std::size_t>(a)\
     \ < b.size()) {\n            b[a] = true;\n        }\n    }\n    mem_value_type<C>\
     \ ret = 0;  // b \u306E\u8981\u7D20\u6570\u306F v \u3088\u308A 1 \u591A\u3044\u306E\
     \u3067\u3001\u4E0B\u306E\u30EB\u30FC\u30D7\u3067\u5FC5\u305A\u898B\u3064\u304B\
@@ -410,23 +490,23 @@ data:
     \ range.hpp\n * @brief Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\
     \u5217\u3068\u3001\u305D\u306E\u76F4\u7A4D\u306E Grid\n */\n\n#line 11 \"src/utility/range.hpp\"\
     \n#include <string>\n#line 15 \"src/utility/range.hpp\"\n\nstruct Range {\n  \
-    \ public:\n    using value_type = long long;\n    using const_reference = const\
-    \ value_type&;\n    using size_type = long long;\n    using difference_type =\
-    \ std::ptrdiff_t;\n\n    const value_type start;\n    const value_type stop;\n\
-    \    const value_type step;\n\n   private:\n    const value_type norm_stop;\n\n\
-    \    constexpr static value_type normalize(value_type _start, value_type _stop,\
-    \ value_type _step) {\n        assert(_step != 0);\n        if (_step > 0) {\n\
-    \            if (_start >= _stop) {\n                return _start;\n        \
-    \    } else {\n                return _start + (_stop - _start + _step - 1) /\
-    \ _step * _step;\n            }\n        } else {\n            if (_start <= _stop)\
-    \ {\n                return _start;\n            } else {\n                return\
-    \ _start - (_start - _stop - _step - 1) / _step * _step;\n            }\n    \
-    \    }\n    }\n\n    constexpr Range(value_type _start, value_type _stop, value_type\
-    \ _step, value_type _norm_stop)\n        : start(_start), stop(_stop), step(_step),\
-    \ norm_stop(_norm_stop) {\n    }\n\n   public:\n    /**\n     * @brief start \u304B\
-    \u3089 stop \u306E\u624B\u524D\u307E\u3067 step \u305A\u3064\u9032\u3080\u6574\
-    \u6570\u5217\n     * @pre step != 0\n     */\n    constexpr Range(value_type _start,\
-    \ value_type _stop, value_type _step)\n        : start(_start), stop(_stop), step(_step),\
+    \ public:\n    using value_type = long long;\n    using const_reference = value_type;\n\
+    \    using size_type = long long;\n    using difference_type = std::ptrdiff_t;\n\
+    \n    const value_type start;\n    const value_type stop;\n    const value_type\
+    \ step;\n\n   private:\n    const value_type norm_stop;\n\n    constexpr static\
+    \ value_type normalize(value_type _start, value_type _stop, value_type _step)\
+    \ {\n        assert(_step != 0);\n        if (_step > 0) {\n            if (_start\
+    \ >= _stop) {\n                return _start;\n            } else {\n        \
+    \        return _start + (_stop - _start + _step - 1) / _step * _step;\n     \
+    \       }\n        } else {\n            if (_start <= _stop) {\n            \
+    \    return _start;\n            } else {\n                return _start - (_start\
+    \ - _stop - _step - 1) / _step * _step;\n            }\n        }\n    }\n\n \
+    \   constexpr Range(value_type _start, value_type _stop, value_type _step, value_type\
+    \ _norm_stop)\n        : start(_start), stop(_stop), step(_step), norm_stop(_norm_stop)\
+    \ {\n    }\n\n   public:\n    /**\n     * @brief start \u304B\u3089 stop \u306E\
+    \u624B\u524D\u307E\u3067 step \u305A\u3064\u9032\u3080\u6574\u6570\u5217\n   \
+    \  * @pre step != 0\n     */\n    constexpr Range(value_type _start, value_type\
+    \ _stop, value_type _step)\n        : start(_start), stop(_stop), step(_step),\
     \ norm_stop(normalize(_start, _stop, _step)) {\n    }\n    constexpr Range(value_type\
     \ _start, value_type _stop)\n        : start(_start), stop(_stop), step(1), norm_stop(normalize(_start,\
     \ _stop, 1)) {}\n    explicit constexpr Range(value_type _stop)\n        : start(0),\
@@ -434,95 +514,99 @@ data:
     \        : start(0), stop(0), step(1), norm_stop(0) {\n    }\n    constexpr Range(const\
     \ Range& o) = default;\n    Range& operator=(const Range& o) = delete;\n\n   \
     \ struct const_iterator {\n       public:\n        using difference_type = Range::difference_type;\n\
-    \        using value_type = Range::value_type;\n        using pointer = const\
-    \ Range::value_type*;\n        using reference = const Range::value_type&;\n \
-    \       using iterator_category = std::random_access_iterator_tag;\n\n       private:\n\
-    \        const Range& range;\n        value_type value;\n\n        constexpr bool\
-    \ same_range(const const_iterator& o) const noexcept {\n            return range.start\
-    \ == o.range.start && range.stop == o.range.stop && range.step == o.range.step;\n\
-    \        }\n\n       public:\n        constexpr const_iterator(const Range& _range,\
-    \ value_type _value) noexcept\n            : range(_range), value(_value) {}\n\
-    \        constexpr const_iterator(const const_iterator& o) noexcept\n        \
-    \    : range(o.range), value(o.value) {}\n        constexpr reference base() const\
-    \ noexcept {\n            return value;\n        }\n        constexpr const_iterator&\
-    \ operator=(const const_iterator& o) {\n            assert(same_range(o));\n \
-    \           value = o.value;\n            return *this;\n        };\n        constexpr\
-    \ const_iterator& operator++() noexcept {\n            value += range.step;\n\
-    \            return *this;\n        }\n        constexpr const_iterator operator++(int)\
-    \ noexcept {\n            const_iterator ret(*this);\n            value += range.step;\n\
+    \        using value_type = Range::value_type;\n        using pointer = void;\n\
+    \        using reference = Range::const_reference;\n        using iterator_category\
+    \ = std::random_access_iterator_tag;\n\n       private:\n        value_type first\
+    \ = 0, stop = 0, step = 1, value = 0;\n\n        constexpr bool same_range(const\
+    \ const_iterator& o) const noexcept {\n            return first == o.first &&\
+    \ stop == o.stop && step == o.step;\n        }\n\n       public:\n        constexpr\
+    \ const_iterator() noexcept = default;\n        constexpr const_iterator(const\
+    \ Range& range, value_type value) noexcept\n            : first(range.start),\
+    \ stop(range.stop), step(range.step), value(value) {}\n        constexpr reference\
+    \ base() const noexcept {\n            return value;\n        }\n        constexpr\
+    \ const_iterator& operator++() noexcept {\n            value += step;\n      \
+    \      return *this;\n        }\n        constexpr const_iterator operator++(int)\
+    \ noexcept {\n            const_iterator ret(*this);\n            value += step;\n\
     \            return ret;\n        }\n        constexpr const_iterator& operator+=(difference_type\
-    \ _n) noexcept {\n            value += _n * range.step;\n            return *this;\n\
+    \ _n) noexcept {\n            value += _n * step;\n            return *this;\n\
     \        }\n        constexpr friend const_iterator operator+(const const_iterator&\
     \ i, difference_type _n) noexcept {\n            const_iterator ret(i);\n    \
     \        ret += _n;\n            return ret;\n        }\n        constexpr friend\
     \ const_iterator operator+(difference_type _n, const const_iterator& i) noexcept\
     \ {\n            const_iterator ret(i);\n            ret += _n;\n            return\
     \ ret;\n        }\n        constexpr const_iterator& operator--() noexcept {\n\
-    \            value -= range.step;\n            return *this;\n        }\n    \
-    \    constexpr const_iterator operator--(int) noexcept {\n            const_iterator\
-    \ ret(*this);\n            value -= range.step;\n            return ret;\n   \
-    \     }\n        constexpr const_iterator& operator-=(difference_type _n) noexcept\
-    \ {\n            value -= _n * range.step;\n            return *this;\n      \
-    \  }\n        constexpr friend const_iterator operator-(const const_iterator&\
-    \ i, difference_type _n) noexcept {\n            const_iterator ret(i);\n    \
-    \        ret -= _n;\n            return ret;\n        }\n        constexpr reference\
-    \ operator*() const noexcept {\n            return value;\n        }\n       \
-    \ constexpr friend bool operator!=(const const_iterator& a, const const_iterator&\
-    \ b) noexcept {\n            return !a.same_range(b) || a.value != b.value;\n\
-    \        }\n        constexpr friend bool operator==(const const_iterator& a,\
-    \ const const_iterator& b) noexcept {\n            return !(a != b);\n       \
-    \ }\n        constexpr friend difference_type operator-(const const_iterator&\
-    \ a, const const_iterator& b) {\n            assert(a.same_range(b));\n      \
-    \      if (a.range.step > 0) {\n                return (a.value - b.value) / a.range.step;\n\
-    \            } else {\n                return (b.value - a.value) / (-a.range.step);\n\
-    \            }\n        }\n    };\n\n    constexpr const_iterator begin() const\
-    \ noexcept {\n        return {*this, start};\n    }\n    constexpr const_iterator\
-    \ end() const noexcept {\n        return {*this, norm_stop};\n    }\n    /**\n\
-    \     * @brief x \u306E\u500B\u6570 (0 \u304B 1)\n     */\n    constexpr size_type\
-    \ count(value_type x) const noexcept {\n        // step \u304C\u30B3\u30F3\u30D1\
-    \u30A4\u30EB\u6642\u306B\u5206\u304B\u3089\u306A\u3044\u3068\u304D\u3082\u3001\
-    \u3088\u304F\u4F7F\u3046 step = 1 \u3067\u306F\u5272\u308A\u7B97\u3092\u3057\u306A\
-    \u3044\n        if (step == 1) return start <= x && x < stop;\n        if (step\
-    \ > 0) {\n            if (start <= x && x < stop) {\n                if ((x -\
-    \ start) % step == 0) {\n                    return 1;\n                }\n  \
-    \          }\n        } else {\n            if (stop < x && x <= start) {\n  \
-    \              if ((start - x) % (-step) == 0) {\n                    return 1;\n\
-    \                }\n            }\n        }\n        return 0;\n    }\n    /**\n\
-    \     * @brief x \u304C\u542B\u307E\u308C\u308B\u304B\n     */\n    constexpr\
-    \ bool contains(value_type x) const noexcept {\n        return count(x) != 0;\n\
-    \    }\n    /**\n     * @brief x \u306E\u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n\
-    \     * x \u304C\u542B\u307E\u308C\u306A\u3044\u3068\u30A8\u30E9\u30FC\n     */\n\
-    \    constexpr size_type index(value_type x) const {\n        assert(contains(x));\n\
-    \        if (step == 1) return x - start;\n        return (x - start) / step;\n\
-    \    }\n    /**\n     * @brief \u8981\u7D20\u304C x \u306E\u30A4\u30C6\u30EC\u30FC\
-    \u30BF\n     * x \u304C\u542B\u307E\u308C\u306A\u3044\u3068 end() \u3092\u8FD4\
-    \u3059\n     */\n    constexpr const_iterator find(value_type x) const noexcept\
-    \ {\n        if (contains(x)) {\n            return {*this, x};\n        } else\
-    \ {\n            return {*this, norm_stop};\n        }\n    }\n    /**\n     *\
-    \ @brief \u8981\u7D20\u304C x \u4EE5\u4E0A\u306E\u6700\u5C0F\u306E\u30A4\u30C6\
-    \u30EC\u30FC\u30BF\n     * step > 0 \u3058\u3083\u306A\u3044\u3068\u30A8\u30E9\
-    \u30FC\n     */\n    constexpr const_iterator lower_bound(value_type x) const\
-    \ {\n        assert(step > 0);\n        if (norm_stop <= x) {\n            return\
-    \ end();\n        } else if (x < start) {\n            return begin();\n     \
-    \   } else {\n            return {*this, start + (x - start + step - 1) / step\
-    \ * step};\n        }\n    }\n    /**\n     * @brief \u8981\u7D20\u304C x \u3088\
-    \u308A\u5927\u304D\u3044\u6700\u5C0F\u306E\u30A4\u30C6\u30EC\u30FC\u30BF\n   \
-    \  * step > 0 \u3058\u3083\u306A\u3044\u3068\u30A8\u30E9\u30FC\n     */\n    constexpr\
-    \ const_iterator upper_bound(value_type x) const {\n        assert(step > 0);\n\
-    \        if (norm_stop <= x) {\n            return end();\n        } else if (x\
-    \ < start) {\n            return begin();\n        } else {\n            return\
-    \ {*this, start + (x - start + step) / step * step};\n        }\n    }\n    /**\n\
-    \     * @brief \u30B3\u30F3\u30C6\u30CA\u306E\u8981\u7D20\u6570\n     */\n   \
-    \ constexpr size_type size() const noexcept {\n        if (step > 0) {\n     \
-    \       return (norm_stop - start) / step;\n        } else {\n            return\
-    \ (start - norm_stop) / (-step);\n        }\n    }\n    constexpr value_type at(size_type\
-    \ i) const {\n        assert(0 <= i && i < size());\n        return start + i\
-    \ * step;\n    }\n    constexpr value_type operator[](size_type i) const {\n \
-    \       return at(i);\n    }\n    constexpr bool empty() const noexcept {\n  \
-    \      return start == norm_stop;\n    }\n    constexpr value_type sum() const\
-    \ noexcept {\n        return size() * (norm_stop - step + start) / 2;\n    }\n\
-    \    /**\n     * @brief \u6700\u5C0F\u5024\n     * \u7A7A\u3060\u3068\u30A8\u30E9\
-    \u30FC\n     */\n    constexpr value_type min() const {\n        assert(!empty());\n\
+    \            value -= step;\n            return *this;\n        }\n        constexpr\
+    \ const_iterator operator--(int) noexcept {\n            const_iterator ret(*this);\n\
+    \            value -= step;\n            return ret;\n        }\n        constexpr\
+    \ const_iterator& operator-=(difference_type _n) noexcept {\n            value\
+    \ -= _n * step;\n            return *this;\n        }\n        constexpr friend\
+    \ const_iterator operator-(const const_iterator& i, difference_type _n) noexcept\
+    \ {\n            const_iterator ret(i);\n            ret -= _n;\n            return\
+    \ ret;\n        }\n        constexpr reference operator[](difference_type i) const\
+    \ noexcept { return value + i * step; }\n        constexpr reference operator*()\
+    \ const noexcept {\n            return value;\n        }\n        constexpr friend\
+    \ bool operator!=(const const_iterator& a, const const_iterator& b) noexcept {\n\
+    \            return !a.same_range(b) || a.value != b.value;\n        }\n     \
+    \   constexpr friend bool operator==(const const_iterator& a, const const_iterator&\
+    \ b) noexcept {\n            return !(a != b);\n        }\n        constexpr friend\
+    \ bool operator<(const const_iterator& a, const const_iterator& b) noexcept {\n\
+    \            assert(a.same_range(b));\n            return a.step > 0 ? a.value\
+    \ < b.value : a.value > b.value;\n        }\n        constexpr friend bool operator>(const\
+    \ const_iterator& a, const const_iterator& b) noexcept { return b < a; }\n   \
+    \     constexpr friend bool operator<=(const const_iterator& a, const const_iterator&\
+    \ b) noexcept { return !(b < a); }\n        constexpr friend bool operator>=(const\
+    \ const_iterator& a, const const_iterator& b) noexcept { return !(a < b); }\n\
+    \        constexpr friend difference_type operator-(const const_iterator& a, const\
+    \ const_iterator& b) {\n            assert(a.same_range(b));\n            if (a.step\
+    \ > 0) {\n                return (a.value - b.value) / a.step;\n            }\
+    \ else {\n                return (b.value - a.value) / (-a.step);\n          \
+    \  }\n        }\n    };\n\n    constexpr const_iterator begin() const noexcept\
+    \ {\n        return {*this, start};\n    }\n    constexpr const_iterator end()\
+    \ const noexcept {\n        return {*this, norm_stop};\n    }\n    /**\n     *\
+    \ @brief x \u306E\u500B\u6570 (0 \u304B 1)\n     */\n    constexpr size_type count(value_type\
+    \ x) const noexcept {\n        // step \u304C\u30B3\u30F3\u30D1\u30A4\u30EB\u6642\
+    \u306B\u5206\u304B\u3089\u306A\u3044\u3068\u304D\u3082\u3001\u3088\u304F\u4F7F\
+    \u3046 step = 1 \u3067\u306F\u5272\u308A\u7B97\u3092\u3057\u306A\u3044\n     \
+    \   if (step == 1) return start <= x && x < stop;\n        if (step > 0) {\n \
+    \           if (start <= x && x < stop) {\n                if ((x - start) % step\
+    \ == 0) {\n                    return 1;\n                }\n            }\n \
+    \       } else {\n            if (stop < x && x <= start) {\n                if\
+    \ ((start - x) % (-step) == 0) {\n                    return 1;\n            \
+    \    }\n            }\n        }\n        return 0;\n    }\n    /**\n     * @brief\
+    \ x \u304C\u542B\u307E\u308C\u308B\u304B\n     */\n    constexpr bool contains(value_type\
+    \ x) const noexcept {\n        return count(x) != 0;\n    }\n    /**\n     * @brief\
+    \ x \u306E\u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * x \u304C\u542B\u307E\u308C\
+    \u306A\u3044\u3068\u30A8\u30E9\u30FC\n     */\n    constexpr size_type index(value_type\
+    \ x) const {\n        assert(contains(x));\n        if (step == 1) return x -\
+    \ start;\n        return (x - start) / step;\n    }\n    /**\n     * @brief \u8981\
+    \u7D20\u304C x \u306E\u30A4\u30C6\u30EC\u30FC\u30BF\n     * x \u304C\u542B\u307E\
+    \u308C\u306A\u3044\u3068 end() \u3092\u8FD4\u3059\n     */\n    constexpr const_iterator\
+    \ find(value_type x) const noexcept {\n        if (contains(x)) {\n          \
+    \  return {*this, x};\n        } else {\n            return {*this, norm_stop};\n\
+    \        }\n    }\n    /**\n     * @brief \u8981\u7D20\u304C x \u4EE5\u4E0A\u306E\
+    \u6700\u5C0F\u306E\u30A4\u30C6\u30EC\u30FC\u30BF\n     * step > 0 \u3058\u3083\
+    \u306A\u3044\u3068\u30A8\u30E9\u30FC\n     */\n    constexpr const_iterator lower_bound(value_type\
+    \ x) const {\n        assert(step > 0);\n        if (norm_stop <= x) {\n     \
+    \       return end();\n        } else if (x < start) {\n            return begin();\n\
+    \        } else {\n            return {*this, start + (x - start + step - 1) /\
+    \ step * step};\n        }\n    }\n    /**\n     * @brief \u8981\u7D20\u304C x\
+    \ \u3088\u308A\u5927\u304D\u3044\u6700\u5C0F\u306E\u30A4\u30C6\u30EC\u30FC\u30BF\
+    \n     * step > 0 \u3058\u3083\u306A\u3044\u3068\u30A8\u30E9\u30FC\n     */\n\
+    \    constexpr const_iterator upper_bound(value_type x) const {\n        assert(step\
+    \ > 0);\n        if (norm_stop <= x) {\n            return end();\n        } else\
+    \ if (x < start) {\n            return begin();\n        } else {\n          \
+    \  return {*this, start + (x - start + step) / step * step};\n        }\n    }\n\
+    \    /**\n     * @brief \u30B3\u30F3\u30C6\u30CA\u306E\u8981\u7D20\u6570\n   \
+    \  */\n    constexpr size_type size() const noexcept {\n        if (step > 0)\
+    \ {\n            return (norm_stop - start) / step;\n        } else {\n      \
+    \      return (start - norm_stop) / (-step);\n        }\n    }\n    constexpr\
+    \ value_type at(size_type i) const {\n        assert(0 <= i && i < size());\n\
+    \        return start + i * step;\n    }\n    constexpr value_type operator[](size_type\
+    \ i) const {\n        return at(i);\n    }\n    constexpr bool empty() const noexcept\
+    \ {\n        return start == norm_stop;\n    }\n    constexpr value_type sum()\
+    \ const noexcept {\n        return size() * (norm_stop - step + start) / 2;\n\
+    \    }\n    /**\n     * @brief \u6700\u5C0F\u5024\n     * \u7A7A\u3060\u3068\u30A8\
+    \u30E9\u30FC\n     */\n    constexpr value_type min() const {\n        assert(!empty());\n\
     \        if (step > 0) {\n            return start;\n        } else {\n      \
     \      return norm_stop - step;\n        }\n    }\n    /**\n     * @brief \u6700\
     \u5927\u5024\n     * \u7A7A\u3060\u3068\u30A8\u30E9\u30FC\n     */\n    constexpr\
@@ -735,101 +819,126 @@ data:
     \ i++) {\n        ret[p[i]] = i > 0 && !std::invoke(comp, std::invoke(proj, v[p[i\
     \ - 1]]), std::invoke(proj, v[p[i]])) ? ret[p[i - 1]] : i;\n    }\n    return\
     \ ret;\n}\n\n/**\n * @brief \u9006\u7F6E\u63DB (ret[p[i]] = i)\u3002p \u306F 0,\
-    \ ..., n-1 \u306E\u7F6E\u63DB\u3067\u3042\u308B\u3053\u3068\n */\ntemplate <typename\
-    \ I, ENABLE_IF_T(std::is_integral_v<I>)>\nstd::vector<long long> inverse_permutation(const\
-    \ std::vector<I>& p) {\n    const long long n = p.size();\n    std::vector<long\
-    \ long> ret(n, -1);\n    for (long long i = 0; i < n; i++) {\n        const long\
-    \ long x = static_cast<long long>(p[i]);\n        assert(0 <= x && x < n && ret[x]\
-    \ == -1);\n        ret[x] = i;\n    }\n    return ret;\n}\n\n/**\n * @brief {v[idx[0]],\
-    \ v[idx[1]], ...} (Uiua \u306E select)\n */\ntemplate <typename T, typename I,\
-    \ ENABLE_IF_T(std::is_integral_v<I>)>\nstd::vector<T> select(const std::vector<T>&\
-    \ v, const std::vector<I>& idx) {\n    std::vector<T> ret;\n    ret.reserve(idx.size());\n\
-    \    for (I i : idx) {\n        assert(0 <= static_cast<long long>(i) && static_cast<long\
-    \ long>(i) < static_cast<long long>(v.size()));\n        ret.push_back(v[i]);\n\
-    \    }\n    return ret;\n}\n\ntemplate <typename T>\ninline std::vector<T>& operator++(std::vector<T>&\
+    \ ..., n-1 \u306E\u7F6E\u63DB\u3067\u3042\u308B\u3053\u3068\n */\n#if __cplusplus\
+    \ >= 202002L\ntemplate <typename I>\n    requires(std::integral<I>)\n#else\ntemplate\
+    \ <typename I, ENABLE_IF_T(std::is_integral_v<I>)>\n#endif\nstd::vector<long long>\
+    \ inverse_permutation(const std::vector<I>& p) {\n    const long long n = p.size();\n\
+    \    std::vector<long long> ret(n, -1);\n    for (long long i = 0; i < n; i++)\
+    \ {\n        const long long x = static_cast<long long>(p[i]);\n        assert(0\
+    \ <= x && x < n && ret[x] == -1);\n        ret[x] = i;\n    }\n    return ret;\n\
+    }\n\n/**\n * @brief {v[idx[0]], v[idx[1]], ...} (Uiua \u306E select)\n */\n#if\
+    \ __cplusplus >= 202002L\ntemplate <typename T, typename I>\n    requires(std::integral<I>)\n\
+    #else\ntemplate <typename T, typename I, ENABLE_IF_T(std::is_integral_v<I>)>\n\
+    #endif\nstd::vector<T> select(const std::vector<T>& v, const std::vector<I>& idx)\
+    \ {\n    std::vector<T> ret;\n    ret.reserve(idx.size());\n    for (I i : idx)\
+    \ {\n        assert(0 <= static_cast<long long>(i) && static_cast<long long>(i)\
+    \ < static_cast<long long>(v.size()));\n        ret.push_back(v[i]);\n    }\n\
+    \    return ret;\n}\n\ntemplate <typename T>\ninline std::vector<T>& operator++(std::vector<T>&\
     \ v) {\n    for (auto& e : v) e++;\n    return v;\n}\ntemplate <typename T>\n\
     inline std::vector<T> operator++(std::vector<T>& v, int) {\n    auto res = v;\n\
     \    for (auto& e : v) e++;\n    return res;\n}\ntemplate <typename T>\ninline\
     \ std::vector<T>& operator--(std::vector<T>& v) {\n    for (auto& e : v) e--;\n\
     \    return v;\n}\ntemplate <typename T>\ninline std::vector<T> operator--(std::vector<T>&\
     \ v, int) {\n    auto res = v;\n    for (auto& e : v) e--;\n    return res;\n\
-    }\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\n\
-    inline std::vector<T>& operator+=(std::vector<T>& v1, const std::vector<U>& v2)\
-    \ {\n    if (v2.size() > v1.size()) {\n        v1.resize(v2.size());\n    }\n\
-    \    for (std::size_t i = 0; i < v2.size(); i++) {\n        v1[i] += v2[i];\n\
-    \    }\n    return v1;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
-    \ T>)>\ninline std::vector<T> operator+(const std::vector<T>& v1, const std::vector<U>&\
-    \ v2) {\n    std::vector<T> res(v1);\n    return res += v2;\n}\n\ntemplate <typename\
-    \ T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>&\
-    \ operator+=(std::vector<T>& v, const U& u) {\n    for (T& e : v) {\n        e\
-    \ += u;\n    }\n    return v;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
-    \ T>)>\ninline std::vector<T> operator+(const std::vector<T>& v, const U& u) {\n\
-    \    std::vector<T> res(v);\n    return res += u;\n}\n\ntemplate <typename T,\
-    \ typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>\
-    \ operator+(const U& u, const std::vector<T>& v) {\n    std::vector<T> res(v);\n\
-    \    return res += u;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
-    \ T>)>\ninline std::vector<T>& operator*=(std::vector<T>& v1, const std::vector<U>&\
+    }\n\n#if __cplusplus >= 202002L\ntemplate <typename T, typename U>\n    requires(std::convertible_to<U,\
+    \ T>)\n#else\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
+    \ T>)>\n#endif\ninline std::vector<T>& operator+=(std::vector<T>& v1, const std::vector<U>&\
     \ v2) {\n    if (v2.size() > v1.size()) {\n        v1.resize(v2.size());\n   \
-    \ }\n    for (std::size_t i = 0; i < v2.size(); i++) {\n        v1[i] *= v2[i];\n\
-    \    }\n    for (std::size_t i = v2.size(); i < v1.size(); i++) {\n        v1[i]\
-    \ *= U(0);\n    }\n    return v1;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
-    \ T>)>\ninline std::vector<T> operator*(const std::vector<T>& v1, const std::vector<U>&\
-    \ v2) {\n    std::vector<T> res(v1);\n    return res *= v2;\n}\n\ntemplate <typename\
-    \ T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>&\
+    \ }\n    for (std::size_t i = 0; i < v2.size(); i++) {\n        v1[i] += v2[i];\n\
+    \    }\n    return v1;\n}\n\n#if __cplusplus >= 202002L\ntemplate <typename T,\
+    \ typename U>\n    requires(std::convertible_to<U, T>)\n#else\ntemplate <typename\
+    \ T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\n#endif\ninline std::vector<T>\
+    \ operator+(const std::vector<T>& v1, const std::vector<U>& v2) {\n    std::vector<T>\
+    \ res(v1);\n    return res += v2;\n}\n\n#if __cplusplus >= 202002L\ntemplate <typename\
+    \ T, typename U>\n    requires(std::convertible_to<U, T>)\n#else\ntemplate <typename\
+    \ T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\n#endif\ninline std::vector<T>&\
+    \ operator+=(std::vector<T>& v, const U& u) {\n    for (T& e : v) {\n        e\
+    \ += u;\n    }\n    return v;\n}\n\n#if __cplusplus >= 202002L\ntemplate <typename\
+    \ T, typename U>\n    requires(std::convertible_to<U, T>)\n#else\ntemplate <typename\
+    \ T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\n#endif\ninline std::vector<T>\
+    \ operator+(const std::vector<T>& v, const U& u) {\n    std::vector<T> res(v);\n\
+    \    return res += u;\n}\n\n#if __cplusplus >= 202002L\ntemplate <typename T,\
+    \ typename U>\n    requires(std::convertible_to<U, T>)\n#else\ntemplate <typename\
+    \ T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\n#endif\ninline std::vector<T>\
+    \ operator+(const U& u, const std::vector<T>& v) {\n    std::vector<T> res(v);\n\
+    \    return res += u;\n}\n\n#if __cplusplus >= 202002L\ntemplate <typename T,\
+    \ typename U>\n    requires(std::convertible_to<U, T>)\n#else\ntemplate <typename\
+    \ T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\n#endif\ninline std::vector<T>&\
+    \ operator*=(std::vector<T>& v1, const std::vector<U>& v2) {\n    if (v2.size()\
+    \ > v1.size()) {\n        v1.resize(v2.size());\n    }\n    for (std::size_t i\
+    \ = 0; i < v2.size(); i++) {\n        v1[i] *= v2[i];\n    }\n    for (std::size_t\
+    \ i = v2.size(); i < v1.size(); i++) {\n        v1[i] *= U(0);\n    }\n    return\
+    \ v1;\n}\n\n#if __cplusplus >= 202002L\ntemplate <typename T, typename U>\n  \
+    \  requires(std::convertible_to<U, T>)\n#else\ntemplate <typename T, typename\
+    \ U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\n#endif\ninline std::vector<T>\
+    \ operator*(const std::vector<T>& v1, const std::vector<U>& v2) {\n    std::vector<T>\
+    \ res(v1);\n    return res *= v2;\n}\n\n#if __cplusplus >= 202002L\ntemplate <typename\
+    \ T, typename U>\n    requires(std::convertible_to<U, T>)\n#else\ntemplate <typename\
+    \ T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\n#endif\ninline std::vector<T>&\
     \ operator*=(std::vector<T>& v, const U& u) {\n    for (T& e : v) {\n        e\
-    \ *= u;\n    }\n    return v;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
-    \ T>)>\ninline std::vector<T> operator*(const std::vector<T>& v, const U& u) {\n\
-    \    std::vector<T> res(v);\n    return res *= u;\n}\n\ntemplate <typename T,\
-    \ typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>\
+    \ *= u;\n    }\n    return v;\n}\n\n#if __cplusplus >= 202002L\ntemplate <typename\
+    \ T, typename U>\n    requires(std::convertible_to<U, T>)\n#else\ntemplate <typename\
+    \ T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\n#endif\ninline std::vector<T>\
+    \ operator*(const std::vector<T>& v, const U& u) {\n    std::vector<T> res(v);\n\
+    \    return res *= u;\n}\n\n#if __cplusplus >= 202002L\ntemplate <typename T,\
+    \ typename U>\n    requires(std::convertible_to<U, T>)\n#else\ntemplate <typename\
+    \ T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\n#endif\ninline std::vector<T>\
     \ operator*(const U& u, const std::vector<T>& v) {\n    std::vector<T> res(v);\n\
     \    return res *= u;\n}\n\ntemplate <typename T, typename U>\ninline std::vector<T>&\
     \ assign(std::vector<T>& v1, const std::vector<U>& v2) {\n    v1.assign(v2.begin(),\
     \ v2.end());\n    return v1;\n}\n\ntemplate <typename T, typename U>\ninline std::vector<T>&\
     \ extend(std::vector<T>& v1, const std::vector<U>& v2) {\n    v1.insert(v1.end(),\
-    \ v2.begin(), v2.end());\n    return v1;\n}\n\ntemplate <typename T, typename\
-    \ U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>& operator|=(std::vector<T>&\
-    \ v1, const std::vector<U>& v2) {\n    return extend(v1, v2);\n}\n\ntemplate <typename\
-    \ T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>\ninline std::vector<T>& operator|=(std::vector<T>&\
-    \ v, const U& u) {\n    if constexpr (std::is_signed_v<U>) assert(u >= 0);\n \
-    \   std::vector<T> w(v);\n    v.clear();\n    for (long long i = 0; i < static_cast<long\
-    \ long>(u); i++) {\n        extend(v, w);\n    }\n    return v;\n}\n\ntemplate\
-    \ <typename T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>\ninline std::vector<T>\
-    \ operator|(const std::vector<T>& v, const U& u) {\n    std::vector<T> res(v);\n\
-    \    return res |= u;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>\n\
-    inline std::vector<T> operator|(const U& u, const std::vector<T>& v) {\n    std::vector<T>\
-    \ res(v);\n    return res |= u;\n}\n\ntemplate <typename T>\ninline std::vector<T>\
-    \ abs(const std::vector<T>& v) {\n    std::vector<T> ret;\n    ret.reserve(v.size());\n\
-    \    for (const T& e : v) ret.push_back(std::abs(e));\n    return ret;\n}\n\n\
-    template <typename T>\nstd::vector<T> cumulative_sum(std::vector<T> v) {\n   \
-    \ v.insert(v.begin(), T{});\n    std::vector<T> ret(v.size());\n    std::partial_sum(v.begin(),\
-    \ v.end(), ret.begin());\n    return ret;\n}\n\ntemplate <typename T, ENABLE_IF_T(std::is_integral_v<T>)>\n\
-    std::vector<T> iota(T n) {\n    assert(n >= 0);\n    std::vector<T> ret(n);\n\
-    \    std::iota(ret.begin(), ret.end(), 0);\n    return ret;\n}\n\ntemplate <typename\
-    \ T>\nstd::vector<T> unique(const std::vector<T>& v) {\n    std::vector<T> res(v);\n\
-    \    std::sort(res.begin(), res.end());\n    res.erase(std::unique(res.begin(),\
-    \ res.end()), res.end());\n    return res;\n}\n\ninline long long radix_convert(const\
-    \ std::vector<long long>& v, int base = 10) {\n    assert(base >= 2);\n    long\
-    \ long res = 0;\n    for (long long d : v) {\n        assert(0 <= d && d < base);\n\
-    \        res = res * base + d;\n    }\n    return res;\n}\n\ninline std::vector<long\
-    \ long> radix_convert(long long v, int base = 10) {\n    assert(v >= 0 && base\
-    \ >= 2);\n    std::vector<long long> res;\n    while (v > 0) {\n        res.push_back(v\
-    \ % base);\n        v /= base;\n    }\n    std::reverse(res.begin(), res.end());\n\
-    \    return res;\n}\n#line 10 \"test/aoj/dsl/dsl-4-a.1.test.cpp\"\n\nint main()\
-    \ {\n    int n;\n    std::cin >> n;\n    std::vector<Rectangle<long long>> rects(n);\n\
-    \    std::vector<long long> xs, ys;\n    for (int i = 0; i < n; i++) {\n     \
-    \   std::cin >> rects[i];\n        xs.push_back(rects[i].left), xs.push_back(rects[i].right);\n\
-    \        ys.push_back(rects[i].bottom), ys.push_back(rects[i].top);\n    }\n \
-    \   // \u5EA7\u6A19\u5727\u7E2E\n    xs = unique(xs);\n    ys = unique(ys);\n\
-    \    int w = xs.size(), h = ys.size();\n    std::vector<std::vector<int>> imos(w,\
-    \ std::vector<int>(h));\n    for (int i = 0; i < n; i++) {\n        int a = bisect_left(xs,\
-    \ rects[i].left), b = bisect_left(xs, rects[i].right);\n        int c = bisect_left(ys,\
-    \ rects[i].bottom), d = bisect_left(ys, rects[i].top);\n        imos[a][c]++,\
-    \ imos[a][d]--, imos[b][c]--, imos[b][d]++;\n    }\n    for (auto [i, j] : Grid(Range(w),\
-    \ Range(1, h))) imos[i][j] += imos[i][j - 1];\n    for (auto [i, j] : Grid(Range(1,\
-    \ w), Range(h))) imos[i][j] += imos[i - 1][j];\n    long long ans = 0;\n    for\
-    \ (auto [i, j] : Grid(w - 1, h - 1)) {\n        if (imos[i][j] > 0) ans += (xs[i\
-    \ + 1] - xs[i]) * (ys[j + 1] - ys[j]);\n    }\n    std::cout << ans << '\\n';\n\
-    }\n"
+    \ v2.begin(), v2.end());\n    return v1;\n}\n\n#if __cplusplus >= 202002L\ntemplate\
+    \ <typename T, typename U>\n    requires(std::convertible_to<U, T>)\n#else\ntemplate\
+    \ <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\n#endif\n\
+    inline std::vector<T>& operator|=(std::vector<T>& v1, const std::vector<U>& v2)\
+    \ {\n    return extend(v1, v2);\n}\n\n#if __cplusplus >= 202002L\ntemplate <typename\
+    \ T, typename U>\n    requires(std::integral<U>)\n#else\ntemplate <typename T,\
+    \ typename U, ENABLE_IF_T(std::is_integral_v<U>)>\n#endif\ninline std::vector<T>&\
+    \ operator|=(std::vector<T>& v, const U& u) {\n    if constexpr (std::is_signed_v<U>)\
+    \ assert(u >= 0);\n    std::vector<T> w(v);\n    v.clear();\n    for (long long\
+    \ i = 0; i < static_cast<long long>(u); i++) {\n        extend(v, w);\n    }\n\
+    \    return v;\n}\n\n#if __cplusplus >= 202002L\ntemplate <typename T, typename\
+    \ U>\n    requires(std::integral<U>)\n#else\ntemplate <typename T, typename U,\
+    \ ENABLE_IF_T(std::is_integral_v<U>)>\n#endif\ninline std::vector<T> operator|(const\
+    \ std::vector<T>& v, const U& u) {\n    std::vector<T> res(v);\n    return res\
+    \ |= u;\n}\n\n#if __cplusplus >= 202002L\ntemplate <typename T, typename U>\n\
+    \    requires(std::integral<U>)\n#else\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>\n\
+    #endif\ninline std::vector<T> operator|(const U& u, const std::vector<T>& v) {\n\
+    \    std::vector<T> res(v);\n    return res |= u;\n}\n\ntemplate <typename T>\n\
+    inline std::vector<T> abs(const std::vector<T>& v) {\n    std::vector<T> ret;\n\
+    \    ret.reserve(v.size());\n    for (const T& e : v) ret.push_back(std::abs(e));\n\
+    \    return ret;\n}\n\ntemplate <typename T>\nstd::vector<T> cumulative_sum(std::vector<T>\
+    \ v) {\n    v.insert(v.begin(), T{});\n    std::vector<T> ret(v.size());\n   \
+    \ std::partial_sum(v.begin(), v.end(), ret.begin());\n    return ret;\n}\n\n#if\
+    \ __cplusplus >= 202002L\ntemplate <typename T>\n    requires(std::integral<T>)\n\
+    #else\ntemplate <typename T, ENABLE_IF_T(std::is_integral_v<T>)>\n#endif\nstd::vector<T>\
+    \ iota(T n) {\n    assert(n >= 0);\n    std::vector<T> ret(n);\n    std::iota(ret.begin(),\
+    \ ret.end(), 0);\n    return ret;\n}\n\ntemplate <typename T>\nstd::vector<T>\
+    \ unique(const std::vector<T>& v) {\n    std::vector<T> res(v);\n    std::sort(res.begin(),\
+    \ res.end());\n    res.erase(std::unique(res.begin(), res.end()), res.end());\n\
+    \    return res;\n}\n\ninline long long radix_convert(const std::vector<long long>&\
+    \ v, int base = 10) {\n    assert(base >= 2);\n    long long res = 0;\n    for\
+    \ (long long d : v) {\n        assert(0 <= d && d < base);\n        res = res\
+    \ * base + d;\n    }\n    return res;\n}\n\ninline std::vector<long long> radix_convert(long\
+    \ long v, int base = 10) {\n    assert(v >= 0 && base >= 2);\n    std::vector<long\
+    \ long> res;\n    while (v > 0) {\n        res.push_back(v % base);\n        v\
+    \ /= base;\n    }\n    std::reverse(res.begin(), res.end());\n    return res;\n\
+    }\n#line 10 \"test/aoj/dsl/dsl-4-a.1.test.cpp\"\n\nint main() {\n    int n;\n\
+    \    std::cin >> n;\n    std::vector<Rectangle<long long>> rects(n);\n    std::vector<long\
+    \ long> xs, ys;\n    for (int i = 0; i < n; i++) {\n        std::cin >> rects[i];\n\
+    \        xs.push_back(rects[i].left), xs.push_back(rects[i].right);\n        ys.push_back(rects[i].bottom),\
+    \ ys.push_back(rects[i].top);\n    }\n    // \u5EA7\u6A19\u5727\u7E2E\n    xs\
+    \ = unique(xs);\n    ys = unique(ys);\n    int w = xs.size(), h = ys.size();\n\
+    \    std::vector<std::vector<int>> imos(w, std::vector<int>(h));\n    for (int\
+    \ i = 0; i < n; i++) {\n        int a = bisect_left(xs, rects[i].left), b = bisect_left(xs,\
+    \ rects[i].right);\n        int c = bisect_left(ys, rects[i].bottom), d = bisect_left(ys,\
+    \ rects[i].top);\n        imos[a][c]++, imos[a][d]--, imos[b][c]--, imos[b][d]++;\n\
+    \    }\n    for (auto [i, j] : Grid(Range(w), Range(1, h))) imos[i][j] += imos[i][j\
+    \ - 1];\n    for (auto [i, j] : Grid(Range(1, w), Range(h))) imos[i][j] += imos[i\
+    \ - 1][j];\n    long long ans = 0;\n    for (auto [i, j] : Grid(w - 1, h - 1))\
+    \ {\n        if (imos[i][j] > 0) ans += (xs[i + 1] - xs[i]) * (ys[j + 1] - ys[j]);\n\
+    \    }\n    std::cout << ans << '\\n';\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_4_A\"\
     \n\n#include <iostream>\n#include <vector>\n\n#include \"../../../src/geometry/rectangle.hpp\"\
     \n#include \"../../../src/utility/container_func.hpp\"\n#include \"../../../src/utility/range.hpp\"\
@@ -858,7 +967,7 @@ data:
   isVerificationFile: true
   path: test/aoj/dsl/dsl-4-a.1.test.cpp
   requiredBy: []
-  timestamp: '2026-11-08 20:13:03+09:00'
+  timestamp: '2026-11-10 04:55:25+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/dsl/dsl-4-a.1.test.cpp

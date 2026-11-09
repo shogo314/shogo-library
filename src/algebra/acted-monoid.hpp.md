@@ -508,22 +508,26 @@ data:
     \ Monoid(Op op, const S& e) : op_object(std::move(op)), identity(e) {}\n    constexpr\
     \ S op(const S& a, const S& b) const { return op_object(a, b); }\n    constexpr\
     \ S e() const { return identity; }\n};\ntemplate <typename Op, typename T>\nMonoid(Op,\
-    \ T) -> Monoid<T, Op>;\n#line 27 \"src/algebra/acted-monoid.hpp\"\n\nnamespace\
-    \ internal_acted_monoid {\ntemplate <typename A, typename = void>\nstruct has_mapping_lr\
-    \ : std::false_type {};\ntemplate <typename A>\nstruct has_mapping_lr<A, std::void_t<decltype(std::declval<const\
+    \ T) -> Monoid<T, Op>;\n#line 27 \"src/algebra/acted-monoid.hpp\"\n\n#if __cplusplus\
+    \ < 202002L\nnamespace internal_acted_monoid {\ntemplate <typename A, typename\
+    \ = void>\nstruct has_mapping_lr : std::false_type {};\ntemplate <typename A>\n\
+    struct has_mapping_lr<A, std::void_t<decltype(std::declval<const A&>().mapping(std::declval<const\
+    \ typename A::F&>(), std::declval<const typename A::S&>(), 0, 0))>> : std::true_type\
+    \ {};\ntemplate <typename A, typename = void>\nstruct has_mapping_sz : std::false_type\
+    \ {};\ntemplate <typename A>\nstruct has_mapping_sz<A, std::void_t<decltype(std::declval<const\
     \ A&>().mapping(std::declval<const typename A::F&>(), std::declval<const typename\
-    \ A::S&>(), 0, 0))>> : std::true_type {};\ntemplate <typename A, typename = void>\n\
-    struct has_mapping_sz : std::false_type {};\ntemplate <typename A>\nstruct has_mapping_sz<A,\
-    \ std::void_t<decltype(std::declval<const A&>().mapping(std::declval<const typename\
-    \ A::F&>(), std::declval<const typename A::S&>(), 0))>> : std::true_type {};\n\
-    }  // namespace internal_acted_monoid\n\nnamespace acted_monoid {\n\n/**\n * @brief\
-    \ \u533A\u9593 [l, r) \u3092\u8868\u3059\u8981\u7D20\u306B\u4F5C\u7528\u7D20\u3092\
-    \u9069\u7528\u3059\u308B\n * mapping \u306E\u5F15\u6570\u306E\u5F62\u306E\u9055\
-    \u3044\u3092\u5438\u53CE\u3059\u308B\n */\ntemplate <typename A>\nconstexpr auto\
-    \ apply_mapping(const A& a, const typename A::F& f, const typename A::S& x, long\
-    \ long l, long long r) {\n    if constexpr (internal_acted_monoid::has_mapping_lr<A>::value)\
-    \ {\n        return a.mapping(f, x, l, r);\n    } else if constexpr (internal_acted_monoid::has_mapping_sz<A>::value)\
-    \ {\n        return a.mapping(f, x, r - l);\n    } else {\n        return a.mapping(f,\
+    \ A::S&>(), 0))>> : std::true_type {};\n}  // namespace internal_acted_monoid\n\
+    #endif\n\nnamespace acted_monoid {\n\n/**\n * @brief \u533A\u9593 [l, r) \u3092\
+    \u8868\u3059\u8981\u7D20\u306B\u4F5C\u7528\u7D20\u3092\u9069\u7528\u3059\u308B\
+    \n * mapping \u306E\u5F15\u6570\u306E\u5F62\u306E\u9055\u3044\u3092\u5438\u53CE\
+    \u3059\u308B\n */\ntemplate <typename A>\nconstexpr auto apply_mapping(const A&\
+    \ a, const typename A::F& f, const typename A::S& x, long long l, long long r)\
+    \ {\n#if __cplusplus >= 202002L\n    if constexpr (requires { a.mapping(f, x,\
+    \ l, r); }) {\n#else\n    if constexpr (internal_acted_monoid::has_mapping_lr<A>::value)\
+    \ {\n#endif\n        return a.mapping(f, x, l, r);\n#if __cplusplus >= 202002L\n\
+    \    } else if constexpr (requires { a.mapping(f, x, r - l); }) {\n#else\n   \
+    \ } else if constexpr (internal_acted_monoid::has_mapping_sz<A>::value) {\n#endif\n\
+    \        return a.mapping(f, x, r - l);\n    } else {\n        return a.mapping(f,\
     \ x);\n    }\n}\n\n/**\n * @brief \u533A\u9593\u52A0\u7B97\u3001\u533A\u9593\u548C\
     \n */\ntemplate <typename T>\nstruct AddSum : monoid::Sum<T> {\n    using S =\
     \ T;\n    using F = T;\n    static constexpr S mapping(const F& f, const S& x,\
@@ -754,22 +758,26 @@ data:
     \u7D20\u304C\u7FA4\u3092\u306A\u3059\u5834\u5408 (imos.hpp \u3067\u4F7F\u3046\
     ) \u306F\n * - F inv(const F& f): \u9006\u4F5C\u7528\u7D20\n */\n\n#include <algorithm>\n\
     #include <array>\n#include <cstddef>\n#include <limits>\n#include <optional>\n\
-    #include <type_traits>\n#include <utility>\n\n#include \"monoid.hpp\"\n\nnamespace\
-    \ internal_acted_monoid {\ntemplate <typename A, typename = void>\nstruct has_mapping_lr\
-    \ : std::false_type {};\ntemplate <typename A>\nstruct has_mapping_lr<A, std::void_t<decltype(std::declval<const\
+    #include <type_traits>\n#include <utility>\n\n#include \"monoid.hpp\"\n\n#if __cplusplus\
+    \ < 202002L\nnamespace internal_acted_monoid {\ntemplate <typename A, typename\
+    \ = void>\nstruct has_mapping_lr : std::false_type {};\ntemplate <typename A>\n\
+    struct has_mapping_lr<A, std::void_t<decltype(std::declval<const A&>().mapping(std::declval<const\
+    \ typename A::F&>(), std::declval<const typename A::S&>(), 0, 0))>> : std::true_type\
+    \ {};\ntemplate <typename A, typename = void>\nstruct has_mapping_sz : std::false_type\
+    \ {};\ntemplate <typename A>\nstruct has_mapping_sz<A, std::void_t<decltype(std::declval<const\
     \ A&>().mapping(std::declval<const typename A::F&>(), std::declval<const typename\
-    \ A::S&>(), 0, 0))>> : std::true_type {};\ntemplate <typename A, typename = void>\n\
-    struct has_mapping_sz : std::false_type {};\ntemplate <typename A>\nstruct has_mapping_sz<A,\
-    \ std::void_t<decltype(std::declval<const A&>().mapping(std::declval<const typename\
-    \ A::F&>(), std::declval<const typename A::S&>(), 0))>> : std::true_type {};\n\
-    }  // namespace internal_acted_monoid\n\nnamespace acted_monoid {\n\n/**\n * @brief\
-    \ \u533A\u9593 [l, r) \u3092\u8868\u3059\u8981\u7D20\u306B\u4F5C\u7528\u7D20\u3092\
-    \u9069\u7528\u3059\u308B\n * mapping \u306E\u5F15\u6570\u306E\u5F62\u306E\u9055\
-    \u3044\u3092\u5438\u53CE\u3059\u308B\n */\ntemplate <typename A>\nconstexpr auto\
-    \ apply_mapping(const A& a, const typename A::F& f, const typename A::S& x, long\
-    \ long l, long long r) {\n    if constexpr (internal_acted_monoid::has_mapping_lr<A>::value)\
-    \ {\n        return a.mapping(f, x, l, r);\n    } else if constexpr (internal_acted_monoid::has_mapping_sz<A>::value)\
-    \ {\n        return a.mapping(f, x, r - l);\n    } else {\n        return a.mapping(f,\
+    \ A::S&>(), 0))>> : std::true_type {};\n}  // namespace internal_acted_monoid\n\
+    #endif\n\nnamespace acted_monoid {\n\n/**\n * @brief \u533A\u9593 [l, r) \u3092\
+    \u8868\u3059\u8981\u7D20\u306B\u4F5C\u7528\u7D20\u3092\u9069\u7528\u3059\u308B\
+    \n * mapping \u306E\u5F15\u6570\u306E\u5F62\u306E\u9055\u3044\u3092\u5438\u53CE\
+    \u3059\u308B\n */\ntemplate <typename A>\nconstexpr auto apply_mapping(const A&\
+    \ a, const typename A::F& f, const typename A::S& x, long long l, long long r)\
+    \ {\n#if __cplusplus >= 202002L\n    if constexpr (requires { a.mapping(f, x,\
+    \ l, r); }) {\n#else\n    if constexpr (internal_acted_monoid::has_mapping_lr<A>::value)\
+    \ {\n#endif\n        return a.mapping(f, x, l, r);\n#if __cplusplus >= 202002L\n\
+    \    } else if constexpr (requires { a.mapping(f, x, r - l); }) {\n#else\n   \
+    \ } else if constexpr (internal_acted_monoid::has_mapping_sz<A>::value) {\n#endif\n\
+    \        return a.mapping(f, x, r - l);\n    } else {\n        return a.mapping(f,\
     \ x);\n    }\n}\n\n/**\n * @brief \u533A\u9593\u52A0\u7B97\u3001\u533A\u9593\u548C\
     \n */\ntemplate <typename T>\nstruct AddSum : monoid::Sum<T> {\n    using S =\
     \ T;\n    using F = T;\n    static constexpr S mapping(const F& f, const S& x,\
@@ -996,7 +1004,7 @@ data:
   - src/data_structures/dual-segtree.hpp
   - src/data_structures/imos.hpp
   - src/data_structures/segtree-beats.hpp
-  timestamp: '2026-11-08 19:03:35+09:00'
+  timestamp: '2026-11-10 04:55:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/yukicoder/2292.test.cpp

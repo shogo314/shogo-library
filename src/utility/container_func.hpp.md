@@ -59,22 +59,25 @@ data:
     #include <numeric>\n#include <type_traits>\n#include <vector>\n\n#line 2 \"src/utility/traits.hpp\"\
     \n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 11 \"\
     src/utility/traits.hpp\"\n#include <set>\n#line 13 \"src/utility/traits.hpp\"\n\
-    #include <utility>\n\n#if __cplusplus >= 202002L\n#include <ranges>\n#endif\n\n\
-    namespace internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T,\
-    \ class = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\n\
-    struct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
-    \ : std::true_type {};\n\n// \u30B5\u30A4\u30BA\u4ED8\u304D\u7BC4\u56F2\u304B\u3089\
-    \u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\
-    \u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\u308B\u3002\n#if __cplusplus >= 202002L\n\
-    template <class R, class S>\nconcept sized_constructible_range = std::ranges::input_range<R>\
-    \ && std::ranges::sized_range<R> &&\n                                    std::is_constructible_v<S,\
-    \ std::ranges::range_reference_t<R>>;\n\ntemplate <class R>\nauto range_size(R&\
-    \ r) {\n    return std::ranges::size(r);\n}\ntemplate <class R>\nauto range_begin(R&\
-    \ r) {\n    return std::ranges::begin(r);\n}\ntemplate <class R>\nusing range_value_t\
-    \ = std::ranges::range_value_t<R>;\n#else\nusing std::size;\ntemplate <class R>\n\
-    auto range_size(R& r) -> decltype(size(r)) {\n    return size(r);\n}\ntemplate\
-    \ <class R>\nauto range_begin(R& r) -> decltype(begin(r)) {\n    return begin(r);\n\
-    }\ntemplate <class R>\nusing range_value_t = typename std::iterator_traits<decltype(range_begin(std::declval<R&>()))>::value_type;\n\
+    #include <utility>\n\n#if __cplusplus >= 202002L\n#include <concepts>\n#include\
+    \ <ranges>\n#endif\n\nnamespace internal_traits {\nusing std::begin, std::end;\n\
+    \n#if __cplusplus >= 202002L\ntemplate <class T>\n    struct is_range_impl : std::bool_constant\
+    \ < requires(T& t) {\n    begin(t);\n    end(t);\n}>{};\n#else\ntemplate <class\
+    \ T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class\
+    \ T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n#endif\n\n// \u30B5\u30A4\u30BA\
+    \u4ED8\u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\
+    \u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\
+    \u308B\u3002\n#if __cplusplus >= 202002L\ntemplate <class R, class S>\nconcept\
+    \ sized_constructible_range = std::ranges::input_range<R> && std::ranges::sized_range<R>\
+    \ &&\n                                    std::is_constructible_v<S, std::ranges::range_reference_t<R>>;\n\
+    \ntemplate <class R>\nauto range_size(R& r) {\n    return std::ranges::size(r);\n\
+    }\ntemplate <class R>\nauto range_begin(R& r) {\n    return std::ranges::begin(r);\n\
+    }\ntemplate <class R>\nusing range_value_t = std::ranges::range_value_t<R>;\n\
+    #else\nusing std::size;\ntemplate <class R>\nauto range_size(R& r) -> decltype(size(r))\
+    \ {\n    return size(r);\n}\ntemplate <class R>\nauto range_begin(R& r) -> decltype(begin(r))\
+    \ {\n    return begin(r);\n}\ntemplate <class R>\nusing range_value_t = typename\
+    \ std::iterator_traits<decltype(range_begin(std::declval<R&>()))>::value_type;\n\
     \ntemplate <class R, class S, class = void>\nstruct is_sized_constructible_range\
     \ : std::false_type {};\ntemplate <class R, class S>\nstruct is_sized_constructible_range<R,\
     \ S, std::void_t<decltype(range_size(std::declval<R&>())), decltype(++std::declval<decltype(begin(std::declval<R&>()))&>()),\
@@ -82,13 +85,35 @@ data:
     \    : std::is_constructible<S, decltype(*begin(std::declval<R&>()))> {};\n#endif\n\
     }  // namespace internal_traits\n\ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
     \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
-    \n#define HAS_METHOD(func_name)                                              \
-    \                \\\n    namespace internal_traits {                         \
-    \                                   \\\n    template <class T, class = void> \
-    \                                                      \\\n    struct has_##func_name##_impl\
-    \ : std::false_type {};                                    \\\n    template <class\
-    \ T>                                                                     \\\n\
-    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
+    \n#if __cplusplus >= 202002L\n#define HAS_METHOD(func_name)                  \
+    \                                                 \\\n    namespace internal_traits\
+    \ {                                                                 \\\n    template\
+    \ <class T>                                                                  \
+    \        \\\n    concept has_##func_name##_impl = requires { std::declval<T>().func_name();\
+    \ };               \\\n    }                                                 \
+    \                                          \\\n    template <class T>        \
+    \                                                                  \\\n    struct\
+    \ has_##func_name : std::bool_constant<internal_traits::has_##func_name##_impl<T>>\
+    \ {}; \\\n    template <class T>                                             \
+    \                             \\\n    inline constexpr bool has_##func_name##_v\
+    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
+    \                                                        \\\n    namespace internal_traits\
+    \ {                                                                    \\\n  \
+    \  template <class T, class U>                                               \
+    \                     \\\n    concept has_##func_name##_impl = requires { std::declval<T>().func_name(std::declval<U>());\
+    \ }; \\\n    }                                                               \
+    \                               \\\n    template <class T, class U>          \
+    \                                                          \\\n    struct has_##func_name\
+    \ : std::bool_constant<internal_traits::has_##func_name##_impl<T, U>> {}; \\\n\
+    \    template <class T, class U>                                             \
+    \                       \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T,\
+    \ U>::value;\n#else\n#define HAS_METHOD(func_name)                           \
+    \                                   \\\n    namespace internal_traits {      \
+    \                                                      \\\n    template <class\
+    \ T, class = void>                                                       \\\n\
+    \    struct has_##func_name##_impl : std::false_type {};                     \
+    \               \\\n    template <class T>                                   \
+    \                                  \\\n    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
     \ \\\n        : std::true_type {};                                           \
     \                    \\\n    }                                               \
     \                                       \\\n    template <class T>           \
@@ -112,11 +137,11 @@ data:
     \ U>::type {};                           \\\n    template <class T, typename U>\
     \                                                                            \
     \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
-    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
-    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
-    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
-    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
-    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
+    #endif\n\nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\n\
+    HAS_METHOD(max)\nHAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\n\
+    HAS_METHOD(product)\nHAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\n\
+    HAS_METHOD_ARG(lower_bound)\nHAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr)\
+    \ std::enable_if_t<expr, std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
     \nnamespace internal_traits {\n// \u5C04\u5F71 (proj) \u306E\u65E2\u5B9A\u5024\
     \n#if __cplusplus >= 202002L\nusing identity = std::identity;\n#else\nstruct identity\
     \ {\n    using is_transparent = void;\n    template <class T>\n    constexpr T&&\
@@ -130,73 +155,127 @@ data:
     \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
     \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
     inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
-    #line 19 \"src/utility/container_func.hpp\"\n\n#define METHOD_EXPAND(func)   \
-    \                                     \\\n    template <typename T, ENABLE_IF_T(has_##func##_v<T>)>\
-    \          \\\n    inline constexpr auto func(const T& t) -> decltype(t.func())\
-    \ { \\\n        return t.func();                                           \\\n\
-    \    }\n\n#define METHOD_AND_FUNC_ARG_EXPAND(func)                           \
-    \       \\\n    template <typename T, typename U, ENABLE_IF_T(has_##func##_v<T,\
-    \ U>)>  \\\n    inline constexpr auto func(const T& t, const U& u)           \
-    \         \\\n        -> decltype(t.func(u)) {                               \
-    \           \\\n        return t.func(u);                                    \
-    \             \\\n    }                                                      \
-    \               \\\n    template <typename T, typename U, ENABLE_IF_T(!has_##func##_v<T,\
-    \ U>)> \\\n    inline constexpr auto func(const T& t, const U& u)            \
-    \        \\\n        -> decltype(std::func(t.begin(), t.end(), u)) {         \
-    \          \\\n        return std::func(t.begin(), t.end(), u);              \
-    \            \\\n    }\n\nMETHOD_EXPAND(reversed)\ntemplate <class C, ENABLE_IF_T(!has_reversed_v<C>)>\n\
-    inline constexpr C reversed(C t) {\n    std::reverse(t.begin(), t.end());\n  \
-    \  return t;\n}\n\nnamespace internal_container_func {\n// comp(proj(a), proj(b))\
-    \ \u3067\u6BD4\u3079\u3089\u308C\u308B\u304B\ntemplate <class C, class F, class\
-    \ P, class = void>\nstruct is_projected_comp : std::false_type {};\ntemplate <class\
-    \ C, class F, class P>\nstruct is_projected_comp<C, F, P, std::void_t<std::invoke_result_t<P&,\
-    \ const mem_value_type<C>&>>>\n    : std::is_invocable_r<bool, F&, std::invoke_result_t<P&,\
-    \ const mem_value_type<C>&>, std::invoke_result_t<P&, const mem_value_type<C>&>>\
-    \ {};\n}  // namespace internal_container_func\n\nMETHOD_EXPAND(sorted)\ntemplate\
-    \ <class C, class F = std::less<>, class P = internal_traits::identity, ENABLE_IF_T(!has_sorted_v<C>\
-    \ && internal_container_func::is_projected_comp<C, F, P>::value)>\ninline constexpr\
-    \ C sorted(C t, F comp = F(), P proj = P()) {\n    std::sort(t.begin(), t.end(),\
-    \ [&](const mem_value_type<C>& a, const mem_value_type<C>& b) {\n        return\
-    \ std::invoke(comp, std::invoke(proj, a), std::invoke(proj, b));\n    });\n  \
-    \  return t;\n}\n\ntemplate <class C, class F = std::less<>, class P = internal_traits::identity,\
-    \ ENABLE_IF_T(internal_container_func::is_projected_comp<C, F, P>::value)>\ninline\
-    \ constexpr void sort(C& t, F comp = F(), P proj = P()) {\n    std::sort(t.begin(),\
-    \ t.end(), [&](const mem_value_type<C>& a, const mem_value_type<C>& b) {\n   \
-    \     return std::invoke(comp, std::invoke(proj, a), std::invoke(proj, b));\n\
-    \    });\n}\n// sort(c, {}, proj) \u7528\u3002std::vector \u306A\u3069\u3067\u306F\
-    \ ADL \u3067 std::sort(first, last, comp) \u3082\u5019\u88DC\u306B\u306A\u308A\
+    #line 19 \"src/utility/container_func.hpp\"\n\n#if __cplusplus >= 202002L\n#define\
+    \ METHOD_EXPAND(func)         \\\n    template <typename T>           \\\n   \
+    \     requires(has_##func##_v<T>) \\\n    inline constexpr auto func(const T&\
+    \ t) -> decltype(t.func()) { return t.func(); }\n\n#define METHOD_AND_FUNC_ARG_EXPAND(func)\
+    \                                                               \\\n    template\
+    \ <typename T, typename U>                                                   \
+    \               \\\n        requires(has_##func##_v<T, U>)                   \
+    \                                              \\\n    inline constexpr auto func(const\
+    \ T& t, const U& u) -> decltype(t.func(u)) { return t.func(u); }    \\\n    template\
+    \ <typename T, typename U>                                                   \
+    \               \\\n        requires(!has_##func##_v<T, U>)                  \
+    \                                              \\\n    inline constexpr auto func(const\
+    \ T& t, const U& u) -> decltype(std::func(t.begin(), t.end(), u)) { \\\n     \
+    \   if constexpr (requires { std::ranges::func(t, u); }) {                   \
+    \                      \\\n            return std::ranges::func(t, u);       \
+    \                                                     \\\n        } else {   \
+    \                                                                            \
+    \        \\\n            return std::func(t.begin(), t.end(), u);            \
+    \                                       \\\n        }                        \
+    \                                                                      \\\n  \
+    \  }\n#else\n#define METHOD_EXPAND(func)                                     \
+    \   \\\n    template <typename T, ENABLE_IF_T(has_##func##_v<T>)>          \\\n\
+    \    inline constexpr auto func(const T& t) -> decltype(t.func()) { \\\n     \
+    \   return t.func();                                           \\\n    }\n\n#define\
+    \ METHOD_AND_FUNC_ARG_EXPAND(func)                                  \\\n    template\
+    \ <typename T, typename U, ENABLE_IF_T(has_##func##_v<T, U>)>  \\\n    inline\
+    \ constexpr auto func(const T& t, const U& u)                    \\\n        ->\
+    \ decltype(t.func(u)) {                                          \\\n        return\
+    \ t.func(u);                                                 \\\n    }       \
+    \                                                              \\\n    template\
+    \ <typename T, typename U, ENABLE_IF_T(!has_##func##_v<T, U>)> \\\n    inline\
+    \ constexpr auto func(const T& t, const U& u)                    \\\n        ->\
+    \ decltype(std::func(t.begin(), t.end(), u)) {                   \\\n        return\
+    \ std::func(t.begin(), t.end(), u);                          \\\n    }\n#endif\n\
+    \nMETHOD_EXPAND(reversed)\n#if __cplusplus >= 202002L\ntemplate <class C>\n  \
+    \  requires(!has_reversed_v<C>)\n#else\ntemplate <class C, ENABLE_IF_T(!has_reversed_v<C>)>\n\
+    #endif\ninline constexpr C reversed(C t) {\n#if __cplusplus >= 202002L\n    if\
+    \ constexpr (requires { std::ranges::reverse(t); }) {\n        std::ranges::reverse(t);\n\
+    \    } else\n#endif\n    {\n        std::reverse(t.begin(), t.end());\n    }\n\
+    \    return t;\n}\n\nnamespace internal_container_func {\n// comp(proj(a), proj(b))\
+    \ \u3067\u6BD4\u3079\u3089\u308C\u308B\u304B\n#if __cplusplus >= 202002L\ntemplate\
+    \ <class C, class F, class P>\nconcept projected_comp = requires(F& comp, P& proj,\
+    \ const typename C::value_type& value) {\n    { std::invoke(comp, std::invoke(proj,\
+    \ value), std::invoke(proj, value)) } -> std::convertible_to<bool>;\n};\n#else\n\
+    template <class C, class F, class P, class = void>\nstruct is_projected_comp :\
+    \ std::false_type {};\ntemplate <class C, class F, class P>\nstruct is_projected_comp<C,\
+    \ F, P, std::void_t<std::invoke_result_t<P&, const mem_value_type<C>&>>>\n   \
+    \ : std::is_invocable_r<bool, F&, std::invoke_result_t<P&, const mem_value_type<C>&>,\
+    \ std::invoke_result_t<P&, const mem_value_type<C>&>> {};\n#endif\n// ranges \u3067\
+    \u6271\u3048\u308B iterator \u3067\u306F\u5C04\u5F71\u3092\u76F4\u63A5\u6E21\u3059\
+    \u3002vector<bool> \u306A\u3069\u306F\u5F93\u6765\u306E\u30A2\u30EB\u30B4\u30EA\
+    \u30BA\u30E0\u3092\u4F7F\u3046\u3002\ntemplate <class C, class F, class P>\nconstexpr\
+    \ void sort(C& values, F& comp, P& proj) {\n#if __cplusplus >= 202002L\n    if\
+    \ constexpr (requires { std::ranges::sort(values, std::ref(comp), std::ref(proj));\
+    \ }) {\n        std::ranges::sort(values, std::ref(comp), std::ref(proj));\n \
+    \   } else\n#endif\n    {\n        std::sort(values.begin(), values.end(), [&](const\
+    \ mem_value_type<C>& a, const mem_value_type<C>& b) {\n            return std::invoke(comp,\
+    \ std::invoke(proj, a), std::invoke(proj, b));\n        });\n    }\n}\n}  // namespace\
+    \ internal_container_func\n\nMETHOD_EXPAND(sorted)\n#if __cplusplus >= 202002L\n\
+    template <class C, class F = std::less<>, class P = internal_traits::identity>\n\
+    \    requires(!has_sorted_v<C> && internal_container_func::projected_comp<C, F,\
+    \ P>)\n#else\ntemplate <class C, class F = std::less<>, class P = internal_traits::identity,\
+    \ ENABLE_IF_T(!has_sorted_v<C> && internal_container_func::is_projected_comp<C,\
+    \ F, P>::value)>\n#endif\ninline constexpr C sorted(C t, F comp = F(), P proj\
+    \ = P()) {\n    internal_container_func::sort(t, comp, proj);\n    return t;\n\
+    }\n\n#if __cplusplus >= 202002L\ntemplate <class C, class F = std::less<>, class\
+    \ P = internal_traits::identity>\n    requires(internal_container_func::projected_comp<C,\
+    \ F, P>)\n#else\ntemplate <class C, class F = std::less<>, class P = internal_traits::identity,\
+    \ ENABLE_IF_T(internal_container_func::is_projected_comp<C, F, P>::value)>\n#endif\n\
+    inline constexpr void sort(C& t, F comp = F(), P proj = P()) {\n    internal_container_func::sort(t,\
+    \ comp, proj);\n}\n// sort(c, {}, proj) \u7528\u3002std::vector \u306A\u3069\u3067\
+    \u306F ADL \u3067 std::sort(first, last, comp) \u3082\u5019\u88DC\u306B\u306A\u308A\
     \u3001\n// {} \u3092 F \u3067\u53D7\u3051\u308B\u3068 std::sort \u304C\u9078\u3070\
     \u308C\u308B\u306E\u3067\u3001{} \u304C\u6A19\u6E96\u5909\u63DB\u3067\u6E21\u308B\
-    \ std::nullptr_t \u3067\u53D7\u3051\u308B\ntemplate <class C, class P, ENABLE_IF_T(internal_container_func::is_projected_comp<C,\
-    \ std::less<>, P>::value)>\ninline constexpr void sort(C& t, std::nullptr_t, P\
-    \ proj) {\n    sort(t, std::less<>(), proj);\n}\n\ntemplate <class C>\ninline\
-    \ constexpr void reverse(C& t) {\n    std::reverse(t.begin(), t.end());\n}\n\n\
-    METHOD_EXPAND(max)\ntemplate <class C, ENABLE_IF_T(!has_max_v<C> && is_sorted_container_v<C>)>\n\
-    inline constexpr mem_value_type<C> max(const C& v) {\n    assert(v.begin() !=\
-    \ v.end());\n    return *v.rbegin();\n}\ntemplate <class C, ENABLE_IF_T(!has_max_v<C>\
-    \ && !is_sorted_container_v<C>)>\ninline constexpr mem_value_type<C> max(const\
-    \ C& v) {\n    assert(v.begin() != v.end());\n    return *std::max_element(v.begin(),\
-    \ v.end());\n}\ntemplate <typename T>\ninline constexpr T max(const std::initializer_list<T>&\
-    \ v) {\n    return std::max(v);\n}\n\nMETHOD_EXPAND(min)\ntemplate <class C, ENABLE_IF_T(!has_min_v<C>\
-    \ && is_sorted_container_v<C>)>\ninline constexpr mem_value_type<C> min(const\
-    \ C& v) {\n    assert(v.begin() != v.end());\n    return *v.begin();\n}\ntemplate\
-    \ <class C, ENABLE_IF_T(!has_min_v<C> && !is_sorted_container_v<C>)>\ninline constexpr\
-    \ mem_value_type<C> min(const C& v) {\n    assert(v.begin() != v.end());\n   \
-    \ return *std::min_element(v.begin(), v.end());\n}\ntemplate <typename T>\ninline\
-    \ constexpr T min(const std::initializer_list<T>& v) {\n    return std::min(v);\n\
-    }\n\nMETHOD_EXPAND(sum)\ntemplate <class C, ENABLE_IF_T(!has_sum_v<C>)>\ninline\
-    \ constexpr mem_value_type<C> sum(const C& v) {\n    return std::accumulate(v.begin(),\
+    \ std::nullptr_t \u3067\u53D7\u3051\u308B\n#if __cplusplus >= 202002L\ntemplate\
+    \ <class C, class P>\n    requires(internal_container_func::projected_comp<C,\
+    \ std::less<>, P>)\n#else\ntemplate <class C, class P, ENABLE_IF_T(internal_container_func::is_projected_comp<C,\
+    \ std::less<>, P>::value)>\n#endif\ninline constexpr void sort(C& t, std::nullptr_t,\
+    \ P proj) {\n    sort(t, std::less<>(), proj);\n}\n\ntemplate <class C>\ninline\
+    \ constexpr void reverse(C& t) {\n#if __cplusplus >= 202002L\n    if constexpr\
+    \ (requires { std::ranges::reverse(t); }) {\n        std::ranges::reverse(t);\n\
+    \    } else\n#endif\n    {\n        std::reverse(t.begin(), t.end());\n    }\n\
+    }\n\nMETHOD_EXPAND(max)\n#if __cplusplus >= 202002L\ntemplate <class C>\n    requires(!has_max_v<C>\
+    \ && is_sorted_container_v<C>)\n#else\ntemplate <class C, ENABLE_IF_T(!has_max_v<C>\
+    \ && is_sorted_container_v<C>)>\n#endif\ninline constexpr mem_value_type<C> max(const\
+    \ C& v) {\n    assert(v.begin() != v.end());\n    return *v.rbegin();\n}\n#if\
+    \ __cplusplus >= 202002L\ntemplate <class C>\n    requires(!has_max_v<C> && !is_sorted_container_v<C>)\n\
+    #else\ntemplate <class C, ENABLE_IF_T(!has_max_v<C> && !is_sorted_container_v<C>)>\n\
+    #endif\ninline constexpr mem_value_type<C> max(const C& v) {\n    assert(v.begin()\
+    \ != v.end());\n#if __cplusplus >= 202002L\n    if constexpr (requires { std::ranges::max_element(v,\
+    \ std::less<>{}); }) {\n        return *std::ranges::max_element(v, std::less<>{});\n\
+    \    } else\n#endif\n    {\n        return *std::max_element(v.begin(), v.end());\n\
+    \    }\n}\ntemplate <typename T>\ninline constexpr T max(const std::initializer_list<T>&\
+    \ v) {\n    return std::max(v);\n}\n\nMETHOD_EXPAND(min)\n#if __cplusplus >= 202002L\n\
+    template <class C>\n    requires(!has_min_v<C> && is_sorted_container_v<C>)\n\
+    #else\ntemplate <class C, ENABLE_IF_T(!has_min_v<C> && is_sorted_container_v<C>)>\n\
+    #endif\ninline constexpr mem_value_type<C> min(const C& v) {\n    assert(v.begin()\
+    \ != v.end());\n    return *v.begin();\n}\n#if __cplusplus >= 202002L\ntemplate\
+    \ <class C>\n    requires(!has_min_v<C> && !is_sorted_container_v<C>)\n#else\n\
+    template <class C, ENABLE_IF_T(!has_min_v<C> && !is_sorted_container_v<C>)>\n\
+    #endif\ninline constexpr mem_value_type<C> min(const C& v) {\n    assert(v.begin()\
+    \ != v.end());\n#if __cplusplus >= 202002L\n    if constexpr (requires { std::ranges::min_element(v,\
+    \ std::less<>{}); }) {\n        return *std::ranges::min_element(v, std::less<>{});\n\
+    \    } else\n#endif\n    {\n        return *std::min_element(v.begin(), v.end());\n\
+    \    }\n}\ntemplate <typename T>\ninline constexpr T min(const std::initializer_list<T>&\
+    \ v) {\n    return std::min(v);\n}\n\nMETHOD_EXPAND(sum)\n#if __cplusplus >= 202002L\n\
+    template <class C>\n    requires(!has_sum_v<C>)\n#else\ntemplate <class C, ENABLE_IF_T(!has_sum_v<C>)>\n\
+    #endif\ninline constexpr mem_value_type<C> sum(const C& v) {\n    return std::accumulate(v.begin(),\
     \ v.end(), mem_value_type<C>{});\n}\ntemplate <typename T>\ninline constexpr T\
     \ sum(const std::initializer_list<T>& v) {\n    return std::accumulate(v.begin(),\
-    \ v.end(), T{});\n}\n\nMETHOD_EXPAND(product)\ntemplate <class C, ENABLE_IF_T(!has_product_v<C>)>\n\
-    inline constexpr mem_value_type<C> product(const C& v) {\n    return std::accumulate(v.begin(),\
+    \ v.end(), T{});\n}\n\nMETHOD_EXPAND(product)\n#if __cplusplus >= 202002L\ntemplate\
+    \ <class C>\n    requires(!has_product_v<C>)\n#else\ntemplate <class C, ENABLE_IF_T(!has_product_v<C>)>\n\
+    #endif\ninline constexpr mem_value_type<C> product(const C& v) {\n    return std::accumulate(v.begin(),\
     \ v.end(), mem_value_type<C>{1}, std::multiplies<mem_value_type<C>>());\n}\ntemplate\
     \ <typename T>\ninline constexpr T product(const std::initializer_list<T>& v)\
     \ {\n    return std::accumulate(v.begin(), v.end(), T{1}, std::multiplies<T>());\n\
-    }\n\nMETHOD_EXPAND(product_xor)\ntemplate <class C, ENABLE_IF_T(!has_product_xor_v<C>)>\n\
-    inline constexpr mem_value_type<C> product_xor(const C& v) {\n    return std::accumulate(v.begin(),\
-    \ v.end(), mem_value_type<C>{0}, std::bit_xor<mem_value_type<C>>());\n}\ntemplate\
-    \ <typename T>\ninline constexpr T product_xor(const std::initializer_list<T>&\
+    }\n\nMETHOD_EXPAND(product_xor)\n#if __cplusplus >= 202002L\ntemplate <class C>\n\
+    \    requires(!has_product_xor_v<C>)\n#else\ntemplate <class C, ENABLE_IF_T(!has_product_xor_v<C>)>\n\
+    #endif\ninline constexpr mem_value_type<C> product_xor(const C& v) {\n    return\
+    \ std::accumulate(v.begin(), v.end(), mem_value_type<C>{0}, std::bit_xor<mem_value_type<C>>());\n\
+    }\ntemplate <typename T>\ninline constexpr T product_xor(const std::initializer_list<T>&\
     \ v) {\n    return std::accumulate(v.begin(), v.end(), T{0}, std::bit_xor<T>());\n\
     }\n\nMETHOD_AND_FUNC_ARG_EXPAND(count)\nMETHOD_AND_FUNC_ARG_EXPAND(find)\nMETHOD_AND_FUNC_ARG_EXPAND(lower_bound)\n\
     METHOD_AND_FUNC_ARG_EXPAND(upper_bound)\n\ntemplate <class C, typename T>\ninline\
@@ -240,9 +319,10 @@ data:
     \ a = std::begin(s);\n    auto b = std::begin(t);\n    long long n = std::end(s)\
     \ - a;\n    assert(n == std::end(t) - b);\n    long long res = 0;\n    for (long\
     \ long i = 0; i < n; i++) {\n        if (!(a[i] == b[i])) res++;\n    }\n    return\
-    \ res;\n}\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
-    inline constexpr mem_value_type<C> mex(const C& v) {\n    std::vector<bool> b(v.size()\
-    \ + 1);\n    for (const auto& a : v) {\n        if (0 <= a && static_cast<std::size_t>(a)\
+    \ res;\n}\n\n#if __cplusplus >= 202002L\ntemplate <class C>\n    requires(std::integral<mem_value_type<C>>)\n\
+    #else\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
+    #endif\ninline constexpr mem_value_type<C> mex(const C& v) {\n    std::vector<bool>\
+    \ b(v.size() + 1);\n    for (const auto& a : v) {\n        if (0 <= a && static_cast<std::size_t>(a)\
     \ < b.size()) {\n            b[a] = true;\n        }\n    }\n    mem_value_type<C>\
     \ ret = 0;  // b \u306E\u8981\u7D20\u6570\u306F v \u3088\u308A 1 \u591A\u3044\u306E\
     \u3067\u3001\u4E0B\u306E\u30EB\u30FC\u30D7\u3067\u5FC5\u305A\u898B\u3064\u304B\
@@ -257,73 +337,127 @@ data:
     \u30CA\u306B\u5BFE\u3059\u308B\u95A2\u6570 (sorted, max, sum \u306A\u3069)\n */\n\
     \n#include <algorithm>\n#include <cassert>\n#include <cstddef>\n#include <functional>\n\
     #include <initializer_list>\n#include <iterator>\n#include <numeric>\n#include\
-    \ <type_traits>\n#include <vector>\n\n#include \"traits.hpp\"\n\n#define METHOD_EXPAND(func)\
-    \                                        \\\n    template <typename T, ENABLE_IF_T(has_##func##_v<T>)>\
-    \          \\\n    inline constexpr auto func(const T& t) -> decltype(t.func())\
-    \ { \\\n        return t.func();                                           \\\n\
-    \    }\n\n#define METHOD_AND_FUNC_ARG_EXPAND(func)                           \
-    \       \\\n    template <typename T, typename U, ENABLE_IF_T(has_##func##_v<T,\
-    \ U>)>  \\\n    inline constexpr auto func(const T& t, const U& u)           \
-    \         \\\n        -> decltype(t.func(u)) {                               \
-    \           \\\n        return t.func(u);                                    \
-    \             \\\n    }                                                      \
-    \               \\\n    template <typename T, typename U, ENABLE_IF_T(!has_##func##_v<T,\
-    \ U>)> \\\n    inline constexpr auto func(const T& t, const U& u)            \
-    \        \\\n        -> decltype(std::func(t.begin(), t.end(), u)) {         \
-    \          \\\n        return std::func(t.begin(), t.end(), u);              \
-    \            \\\n    }\n\nMETHOD_EXPAND(reversed)\ntemplate <class C, ENABLE_IF_T(!has_reversed_v<C>)>\n\
-    inline constexpr C reversed(C t) {\n    std::reverse(t.begin(), t.end());\n  \
-    \  return t;\n}\n\nnamespace internal_container_func {\n// comp(proj(a), proj(b))\
-    \ \u3067\u6BD4\u3079\u3089\u308C\u308B\u304B\ntemplate <class C, class F, class\
-    \ P, class = void>\nstruct is_projected_comp : std::false_type {};\ntemplate <class\
-    \ C, class F, class P>\nstruct is_projected_comp<C, F, P, std::void_t<std::invoke_result_t<P&,\
-    \ const mem_value_type<C>&>>>\n    : std::is_invocable_r<bool, F&, std::invoke_result_t<P&,\
-    \ const mem_value_type<C>&>, std::invoke_result_t<P&, const mem_value_type<C>&>>\
-    \ {};\n}  // namespace internal_container_func\n\nMETHOD_EXPAND(sorted)\ntemplate\
-    \ <class C, class F = std::less<>, class P = internal_traits::identity, ENABLE_IF_T(!has_sorted_v<C>\
-    \ && internal_container_func::is_projected_comp<C, F, P>::value)>\ninline constexpr\
-    \ C sorted(C t, F comp = F(), P proj = P()) {\n    std::sort(t.begin(), t.end(),\
-    \ [&](const mem_value_type<C>& a, const mem_value_type<C>& b) {\n        return\
-    \ std::invoke(comp, std::invoke(proj, a), std::invoke(proj, b));\n    });\n  \
-    \  return t;\n}\n\ntemplate <class C, class F = std::less<>, class P = internal_traits::identity,\
-    \ ENABLE_IF_T(internal_container_func::is_projected_comp<C, F, P>::value)>\ninline\
-    \ constexpr void sort(C& t, F comp = F(), P proj = P()) {\n    std::sort(t.begin(),\
-    \ t.end(), [&](const mem_value_type<C>& a, const mem_value_type<C>& b) {\n   \
-    \     return std::invoke(comp, std::invoke(proj, a), std::invoke(proj, b));\n\
-    \    });\n}\n// sort(c, {}, proj) \u7528\u3002std::vector \u306A\u3069\u3067\u306F\
-    \ ADL \u3067 std::sort(first, last, comp) \u3082\u5019\u88DC\u306B\u306A\u308A\
+    \ <type_traits>\n#include <vector>\n\n#include \"traits.hpp\"\n\n#if __cplusplus\
+    \ >= 202002L\n#define METHOD_EXPAND(func)         \\\n    template <typename T>\
+    \           \\\n        requires(has_##func##_v<T>) \\\n    inline constexpr auto\
+    \ func(const T& t) -> decltype(t.func()) { return t.func(); }\n\n#define METHOD_AND_FUNC_ARG_EXPAND(func)\
+    \                                                               \\\n    template\
+    \ <typename T, typename U>                                                   \
+    \               \\\n        requires(has_##func##_v<T, U>)                   \
+    \                                              \\\n    inline constexpr auto func(const\
+    \ T& t, const U& u) -> decltype(t.func(u)) { return t.func(u); }    \\\n    template\
+    \ <typename T, typename U>                                                   \
+    \               \\\n        requires(!has_##func##_v<T, U>)                  \
+    \                                              \\\n    inline constexpr auto func(const\
+    \ T& t, const U& u) -> decltype(std::func(t.begin(), t.end(), u)) { \\\n     \
+    \   if constexpr (requires { std::ranges::func(t, u); }) {                   \
+    \                      \\\n            return std::ranges::func(t, u);       \
+    \                                                     \\\n        } else {   \
+    \                                                                            \
+    \        \\\n            return std::func(t.begin(), t.end(), u);            \
+    \                                       \\\n        }                        \
+    \                                                                      \\\n  \
+    \  }\n#else\n#define METHOD_EXPAND(func)                                     \
+    \   \\\n    template <typename T, ENABLE_IF_T(has_##func##_v<T>)>          \\\n\
+    \    inline constexpr auto func(const T& t) -> decltype(t.func()) { \\\n     \
+    \   return t.func();                                           \\\n    }\n\n#define\
+    \ METHOD_AND_FUNC_ARG_EXPAND(func)                                  \\\n    template\
+    \ <typename T, typename U, ENABLE_IF_T(has_##func##_v<T, U>)>  \\\n    inline\
+    \ constexpr auto func(const T& t, const U& u)                    \\\n        ->\
+    \ decltype(t.func(u)) {                                          \\\n        return\
+    \ t.func(u);                                                 \\\n    }       \
+    \                                                              \\\n    template\
+    \ <typename T, typename U, ENABLE_IF_T(!has_##func##_v<T, U>)> \\\n    inline\
+    \ constexpr auto func(const T& t, const U& u)                    \\\n        ->\
+    \ decltype(std::func(t.begin(), t.end(), u)) {                   \\\n        return\
+    \ std::func(t.begin(), t.end(), u);                          \\\n    }\n#endif\n\
+    \nMETHOD_EXPAND(reversed)\n#if __cplusplus >= 202002L\ntemplate <class C>\n  \
+    \  requires(!has_reversed_v<C>)\n#else\ntemplate <class C, ENABLE_IF_T(!has_reversed_v<C>)>\n\
+    #endif\ninline constexpr C reversed(C t) {\n#if __cplusplus >= 202002L\n    if\
+    \ constexpr (requires { std::ranges::reverse(t); }) {\n        std::ranges::reverse(t);\n\
+    \    } else\n#endif\n    {\n        std::reverse(t.begin(), t.end());\n    }\n\
+    \    return t;\n}\n\nnamespace internal_container_func {\n// comp(proj(a), proj(b))\
+    \ \u3067\u6BD4\u3079\u3089\u308C\u308B\u304B\n#if __cplusplus >= 202002L\ntemplate\
+    \ <class C, class F, class P>\nconcept projected_comp = requires(F& comp, P& proj,\
+    \ const typename C::value_type& value) {\n    { std::invoke(comp, std::invoke(proj,\
+    \ value), std::invoke(proj, value)) } -> std::convertible_to<bool>;\n};\n#else\n\
+    template <class C, class F, class P, class = void>\nstruct is_projected_comp :\
+    \ std::false_type {};\ntemplate <class C, class F, class P>\nstruct is_projected_comp<C,\
+    \ F, P, std::void_t<std::invoke_result_t<P&, const mem_value_type<C>&>>>\n   \
+    \ : std::is_invocable_r<bool, F&, std::invoke_result_t<P&, const mem_value_type<C>&>,\
+    \ std::invoke_result_t<P&, const mem_value_type<C>&>> {};\n#endif\n// ranges \u3067\
+    \u6271\u3048\u308B iterator \u3067\u306F\u5C04\u5F71\u3092\u76F4\u63A5\u6E21\u3059\
+    \u3002vector<bool> \u306A\u3069\u306F\u5F93\u6765\u306E\u30A2\u30EB\u30B4\u30EA\
+    \u30BA\u30E0\u3092\u4F7F\u3046\u3002\ntemplate <class C, class F, class P>\nconstexpr\
+    \ void sort(C& values, F& comp, P& proj) {\n#if __cplusplus >= 202002L\n    if\
+    \ constexpr (requires { std::ranges::sort(values, std::ref(comp), std::ref(proj));\
+    \ }) {\n        std::ranges::sort(values, std::ref(comp), std::ref(proj));\n \
+    \   } else\n#endif\n    {\n        std::sort(values.begin(), values.end(), [&](const\
+    \ mem_value_type<C>& a, const mem_value_type<C>& b) {\n            return std::invoke(comp,\
+    \ std::invoke(proj, a), std::invoke(proj, b));\n        });\n    }\n}\n}  // namespace\
+    \ internal_container_func\n\nMETHOD_EXPAND(sorted)\n#if __cplusplus >= 202002L\n\
+    template <class C, class F = std::less<>, class P = internal_traits::identity>\n\
+    \    requires(!has_sorted_v<C> && internal_container_func::projected_comp<C, F,\
+    \ P>)\n#else\ntemplate <class C, class F = std::less<>, class P = internal_traits::identity,\
+    \ ENABLE_IF_T(!has_sorted_v<C> && internal_container_func::is_projected_comp<C,\
+    \ F, P>::value)>\n#endif\ninline constexpr C sorted(C t, F comp = F(), P proj\
+    \ = P()) {\n    internal_container_func::sort(t, comp, proj);\n    return t;\n\
+    }\n\n#if __cplusplus >= 202002L\ntemplate <class C, class F = std::less<>, class\
+    \ P = internal_traits::identity>\n    requires(internal_container_func::projected_comp<C,\
+    \ F, P>)\n#else\ntemplate <class C, class F = std::less<>, class P = internal_traits::identity,\
+    \ ENABLE_IF_T(internal_container_func::is_projected_comp<C, F, P>::value)>\n#endif\n\
+    inline constexpr void sort(C& t, F comp = F(), P proj = P()) {\n    internal_container_func::sort(t,\
+    \ comp, proj);\n}\n// sort(c, {}, proj) \u7528\u3002std::vector \u306A\u3069\u3067\
+    \u306F ADL \u3067 std::sort(first, last, comp) \u3082\u5019\u88DC\u306B\u306A\u308A\
     \u3001\n// {} \u3092 F \u3067\u53D7\u3051\u308B\u3068 std::sort \u304C\u9078\u3070\
     \u308C\u308B\u306E\u3067\u3001{} \u304C\u6A19\u6E96\u5909\u63DB\u3067\u6E21\u308B\
-    \ std::nullptr_t \u3067\u53D7\u3051\u308B\ntemplate <class C, class P, ENABLE_IF_T(internal_container_func::is_projected_comp<C,\
-    \ std::less<>, P>::value)>\ninline constexpr void sort(C& t, std::nullptr_t, P\
-    \ proj) {\n    sort(t, std::less<>(), proj);\n}\n\ntemplate <class C>\ninline\
-    \ constexpr void reverse(C& t) {\n    std::reverse(t.begin(), t.end());\n}\n\n\
-    METHOD_EXPAND(max)\ntemplate <class C, ENABLE_IF_T(!has_max_v<C> && is_sorted_container_v<C>)>\n\
-    inline constexpr mem_value_type<C> max(const C& v) {\n    assert(v.begin() !=\
-    \ v.end());\n    return *v.rbegin();\n}\ntemplate <class C, ENABLE_IF_T(!has_max_v<C>\
-    \ && !is_sorted_container_v<C>)>\ninline constexpr mem_value_type<C> max(const\
-    \ C& v) {\n    assert(v.begin() != v.end());\n    return *std::max_element(v.begin(),\
-    \ v.end());\n}\ntemplate <typename T>\ninline constexpr T max(const std::initializer_list<T>&\
-    \ v) {\n    return std::max(v);\n}\n\nMETHOD_EXPAND(min)\ntemplate <class C, ENABLE_IF_T(!has_min_v<C>\
-    \ && is_sorted_container_v<C>)>\ninline constexpr mem_value_type<C> min(const\
-    \ C& v) {\n    assert(v.begin() != v.end());\n    return *v.begin();\n}\ntemplate\
-    \ <class C, ENABLE_IF_T(!has_min_v<C> && !is_sorted_container_v<C>)>\ninline constexpr\
-    \ mem_value_type<C> min(const C& v) {\n    assert(v.begin() != v.end());\n   \
-    \ return *std::min_element(v.begin(), v.end());\n}\ntemplate <typename T>\ninline\
-    \ constexpr T min(const std::initializer_list<T>& v) {\n    return std::min(v);\n\
-    }\n\nMETHOD_EXPAND(sum)\ntemplate <class C, ENABLE_IF_T(!has_sum_v<C>)>\ninline\
-    \ constexpr mem_value_type<C> sum(const C& v) {\n    return std::accumulate(v.begin(),\
+    \ std::nullptr_t \u3067\u53D7\u3051\u308B\n#if __cplusplus >= 202002L\ntemplate\
+    \ <class C, class P>\n    requires(internal_container_func::projected_comp<C,\
+    \ std::less<>, P>)\n#else\ntemplate <class C, class P, ENABLE_IF_T(internal_container_func::is_projected_comp<C,\
+    \ std::less<>, P>::value)>\n#endif\ninline constexpr void sort(C& t, std::nullptr_t,\
+    \ P proj) {\n    sort(t, std::less<>(), proj);\n}\n\ntemplate <class C>\ninline\
+    \ constexpr void reverse(C& t) {\n#if __cplusplus >= 202002L\n    if constexpr\
+    \ (requires { std::ranges::reverse(t); }) {\n        std::ranges::reverse(t);\n\
+    \    } else\n#endif\n    {\n        std::reverse(t.begin(), t.end());\n    }\n\
+    }\n\nMETHOD_EXPAND(max)\n#if __cplusplus >= 202002L\ntemplate <class C>\n    requires(!has_max_v<C>\
+    \ && is_sorted_container_v<C>)\n#else\ntemplate <class C, ENABLE_IF_T(!has_max_v<C>\
+    \ && is_sorted_container_v<C>)>\n#endif\ninline constexpr mem_value_type<C> max(const\
+    \ C& v) {\n    assert(v.begin() != v.end());\n    return *v.rbegin();\n}\n#if\
+    \ __cplusplus >= 202002L\ntemplate <class C>\n    requires(!has_max_v<C> && !is_sorted_container_v<C>)\n\
+    #else\ntemplate <class C, ENABLE_IF_T(!has_max_v<C> && !is_sorted_container_v<C>)>\n\
+    #endif\ninline constexpr mem_value_type<C> max(const C& v) {\n    assert(v.begin()\
+    \ != v.end());\n#if __cplusplus >= 202002L\n    if constexpr (requires { std::ranges::max_element(v,\
+    \ std::less<>{}); }) {\n        return *std::ranges::max_element(v, std::less<>{});\n\
+    \    } else\n#endif\n    {\n        return *std::max_element(v.begin(), v.end());\n\
+    \    }\n}\ntemplate <typename T>\ninline constexpr T max(const std::initializer_list<T>&\
+    \ v) {\n    return std::max(v);\n}\n\nMETHOD_EXPAND(min)\n#if __cplusplus >= 202002L\n\
+    template <class C>\n    requires(!has_min_v<C> && is_sorted_container_v<C>)\n\
+    #else\ntemplate <class C, ENABLE_IF_T(!has_min_v<C> && is_sorted_container_v<C>)>\n\
+    #endif\ninline constexpr mem_value_type<C> min(const C& v) {\n    assert(v.begin()\
+    \ != v.end());\n    return *v.begin();\n}\n#if __cplusplus >= 202002L\ntemplate\
+    \ <class C>\n    requires(!has_min_v<C> && !is_sorted_container_v<C>)\n#else\n\
+    template <class C, ENABLE_IF_T(!has_min_v<C> && !is_sorted_container_v<C>)>\n\
+    #endif\ninline constexpr mem_value_type<C> min(const C& v) {\n    assert(v.begin()\
+    \ != v.end());\n#if __cplusplus >= 202002L\n    if constexpr (requires { std::ranges::min_element(v,\
+    \ std::less<>{}); }) {\n        return *std::ranges::min_element(v, std::less<>{});\n\
+    \    } else\n#endif\n    {\n        return *std::min_element(v.begin(), v.end());\n\
+    \    }\n}\ntemplate <typename T>\ninline constexpr T min(const std::initializer_list<T>&\
+    \ v) {\n    return std::min(v);\n}\n\nMETHOD_EXPAND(sum)\n#if __cplusplus >= 202002L\n\
+    template <class C>\n    requires(!has_sum_v<C>)\n#else\ntemplate <class C, ENABLE_IF_T(!has_sum_v<C>)>\n\
+    #endif\ninline constexpr mem_value_type<C> sum(const C& v) {\n    return std::accumulate(v.begin(),\
     \ v.end(), mem_value_type<C>{});\n}\ntemplate <typename T>\ninline constexpr T\
     \ sum(const std::initializer_list<T>& v) {\n    return std::accumulate(v.begin(),\
-    \ v.end(), T{});\n}\n\nMETHOD_EXPAND(product)\ntemplate <class C, ENABLE_IF_T(!has_product_v<C>)>\n\
-    inline constexpr mem_value_type<C> product(const C& v) {\n    return std::accumulate(v.begin(),\
+    \ v.end(), T{});\n}\n\nMETHOD_EXPAND(product)\n#if __cplusplus >= 202002L\ntemplate\
+    \ <class C>\n    requires(!has_product_v<C>)\n#else\ntemplate <class C, ENABLE_IF_T(!has_product_v<C>)>\n\
+    #endif\ninline constexpr mem_value_type<C> product(const C& v) {\n    return std::accumulate(v.begin(),\
     \ v.end(), mem_value_type<C>{1}, std::multiplies<mem_value_type<C>>());\n}\ntemplate\
     \ <typename T>\ninline constexpr T product(const std::initializer_list<T>& v)\
     \ {\n    return std::accumulate(v.begin(), v.end(), T{1}, std::multiplies<T>());\n\
-    }\n\nMETHOD_EXPAND(product_xor)\ntemplate <class C, ENABLE_IF_T(!has_product_xor_v<C>)>\n\
-    inline constexpr mem_value_type<C> product_xor(const C& v) {\n    return std::accumulate(v.begin(),\
-    \ v.end(), mem_value_type<C>{0}, std::bit_xor<mem_value_type<C>>());\n}\ntemplate\
-    \ <typename T>\ninline constexpr T product_xor(const std::initializer_list<T>&\
+    }\n\nMETHOD_EXPAND(product_xor)\n#if __cplusplus >= 202002L\ntemplate <class C>\n\
+    \    requires(!has_product_xor_v<C>)\n#else\ntemplate <class C, ENABLE_IF_T(!has_product_xor_v<C>)>\n\
+    #endif\ninline constexpr mem_value_type<C> product_xor(const C& v) {\n    return\
+    \ std::accumulate(v.begin(), v.end(), mem_value_type<C>{0}, std::bit_xor<mem_value_type<C>>());\n\
+    }\ntemplate <typename T>\ninline constexpr T product_xor(const std::initializer_list<T>&\
     \ v) {\n    return std::accumulate(v.begin(), v.end(), T{0}, std::bit_xor<T>());\n\
     }\n\nMETHOD_AND_FUNC_ARG_EXPAND(count)\nMETHOD_AND_FUNC_ARG_EXPAND(find)\nMETHOD_AND_FUNC_ARG_EXPAND(lower_bound)\n\
     METHOD_AND_FUNC_ARG_EXPAND(upper_bound)\n\ntemplate <class C, typename T>\ninline\
@@ -367,9 +501,10 @@ data:
     \ a = std::begin(s);\n    auto b = std::begin(t);\n    long long n = std::end(s)\
     \ - a;\n    assert(n == std::end(t) - b);\n    long long res = 0;\n    for (long\
     \ long i = 0; i < n; i++) {\n        if (!(a[i] == b[i])) res++;\n    }\n    return\
-    \ res;\n}\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
-    inline constexpr mem_value_type<C> mex(const C& v) {\n    std::vector<bool> b(v.size()\
-    \ + 1);\n    for (const auto& a : v) {\n        if (0 <= a && static_cast<std::size_t>(a)\
+    \ res;\n}\n\n#if __cplusplus >= 202002L\ntemplate <class C>\n    requires(std::integral<mem_value_type<C>>)\n\
+    #else\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
+    #endif\ninline constexpr mem_value_type<C> mex(const C& v) {\n    std::vector<bool>\
+    \ b(v.size() + 1);\n    for (const auto& a : v) {\n        if (0 <= a && static_cast<std::size_t>(a)\
     \ < b.size()) {\n            b[a] = true;\n        }\n    }\n    mem_value_type<C>\
     \ ret = 0;  // b \u306E\u8981\u7D20\u6570\u306F v \u3088\u308A 1 \u591A\u3044\u306E\
     \u3067\u3001\u4E0B\u306E\u30EB\u30FC\u30D7\u3067\u5FC5\u305A\u898B\u3064\u304B\
@@ -385,7 +520,7 @@ data:
   isVerificationFile: false
   path: src/utility/container_func.hpp
   requiredBy: []
-  timestamp: '2026-11-08 20:13:03+09:00'
+  timestamp: '2026-11-10 04:55:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/utility/container_func.test.cpp
@@ -419,6 +554,8 @@ long long i = bisect_left(w, 3);  // 2
 bool b = contains(v, 4);       // true
 auto odd = indices_if(v, [](int x) { return x % 2 == 1; });  // {0, 1, 3, 4}
 ```
+
+C++20 以降では、要件を満たすコンテナに ranges アルゴリズムを使います。`std::vector<bool>` など、従来のアルゴリズムで扱えて ranges の要件を満たさない場合は、従来の処理に切り替えます。コンテナ自身のメンバ関数を優先する規則は同じです。
 
 ## 並べ替え
 

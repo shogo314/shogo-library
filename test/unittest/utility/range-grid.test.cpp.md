@@ -25,13 +25,14 @@ data:
     \u9053\u3082\u3001\u611A\u76F4\u306A\u5224\u5B9A\u3068\u6BD4\u3079\u308B\n// \u554F\
     \u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\
     \u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include\
-    \ <cstdlib>\n#include <iostream>\n#include <iterator>\n#include <random>\n#include\
-    \ <utility>\n#include <vector>\n\n#line 2 \"src/utility/range.hpp\"\n\n/**\n *\
-    \ @file range.hpp\n * @brief Python \u306E range \u306E\u3088\u3046\u306A\u6574\
-    \u6570\u5217\u3068\u3001\u305D\u306E\u76F4\u7A4D\u306E Grid\n */\n\n#include <cassert>\n\
+    \ <algorithm>\n#include <cstdlib>\n#include <iostream>\n#include <iterator>\n\
+    #include <random>\n#include <utility>\n#include <vector>\n#if __cplusplus >= 202002L\n\
+    #include <ranges>\n#endif\n\n#line 2 \"src/utility/range.hpp\"\n\n/**\n * @file\
+    \ range.hpp\n * @brief Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\
+    \u5217\u3068\u3001\u305D\u306E\u76F4\u7A4D\u306E Grid\n */\n\n#include <cassert>\n\
     #include <cstddef>\n#line 11 \"src/utility/range.hpp\"\n#include <string>\n#include\
     \ <type_traits>\n#line 15 \"src/utility/range.hpp\"\n\nstruct Range {\n   public:\n\
-    \    using value_type = long long;\n    using const_reference = const value_type&;\n\
+    \    using value_type = long long;\n    using const_reference = value_type;\n\
     \    using size_type = long long;\n    using difference_type = std::ptrdiff_t;\n\
     \n    const value_type start;\n    const value_type stop;\n    const value_type\
     \ step;\n\n   private:\n    const value_type norm_stop;\n\n    constexpr static\
@@ -55,95 +56,99 @@ data:
     \        : start(0), stop(0), step(1), norm_stop(0) {\n    }\n    constexpr Range(const\
     \ Range& o) = default;\n    Range& operator=(const Range& o) = delete;\n\n   \
     \ struct const_iterator {\n       public:\n        using difference_type = Range::difference_type;\n\
-    \        using value_type = Range::value_type;\n        using pointer = const\
-    \ Range::value_type*;\n        using reference = const Range::value_type&;\n \
-    \       using iterator_category = std::random_access_iterator_tag;\n\n       private:\n\
-    \        const Range& range;\n        value_type value;\n\n        constexpr bool\
-    \ same_range(const const_iterator& o) const noexcept {\n            return range.start\
-    \ == o.range.start && range.stop == o.range.stop && range.step == o.range.step;\n\
-    \        }\n\n       public:\n        constexpr const_iterator(const Range& _range,\
-    \ value_type _value) noexcept\n            : range(_range), value(_value) {}\n\
-    \        constexpr const_iterator(const const_iterator& o) noexcept\n        \
-    \    : range(o.range), value(o.value) {}\n        constexpr reference base() const\
-    \ noexcept {\n            return value;\n        }\n        constexpr const_iterator&\
-    \ operator=(const const_iterator& o) {\n            assert(same_range(o));\n \
-    \           value = o.value;\n            return *this;\n        };\n        constexpr\
-    \ const_iterator& operator++() noexcept {\n            value += range.step;\n\
-    \            return *this;\n        }\n        constexpr const_iterator operator++(int)\
-    \ noexcept {\n            const_iterator ret(*this);\n            value += range.step;\n\
+    \        using value_type = Range::value_type;\n        using pointer = void;\n\
+    \        using reference = Range::const_reference;\n        using iterator_category\
+    \ = std::random_access_iterator_tag;\n\n       private:\n        value_type first\
+    \ = 0, stop = 0, step = 1, value = 0;\n\n        constexpr bool same_range(const\
+    \ const_iterator& o) const noexcept {\n            return first == o.first &&\
+    \ stop == o.stop && step == o.step;\n        }\n\n       public:\n        constexpr\
+    \ const_iterator() noexcept = default;\n        constexpr const_iterator(const\
+    \ Range& range, value_type value) noexcept\n            : first(range.start),\
+    \ stop(range.stop), step(range.step), value(value) {}\n        constexpr reference\
+    \ base() const noexcept {\n            return value;\n        }\n        constexpr\
+    \ const_iterator& operator++() noexcept {\n            value += step;\n      \
+    \      return *this;\n        }\n        constexpr const_iterator operator++(int)\
+    \ noexcept {\n            const_iterator ret(*this);\n            value += step;\n\
     \            return ret;\n        }\n        constexpr const_iterator& operator+=(difference_type\
-    \ _n) noexcept {\n            value += _n * range.step;\n            return *this;\n\
+    \ _n) noexcept {\n            value += _n * step;\n            return *this;\n\
     \        }\n        constexpr friend const_iterator operator+(const const_iterator&\
     \ i, difference_type _n) noexcept {\n            const_iterator ret(i);\n    \
     \        ret += _n;\n            return ret;\n        }\n        constexpr friend\
     \ const_iterator operator+(difference_type _n, const const_iterator& i) noexcept\
     \ {\n            const_iterator ret(i);\n            ret += _n;\n            return\
     \ ret;\n        }\n        constexpr const_iterator& operator--() noexcept {\n\
-    \            value -= range.step;\n            return *this;\n        }\n    \
-    \    constexpr const_iterator operator--(int) noexcept {\n            const_iterator\
-    \ ret(*this);\n            value -= range.step;\n            return ret;\n   \
-    \     }\n        constexpr const_iterator& operator-=(difference_type _n) noexcept\
-    \ {\n            value -= _n * range.step;\n            return *this;\n      \
-    \  }\n        constexpr friend const_iterator operator-(const const_iterator&\
-    \ i, difference_type _n) noexcept {\n            const_iterator ret(i);\n    \
-    \        ret -= _n;\n            return ret;\n        }\n        constexpr reference\
-    \ operator*() const noexcept {\n            return value;\n        }\n       \
-    \ constexpr friend bool operator!=(const const_iterator& a, const const_iterator&\
-    \ b) noexcept {\n            return !a.same_range(b) || a.value != b.value;\n\
-    \        }\n        constexpr friend bool operator==(const const_iterator& a,\
-    \ const const_iterator& b) noexcept {\n            return !(a != b);\n       \
-    \ }\n        constexpr friend difference_type operator-(const const_iterator&\
-    \ a, const const_iterator& b) {\n            assert(a.same_range(b));\n      \
-    \      if (a.range.step > 0) {\n                return (a.value - b.value) / a.range.step;\n\
-    \            } else {\n                return (b.value - a.value) / (-a.range.step);\n\
-    \            }\n        }\n    };\n\n    constexpr const_iterator begin() const\
-    \ noexcept {\n        return {*this, start};\n    }\n    constexpr const_iterator\
-    \ end() const noexcept {\n        return {*this, norm_stop};\n    }\n    /**\n\
-    \     * @brief x \u306E\u500B\u6570 (0 \u304B 1)\n     */\n    constexpr size_type\
-    \ count(value_type x) const noexcept {\n        // step \u304C\u30B3\u30F3\u30D1\
-    \u30A4\u30EB\u6642\u306B\u5206\u304B\u3089\u306A\u3044\u3068\u304D\u3082\u3001\
-    \u3088\u304F\u4F7F\u3046 step = 1 \u3067\u306F\u5272\u308A\u7B97\u3092\u3057\u306A\
-    \u3044\n        if (step == 1) return start <= x && x < stop;\n        if (step\
-    \ > 0) {\n            if (start <= x && x < stop) {\n                if ((x -\
-    \ start) % step == 0) {\n                    return 1;\n                }\n  \
-    \          }\n        } else {\n            if (stop < x && x <= start) {\n  \
-    \              if ((start - x) % (-step) == 0) {\n                    return 1;\n\
-    \                }\n            }\n        }\n        return 0;\n    }\n    /**\n\
-    \     * @brief x \u304C\u542B\u307E\u308C\u308B\u304B\n     */\n    constexpr\
-    \ bool contains(value_type x) const noexcept {\n        return count(x) != 0;\n\
-    \    }\n    /**\n     * @brief x \u306E\u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n\
-    \     * x \u304C\u542B\u307E\u308C\u306A\u3044\u3068\u30A8\u30E9\u30FC\n     */\n\
-    \    constexpr size_type index(value_type x) const {\n        assert(contains(x));\n\
-    \        if (step == 1) return x - start;\n        return (x - start) / step;\n\
-    \    }\n    /**\n     * @brief \u8981\u7D20\u304C x \u306E\u30A4\u30C6\u30EC\u30FC\
-    \u30BF\n     * x \u304C\u542B\u307E\u308C\u306A\u3044\u3068 end() \u3092\u8FD4\
-    \u3059\n     */\n    constexpr const_iterator find(value_type x) const noexcept\
-    \ {\n        if (contains(x)) {\n            return {*this, x};\n        } else\
-    \ {\n            return {*this, norm_stop};\n        }\n    }\n    /**\n     *\
-    \ @brief \u8981\u7D20\u304C x \u4EE5\u4E0A\u306E\u6700\u5C0F\u306E\u30A4\u30C6\
-    \u30EC\u30FC\u30BF\n     * step > 0 \u3058\u3083\u306A\u3044\u3068\u30A8\u30E9\
-    \u30FC\n     */\n    constexpr const_iterator lower_bound(value_type x) const\
-    \ {\n        assert(step > 0);\n        if (norm_stop <= x) {\n            return\
-    \ end();\n        } else if (x < start) {\n            return begin();\n     \
-    \   } else {\n            return {*this, start + (x - start + step - 1) / step\
-    \ * step};\n        }\n    }\n    /**\n     * @brief \u8981\u7D20\u304C x \u3088\
-    \u308A\u5927\u304D\u3044\u6700\u5C0F\u306E\u30A4\u30C6\u30EC\u30FC\u30BF\n   \
-    \  * step > 0 \u3058\u3083\u306A\u3044\u3068\u30A8\u30E9\u30FC\n     */\n    constexpr\
-    \ const_iterator upper_bound(value_type x) const {\n        assert(step > 0);\n\
-    \        if (norm_stop <= x) {\n            return end();\n        } else if (x\
-    \ < start) {\n            return begin();\n        } else {\n            return\
-    \ {*this, start + (x - start + step) / step * step};\n        }\n    }\n    /**\n\
-    \     * @brief \u30B3\u30F3\u30C6\u30CA\u306E\u8981\u7D20\u6570\n     */\n   \
-    \ constexpr size_type size() const noexcept {\n        if (step > 0) {\n     \
-    \       return (norm_stop - start) / step;\n        } else {\n            return\
-    \ (start - norm_stop) / (-step);\n        }\n    }\n    constexpr value_type at(size_type\
-    \ i) const {\n        assert(0 <= i && i < size());\n        return start + i\
-    \ * step;\n    }\n    constexpr value_type operator[](size_type i) const {\n \
-    \       return at(i);\n    }\n    constexpr bool empty() const noexcept {\n  \
-    \      return start == norm_stop;\n    }\n    constexpr value_type sum() const\
-    \ noexcept {\n        return size() * (norm_stop - step + start) / 2;\n    }\n\
-    \    /**\n     * @brief \u6700\u5C0F\u5024\n     * \u7A7A\u3060\u3068\u30A8\u30E9\
-    \u30FC\n     */\n    constexpr value_type min() const {\n        assert(!empty());\n\
+    \            value -= step;\n            return *this;\n        }\n        constexpr\
+    \ const_iterator operator--(int) noexcept {\n            const_iterator ret(*this);\n\
+    \            value -= step;\n            return ret;\n        }\n        constexpr\
+    \ const_iterator& operator-=(difference_type _n) noexcept {\n            value\
+    \ -= _n * step;\n            return *this;\n        }\n        constexpr friend\
+    \ const_iterator operator-(const const_iterator& i, difference_type _n) noexcept\
+    \ {\n            const_iterator ret(i);\n            ret -= _n;\n            return\
+    \ ret;\n        }\n        constexpr reference operator[](difference_type i) const\
+    \ noexcept { return value + i * step; }\n        constexpr reference operator*()\
+    \ const noexcept {\n            return value;\n        }\n        constexpr friend\
+    \ bool operator!=(const const_iterator& a, const const_iterator& b) noexcept {\n\
+    \            return !a.same_range(b) || a.value != b.value;\n        }\n     \
+    \   constexpr friend bool operator==(const const_iterator& a, const const_iterator&\
+    \ b) noexcept {\n            return !(a != b);\n        }\n        constexpr friend\
+    \ bool operator<(const const_iterator& a, const const_iterator& b) noexcept {\n\
+    \            assert(a.same_range(b));\n            return a.step > 0 ? a.value\
+    \ < b.value : a.value > b.value;\n        }\n        constexpr friend bool operator>(const\
+    \ const_iterator& a, const const_iterator& b) noexcept { return b < a; }\n   \
+    \     constexpr friend bool operator<=(const const_iterator& a, const const_iterator&\
+    \ b) noexcept { return !(b < a); }\n        constexpr friend bool operator>=(const\
+    \ const_iterator& a, const const_iterator& b) noexcept { return !(a < b); }\n\
+    \        constexpr friend difference_type operator-(const const_iterator& a, const\
+    \ const_iterator& b) {\n            assert(a.same_range(b));\n            if (a.step\
+    \ > 0) {\n                return (a.value - b.value) / a.step;\n            }\
+    \ else {\n                return (b.value - a.value) / (-a.step);\n          \
+    \  }\n        }\n    };\n\n    constexpr const_iterator begin() const noexcept\
+    \ {\n        return {*this, start};\n    }\n    constexpr const_iterator end()\
+    \ const noexcept {\n        return {*this, norm_stop};\n    }\n    /**\n     *\
+    \ @brief x \u306E\u500B\u6570 (0 \u304B 1)\n     */\n    constexpr size_type count(value_type\
+    \ x) const noexcept {\n        // step \u304C\u30B3\u30F3\u30D1\u30A4\u30EB\u6642\
+    \u306B\u5206\u304B\u3089\u306A\u3044\u3068\u304D\u3082\u3001\u3088\u304F\u4F7F\
+    \u3046 step = 1 \u3067\u306F\u5272\u308A\u7B97\u3092\u3057\u306A\u3044\n     \
+    \   if (step == 1) return start <= x && x < stop;\n        if (step > 0) {\n \
+    \           if (start <= x && x < stop) {\n                if ((x - start) % step\
+    \ == 0) {\n                    return 1;\n                }\n            }\n \
+    \       } else {\n            if (stop < x && x <= start) {\n                if\
+    \ ((start - x) % (-step) == 0) {\n                    return 1;\n            \
+    \    }\n            }\n        }\n        return 0;\n    }\n    /**\n     * @brief\
+    \ x \u304C\u542B\u307E\u308C\u308B\u304B\n     */\n    constexpr bool contains(value_type\
+    \ x) const noexcept {\n        return count(x) != 0;\n    }\n    /**\n     * @brief\
+    \ x \u306E\u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * x \u304C\u542B\u307E\u308C\
+    \u306A\u3044\u3068\u30A8\u30E9\u30FC\n     */\n    constexpr size_type index(value_type\
+    \ x) const {\n        assert(contains(x));\n        if (step == 1) return x -\
+    \ start;\n        return (x - start) / step;\n    }\n    /**\n     * @brief \u8981\
+    \u7D20\u304C x \u306E\u30A4\u30C6\u30EC\u30FC\u30BF\n     * x \u304C\u542B\u307E\
+    \u308C\u306A\u3044\u3068 end() \u3092\u8FD4\u3059\n     */\n    constexpr const_iterator\
+    \ find(value_type x) const noexcept {\n        if (contains(x)) {\n          \
+    \  return {*this, x};\n        } else {\n            return {*this, norm_stop};\n\
+    \        }\n    }\n    /**\n     * @brief \u8981\u7D20\u304C x \u4EE5\u4E0A\u306E\
+    \u6700\u5C0F\u306E\u30A4\u30C6\u30EC\u30FC\u30BF\n     * step > 0 \u3058\u3083\
+    \u306A\u3044\u3068\u30A8\u30E9\u30FC\n     */\n    constexpr const_iterator lower_bound(value_type\
+    \ x) const {\n        assert(step > 0);\n        if (norm_stop <= x) {\n     \
+    \       return end();\n        } else if (x < start) {\n            return begin();\n\
+    \        } else {\n            return {*this, start + (x - start + step - 1) /\
+    \ step * step};\n        }\n    }\n    /**\n     * @brief \u8981\u7D20\u304C x\
+    \ \u3088\u308A\u5927\u304D\u3044\u6700\u5C0F\u306E\u30A4\u30C6\u30EC\u30FC\u30BF\
+    \n     * step > 0 \u3058\u3083\u306A\u3044\u3068\u30A8\u30E9\u30FC\n     */\n\
+    \    constexpr const_iterator upper_bound(value_type x) const {\n        assert(step\
+    \ > 0);\n        if (norm_stop <= x) {\n            return end();\n        } else\
+    \ if (x < start) {\n            return begin();\n        } else {\n          \
+    \  return {*this, start + (x - start + step) / step * step};\n        }\n    }\n\
+    \    /**\n     * @brief \u30B3\u30F3\u30C6\u30CA\u306E\u8981\u7D20\u6570\n   \
+    \  */\n    constexpr size_type size() const noexcept {\n        if (step > 0)\
+    \ {\n            return (norm_stop - start) / step;\n        } else {\n      \
+    \      return (start - norm_stop) / (-step);\n        }\n    }\n    constexpr\
+    \ value_type at(size_type i) const {\n        assert(0 <= i && i < size());\n\
+    \        return start + i * step;\n    }\n    constexpr value_type operator[](size_type\
+    \ i) const {\n        return at(i);\n    }\n    constexpr bool empty() const noexcept\
+    \ {\n        return start == norm_stop;\n    }\n    constexpr value_type sum()\
+    \ const noexcept {\n        return size() * (norm_stop - step + start) / 2;\n\
+    \    }\n    /**\n     * @brief \u6700\u5C0F\u5024\n     * \u7A7A\u3060\u3068\u30A8\
+    \u30E9\u30FC\n     */\n    constexpr value_type min() const {\n        assert(!empty());\n\
     \        if (step > 0) {\n            return start;\n        } else {\n      \
     \      return norm_stop - step;\n        }\n    }\n    /**\n     * @brief \u6700\
     \u5927\u5024\n     * \u7A7A\u3060\u3068\u30A8\u30E9\u30FC\n     */\n    constexpr\
@@ -334,7 +339,7 @@ data:
     \ Grid& a, const Grid& b) noexcept {\n        if (a.empty() && b.empty()) return\
     \ true;\n        return a.rows == b.rows && a.cols == b.cols;\n    }\n    constexpr\
     \ friend bool operator!=(const Grid& a, const Grid& b) noexcept {\n        return\
-    \ !(a == b);\n    }\n};\n#line 16 \"test/unittest/utility/range-grid.test.cpp\"\
+    \ !(a == b);\n    }\n};\n#line 20 \"test/unittest/utility/range-grid.test.cpp\"\
     \n#if __cplusplus >= 202002L\n#include <ranges>\n#endif\n\nusing ll = long long;\n\
     using P = std::pair<ll, ll>;\n\nstd::vector<ll> naive_range(ll start, ll stop,\
     \ ll step) {\n    std::vector<ll> v;\n    if (step > 0) {\n        for (ll x =\
@@ -351,9 +356,11 @@ data:
     \ 4 * (0 + 10 + 20) + 3 * (0 + 1 + 2 + 3));\nstatic_assert(std::is_same_v<std::iterator_traits<Grid::const_iterator>::iterator_category,\
     \ std::forward_iterator_tag>);\n#if __cplusplus >= 202002L\nstatic_assert(std::forward_iterator<Grid::const_iterator>);\n\
     static_assert(std::ranges::forward_range<Grid> && std::ranges::sized_range<Grid>);\n\
-    #endif\n\nint main() {\n    std::mt19937_64 rng(314);\n    auto rnd = [&](ll lo,\
-    \ ll hi) { return lo + static_cast<ll>(rng() % static_cast<unsigned long long>(hi\
-    \ - lo + 1)); };\n    bool ok = true;\n    auto check = [&](bool cond, const char*\
+    #endif\n\n#if __cplusplus >= 202002L\nstatic_assert(std::ranges::forward_range<const\
+    \ Grid>);\nstatic_assert(std::ranges::forward_range<Grid::Neighbors>);\n#endif\n\
+    \nint main() {\n    std::mt19937_64 rng(314);\n    auto rnd = [&](ll lo, ll hi)\
+    \ { return lo + static_cast<ll>(rng() % static_cast<unsigned long long>(hi - lo\
+    \ + 1)); };\n    bool ok = true;\n    auto check = [&](bool cond, const char*\
     \ what) {\n        if (!cond) {\n            if (ok) std::cerr << \"failed: \"\
     \ << what << std::endl;\n            ok = false;\n        }\n    };\n    auto\
     \ random_range = [&]() {\n        ll start = rnd(-6, 6), stop = rnd(-6, 6), step\
@@ -430,8 +437,16 @@ data:
     \u5909\u6570\u3092\u6E21\u3059)\n        ll cnt = 0;\n        const Grid g(4,\
     \ 4);\n        for (auto [i, j] : g | std::views::filter([](P p) { return p.first\
     \ == p.second; })) cnt += i + j;\n        check(cnt == 12 && std::ranges::size(Grid(3,\
-    \ 5)) == 15, \"views\");\n    }\n#endif\n\n    if (ok) std::cout << \"Hello World\"\
-    \ << std::endl;\n}\n"
+    \ 5)) == 15, \"views\");\n    }\n#endif\n\n#if __cplusplus >= 202002L\n    {\n\
+    \        const Grid grid(3, 4);\n        auto diagonal = grid | std::views::filter([](auto\
+    \ p) { return p.first == p.second; });\n        std::vector<Grid::value_type>\
+    \ actual;\n        std::ranges::copy(diagonal, std::back_inserter(actual));\n\
+    \        if (actual != std::vector<Grid::value_type>{{0, 0}, {1, 1}, {2, 2}})\
+    \ ok = false;\n        auto neighbors = grid.neighbors4(1, 1) | std::views::transform([](auto\
+    \ p) { return p.first * 4 + p.second; });\n        std::vector<long long> ids;\n\
+    \        std::ranges::copy(neighbors, std::back_inserter(ids));\n        if (ids\
+    \ != std::vector<long long>{1, 4, 6, 9}) ok = false;\n    }\n#endif\n    if (ok)\
+    \ std::cout << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// Grid (2 \u3064\u306E Range \u306E\u76F4\u7A4D) \u3092\u30012 \u91CD\u30EB\
     \u30FC\u30D7\u3067\u611A\u76F4\u306B\u4F5C\u3063\u305F (i, j) \u306E\u5217\u3068\
@@ -441,9 +456,10 @@ data:
     \u8FD1\u9053\u3082\u3001\u611A\u76F4\u306A\u5224\u5B9A\u3068\u6BD4\u3079\u308B\
     \n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\
     \u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n\
-    #include <cstdlib>\n#include <iostream>\n#include <iterator>\n#include <random>\n\
-    #include <utility>\n#include <vector>\n\n#include \"../../../src/utility/range.hpp\"\
-    \n#if __cplusplus >= 202002L\n#include <ranges>\n#endif\n\nusing ll = long long;\n\
+    #include <algorithm>\n#include <cstdlib>\n#include <iostream>\n#include <iterator>\n\
+    #include <random>\n#include <utility>\n#include <vector>\n#if __cplusplus >= 202002L\n\
+    #include <ranges>\n#endif\n\n#include \"../../../src/utility/range.hpp\"\n#if\
+    \ __cplusplus >= 202002L\n#include <ranges>\n#endif\n\nusing ll = long long;\n\
     using P = std::pair<ll, ll>;\n\nstd::vector<ll> naive_range(ll start, ll stop,\
     \ ll step) {\n    std::vector<ll> v;\n    if (step > 0) {\n        for (ll x =\
     \ start; x < stop; x += step) v.push_back(x);\n    } else {\n        for (ll x\
@@ -459,9 +475,11 @@ data:
     \ 4 * (0 + 10 + 20) + 3 * (0 + 1 + 2 + 3));\nstatic_assert(std::is_same_v<std::iterator_traits<Grid::const_iterator>::iterator_category,\
     \ std::forward_iterator_tag>);\n#if __cplusplus >= 202002L\nstatic_assert(std::forward_iterator<Grid::const_iterator>);\n\
     static_assert(std::ranges::forward_range<Grid> && std::ranges::sized_range<Grid>);\n\
-    #endif\n\nint main() {\n    std::mt19937_64 rng(314);\n    auto rnd = [&](ll lo,\
-    \ ll hi) { return lo + static_cast<ll>(rng() % static_cast<unsigned long long>(hi\
-    \ - lo + 1)); };\n    bool ok = true;\n    auto check = [&](bool cond, const char*\
+    #endif\n\n#if __cplusplus >= 202002L\nstatic_assert(std::ranges::forward_range<const\
+    \ Grid>);\nstatic_assert(std::ranges::forward_range<Grid::Neighbors>);\n#endif\n\
+    \nint main() {\n    std::mt19937_64 rng(314);\n    auto rnd = [&](ll lo, ll hi)\
+    \ { return lo + static_cast<ll>(rng() % static_cast<unsigned long long>(hi - lo\
+    \ + 1)); };\n    bool ok = true;\n    auto check = [&](bool cond, const char*\
     \ what) {\n        if (!cond) {\n            if (ok) std::cerr << \"failed: \"\
     \ << what << std::endl;\n            ok = false;\n        }\n    };\n    auto\
     \ random_range = [&]() {\n        ll start = rnd(-6, 6), stop = rnd(-6, 6), step\
@@ -538,14 +556,22 @@ data:
     \u5909\u6570\u3092\u6E21\u3059)\n        ll cnt = 0;\n        const Grid g(4,\
     \ 4);\n        for (auto [i, j] : g | std::views::filter([](P p) { return p.first\
     \ == p.second; })) cnt += i + j;\n        check(cnt == 12 && std::ranges::size(Grid(3,\
-    \ 5)) == 15, \"views\");\n    }\n#endif\n\n    if (ok) std::cout << \"Hello World\"\
-    \ << std::endl;\n}\n"
+    \ 5)) == 15, \"views\");\n    }\n#endif\n\n#if __cplusplus >= 202002L\n    {\n\
+    \        const Grid grid(3, 4);\n        auto diagonal = grid | std::views::filter([](auto\
+    \ p) { return p.first == p.second; });\n        std::vector<Grid::value_type>\
+    \ actual;\n        std::ranges::copy(diagonal, std::back_inserter(actual));\n\
+    \        if (actual != std::vector<Grid::value_type>{{0, 0}, {1, 1}, {2, 2}})\
+    \ ok = false;\n        auto neighbors = grid.neighbors4(1, 1) | std::views::transform([](auto\
+    \ p) { return p.first * 4 + p.second; });\n        std::vector<long long> ids;\n\
+    \        std::ranges::copy(neighbors, std::back_inserter(ids));\n        if (ids\
+    \ != std::vector<long long>{1, 4, 6, 9}) ok = false;\n    }\n#endif\n    if (ok)\
+    \ std::cout << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/utility/range.hpp
   isVerificationFile: true
   path: test/unittest/utility/range-grid.test.cpp
   requiredBy: []
-  timestamp: '2026-11-08 14:38:55+09:00'
+  timestamp: '2026-11-10 04:55:25+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/utility/range-grid.test.cpp

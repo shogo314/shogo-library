@@ -41,16 +41,18 @@ data:
     #include <type_traits>\n#include <utility>\n#include <vector>\n\n#line 2 \"src/utility/traits.hpp\"\
     \n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 9 \"\
     src/utility/traits.hpp\"\n#include <functional>\n#include <iterator>\n#line 14\
-    \ \"src/utility/traits.hpp\"\n\n#if __cplusplus >= 202002L\n#include <ranges>\n\
-    #endif\n\nnamespace internal_traits {\nusing std::begin, std::end;\n\ntemplate\
-    \ <class T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate\
-    \ <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
-    \ end(std::declval<T&>()))>> : std::true_type {};\n\n// \u30B5\u30A4\u30BA\u4ED8\
-    \u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\u3059\
-    \u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\u308B\
-    \u3002\n#if __cplusplus >= 202002L\ntemplate <class R, class S>\nconcept sized_constructible_range\
-    \ = std::ranges::input_range<R> && std::ranges::sized_range<R> &&\n          \
-    \                          std::is_constructible_v<S, std::ranges::range_reference_t<R>>;\n\
+    \ \"src/utility/traits.hpp\"\n\n#if __cplusplus >= 202002L\n#include <concepts>\n\
+    #include <ranges>\n#endif\n\nnamespace internal_traits {\nusing std::begin, std::end;\n\
+    \n#if __cplusplus >= 202002L\ntemplate <class T>\n    struct is_range_impl : std::bool_constant\
+    \ < requires(T& t) {\n    begin(t);\n    end(t);\n}>{};\n#else\ntemplate <class\
+    \ T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class\
+    \ T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n#endif\n\n// \u30B5\u30A4\u30BA\
+    \u4ED8\u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\
+    \u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\
+    \u308B\u3002\n#if __cplusplus >= 202002L\ntemplate <class R, class S>\nconcept\
+    \ sized_constructible_range = std::ranges::input_range<R> && std::ranges::sized_range<R>\
+    \ &&\n                                    std::is_constructible_v<S, std::ranges::range_reference_t<R>>;\n\
     \ntemplate <class R>\nauto range_size(R& r) {\n    return std::ranges::size(r);\n\
     }\ntemplate <class R>\nauto range_begin(R& r) {\n    return std::ranges::begin(r);\n\
     }\ntemplate <class R>\nusing range_value_t = std::ranges::range_value_t<R>;\n\
@@ -65,13 +67,35 @@ data:
     \    : std::is_constructible<S, decltype(*begin(std::declval<R&>()))> {};\n#endif\n\
     }  // namespace internal_traits\n\ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
     \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
-    \n#define HAS_METHOD(func_name)                                              \
-    \                \\\n    namespace internal_traits {                         \
-    \                                   \\\n    template <class T, class = void> \
-    \                                                      \\\n    struct has_##func_name##_impl\
-    \ : std::false_type {};                                    \\\n    template <class\
-    \ T>                                                                     \\\n\
-    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
+    \n#if __cplusplus >= 202002L\n#define HAS_METHOD(func_name)                  \
+    \                                                 \\\n    namespace internal_traits\
+    \ {                                                                 \\\n    template\
+    \ <class T>                                                                  \
+    \        \\\n    concept has_##func_name##_impl = requires { std::declval<T>().func_name();\
+    \ };               \\\n    }                                                 \
+    \                                          \\\n    template <class T>        \
+    \                                                                  \\\n    struct\
+    \ has_##func_name : std::bool_constant<internal_traits::has_##func_name##_impl<T>>\
+    \ {}; \\\n    template <class T>                                             \
+    \                             \\\n    inline constexpr bool has_##func_name##_v\
+    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
+    \                                                        \\\n    namespace internal_traits\
+    \ {                                                                    \\\n  \
+    \  template <class T, class U>                                               \
+    \                     \\\n    concept has_##func_name##_impl = requires { std::declval<T>().func_name(std::declval<U>());\
+    \ }; \\\n    }                                                               \
+    \                               \\\n    template <class T, class U>          \
+    \                                                          \\\n    struct has_##func_name\
+    \ : std::bool_constant<internal_traits::has_##func_name##_impl<T, U>> {}; \\\n\
+    \    template <class T, class U>                                             \
+    \                       \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T,\
+    \ U>::value;\n#else\n#define HAS_METHOD(func_name)                           \
+    \                                   \\\n    namespace internal_traits {      \
+    \                                                      \\\n    template <class\
+    \ T, class = void>                                                       \\\n\
+    \    struct has_##func_name##_impl : std::false_type {};                     \
+    \               \\\n    template <class T>                                   \
+    \                                  \\\n    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
     \ \\\n        : std::true_type {};                                           \
     \                    \\\n    }                                               \
     \                                       \\\n    template <class T>           \
@@ -95,11 +119,11 @@ data:
     \ U>::type {};                           \\\n    template <class T, typename U>\
     \                                                                            \
     \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
-    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
-    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
-    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
-    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
-    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
+    #endif\n\nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\n\
+    HAS_METHOD(max)\nHAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\n\
+    HAS_METHOD(product)\nHAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\n\
+    HAS_METHOD_ARG(lower_bound)\nHAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr)\
+    \ std::enable_if_t<expr, std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
     \nnamespace internal_traits {\n// \u5C04\u5F71 (proj) \u306E\u65E2\u5B9A\u5024\
     \n#if __cplusplus >= 202002L\nusing identity = std::identity;\n#else\nstruct identity\
     \ {\n    using is_transparent = void;\n    template <class T>\n    constexpr T&&\
@@ -158,18 +182,25 @@ data:
     template <typename T, std::size_t N>\ninline std::string repr(const std::array<T,\
     \ N>&);\n\n///////////////////////////////////////////////////////////////////\n\
     /////////////////////////// definition ////////////////////////////\n///////////////////////////////////////////////////////////////////\n\
-    \ntemplate <typename T, ENABLE_IF_T(!has_type_str_v<T>)>\ninline std::string type_str(const\
-    \ T&) {\n    return \"T\";\n}\ntemplate <typename T, ENABLE_IF_T(has_type_str_v<T>)>\n\
-    inline std::string type_str(const T& t) {\n    return t.type_str();\n}\ntemplate\
-    \ <typename T, ENABLE_IF_T(!has_initializer_str_v<T>)>\ninline std::string initializer_str(const\
-    \ T&) {\n    return \"{}\";\n}\ntemplate <typename T, ENABLE_IF_T(has_initializer_str_v<T>)>\n\
+    \n#if __cplusplus >= 202002L\ntemplate <typename T>\n    requires(!has_type_str_v<T>)\n\
+    #else\ntemplate <typename T, ENABLE_IF_T(!has_type_str_v<T>)>\n#endif\ninline\
+    \ std::string type_str(const T&) {\n    return \"T\";\n}\n#if __cplusplus >= 202002L\n\
+    template <typename T>\n    requires(has_type_str_v<T>)\n#else\ntemplate <typename\
+    \ T, ENABLE_IF_T(has_type_str_v<T>)>\n#endif\ninline std::string type_str(const\
+    \ T& t) {\n    return t.type_str();\n}\n#if __cplusplus >= 202002L\ntemplate <typename\
+    \ T>\n    requires(!has_initializer_str_v<T>)\n#else\ntemplate <typename T, ENABLE_IF_T(!has_initializer_str_v<T>)>\n\
+    #endif\ninline std::string initializer_str(const T&) {\n    return \"{}\";\n}\n\
+    #if __cplusplus >= 202002L\ntemplate <typename T>\n    requires(has_initializer_str_v<T>)\n\
+    #else\ntemplate <typename T, ENABLE_IF_T(has_initializer_str_v<T>)>\n#endif\n\
     inline std::string initializer_str(const T& t) {\n    return t.initializer_str();\n\
-    }\ntemplate <typename T, ENABLE_IF_T(!has_repr_v<T>)>\ninline std::string repr(const\
-    \ T& t) {\n    return internal_repr::type_str(t) + internal_repr::initializer_str(t);\n\
-    }\ntemplate <typename T, ENABLE_IF_T(has_repr_v<T>)>\ninline std::string repr(const\
-    \ T& t) {\n    return t.repr();\n}\n\ninline std::string type_str(const char*)\
-    \ {\n    return \"char*\";\n}\ninline std::string initializer_str(const char*\
-    \ t) {\n    return \"\\\"\" + std::string(t) + \"\\\"\";\n}\ninline std::string\
+    }\n#if __cplusplus >= 202002L\ntemplate <typename T>\n    requires(!has_repr_v<T>)\n\
+    #else\ntemplate <typename T, ENABLE_IF_T(!has_repr_v<T>)>\n#endif\ninline std::string\
+    \ repr(const T& t) {\n    return internal_repr::type_str(t) + internal_repr::initializer_str(t);\n\
+    }\n#if __cplusplus >= 202002L\ntemplate <typename T>\n    requires(has_repr_v<T>)\n\
+    #else\ntemplate <typename T, ENABLE_IF_T(has_repr_v<T>)>\n#endif\ninline std::string\
+    \ repr(const T& t) {\n    return t.repr();\n}\n\ninline std::string type_str(const\
+    \ char*) {\n    return \"char*\";\n}\ninline std::string initializer_str(const\
+    \ char* t) {\n    return \"\\\"\" + std::string(t) + \"\\\"\";\n}\ninline std::string\
     \ repr(const char* t) {\n    return internal_repr::initializer_str(t);\n}\n\n\
     inline std::string type_str(const char&) {\n    return \"char\";\n}\ninline std::string\
     \ initializer_str(const char& t) {\n    // char \u304C\u7B26\u53F7\u4ED8\u304D\
@@ -296,7 +327,7 @@ data:
     \n\n/**\n * @file range.hpp\n * @brief Python \u306E range \u306E\u3088\u3046\u306A\
     \u6574\u6570\u5217\u3068\u3001\u305D\u306E\u76F4\u7A4D\u306E Grid\n */\n\n#include\
     \ <cassert>\n#line 15 \"src/utility/range.hpp\"\n\nstruct Range {\n   public:\n\
-    \    using value_type = long long;\n    using const_reference = const value_type&;\n\
+    \    using value_type = long long;\n    using const_reference = value_type;\n\
     \    using size_type = long long;\n    using difference_type = std::ptrdiff_t;\n\
     \n    const value_type start;\n    const value_type stop;\n    const value_type\
     \ step;\n\n   private:\n    const value_type norm_stop;\n\n    constexpr static\
@@ -320,95 +351,99 @@ data:
     \        : start(0), stop(0), step(1), norm_stop(0) {\n    }\n    constexpr Range(const\
     \ Range& o) = default;\n    Range& operator=(const Range& o) = delete;\n\n   \
     \ struct const_iterator {\n       public:\n        using difference_type = Range::difference_type;\n\
-    \        using value_type = Range::value_type;\n        using pointer = const\
-    \ Range::value_type*;\n        using reference = const Range::value_type&;\n \
-    \       using iterator_category = std::random_access_iterator_tag;\n\n       private:\n\
-    \        const Range& range;\n        value_type value;\n\n        constexpr bool\
-    \ same_range(const const_iterator& o) const noexcept {\n            return range.start\
-    \ == o.range.start && range.stop == o.range.stop && range.step == o.range.step;\n\
-    \        }\n\n       public:\n        constexpr const_iterator(const Range& _range,\
-    \ value_type _value) noexcept\n            : range(_range), value(_value) {}\n\
-    \        constexpr const_iterator(const const_iterator& o) noexcept\n        \
-    \    : range(o.range), value(o.value) {}\n        constexpr reference base() const\
-    \ noexcept {\n            return value;\n        }\n        constexpr const_iterator&\
-    \ operator=(const const_iterator& o) {\n            assert(same_range(o));\n \
-    \           value = o.value;\n            return *this;\n        };\n        constexpr\
-    \ const_iterator& operator++() noexcept {\n            value += range.step;\n\
-    \            return *this;\n        }\n        constexpr const_iterator operator++(int)\
-    \ noexcept {\n            const_iterator ret(*this);\n            value += range.step;\n\
+    \        using value_type = Range::value_type;\n        using pointer = void;\n\
+    \        using reference = Range::const_reference;\n        using iterator_category\
+    \ = std::random_access_iterator_tag;\n\n       private:\n        value_type first\
+    \ = 0, stop = 0, step = 1, value = 0;\n\n        constexpr bool same_range(const\
+    \ const_iterator& o) const noexcept {\n            return first == o.first &&\
+    \ stop == o.stop && step == o.step;\n        }\n\n       public:\n        constexpr\
+    \ const_iterator() noexcept = default;\n        constexpr const_iterator(const\
+    \ Range& range, value_type value) noexcept\n            : first(range.start),\
+    \ stop(range.stop), step(range.step), value(value) {}\n        constexpr reference\
+    \ base() const noexcept {\n            return value;\n        }\n        constexpr\
+    \ const_iterator& operator++() noexcept {\n            value += step;\n      \
+    \      return *this;\n        }\n        constexpr const_iterator operator++(int)\
+    \ noexcept {\n            const_iterator ret(*this);\n            value += step;\n\
     \            return ret;\n        }\n        constexpr const_iterator& operator+=(difference_type\
-    \ _n) noexcept {\n            value += _n * range.step;\n            return *this;\n\
+    \ _n) noexcept {\n            value += _n * step;\n            return *this;\n\
     \        }\n        constexpr friend const_iterator operator+(const const_iterator&\
     \ i, difference_type _n) noexcept {\n            const_iterator ret(i);\n    \
     \        ret += _n;\n            return ret;\n        }\n        constexpr friend\
     \ const_iterator operator+(difference_type _n, const const_iterator& i) noexcept\
     \ {\n            const_iterator ret(i);\n            ret += _n;\n            return\
     \ ret;\n        }\n        constexpr const_iterator& operator--() noexcept {\n\
-    \            value -= range.step;\n            return *this;\n        }\n    \
-    \    constexpr const_iterator operator--(int) noexcept {\n            const_iterator\
-    \ ret(*this);\n            value -= range.step;\n            return ret;\n   \
-    \     }\n        constexpr const_iterator& operator-=(difference_type _n) noexcept\
-    \ {\n            value -= _n * range.step;\n            return *this;\n      \
-    \  }\n        constexpr friend const_iterator operator-(const const_iterator&\
-    \ i, difference_type _n) noexcept {\n            const_iterator ret(i);\n    \
-    \        ret -= _n;\n            return ret;\n        }\n        constexpr reference\
-    \ operator*() const noexcept {\n            return value;\n        }\n       \
-    \ constexpr friend bool operator!=(const const_iterator& a, const const_iterator&\
-    \ b) noexcept {\n            return !a.same_range(b) || a.value != b.value;\n\
-    \        }\n        constexpr friend bool operator==(const const_iterator& a,\
-    \ const const_iterator& b) noexcept {\n            return !(a != b);\n       \
-    \ }\n        constexpr friend difference_type operator-(const const_iterator&\
-    \ a, const const_iterator& b) {\n            assert(a.same_range(b));\n      \
-    \      if (a.range.step > 0) {\n                return (a.value - b.value) / a.range.step;\n\
-    \            } else {\n                return (b.value - a.value) / (-a.range.step);\n\
-    \            }\n        }\n    };\n\n    constexpr const_iterator begin() const\
-    \ noexcept {\n        return {*this, start};\n    }\n    constexpr const_iterator\
-    \ end() const noexcept {\n        return {*this, norm_stop};\n    }\n    /**\n\
-    \     * @brief x \u306E\u500B\u6570 (0 \u304B 1)\n     */\n    constexpr size_type\
-    \ count(value_type x) const noexcept {\n        // step \u304C\u30B3\u30F3\u30D1\
-    \u30A4\u30EB\u6642\u306B\u5206\u304B\u3089\u306A\u3044\u3068\u304D\u3082\u3001\
-    \u3088\u304F\u4F7F\u3046 step = 1 \u3067\u306F\u5272\u308A\u7B97\u3092\u3057\u306A\
-    \u3044\n        if (step == 1) return start <= x && x < stop;\n        if (step\
-    \ > 0) {\n            if (start <= x && x < stop) {\n                if ((x -\
-    \ start) % step == 0) {\n                    return 1;\n                }\n  \
-    \          }\n        } else {\n            if (stop < x && x <= start) {\n  \
-    \              if ((start - x) % (-step) == 0) {\n                    return 1;\n\
-    \                }\n            }\n        }\n        return 0;\n    }\n    /**\n\
-    \     * @brief x \u304C\u542B\u307E\u308C\u308B\u304B\n     */\n    constexpr\
-    \ bool contains(value_type x) const noexcept {\n        return count(x) != 0;\n\
-    \    }\n    /**\n     * @brief x \u306E\u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n\
-    \     * x \u304C\u542B\u307E\u308C\u306A\u3044\u3068\u30A8\u30E9\u30FC\n     */\n\
-    \    constexpr size_type index(value_type x) const {\n        assert(contains(x));\n\
-    \        if (step == 1) return x - start;\n        return (x - start) / step;\n\
-    \    }\n    /**\n     * @brief \u8981\u7D20\u304C x \u306E\u30A4\u30C6\u30EC\u30FC\
-    \u30BF\n     * x \u304C\u542B\u307E\u308C\u306A\u3044\u3068 end() \u3092\u8FD4\
-    \u3059\n     */\n    constexpr const_iterator find(value_type x) const noexcept\
-    \ {\n        if (contains(x)) {\n            return {*this, x};\n        } else\
-    \ {\n            return {*this, norm_stop};\n        }\n    }\n    /**\n     *\
-    \ @brief \u8981\u7D20\u304C x \u4EE5\u4E0A\u306E\u6700\u5C0F\u306E\u30A4\u30C6\
-    \u30EC\u30FC\u30BF\n     * step > 0 \u3058\u3083\u306A\u3044\u3068\u30A8\u30E9\
-    \u30FC\n     */\n    constexpr const_iterator lower_bound(value_type x) const\
-    \ {\n        assert(step > 0);\n        if (norm_stop <= x) {\n            return\
-    \ end();\n        } else if (x < start) {\n            return begin();\n     \
-    \   } else {\n            return {*this, start + (x - start + step - 1) / step\
-    \ * step};\n        }\n    }\n    /**\n     * @brief \u8981\u7D20\u304C x \u3088\
-    \u308A\u5927\u304D\u3044\u6700\u5C0F\u306E\u30A4\u30C6\u30EC\u30FC\u30BF\n   \
-    \  * step > 0 \u3058\u3083\u306A\u3044\u3068\u30A8\u30E9\u30FC\n     */\n    constexpr\
-    \ const_iterator upper_bound(value_type x) const {\n        assert(step > 0);\n\
-    \        if (norm_stop <= x) {\n            return end();\n        } else if (x\
-    \ < start) {\n            return begin();\n        } else {\n            return\
-    \ {*this, start + (x - start + step) / step * step};\n        }\n    }\n    /**\n\
-    \     * @brief \u30B3\u30F3\u30C6\u30CA\u306E\u8981\u7D20\u6570\n     */\n   \
-    \ constexpr size_type size() const noexcept {\n        if (step > 0) {\n     \
-    \       return (norm_stop - start) / step;\n        } else {\n            return\
-    \ (start - norm_stop) / (-step);\n        }\n    }\n    constexpr value_type at(size_type\
-    \ i) const {\n        assert(0 <= i && i < size());\n        return start + i\
-    \ * step;\n    }\n    constexpr value_type operator[](size_type i) const {\n \
-    \       return at(i);\n    }\n    constexpr bool empty() const noexcept {\n  \
-    \      return start == norm_stop;\n    }\n    constexpr value_type sum() const\
-    \ noexcept {\n        return size() * (norm_stop - step + start) / 2;\n    }\n\
-    \    /**\n     * @brief \u6700\u5C0F\u5024\n     * \u7A7A\u3060\u3068\u30A8\u30E9\
-    \u30FC\n     */\n    constexpr value_type min() const {\n        assert(!empty());\n\
+    \            value -= step;\n            return *this;\n        }\n        constexpr\
+    \ const_iterator operator--(int) noexcept {\n            const_iterator ret(*this);\n\
+    \            value -= step;\n            return ret;\n        }\n        constexpr\
+    \ const_iterator& operator-=(difference_type _n) noexcept {\n            value\
+    \ -= _n * step;\n            return *this;\n        }\n        constexpr friend\
+    \ const_iterator operator-(const const_iterator& i, difference_type _n) noexcept\
+    \ {\n            const_iterator ret(i);\n            ret -= _n;\n            return\
+    \ ret;\n        }\n        constexpr reference operator[](difference_type i) const\
+    \ noexcept { return value + i * step; }\n        constexpr reference operator*()\
+    \ const noexcept {\n            return value;\n        }\n        constexpr friend\
+    \ bool operator!=(const const_iterator& a, const const_iterator& b) noexcept {\n\
+    \            return !a.same_range(b) || a.value != b.value;\n        }\n     \
+    \   constexpr friend bool operator==(const const_iterator& a, const const_iterator&\
+    \ b) noexcept {\n            return !(a != b);\n        }\n        constexpr friend\
+    \ bool operator<(const const_iterator& a, const const_iterator& b) noexcept {\n\
+    \            assert(a.same_range(b));\n            return a.step > 0 ? a.value\
+    \ < b.value : a.value > b.value;\n        }\n        constexpr friend bool operator>(const\
+    \ const_iterator& a, const const_iterator& b) noexcept { return b < a; }\n   \
+    \     constexpr friend bool operator<=(const const_iterator& a, const const_iterator&\
+    \ b) noexcept { return !(b < a); }\n        constexpr friend bool operator>=(const\
+    \ const_iterator& a, const const_iterator& b) noexcept { return !(a < b); }\n\
+    \        constexpr friend difference_type operator-(const const_iterator& a, const\
+    \ const_iterator& b) {\n            assert(a.same_range(b));\n            if (a.step\
+    \ > 0) {\n                return (a.value - b.value) / a.step;\n            }\
+    \ else {\n                return (b.value - a.value) / (-a.step);\n          \
+    \  }\n        }\n    };\n\n    constexpr const_iterator begin() const noexcept\
+    \ {\n        return {*this, start};\n    }\n    constexpr const_iterator end()\
+    \ const noexcept {\n        return {*this, norm_stop};\n    }\n    /**\n     *\
+    \ @brief x \u306E\u500B\u6570 (0 \u304B 1)\n     */\n    constexpr size_type count(value_type\
+    \ x) const noexcept {\n        // step \u304C\u30B3\u30F3\u30D1\u30A4\u30EB\u6642\
+    \u306B\u5206\u304B\u3089\u306A\u3044\u3068\u304D\u3082\u3001\u3088\u304F\u4F7F\
+    \u3046 step = 1 \u3067\u306F\u5272\u308A\u7B97\u3092\u3057\u306A\u3044\n     \
+    \   if (step == 1) return start <= x && x < stop;\n        if (step > 0) {\n \
+    \           if (start <= x && x < stop) {\n                if ((x - start) % step\
+    \ == 0) {\n                    return 1;\n                }\n            }\n \
+    \       } else {\n            if (stop < x && x <= start) {\n                if\
+    \ ((start - x) % (-step) == 0) {\n                    return 1;\n            \
+    \    }\n            }\n        }\n        return 0;\n    }\n    /**\n     * @brief\
+    \ x \u304C\u542B\u307E\u308C\u308B\u304B\n     */\n    constexpr bool contains(value_type\
+    \ x) const noexcept {\n        return count(x) != 0;\n    }\n    /**\n     * @brief\
+    \ x \u306E\u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * x \u304C\u542B\u307E\u308C\
+    \u306A\u3044\u3068\u30A8\u30E9\u30FC\n     */\n    constexpr size_type index(value_type\
+    \ x) const {\n        assert(contains(x));\n        if (step == 1) return x -\
+    \ start;\n        return (x - start) / step;\n    }\n    /**\n     * @brief \u8981\
+    \u7D20\u304C x \u306E\u30A4\u30C6\u30EC\u30FC\u30BF\n     * x \u304C\u542B\u307E\
+    \u308C\u306A\u3044\u3068 end() \u3092\u8FD4\u3059\n     */\n    constexpr const_iterator\
+    \ find(value_type x) const noexcept {\n        if (contains(x)) {\n          \
+    \  return {*this, x};\n        } else {\n            return {*this, norm_stop};\n\
+    \        }\n    }\n    /**\n     * @brief \u8981\u7D20\u304C x \u4EE5\u4E0A\u306E\
+    \u6700\u5C0F\u306E\u30A4\u30C6\u30EC\u30FC\u30BF\n     * step > 0 \u3058\u3083\
+    \u306A\u3044\u3068\u30A8\u30E9\u30FC\n     */\n    constexpr const_iterator lower_bound(value_type\
+    \ x) const {\n        assert(step > 0);\n        if (norm_stop <= x) {\n     \
+    \       return end();\n        } else if (x < start) {\n            return begin();\n\
+    \        } else {\n            return {*this, start + (x - start + step - 1) /\
+    \ step * step};\n        }\n    }\n    /**\n     * @brief \u8981\u7D20\u304C x\
+    \ \u3088\u308A\u5927\u304D\u3044\u6700\u5C0F\u306E\u30A4\u30C6\u30EC\u30FC\u30BF\
+    \n     * step > 0 \u3058\u3083\u306A\u3044\u3068\u30A8\u30E9\u30FC\n     */\n\
+    \    constexpr const_iterator upper_bound(value_type x) const {\n        assert(step\
+    \ > 0);\n        if (norm_stop <= x) {\n            return end();\n        } else\
+    \ if (x < start) {\n            return begin();\n        } else {\n          \
+    \  return {*this, start + (x - start + step) / step * step};\n        }\n    }\n\
+    \    /**\n     * @brief \u30B3\u30F3\u30C6\u30CA\u306E\u8981\u7D20\u6570\n   \
+    \  */\n    constexpr size_type size() const noexcept {\n        if (step > 0)\
+    \ {\n            return (norm_stop - start) / step;\n        } else {\n      \
+    \      return (start - norm_stop) / (-step);\n        }\n    }\n    constexpr\
+    \ value_type at(size_type i) const {\n        assert(0 <= i && i < size());\n\
+    \        return start + i * step;\n    }\n    constexpr value_type operator[](size_type\
+    \ i) const {\n        return at(i);\n    }\n    constexpr bool empty() const noexcept\
+    \ {\n        return start == norm_stop;\n    }\n    constexpr value_type sum()\
+    \ const noexcept {\n        return size() * (norm_stop - step + start) / 2;\n\
+    \    }\n    /**\n     * @brief \u6700\u5C0F\u5024\n     * \u7A7A\u3060\u3068\u30A8\
+    \u30E9\u30FC\n     */\n    constexpr value_type min() const {\n        assert(!empty());\n\
     \        if (step > 0) {\n            return start;\n        } else {\n      \
     \      return norm_stop - step;\n        }\n    }\n    /**\n     * @brief \u6700\
     \u5927\u5024\n     * \u7A7A\u3060\u3068\u30A8\u30E9\u30FC\n     */\n    constexpr\
@@ -863,7 +898,7 @@ data:
   isVerificationFile: true
   path: test/unittest/utility/repr.test.cpp
   requiredBy: []
-  timestamp: '2026-11-08 20:13:03+09:00'
+  timestamp: '2026-11-10 04:55:25+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/utility/repr.test.cpp

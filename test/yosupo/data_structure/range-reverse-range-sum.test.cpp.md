@@ -383,22 +383,25 @@ data:
     )\n * - F id(): \u6052\u7B49\u5199\u50CF\n * \u4F5C\u7528\u7D20\u304C\u7FA4\u3092\
     \u306A\u3059\u5834\u5408 (imos.hpp \u3067\u4F7F\u3046) \u306F\n * - F inv(const\
     \ F& f): \u9006\u4F5C\u7528\u7D20\n */\n\n#line 25 \"src/algebra/acted-monoid.hpp\"\
-    \n\n#line 27 \"src/algebra/acted-monoid.hpp\"\n\nnamespace internal_acted_monoid\
-    \ {\ntemplate <typename A, typename = void>\nstruct has_mapping_lr : std::false_type\
-    \ {};\ntemplate <typename A>\nstruct has_mapping_lr<A, std::void_t<decltype(std::declval<const\
+    \n\n#line 27 \"src/algebra/acted-monoid.hpp\"\n\n#if __cplusplus < 202002L\nnamespace\
+    \ internal_acted_monoid {\ntemplate <typename A, typename = void>\nstruct has_mapping_lr\
+    \ : std::false_type {};\ntemplate <typename A>\nstruct has_mapping_lr<A, std::void_t<decltype(std::declval<const\
     \ A&>().mapping(std::declval<const typename A::F&>(), std::declval<const typename\
     \ A::S&>(), 0, 0))>> : std::true_type {};\ntemplate <typename A, typename = void>\n\
     struct has_mapping_sz : std::false_type {};\ntemplate <typename A>\nstruct has_mapping_sz<A,\
     \ std::void_t<decltype(std::declval<const A&>().mapping(std::declval<const typename\
     \ A::F&>(), std::declval<const typename A::S&>(), 0))>> : std::true_type {};\n\
-    }  // namespace internal_acted_monoid\n\nnamespace acted_monoid {\n\n/**\n * @brief\
-    \ \u533A\u9593 [l, r) \u3092\u8868\u3059\u8981\u7D20\u306B\u4F5C\u7528\u7D20\u3092\
-    \u9069\u7528\u3059\u308B\n * mapping \u306E\u5F15\u6570\u306E\u5F62\u306E\u9055\
-    \u3044\u3092\u5438\u53CE\u3059\u308B\n */\ntemplate <typename A>\nconstexpr auto\
-    \ apply_mapping(const A& a, const typename A::F& f, const typename A::S& x, long\
-    \ long l, long long r) {\n    if constexpr (internal_acted_monoid::has_mapping_lr<A>::value)\
-    \ {\n        return a.mapping(f, x, l, r);\n    } else if constexpr (internal_acted_monoid::has_mapping_sz<A>::value)\
-    \ {\n        return a.mapping(f, x, r - l);\n    } else {\n        return a.mapping(f,\
+    }  // namespace internal_acted_monoid\n#endif\n\nnamespace acted_monoid {\n\n\
+    /**\n * @brief \u533A\u9593 [l, r) \u3092\u8868\u3059\u8981\u7D20\u306B\u4F5C\u7528\
+    \u7D20\u3092\u9069\u7528\u3059\u308B\n * mapping \u306E\u5F15\u6570\u306E\u5F62\
+    \u306E\u9055\u3044\u3092\u5438\u53CE\u3059\u308B\n */\ntemplate <typename A>\n\
+    constexpr auto apply_mapping(const A& a, const typename A::F& f, const typename\
+    \ A::S& x, long long l, long long r) {\n#if __cplusplus >= 202002L\n    if constexpr\
+    \ (requires { a.mapping(f, x, l, r); }) {\n#else\n    if constexpr (internal_acted_monoid::has_mapping_lr<A>::value)\
+    \ {\n#endif\n        return a.mapping(f, x, l, r);\n#if __cplusplus >= 202002L\n\
+    \    } else if constexpr (requires { a.mapping(f, x, r - l); }) {\n#else\n   \
+    \ } else if constexpr (internal_acted_monoid::has_mapping_sz<A>::value) {\n#endif\n\
+    \        return a.mapping(f, x, r - l);\n    } else {\n        return a.mapping(f,\
     \ x);\n    }\n}\n\n/**\n * @brief \u533A\u9593\u52A0\u7B97\u3001\u533A\u9593\u548C\
     \n */\ntemplate <typename T>\nstruct AddSum : monoid::Sum<T> {\n    using S =\
     \ T;\n    using F = T;\n    static constexpr S mapping(const F& f, const S& x,\
@@ -615,15 +618,18 @@ data:
     #line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\
     \u7279\u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\n#include <functional>\n\
     #include <iterator>\n#include <set>\n#line 14 \"src/utility/traits.hpp\"\n\n#if\
-    \ __cplusplus >= 202002L\n#include <ranges>\n#endif\n\nnamespace internal_traits\
-    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
-    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
-    \ end(std::declval<T&>()))>> : std::true_type {};\n\n// \u30B5\u30A4\u30BA\u4ED8\
-    \u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\u3059\
-    \u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\u308B\
-    \u3002\n#if __cplusplus >= 202002L\ntemplate <class R, class S>\nconcept sized_constructible_range\
-    \ = std::ranges::input_range<R> && std::ranges::sized_range<R> &&\n          \
-    \                          std::is_constructible_v<S, std::ranges::range_reference_t<R>>;\n\
+    \ __cplusplus >= 202002L\n#include <concepts>\n#include <ranges>\n#endif\n\nnamespace\
+    \ internal_traits {\nusing std::begin, std::end;\n\n#if __cplusplus >= 202002L\n\
+    template <class T>\n    struct is_range_impl : std::bool_constant < requires(T&\
+    \ t) {\n    begin(t);\n    end(t);\n}>{};\n#else\ntemplate <class T, class = void>\n\
+    struct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T,\
+    \ std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>> :\
+    \ std::true_type {};\n#endif\n\n// \u30B5\u30A4\u30BA\u4ED8\u304D\u7BC4\u56F2\u304B\
+    \u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\
+    \u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\u308B\u3002\n#if __cplusplus\
+    \ >= 202002L\ntemplate <class R, class S>\nconcept sized_constructible_range =\
+    \ std::ranges::input_range<R> && std::ranges::sized_range<R> &&\n            \
+    \                        std::is_constructible_v<S, std::ranges::range_reference_t<R>>;\n\
     \ntemplate <class R>\nauto range_size(R& r) {\n    return std::ranges::size(r);\n\
     }\ntemplate <class R>\nauto range_begin(R& r) {\n    return std::ranges::begin(r);\n\
     }\ntemplate <class R>\nusing range_value_t = std::ranges::range_value_t<R>;\n\
@@ -638,13 +644,35 @@ data:
     \    : std::is_constructible<S, decltype(*begin(std::declval<R&>()))> {};\n#endif\n\
     }  // namespace internal_traits\n\ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
     \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
-    \n#define HAS_METHOD(func_name)                                              \
-    \                \\\n    namespace internal_traits {                         \
-    \                                   \\\n    template <class T, class = void> \
-    \                                                      \\\n    struct has_##func_name##_impl\
-    \ : std::false_type {};                                    \\\n    template <class\
-    \ T>                                                                     \\\n\
-    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
+    \n#if __cplusplus >= 202002L\n#define HAS_METHOD(func_name)                  \
+    \                                                 \\\n    namespace internal_traits\
+    \ {                                                                 \\\n    template\
+    \ <class T>                                                                  \
+    \        \\\n    concept has_##func_name##_impl = requires { std::declval<T>().func_name();\
+    \ };               \\\n    }                                                 \
+    \                                          \\\n    template <class T>        \
+    \                                                                  \\\n    struct\
+    \ has_##func_name : std::bool_constant<internal_traits::has_##func_name##_impl<T>>\
+    \ {}; \\\n    template <class T>                                             \
+    \                             \\\n    inline constexpr bool has_##func_name##_v\
+    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
+    \                                                        \\\n    namespace internal_traits\
+    \ {                                                                    \\\n  \
+    \  template <class T, class U>                                               \
+    \                     \\\n    concept has_##func_name##_impl = requires { std::declval<T>().func_name(std::declval<U>());\
+    \ }; \\\n    }                                                               \
+    \                               \\\n    template <class T, class U>          \
+    \                                                          \\\n    struct has_##func_name\
+    \ : std::bool_constant<internal_traits::has_##func_name##_impl<T, U>> {}; \\\n\
+    \    template <class T, class U>                                             \
+    \                       \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T,\
+    \ U>::value;\n#else\n#define HAS_METHOD(func_name)                           \
+    \                                   \\\n    namespace internal_traits {      \
+    \                                                      \\\n    template <class\
+    \ T, class = void>                                                       \\\n\
+    \    struct has_##func_name##_impl : std::false_type {};                     \
+    \               \\\n    template <class T>                                   \
+    \                                  \\\n    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
     \ \\\n        : std::true_type {};                                           \
     \                    \\\n    }                                               \
     \                                       \\\n    template <class T>           \
@@ -668,11 +696,11 @@ data:
     \ U>::type {};                           \\\n    template <class T, typename U>\
     \                                                                            \
     \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
-    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
-    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
-    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
-    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
-    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
+    #endif\n\nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\n\
+    HAS_METHOD(max)\nHAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\n\
+    HAS_METHOD(product)\nHAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\n\
+    HAS_METHOD_ARG(lower_bound)\nHAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr)\
+    \ std::enable_if_t<expr, std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
     \nnamespace internal_traits {\n// \u5C04\u5F71 (proj) \u306E\u65E2\u5B9A\u5024\
     \n#if __cplusplus >= 202002L\nusing identity = std::identity;\n#else\nstruct identity\
     \ {\n    using is_transparent = void;\n    template <class T>\n    constexpr T&&\
@@ -686,71 +714,76 @@ data:
     \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
     \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
     inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
-    #line 19 \"src/data_structures/rbst.hpp\"\n\nnamespace internal_rbst {\ntemplate\
-    \ <typename M, typename = void>\nstruct has_acted : std::false_type {};\ntemplate\
-    \ <typename M>\nstruct has_acted<M, std::void_t<typename M::F>> : std::true_type\
-    \ {};\n// \u4F5C\u7528\u7D20\u4ED8\u304D\u3067\u306A\u3044\u30E2\u30CE\u30A4\u30C9\
-    \u306E\u3068\u304D\u306E\u4F5C\u7528\u7D20\u306E\u578B\nstruct NoAct {\n    using\
-    \ F = NoAct;\n};\n}  // namespace internal_rbst\n\n/**\n * @brief \u5E73\u8861\
-    \u4E8C\u5206\u6728 (RBST) \u306B\u3088\u308B\u5217\n *\n * \u4F4D\u7F6E\u3067\u6271\
-    \u3046\u5217\u3002k \u756A\u76EE\u3078\u306E\u633F\u5165\u30FB\u524A\u9664\u3001\
-    \u533A\u9593\u7A4D\u3001\u533A\u9593\u53CD\u8EE2\u3001split\u30FBmerge \u3092\u671F\
-    \u5F85 O(log n) \u3067\u884C\u3046\n * \u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\
-    \ \u304B\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9 (algebra/acted-monoid.hpp)\
-    \ \u3092\u4E57\u305B\u308B\u3002\u4F5C\u7528\u7D20\u4ED8\u304D\u306A\u3089\u533A\
-    \u9593\u4F5C\u7528\u3082\u3067\u304D\u308B\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
-    \u30CE\u30A4\u30C9\u306E mapping \u306F (f, x) \u304B (f, x, sz) \u306E\u5F62\u306B\
-    \u3059\u308B (\u5217\u306E\u4F4D\u7F6E\u306F\u633F\u5165\u30FB\u524A\u9664\u3067\
-    \u5909\u308F\u308B\u306E\u3067 (f, x, l, r) \u306F\u4F7F\u3048\u306A\u3044)\n\
-    \ * \u9802\u70B9\u306F\u578B\u3054\u3068\u306B\u5171\u6709\u3059\u308B\u914D\u5217\
-    \u306B\u7F6E\u304F\u306E\u3067\u3001\u540C\u3058\u578B\u306E\u6728\u3069\u3046\
-    \u3057\u3067 split\u30FBmerge \u3067\u304D\u308B\n * \u4F8B:\n * RBST<acted_monoid::AddSum<long\
-    \ long>> t(v);\n * t.insert(2, x); t.erase(0); t.reverse(1, 4); t.apply(0, 3,\
-    \ 10); t.prod(1, 3);\n * RBST<acted_monoid::AddSum<long long>> u = t.split(2);\
-    \  // t \u306F\u5148\u982D 2 \u500B\u3001u \u306F\u6B8B\u308A\n * t.merge(std::move(u));\
-    \                                 // \u5143\u306B\u623B\u3059\n *\n * @tparam\
-    \ M \u30E2\u30CE\u30A4\u30C9\u304B\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\
-    \u30C9\n */\ntemplate <typename M>\nclass RBST {\n   public:\n    using S = typename\
-    \ M::S;\n    static constexpr bool acted = internal_rbst::has_acted<M>::value;\n\
-    \    using F = typename std::conditional_t<acted, M, internal_rbst::NoAct>::F;\n\
-    \n   private:\n    static_assert(!acted || !internal_acted_monoid::has_mapping_lr<M>::value,\
-    \ \"RBST: mapping(f, x, l, r) \u306F\u4F7F\u3048\u306A\u3044\");\n\n    // \u9802\
-    \u70B9 0 \u306F\u7A7A\u306E\u6728\u3092\u8868\u3059\n    struct Node {\n     \
-    \   S val, sum, rsum;  // \u5024\u3001\u90E8\u5206\u6728\u306E\u7A4D\u3001\u90E8\
-    \u5206\u6728\u306E\u9006\u9806\u306E\u7A4D\n        F lz;              // \u5B50\
-    \u306B\u4F1D\u3048\u308B\u4F5C\u7528\u7D20\n        int sz = 0, l = 0, r = 0;\n\
-    \        bool has_lz = false, rev = false;  // \u5B50\u306B\u4F5C\u7528\u7D20\u30FB\
-    \u53CD\u8EE2\u3092\u4F1D\u3048\u3066\u3044\u306A\u3044\u304B\n    };\n    // \u9802\
-    \u70B9\u306E\u914D\u5217\u306F\u6700\u521D\u306B\u9802\u70B9\u3092\u4F5C\u308B\
-    \u3068\u304D\u306B\u78BA\u4FDD\u3057\u3001\u89E3\u653E\u3057\u306A\u3044\n   \
-    \ // (\u30B0\u30ED\u30FC\u30D0\u30EB\u5909\u6570\u306E\u6728\u306E\u30C7\u30B9\
-    \u30C8\u30E9\u30AF\u30BF\u304C\u3001\u5148\u306B\u7834\u68C4\u3055\u308C\u305F\
-    \u914D\u5217\u3092\u89E6\u3089\u306A\u3044\u3088\u3046\u306B\u3059\u308B)\n  \
-    \  inline static std::vector<Node>* nodes_ = nullptr;\n    inline static std::vector<int>*\
-    \ unused_ = nullptr;  // \u6D88\u3057\u305F\u9802\u70B9\n    static Node& node(int\
-    \ t) { return (*nodes_)[t]; }\n    static std::uint32_t rand() {\n        static\
-    \ std::uint32_t x = 2463534242U;\n        x ^= x << 13;\n        x ^= x >> 17;\n\
-    \        x ^= x << 5;\n        return x;\n    }\n\n    M m;\n    int root = 0;\n\
-    \n    S op(const S& x, const S& y) const { return m.op(x, y); }\n    S e() const\
-    \ { return m.e(); }\n    static int size_of(int t) { return t ? node(t).sz : 0;\
-    \ }\n    S sum_of(int t) const { return t ? node(t).sum : e(); }\n    S rsum_of(int\
-    \ t) const { return t ? node(t).rsum : e(); }\n\n    // x \u306F\u5024\u3067\u53D7\
-    \u3051\u53D6\u308B (\u9802\u70B9\u306E\u914D\u5217\u306E\u8981\u7D20\u3092\u6E21\
-    \u3055\u308C\u305F\u3068\u304D\u3001\u914D\u5217\u304C\u4F38\u3073\u3066\u53C2\
-    \u7167\u304C\u7121\u52B9\u306B\u306A\u308B\u306E\u3092\u9632\u3050)\n    int new_node(S\
-    \ x) {\n        if (!nodes_) nodes_ = new std::vector<Node>(1), unused_ = new\
-    \ std::vector<int>();\n        int t;\n        if (!unused_->empty()) {\n    \
-    \        t = unused_->back();\n            unused_->pop_back();\n        } else\
-    \ {\n            t = nodes_->size();\n            nodes_->emplace_back();\n  \
-    \      }\n        Node& v = node(t);\n        v.val = v.sum = v.rsum = x;\n  \
-    \      v.has_lz = v.rev = false;\n        v.sz = 1, v.l = v.r = 0;\n        return\
-    \ t;\n    }\n    // \u90E8\u5206\u6728\u306E\u9802\u70B9\u3092\u3059\u3079\u3066\
-    \u6D88\u3059\n    static void free_tree(int t) {\n        if (!t) return;\n  \
-    \      std::vector<int> st = {t};\n        while (!st.empty()) {\n           \
-    \ int v = st.back();\n            st.pop_back();\n            if (node(v).l) st.push_back(node(v).l);\n\
-    \            if (node(v).r) st.push_back(node(v).r);\n            unused_->push_back(v);\n\
-    \        }\n    }\n    int clone_tree(int t) {\n        if (!t) return 0;\n  \
-    \      push(t);\n        int lc = clone_tree(node(t).l);\n        int c = new_node(node(t).val);\n\
+    #line 19 \"src/data_structures/rbst.hpp\"\n\nnamespace internal_rbst {\n#if __cplusplus\
+    \ < 202002L\ntemplate <typename M, typename = void>\nstruct has_acted : std::false_type\
+    \ {};\ntemplate <typename M>\nstruct has_acted<M, std::void_t<typename M::F>>\
+    \ : std::true_type {};\n#endif\n// \u4F5C\u7528\u7D20\u4ED8\u304D\u3067\u306A\u3044\
+    \u30E2\u30CE\u30A4\u30C9\u306E\u3068\u304D\u306E\u4F5C\u7528\u7D20\u306E\u578B\
+    \nstruct NoAct {\n    using F = NoAct;\n};\n}  // namespace internal_rbst\n\n\
+    /**\n * @brief \u5E73\u8861\u4E8C\u5206\u6728 (RBST) \u306B\u3088\u308B\u5217\n\
+    \ *\n * \u4F4D\u7F6E\u3067\u6271\u3046\u5217\u3002k \u756A\u76EE\u3078\u306E\u633F\
+    \u5165\u30FB\u524A\u9664\u3001\u533A\u9593\u7A4D\u3001\u533A\u9593\u53CD\u8EE2\
+    \u3001split\u30FBmerge \u3092\u671F\u5F85 O(log n) \u3067\u884C\u3046\n * \u30E2\
+    \u30CE\u30A4\u30C9 (algebra/monoid.hpp) \u304B\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
+    \u30CE\u30A4\u30C9 (algebra/acted-monoid.hpp) \u3092\u4E57\u305B\u308B\u3002\u4F5C\
+    \u7528\u7D20\u4ED8\u304D\u306A\u3089\u533A\u9593\u4F5C\u7528\u3082\u3067\u304D\
+    \u308B\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E mapping\
+    \ \u306F (f, x) \u304B (f, x, sz) \u306E\u5F62\u306B\u3059\u308B (\u5217\u306E\
+    \u4F4D\u7F6E\u306F\u633F\u5165\u30FB\u524A\u9664\u3067\u5909\u308F\u308B\u306E\
+    \u3067 (f, x, l, r) \u306F\u4F7F\u3048\u306A\u3044)\n * \u9802\u70B9\u306F\u578B\
+    \u3054\u3068\u306B\u5171\u6709\u3059\u308B\u914D\u5217\u306B\u7F6E\u304F\u306E\
+    \u3067\u3001\u540C\u3058\u578B\u306E\u6728\u3069\u3046\u3057\u3067 split\u30FB\
+    merge \u3067\u304D\u308B\n * \u4F8B:\n * RBST<acted_monoid::AddSum<long long>>\
+    \ t(v);\n * t.insert(2, x); t.erase(0); t.reverse(1, 4); t.apply(0, 3, 10); t.prod(1,\
+    \ 3);\n * RBST<acted_monoid::AddSum<long long>> u = t.split(2);  // t \u306F\u5148\
+    \u982D 2 \u500B\u3001u \u306F\u6B8B\u308A\n * t.merge(std::move(u));         \
+    \                        // \u5143\u306B\u623B\u3059\n *\n * @tparam M \u30E2\u30CE\
+    \u30A4\u30C9\u304B\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n */\n\
+    template <typename M>\nclass RBST {\n   public:\n    using S = typename M::S;\n\
+    #if __cplusplus >= 202002L\n    static constexpr bool acted = requires { typename\
+    \ M::F; };\n#else\n    static constexpr bool acted = internal_rbst::has_acted<M>::value;\n\
+    #endif\n    using F = typename std::conditional_t<acted, M, internal_rbst::NoAct>::F;\n\
+    \n   private:\n#if __cplusplus >= 202002L\n    static_assert(!acted || !requires(const\
+    \ M& m, const F& f, const S& x) { m.mapping(f, x, 0LL, 0LL); }, \"RBST: mapping(f,\
+    \ x, l, r) \u306F\u4F7F\u3048\u306A\u3044\");\n#else\n    static_assert(!acted\
+    \ || !internal_acted_monoid::has_mapping_lr<M>::value, \"RBST: mapping(f, x, l,\
+    \ r) \u306F\u4F7F\u3048\u306A\u3044\");\n#endif\n\n    // \u9802\u70B9 0 \u306F\
+    \u7A7A\u306E\u6728\u3092\u8868\u3059\n    struct Node {\n        S val, sum, rsum;\
+    \  // \u5024\u3001\u90E8\u5206\u6728\u306E\u7A4D\u3001\u90E8\u5206\u6728\u306E\
+    \u9006\u9806\u306E\u7A4D\n        F lz;              // \u5B50\u306B\u4F1D\u3048\
+    \u308B\u4F5C\u7528\u7D20\n        int sz = 0, l = 0, r = 0;\n        bool has_lz\
+    \ = false, rev = false;  // \u5B50\u306B\u4F5C\u7528\u7D20\u30FB\u53CD\u8EE2\u3092\
+    \u4F1D\u3048\u3066\u3044\u306A\u3044\u304B\n    };\n    // \u9802\u70B9\u306E\u914D\
+    \u5217\u306F\u6700\u521D\u306B\u9802\u70B9\u3092\u4F5C\u308B\u3068\u304D\u306B\
+    \u78BA\u4FDD\u3057\u3001\u89E3\u653E\u3057\u306A\u3044\n    // (\u30B0\u30ED\u30FC\
+    \u30D0\u30EB\u5909\u6570\u306E\u6728\u306E\u30C7\u30B9\u30C8\u30E9\u30AF\u30BF\
+    \u304C\u3001\u5148\u306B\u7834\u68C4\u3055\u308C\u305F\u914D\u5217\u3092\u89E6\
+    \u3089\u306A\u3044\u3088\u3046\u306B\u3059\u308B)\n    inline static std::vector<Node>*\
+    \ nodes_ = nullptr;\n    inline static std::vector<int>* unused_ = nullptr;  //\
+    \ \u6D88\u3057\u305F\u9802\u70B9\n    static Node& node(int t) { return (*nodes_)[t];\
+    \ }\n    static std::uint32_t rand() {\n        static std::uint32_t x = 2463534242U;\n\
+    \        x ^= x << 13;\n        x ^= x >> 17;\n        x ^= x << 5;\n        return\
+    \ x;\n    }\n\n    M m;\n    int root = 0;\n\n    S op(const S& x, const S& y)\
+    \ const { return m.op(x, y); }\n    S e() const { return m.e(); }\n    static\
+    \ int size_of(int t) { return t ? node(t).sz : 0; }\n    S sum_of(int t) const\
+    \ { return t ? node(t).sum : e(); }\n    S rsum_of(int t) const { return t ? node(t).rsum\
+    \ : e(); }\n\n    // x \u306F\u5024\u3067\u53D7\u3051\u53D6\u308B (\u9802\u70B9\
+    \u306E\u914D\u5217\u306E\u8981\u7D20\u3092\u6E21\u3055\u308C\u305F\u3068\u304D\
+    \u3001\u914D\u5217\u304C\u4F38\u3073\u3066\u53C2\u7167\u304C\u7121\u52B9\u306B\
+    \u306A\u308B\u306E\u3092\u9632\u3050)\n    int new_node(S x) {\n        if (!nodes_)\
+    \ nodes_ = new std::vector<Node>(1), unused_ = new std::vector<int>();\n     \
+    \   int t;\n        if (!unused_->empty()) {\n            t = unused_->back();\n\
+    \            unused_->pop_back();\n        } else {\n            t = nodes_->size();\n\
+    \            nodes_->emplace_back();\n        }\n        Node& v = node(t);\n\
+    \        v.val = v.sum = v.rsum = x;\n        v.has_lz = v.rev = false;\n    \
+    \    v.sz = 1, v.l = v.r = 0;\n        return t;\n    }\n    // \u90E8\u5206\u6728\
+    \u306E\u9802\u70B9\u3092\u3059\u3079\u3066\u6D88\u3059\n    static void free_tree(int\
+    \ t) {\n        if (!t) return;\n        std::vector<int> st = {t};\n        while\
+    \ (!st.empty()) {\n            int v = st.back();\n            st.pop_back();\n\
+    \            if (node(v).l) st.push_back(node(v).l);\n            if (node(v).r)\
+    \ st.push_back(node(v).r);\n            unused_->push_back(v);\n        }\n  \
+    \  }\n    int clone_tree(int t) {\n        if (!t) return 0;\n        push(t);\n\
+    \        int lc = clone_tree(node(t).l);\n        int c = new_node(node(t).val);\n\
     \        int rc = clone_tree(node(t).r);\n        node(c).l = lc, node(c).r =\
     \ rc;\n        update(c);\n        return c;\n    }\n\n    void update(int t)\
     \ {\n        Node& v = node(t);\n        v.sz = node(v.l).sz + node(v.r).sz +\
@@ -933,7 +966,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/data_structure/range-reverse-range-sum.test.cpp
   requiredBy: []
-  timestamp: '2026-11-08 20:13:03+09:00'
+  timestamp: '2026-11-10 04:55:25+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/data_structure/range-reverse-range-sum.test.cpp

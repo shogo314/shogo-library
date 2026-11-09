@@ -23,66 +23,67 @@ data:
     \u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\
     \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/utility/bit.hpp\"\
     \n\n/**\n * @file bit.hpp\n * @brief \u30D3\u30C3\u30C8\u6F14\u7B97\n */\n\n#include\
-    \ <cassert>\n#include <string>\n#include <utility>\n\n/**\n * @brief 2\u9032\u6570\
-    \u306E\u6587\u5B57\u5217\u3092long long\u306B\u3059\u308B\n */\ninline long long\
-    \ btoll(std::string s, char one = '1') {\n    long long res = 0;\n    for (char\
-    \ c : s) {\n        res <<= 1;\n        if (c == one) ++res;\n    }\n    return\
-    \ res;\n}\n\n#if __cplusplus < 202000L\n\n// C++20 \u306E <bit> \u3068\u540C\u3058\
-    \u5024\u3092\u8FD4\u3059 (0 \u306E\u3068\u304D\u3082\u540C\u3058)\n\n/**\n * @brief\
-    \ \u7ACB\u3063\u3066\u3044\u308B\u30D3\u30C3\u30C8\u3092\u6570\u3048\u308B\n *\
-    \ __builtin_popcountll\n */\ninline constexpr long long popcount(long long a)\
-    \ {\n    assert(a >= 0);\n    return __builtin_popcountll(static_cast<unsigned\
+    \ <cassert>\n#include <cstddef>\n#include <iterator>\n#include <string>\n#include\
+    \ <utility>\n\n/**\n * @brief 2\u9032\u6570\u306E\u6587\u5B57\u5217\u3092long\
+    \ long\u306B\u3059\u308B\n */\ninline long long btoll(std::string s, char one\
+    \ = '1') {\n    long long res = 0;\n    for (char c : s) {\n        res <<= 1;\n\
+    \        if (c == one) ++res;\n    }\n    return res;\n}\n\n#if __cplusplus <\
+    \ 202000L\n\n// C++20 \u306E <bit> \u3068\u540C\u3058\u5024\u3092\u8FD4\u3059\
+    \ (0 \u306E\u3068\u304D\u3082\u540C\u3058)\n\n/**\n * @brief \u7ACB\u3063\u3066\
+    \u3044\u308B\u30D3\u30C3\u30C8\u3092\u6570\u3048\u308B\n * __builtin_popcountll\n\
+    \ */\ninline constexpr long long popcount(long long a) {\n    assert(a >= 0);\n\
+    \    return __builtin_popcountll(static_cast<unsigned long long>(a));\n}\n/**\n\
+    \ * @brief \u5DE6\u304B\u3089\u9023\u7D9A\u3057\u305F0\u306E\u30D3\u30C3\u30C8\
+    \u3092\u6570\u3048\u308B\n * __builtin_clzll\n */\ninline constexpr long long\
+    \ countl_zero(long long a) {\n    assert(a >= 0);\n    return a == 0 ? 64 : __builtin_clzll(static_cast<unsigned\
     \ long long>(a));\n}\n/**\n * @brief \u5DE6\u304B\u3089\u9023\u7D9A\u3057\u305F\
-    0\u306E\u30D3\u30C3\u30C8\u3092\u6570\u3048\u308B\n * __builtin_clzll\n */\ninline\
-    \ constexpr long long countl_zero(long long a) {\n    assert(a >= 0);\n    return\
-    \ a == 0 ? 64 : __builtin_clzll(static_cast<unsigned long long>(a));\n}\n/**\n\
-    \ * @brief \u5DE6\u304B\u3089\u9023\u7D9A\u3057\u305F1\u306E\u30D3\u30C3\u30C8\
-    \u3092\u6570\u3048\u308B\n */\ninline constexpr long long countl_one(long long\
-    \ a) {\n    assert(a >= 0);\n    unsigned long long x = ~static_cast<unsigned\
-    \ long long>(a);\n    return x == 0 ? 64 : __builtin_clzll(x);\n}\n/**\n * @brief\
-    \ \u53F3\u304B\u3089\u9023\u7D9A\u3057\u305F0\u306E\u30D3\u30C3\u30C8\u3092\u6570\
-    \u3048\u308B\n * __builtin_ctzll\n */\ninline constexpr long long countr_zero(long\
-    \ long a) {\n    assert(a >= 0);\n    return a == 0 ? 64 : __builtin_ctzll(static_cast<unsigned\
-    \ long long>(a));\n}\n/**\n * @brief \u53F3\u304B\u3089\u9023\u7D9A\u3057\u305F\
     1\u306E\u30D3\u30C3\u30C8\u3092\u6570\u3048\u308B\n */\ninline constexpr long\
-    \ long countr_one(long long a) {\n    assert(a >= 0);\n    unsigned long long\
-    \ x = ~static_cast<unsigned long long>(a);\n    return x == 0 ? 64 : __builtin_ctzll(x);\n\
-    }\n/**\n * @brief \u5024\u3092\u8868\u73FE\u3059\u308B\u305F\u3081\u306B\u5FC5\
-    \u8981\u306A\u30D3\u30C3\u30C8\u5E45\u3092\u6C42\u3081\u308B\n */\ninline constexpr\
-    \ long long bit_width(long long a) {\n    assert(a >= 0);\n    return 64 - countl_zero(a);\n\
+    \ long countl_one(long long a) {\n    assert(a >= 0);\n    unsigned long long\
+    \ x = ~static_cast<unsigned long long>(a);\n    return x == 0 ? 64 : __builtin_clzll(x);\n\
+    }\n/**\n * @brief \u53F3\u304B\u3089\u9023\u7D9A\u3057\u305F0\u306E\u30D3\u30C3\
+    \u30C8\u3092\u6570\u3048\u308B\n * __builtin_ctzll\n */\ninline constexpr long\
+    \ long countr_zero(long long a) {\n    assert(a >= 0);\n    return a == 0 ? 64\
+    \ : __builtin_ctzll(static_cast<unsigned long long>(a));\n}\n/**\n * @brief \u53F3\
+    \u304B\u3089\u9023\u7D9A\u3057\u305F1\u306E\u30D3\u30C3\u30C8\u3092\u6570\u3048\
+    \u308B\n */\ninline constexpr long long countr_one(long long a) {\n    assert(a\
+    \ >= 0);\n    unsigned long long x = ~static_cast<unsigned long long>(a);\n  \
+    \  return x == 0 ? 64 : __builtin_ctzll(x);\n}\n/**\n * @brief \u5024\u3092\u8868\
+    \u73FE\u3059\u308B\u305F\u3081\u306B\u5FC5\u8981\u306A\u30D3\u30C3\u30C8\u5E45\
+    \u3092\u6C42\u3081\u308B\n */\ninline constexpr long long bit_width(long long\
+    \ a) {\n    assert(a >= 0);\n    return 64 - countl_zero(a);\n}\n/**\n * @brief\
+    \ \u6574\u6570\u5024\u30922\u306E\u7D2F\u4E57\u5024\u306B\u5207\u308A\u4E0A\u3052\
+    \u308B\n */\ninline constexpr long long bit_ceil(long long a) {\n    assert(0\
+    \ <= a && a <= (1LL << 62));\n    return a <= 1 ? 1 : 1LL << bit_width(a - 1);\n\
     }\n/**\n * @brief \u6574\u6570\u5024\u30922\u306E\u7D2F\u4E57\u5024\u306B\u5207\
-    \u308A\u4E0A\u3052\u308B\n */\ninline constexpr long long bit_ceil(long long a)\
-    \ {\n    assert(0 <= a && a <= (1LL << 62));\n    return a <= 1 ? 1 : 1LL << bit_width(a\
-    \ - 1);\n}\n/**\n * @brief \u6574\u6570\u5024\u30922\u306E\u7D2F\u4E57\u5024\u306B\
-    \u5207\u308A\u4E0B\u3052\u308B\n */\ninline constexpr long long bit_floor(long\
-    \ long a) {\n    assert(a >= 0);\n    return a == 0 ? 0 : 1LL << (bit_width(a)\
-    \ - 1);\n}\n/**\n * @brief 2 \u306E\u7D2F\u4E57\u304B (\u3061\u3087\u3046\u3069\
-    \ 1 \u3064\u306E\u30D3\u30C3\u30C8\u304C\u7ACB\u3063\u3066\u3044\u308B\u304B)\n\
-    \ */\ninline constexpr bool has_single_bit(long long a) {\n    assert(a >= 0);\n\
-    \    return a != 0 && (a & (a - 1)) == 0;\n}\n\n#else\n\n#include <bit>\n#define\
-    \ BIT_FUNC_EXPAND(func)                                 \\\n    inline constexpr\
-    \ long long func(long long a) {            \\\n        assert(a >= 0);       \
-    \                                \\\n        return std::func(static_cast<unsigned\
-    \ long long>(a)); \\\n    }\n\n/**\n * @brief \u7ACB\u3063\u3066\u3044\u308B\u30D3\
-    \u30C3\u30C8\u3092\u6570\u3048\u308B\n */\nBIT_FUNC_EXPAND(popcount)\n/**\n *\
-    \ @brief \u5DE6\u304B\u3089\u9023\u7D9A\u3057\u305F0\u306E\u30D3\u30C3\u30C8\u3092\
-    \u6570\u3048\u308B\n */\nBIT_FUNC_EXPAND(countl_zero)\n/**\n * @brief \u5DE6\u304B\
-    \u3089\u9023\u7D9A\u3057\u305F1\u306E\u30D3\u30C3\u30C8\u3092\u6570\u3048\u308B\
-    \n */\nBIT_FUNC_EXPAND(countl_one)\n/**\n * @brief \u53F3\u304B\u3089\u9023\u7D9A\
-    \u3057\u305F0\u306E\u30D3\u30C3\u30C8\u3092\u6570\u3048\u308B\n */\nBIT_FUNC_EXPAND(countr_zero)\n\
-    /**\n * @brief \u53F3\u304B\u3089\u9023\u7D9A\u3057\u305F1\u306E\u30D3\u30C3\u30C8\
-    \u3092\u6570\u3048\u308B\n */\nBIT_FUNC_EXPAND(countr_one)\n/**\n * @brief \u6574\
-    \u6570\u5024\u30922\u306E\u7D2F\u4E57\u5024\u306B\u5207\u308A\u4E0A\u3052\u308B\
-    \n */\ninline constexpr long long bit_ceil(long long a) {\n    // \u7D50\u679C\
-    \u304C long long \u306B\u53CE\u307E\u308B\u7BC4\u56F2\u306B\u9650\u308B\n    assert(0\
-    \ <= a && a <= (1LL << 62));\n    return std::bit_ceil(static_cast<unsigned long\
-    \ long>(a));\n}\n/**\n * @brief \u6574\u6570\u5024\u30922\u306E\u7D2F\u4E57\u5024\
-    \u306B\u5207\u308A\u4E0B\u3052\u308B\n */\nBIT_FUNC_EXPAND(bit_floor)\n/**\n *\
-    \ @brief \u5024\u3092\u8868\u73FE\u3059\u308B\u305F\u3081\u306B\u5FC5\u8981\u306A\
-    \u30D3\u30C3\u30C8\u5E45\u3092\u6C42\u3081\u308B\n */\nBIT_FUNC_EXPAND(bit_width)\n\
-    /**\n * @brief 2 \u306E\u7D2F\u4E57\u304B (\u3061\u3087\u3046\u3069 1 \u3064\u306E\
-    \u30D3\u30C3\u30C8\u304C\u7ACB\u3063\u3066\u3044\u308B\u304B)\n */\ninline constexpr\
-    \ bool has_single_bit(long long a) {\n    assert(a >= 0);\n    return std::has_single_bit(static_cast<unsigned\
+    \u308A\u4E0B\u3052\u308B\n */\ninline constexpr long long bit_floor(long long\
+    \ a) {\n    assert(a >= 0);\n    return a == 0 ? 0 : 1LL << (bit_width(a) - 1);\n\
+    }\n/**\n * @brief 2 \u306E\u7D2F\u4E57\u304B (\u3061\u3087\u3046\u3069 1 \u3064\
+    \u306E\u30D3\u30C3\u30C8\u304C\u7ACB\u3063\u3066\u3044\u308B\u304B)\n */\ninline\
+    \ constexpr bool has_single_bit(long long a) {\n    assert(a >= 0);\n    return\
+    \ a != 0 && (a & (a - 1)) == 0;\n}\n\n#else\n\n#include <bit>\n#define BIT_FUNC_EXPAND(func)\
+    \                                 \\\n    inline constexpr long long func(long\
+    \ long a) {            \\\n        assert(a >= 0);                           \
+    \            \\\n        return std::func(static_cast<unsigned long long>(a));\
+    \ \\\n    }\n\n/**\n * @brief \u7ACB\u3063\u3066\u3044\u308B\u30D3\u30C3\u30C8\
+    \u3092\u6570\u3048\u308B\n */\nBIT_FUNC_EXPAND(popcount)\n/**\n * @brief \u5DE6\
+    \u304B\u3089\u9023\u7D9A\u3057\u305F0\u306E\u30D3\u30C3\u30C8\u3092\u6570\u3048\
+    \u308B\n */\nBIT_FUNC_EXPAND(countl_zero)\n/**\n * @brief \u5DE6\u304B\u3089\u9023\
+    \u7D9A\u3057\u305F1\u306E\u30D3\u30C3\u30C8\u3092\u6570\u3048\u308B\n */\nBIT_FUNC_EXPAND(countl_one)\n\
+    /**\n * @brief \u53F3\u304B\u3089\u9023\u7D9A\u3057\u305F0\u306E\u30D3\u30C3\u30C8\
+    \u3092\u6570\u3048\u308B\n */\nBIT_FUNC_EXPAND(countr_zero)\n/**\n * @brief \u53F3\
+    \u304B\u3089\u9023\u7D9A\u3057\u305F1\u306E\u30D3\u30C3\u30C8\u3092\u6570\u3048\
+    \u308B\n */\nBIT_FUNC_EXPAND(countr_one)\n/**\n * @brief \u6574\u6570\u5024\u3092\
+    2\u306E\u7D2F\u4E57\u5024\u306B\u5207\u308A\u4E0A\u3052\u308B\n */\ninline constexpr\
+    \ long long bit_ceil(long long a) {\n    // \u7D50\u679C\u304C long long \u306B\
+    \u53CE\u307E\u308B\u7BC4\u56F2\u306B\u9650\u308B\n    assert(0 <= a && a <= (1LL\
+    \ << 62));\n    return std::bit_ceil(static_cast<unsigned long long>(a));\n}\n\
+    /**\n * @brief \u6574\u6570\u5024\u30922\u306E\u7D2F\u4E57\u5024\u306B\u5207\u308A\
+    \u4E0B\u3052\u308B\n */\nBIT_FUNC_EXPAND(bit_floor)\n/**\n * @brief \u5024\u3092\
+    \u8868\u73FE\u3059\u308B\u305F\u3081\u306B\u5FC5\u8981\u306A\u30D3\u30C3\u30C8\
+    \u5E45\u3092\u6C42\u3081\u308B\n */\nBIT_FUNC_EXPAND(bit_width)\n/**\n * @brief\
+    \ 2 \u306E\u7D2F\u4E57\u304B (\u3061\u3087\u3046\u3069 1 \u3064\u306E\u30D3\u30C3\
+    \u30C8\u304C\u7ACB\u3063\u3066\u3044\u308B\u304B)\n */\ninline constexpr bool\
+    \ has_single_bit(long long a) {\n    assert(a >= 0);\n    return std::has_single_bit(static_cast<unsigned\
     \ long long>(a));\n}\n\n#endif\n\n/**\n * @brief 2 \u3064\u306E\u6574\u6570\u306E\
     \u30CF\u30DF\u30F3\u30B0\u8DDD\u96E2 (\u30D3\u30C3\u30C8\u304C\u7570\u306A\u308B\
     \u4F4D\u7F6E\u306E\u6570)\n */\ninline constexpr long long hamming_distance(long\
@@ -169,180 +170,202 @@ data:
     done \u306B\u306A\u3063\u305F\u3089\u7D42\u308F\u308B\ntemplate <class Next>\n\
     struct BitEnumeration {\n    long long first;\n    bool empty;\n    Next next;\
     \  // next(s) \u306F\u6B21\u306E\u5024\u3001\u7D42\u308F\u308A\u306A\u3089 -1\n\
-    \    struct iterator {\n        long long s;\n        const Next* next;\n    \
-    \    constexpr long long operator*() const { return s; }\n        constexpr iterator&\
-    \ operator++() {\n            s = (*next)(s);\n            return *this;\n   \
-    \     }\n        constexpr bool operator!=(const iterator& other) const { return\
-    \ s != other.s; }\n        constexpr bool operator==(const iterator& other) const\
-    \ { return s == other.s; }\n    };\n    constexpr iterator begin() const { return\
-    \ {empty ? -1 : first, &next}; }\n    constexpr iterator end() const { return\
-    \ {-1, &next}; }\n};\ntemplate <class Next>\nconstexpr BitEnumeration<Next> make_bit_enumeration(long\
-    \ long first, bool empty, Next next) {\n    return {first, empty, next};\n}\n\
-    }  // namespace internal_bit\n\n/**\n * @brief mask \u306E\u90E8\u5206\u96C6\u5408\
-    \u3092 mask \u304B\u3089 0 \u307E\u3067\u964D\u9806\u306B\u5217\u6319\u3059\u308B\
-    \ (0 \u3068 mask \u3092\u542B\u3080) \u5168\u4F53\u3067 O(2^popcount(mask))\n\
-    \ */\ninline constexpr auto subsets(long long mask) {\n    assert(mask >= 0);\n\
-    \    return internal_bit::make_bit_enumeration(mask, false, [mask](long long s)\
-    \ { return s == 0 ? -1 : (s - 1) & mask; });\n}\n/**\n * @brief n \u30D3\u30C3\
-    \u30C8\u306E\u96C6\u5408\u306E\u3046\u3061 mask \u3092\u542B\u3080\u3082\u306E\
-    \u3092 mask \u304B\u3089\u6607\u9806\u306B\u5217\u6319\u3059\u308B (mask \u3068\
-    \ 2^n - 1 \u3092\u542B\u3080) \u5168\u4F53\u3067 O(2^(n - popcount(mask)))\n */\n\
-    inline constexpr auto supersets(long long mask, long long n) {\n    assert(0 <=\
-    \ n && n <= 62 && 0 <= mask && mask < (1LL << n));\n    long long full = (1LL\
-    \ << n) - 1;\n    return internal_bit::make_bit_enumeration(mask, false, [mask,\
-    \ full](long long s) { return s == full ? -1 : (s + 1) | mask; });\n}\n/**\n *\
-    \ @brief mask \u306E\u7ACB\u3063\u3066\u3044\u308B\u30D3\u30C3\u30C8\u306E\u4F4D\
-    \u7F6E\u3092\u6607\u9806\u306B\u5217\u6319\u3059\u308B \u5168\u4F53\u3067 O(popcount(mask))\n\
-    \ */\ninline constexpr auto bits(long long mask) {\n    assert(mask >= 0);\n \
-    \   // \u5185\u90E8\u3067\u306F\u6B8B\u308A\u306E\u30D3\u30C3\u30C8\u3092\u6301\
-    \u3061\u3001* \u3067\u6700\u4E0B\u4F4D\u30D3\u30C3\u30C8\u306E\u4F4D\u7F6E\u3092\
-    \u8FD4\u3059\n    struct Bits {\n        long long mask;\n        struct iterator\
-    \ {\n            long long s;\n            constexpr long long operator*() const\
-    \ { return countr_zero(s); }\n            constexpr iterator& operator++() {\n\
-    \                s &= s - 1;\n                return *this;\n            }\n \
-    \           constexpr bool operator!=(const iterator& other) const { return s\
-    \ != other.s; }\n            constexpr bool operator==(const iterator& other)\
-    \ const { return s == other.s; }\n        };\n        constexpr iterator begin()\
-    \ const { return {mask}; }\n        constexpr iterator end() const { return {0};\
-    \ }\n    };\n    return Bits{mask};\n}\n/**\n * @brief s \u3068\u7ACB\u3063\u3066\
-    \u3044\u308B\u30D3\u30C3\u30C8\u306E\u6570\u304C\u540C\u3058\u3067\u3001s \u3088\
-    \u308A\u5927\u304D\u3044\u6700\u5C0F\u306E\u5024 (Gosper's hack)\n * long long\
-    \ \u306B\u53CE\u307E\u3089\u306A\u3051\u308C\u3070 -1\n */\ninline constexpr long\
-    \ long next_combination_mask(long long s) {\n    assert(s > 0);\n    unsigned\
-    \ long long u = s, c = u & -u, r = u + c;\n    unsigned long long t = (((r ^ u)\
-    \ >> 2) / c) | r;\n    return t > 0x7fffffffffffffffULL ? -1 : static_cast<long\
-    \ long>(t);\n}\n/**\n * @brief n \u30D3\u30C3\u30C8\u306E\u96C6\u5408\u306E\u3046\
-    \u3061\u3001\u3061\u3087\u3046\u3069 k \u500B\u306E\u30D3\u30C3\u30C8\u304C\u7ACB\
-    \u3064\u3082\u306E\u3092\u6607\u9806\u306B\u5217\u6319\u3059\u308B (Gosper's hack)\
-    \ \u5168\u4F53\u3067 O(C(n, k))\n * k > n \u306A\u3089\u4F55\u3082\u5217\u6319\
-    \u3057\u306A\u3044\n */\ninline constexpr auto combinations_mask(long long n,\
-    \ long long k) {\n    assert(0 <= n && n <= 62 && 0 <= k);\n    long long limit\
-    \ = 1LL << n;\n    return internal_bit::make_bit_enumeration(k > n ? -1 : (1LL\
-    \ << k) - 1, k > n, [limit](long long s) {\n        if (s == 0) return -1LL; \
-    \ // k = 0 \u306E\u3068\u304D\u306F 0 \u3060\u3051\n        long long t = next_combination_mask(s);\n\
-    \        return t >= limit ? -1 : t;\n    });\n}\n/**\n * @brief mask \u306E\u90E8\
-    \u5206\u96C6\u5408\u306E\u3046\u3061\u3001\u3061\u3087\u3046\u3069 k \u500B\u306E\
-    \u30D3\u30C3\u30C8\u304C\u7ACB\u3064\u3082\u306E\u3092\u6607\u9806\u306B\u5217\
-    \u6319\u3059\u308B 1 \u3064\u3042\u305F\u308A O(k)\n * k > popcount(mask) \u306A\
-    \u3089\u4F55\u3082\u5217\u6319\u3057\u306A\u3044\n */\ninline constexpr auto subsets_of_size(long\
-    \ long mask, long long k) {\n    assert(mask >= 0 && 0 <= k);\n    // mask \u306E\
-    \u4E0B\u4F4D cnt \u500B\u306E\u7ACB\u3063\u3066\u3044\u308B\u30D3\u30C3\u30C8\n\
-    \    auto lowest = [mask](long long cnt) {\n        long long res = 0, rest =\
-    \ mask;\n        for (long long j = 0; j < cnt; j++) {\n            res |= rest\
-    \ & -rest;\n            rest &= rest - 1;\n        }\n        return res;\n  \
-    \  };\n    bool empty = k > popcount(mask);\n    return internal_bit::make_bit_enumeration(empty\
-    \ ? -1 : lowest(k), empty, [mask, k, lowest](long long s) {\n        if (s ==\
-    \ 0) return -1LL;  // k = 0 \u306E\u3068\u304D\u306F 0 \u3060\u3051\n        //\
-    \ mask \u306E\u5916\u306E\u30D3\u30C3\u30C8\u3092 1 \u3068\u307F\u306A\u3057\u3066\
-    \u6700\u4E0B\u4F4D\u30D3\u30C3\u30C8\u3092\u8DB3\u3059\u3068\u3001\u7E70\u308A\
-    \u4E0A\u304C\u308A\u304C mask \u306E\u4E2D\u3060\u3051\u3092\u9032\u3080\n   \
-    \     unsigned long long c = s & -s, r = ((static_cast<unsigned long long>(s)\
-    \ | ~static_cast<unsigned long long>(mask)) + c) & static_cast<unsigned long long>(mask);\n\
-    \        if (r == 0) return -1LL;  // \u7E70\u308A\u4E0A\u304C\u308A\u304C mask\
-    \ \u306E\u6700\u4E0A\u4F4D\u3092\u8D8A\u3048\u305F\n        // \u7E70\u308A\u4E0A\
-    \u304C\u308A\u3067\u6D88\u3048\u305F\u30D3\u30C3\u30C8\u3092 mask \u306E\u4E0B\
-    \u4F4D\u306B\u8A70\u3081\u76F4\u3059\n        return static_cast<long long>(r)\
-    \ | lowest(k - popcount(static_cast<long long>(r)));\n    });\n}\n\nnamespace\
-    \ internal_bit {\n// rest \u306E\u7ACB\u3063\u3066\u3044\u308B\u30D3\u30C3\u30C8\
-    \ i \u3092\u6607\u9806\u306B\u3001(i, mask ^ (1 << i)) \u306E\u7D44\u3067\u5217\
-    \u6319\u3059\u308B\nstruct ToggleOneBit {\n    long long mask, rest;\n    struct\
-    \ iterator {\n        long long mask, s;\n        constexpr std::pair<long long,\
-    \ long long> operator*() const {\n            long long i = countr_zero(s);\n\
-    \            return {i, mask ^ (1LL << i)};\n        }\n        constexpr iterator&\
-    \ operator++() {\n            s &= s - 1;\n            return *this;\n       \
-    \ }\n        constexpr bool operator!=(const iterator& other) const { return s\
-    \ != other.s; }\n        constexpr bool operator==(const iterator& other) const\
-    \ { return s == other.s; }\n    };\n    constexpr iterator begin() const { return\
-    \ {mask, rest}; }\n    constexpr iterator end() const { return {mask, 0}; }\n\
-    };\n}  // namespace internal_bit\n\n/**\n * @brief n \u30D3\u30C3\u30C8\u306E\u3046\
-    \u3061 mask \u306B\u542B\u307E\u308C\u306A\u3044\u4F4D\u7F6E i \u3092\u6607\u9806\
-    \u306B\u3001(i, mask | (1 << i)) \u306E\u7D44\u3067\u5217\u6319\u3059\u308B \u5168\
-    \u4F53\u3067 O(n - popcount(mask))\n * bit DP \u3067 1 \u3064\u8981\u7D20\u3092\
-    \u8DB3\u3059\u9077\u79FB\u306B\u4F7F\u3046\n */\ninline constexpr internal_bit::ToggleOneBit\
-    \ add_one(long long mask, long long n) {\n    assert(0 <= n && n <= 62 && 0 <=\
-    \ mask && mask < (1LL << n));\n    return {mask, ((1LL << n) - 1) ^ mask};\n}\n\
-    /**\n * @brief mask \u306B\u542B\u307E\u308C\u308B\u4F4D\u7F6E i \u3092\u6607\u9806\
-    \u306B\u3001(i, mask ^ (1 << i)) \u306E\u7D44\u3067\u5217\u6319\u3059\u308B \u5168\
-    \u4F53\u3067 O(popcount(mask))\n * bit DP \u3067 1 \u3064\u8981\u7D20\u3092\u9664\
-    \u3044\u305F\u96C6\u5408\u304B\u3089\u9077\u79FB\u3059\u308B\u3068\u304D\u306B\
-    \u4F7F\u3046\n */\ninline constexpr internal_bit::ToggleOneBit remove_one(long\
-    \ long mask) {\n    assert(mask >= 0);\n    return {mask, mask};\n}\n\n/**\n *\
-    \ @brief n \u30D3\u30C3\u30C8\u306E\u3059\u3079\u3066\u306E\u96C6\u5408 S \u3068\
-    \u3001\u305D\u306E\u90E8\u5206\u96C6\u5408 T \u306E\u7D44 (S, T) \u3092\u5217\u6319\
-    \u3059\u308B \u5168\u4F53\u3067 O(3^n)\n * S \u306F 0 \u304B\u3089\u6607\u9806\
-    \u3001\u5404 S \u306E\u4E2D\u3067 T \u306F S \u304B\u3089 0 \u307E\u3067\u964D\
-    \u9806\n */\ninline constexpr auto subset_pairs(long long n) {\n    assert(0 <=\
-    \ n && n <= 62);\n    struct SubsetPairs {\n        long long n;\n        struct\
-    \ iterator {\n            long long s, t;\n            constexpr std::pair<long\
-    \ long, long long> operator*() const { return {s, t}; }\n            constexpr\
-    \ iterator& operator++() {\n                if (t == 0) {\n                  \
-    \  t = ++s;\n                } else {\n                    t = (t - 1) & s;\n\
-    \                }\n                return *this;\n            }\n           \
-    \ constexpr bool operator!=(const iterator& other) const { return s != other.s\
-    \ || t != other.t; }\n            constexpr bool operator==(const iterator& other)\
-    \ const { return s == other.s && t == other.t; }\n        };\n        constexpr\
-    \ iterator begin() const { return {0, 0}; }\n        constexpr iterator end()\
-    \ const { return {1LL << n, 1LL << n}; }\n    };\n    return SubsetPairs{n};\n\
+    \    struct iterator {\n        using value_type = long long;\n        using difference_type\
+    \ = std::ptrdiff_t;\n        using pointer = void;\n        using reference =\
+    \ value_type;\n        using iterator_category = std::input_iterator_tag;\n  \
+    \      using iterator_concept = std::forward_iterator_tag;\n\n        long long\
+    \ s = -1;\n        const Next* next = nullptr;\n        constexpr long long operator*()\
+    \ const { return s; }\n        constexpr iterator& operator++() {\n          \
+    \  s = (*next)(s);\n            return *this;\n        }\n        constexpr iterator\
+    \ operator++(int) {\n            auto previous = *this;\n            ++*this;\n\
+    \            return previous;\n        }\n        constexpr bool operator!=(const\
+    \ iterator& other) const { return s != other.s; }\n        constexpr bool operator==(const\
+    \ iterator& other) const { return s == other.s; }\n    };\n    constexpr iterator\
+    \ begin() const { return {empty ? -1 : first, &next}; }\n    constexpr iterator\
+    \ end() const { return {-1, &next}; }\n};\nstruct Bits {\n    long long mask;\n\
+    \    struct iterator {\n        using value_type = long long;\n        using difference_type\
+    \ = std::ptrdiff_t;\n        using pointer = void;\n        using reference =\
+    \ value_type;\n        using iterator_category = std::input_iterator_tag;\n  \
+    \      using iterator_concept = std::forward_iterator_tag;\n\n        long long\
+    \ s = 0;\n        constexpr long long operator*() const { return countr_zero(s);\
+    \ }\n        constexpr iterator& operator++() {\n            s &= s - 1;\n   \
+    \         return *this;\n        }\n        constexpr iterator operator++(int)\
+    \ {\n            auto previous = *this;\n            ++*this;\n            return\
+    \ previous;\n        }\n        constexpr bool operator!=(const iterator& other)\
+    \ const { return s != other.s; }\n        constexpr bool operator==(const iterator&\
+    \ other) const { return s == other.s; }\n    };\n    constexpr iterator begin()\
+    \ const { return {mask}; }\n    constexpr iterator end() const { return {0}; }\n\
+    };\n\nstruct SubsetPairs {\n    long long n;\n    struct iterator {\n        using\
+    \ value_type = std::pair<long long, long long>;\n        using difference_type\
+    \ = std::ptrdiff_t;\n        using pointer = void;\n        using reference =\
+    \ value_type;\n        using iterator_category = std::input_iterator_tag;\n  \
+    \      using iterator_concept = std::forward_iterator_tag;\n\n        long long\
+    \ s = 0, t = 0;\n        constexpr std::pair<long long, long long> operator*()\
+    \ const { return {s, t}; }\n        constexpr iterator& operator++() {\n     \
+    \       if (t == 0) {\n                t = ++s;\n            } else {\n      \
+    \          t = (t - 1) & s;\n            }\n            return *this;\n      \
+    \  }\n        constexpr iterator operator++(int) {\n            auto previous\
+    \ = *this;\n            ++*this;\n            return previous;\n        }\n  \
+    \      constexpr bool operator!=(const iterator& other) const { return s != other.s\
+    \ || t != other.t; }\n        constexpr bool operator==(const iterator& other)\
+    \ const { return s == other.s && t == other.t; }\n    };\n    constexpr iterator\
+    \ begin() const { return {0, 0}; }\n    constexpr iterator end() const { return\
+    \ {1LL << n, 1LL << n}; }\n};\n\nstruct SubsetsNext {\n    long long mask;\n \
+    \   constexpr long long operator()(long long s) const { return s == 0 ? -1 : (s\
+    \ - 1) & mask; }\n};\nstruct SupersetsNext {\n    long long mask, full;\n    constexpr\
+    \ long long operator()(long long s) const { return s == full ? -1 : (s + 1) |\
+    \ mask; }\n};\nstruct CombinationsNext {\n    long long limit;\n    constexpr\
+    \ long long operator()(long long s) const;\n};\nstruct FixedSubsetsNext {\n  \
+    \  long long mask, k;\n    constexpr long long lowest(long long count) const {\n\
+    \        long long res = 0, rest = mask;\n        for (long long j = 0; j < count;\
+    \ j++) {\n            res |= rest & -rest;\n            rest &= rest - 1;\n  \
+    \      }\n        return res;\n    }\n    constexpr long long operator()(long\
+    \ long s) const {\n        if (s == 0) return -1;\n        // mask \u306E\u5916\
+    \u306E\u30D3\u30C3\u30C8\u3092 1 \u3068\u307F\u306A\u3057\u3066\u6700\u4E0B\u4F4D\
+    \u30D3\u30C3\u30C8\u3092\u8DB3\u3059\u3068\u3001\u7E70\u308A\u4E0A\u304C\u308A\
+    \u304C mask \u306E\u4E2D\u3060\u3051\u3092\u9032\u3080\u3002\n        unsigned\
+    \ long long c = s & -s, r = ((static_cast<unsigned long long>(s) | ~static_cast<unsigned\
+    \ long long>(mask)) + c) & static_cast<unsigned long long>(mask);\n        if\
+    \ (r == 0) return -1;\n        return static_cast<long long>(r) | lowest(k - popcount(static_cast<long\
+    \ long>(r)));\n    }\n};\n\ntemplate <class Next>\nconstexpr BitEnumeration<Next>\
+    \ make_bit_enumeration(long long first, bool empty, Next next) {\n    return {first,\
+    \ empty, next};\n}\n}  // namespace internal_bit\n\n/**\n * @brief mask \u306E\
+    \u90E8\u5206\u96C6\u5408\u3092 mask \u304B\u3089 0 \u307E\u3067\u964D\u9806\u306B\
+    \u5217\u6319\u3059\u308B (0 \u3068 mask \u3092\u542B\u3080) \u5168\u4F53\u3067\
+    \ O(2^popcount(mask))\n */\ninline constexpr auto subsets(long long mask) {\n\
+    \    assert(mask >= 0);\n    return internal_bit::make_bit_enumeration(mask, false,\
+    \ internal_bit::SubsetsNext{mask});\n}\n/**\n * @brief n \u30D3\u30C3\u30C8\u306E\
+    \u96C6\u5408\u306E\u3046\u3061 mask \u3092\u542B\u3080\u3082\u306E\u3092 mask\
+    \ \u304B\u3089\u6607\u9806\u306B\u5217\u6319\u3059\u308B (mask \u3068 2^n - 1\
+    \ \u3092\u542B\u3080) \u5168\u4F53\u3067 O(2^(n - popcount(mask)))\n */\ninline\
+    \ constexpr auto supersets(long long mask, long long n) {\n    assert(0 <= n &&\
+    \ n <= 62 && 0 <= mask && mask < (1LL << n));\n    long long full = (1LL << n)\
+    \ - 1;\n    return internal_bit::make_bit_enumeration(mask, false, internal_bit::SupersetsNext{mask,\
+    \ full});\n}\n/**\n * @brief mask \u306E\u7ACB\u3063\u3066\u3044\u308B\u30D3\u30C3\
+    \u30C8\u306E\u4F4D\u7F6E\u3092\u6607\u9806\u306B\u5217\u6319\u3059\u308B \u5168\
+    \u4F53\u3067 O(popcount(mask))\n */\ninline constexpr auto bits(long long mask)\
+    \ {\n    assert(mask >= 0);\n    // \u5185\u90E8\u3067\u306F\u6B8B\u308A\u306E\
+    \u30D3\u30C3\u30C8\u3092\u6301\u3061\u3001* \u3067\u6700\u4E0B\u4F4D\u30D3\u30C3\
+    \u30C8\u306E\u4F4D\u7F6E\u3092\u8FD4\u3059\n    return internal_bit::Bits{mask};\n\
+    }\n/**\n * @brief s \u3068\u7ACB\u3063\u3066\u3044\u308B\u30D3\u30C3\u30C8\u306E\
+    \u6570\u304C\u540C\u3058\u3067\u3001s \u3088\u308A\u5927\u304D\u3044\u6700\u5C0F\
+    \u306E\u5024 (Gosper's hack)\n * long long \u306B\u53CE\u307E\u3089\u306A\u3051\
+    \u308C\u3070 -1\n */\ninline constexpr long long next_combination_mask(long long\
+    \ s) {\n    assert(s > 0);\n    unsigned long long u = s, c = u & -u, r = u +\
+    \ c;\n    unsigned long long t = (((r ^ u) >> 2) / c) | r;\n    return t > 0x7fffffffffffffffULL\
+    \ ? -1 : static_cast<long long>(t);\n}\nconstexpr long long internal_bit::CombinationsNext::operator()(long\
+    \ long s) const {\n    if (s == 0) return -1;\n    long long t = next_combination_mask(s);\n\
+    \    return t >= limit ? -1 : t;\n}\n\n/**\n * @brief n \u30D3\u30C3\u30C8\u306E\
+    \u96C6\u5408\u306E\u3046\u3061\u3001\u3061\u3087\u3046\u3069 k \u500B\u306E\u30D3\
+    \u30C3\u30C8\u304C\u7ACB\u3064\u3082\u306E\u3092\u6607\u9806\u306B\u5217\u6319\
+    \u3059\u308B (Gosper's hack) \u5168\u4F53\u3067 O(C(n, k))\n * k > n \u306A\u3089\
+    \u4F55\u3082\u5217\u6319\u3057\u306A\u3044\n */\ninline constexpr auto combinations_mask(long\
+    \ long n, long long k) {\n    assert(0 <= n && n <= 62 && 0 <= k);\n    long long\
+    \ limit = 1LL << n;\n    return internal_bit::make_bit_enumeration(k > n ? -1\
+    \ : (1LL << k) - 1, k > n, internal_bit::CombinationsNext{limit});\n}\n/**\n *\
+    \ @brief mask \u306E\u90E8\u5206\u96C6\u5408\u306E\u3046\u3061\u3001\u3061\u3087\
+    \u3046\u3069 k \u500B\u306E\u30D3\u30C3\u30C8\u304C\u7ACB\u3064\u3082\u306E\u3092\
+    \u6607\u9806\u306B\u5217\u6319\u3059\u308B 1 \u3064\u3042\u305F\u308A O(k)\n *\
+    \ k > popcount(mask) \u306A\u3089\u4F55\u3082\u5217\u6319\u3057\u306A\u3044\n\
+    \ */\ninline constexpr auto subsets_of_size(long long mask, long long k) {\n \
+    \   assert(mask >= 0 && 0 <= k);\n    const internal_bit::FixedSubsetsNext next{mask,\
+    \ k};\n    bool empty = k > popcount(mask);\n    return internal_bit::make_bit_enumeration(empty\
+    \ ? -1 : next.lowest(k), empty, next);\n}\n\nnamespace internal_bit {\n// rest\
+    \ \u306E\u7ACB\u3063\u3066\u3044\u308B\u30D3\u30C3\u30C8 i \u3092\u6607\u9806\u306B\
+    \u3001(i, mask ^ (1 << i)) \u306E\u7D44\u3067\u5217\u6319\u3059\u308B\nstruct\
+    \ ToggleOneBit {\n    long long mask, rest;\n    struct iterator {\n        using\
+    \ value_type = std::pair<long long, long long>;\n        using difference_type\
+    \ = std::ptrdiff_t;\n        using pointer = void;\n        using reference =\
+    \ value_type;\n        using iterator_category = std::input_iterator_tag;\n  \
+    \      using iterator_concept = std::forward_iterator_tag;\n\n        long long\
+    \ mask = 0, s = 0;\n        constexpr std::pair<long long, long long> operator*()\
+    \ const {\n            long long i = countr_zero(s);\n            return {i, mask\
+    \ ^ (1LL << i)};\n        }\n        constexpr iterator& operator++() {\n    \
+    \        s &= s - 1;\n            return *this;\n        }\n        constexpr\
+    \ iterator operator++(int) {\n            auto previous = *this;\n           \
+    \ ++*this;\n            return previous;\n        }\n        constexpr bool operator!=(const\
+    \ iterator& other) const { return s != other.s; }\n        constexpr bool operator==(const\
+    \ iterator& other) const { return s == other.s; }\n    };\n    constexpr iterator\
+    \ begin() const { return {mask, rest}; }\n    constexpr iterator end() const {\
+    \ return {mask, 0}; }\n};\n}  // namespace internal_bit\n\n/**\n * @brief n \u30D3\
+    \u30C3\u30C8\u306E\u3046\u3061 mask \u306B\u542B\u307E\u308C\u306A\u3044\u4F4D\
+    \u7F6E i \u3092\u6607\u9806\u306B\u3001(i, mask | (1 << i)) \u306E\u7D44\u3067\
+    \u5217\u6319\u3059\u308B \u5168\u4F53\u3067 O(n - popcount(mask))\n * bit DP \u3067\
+    \ 1 \u3064\u8981\u7D20\u3092\u8DB3\u3059\u9077\u79FB\u306B\u4F7F\u3046\n */\n\
+    inline constexpr internal_bit::ToggleOneBit add_one(long long mask, long long\
+    \ n) {\n    assert(0 <= n && n <= 62 && 0 <= mask && mask < (1LL << n));\n   \
+    \ return {mask, ((1LL << n) - 1) ^ mask};\n}\n/**\n * @brief mask \u306B\u542B\
+    \u307E\u308C\u308B\u4F4D\u7F6E i \u3092\u6607\u9806\u306B\u3001(i, mask ^ (1 <<\
+    \ i)) \u306E\u7D44\u3067\u5217\u6319\u3059\u308B \u5168\u4F53\u3067 O(popcount(mask))\n\
+    \ * bit DP \u3067 1 \u3064\u8981\u7D20\u3092\u9664\u3044\u305F\u96C6\u5408\u304B\
+    \u3089\u9077\u79FB\u3059\u308B\u3068\u304D\u306B\u4F7F\u3046\n */\ninline constexpr\
+    \ internal_bit::ToggleOneBit remove_one(long long mask) {\n    assert(mask >=\
+    \ 0);\n    return {mask, mask};\n}\n\n/**\n * @brief n \u30D3\u30C3\u30C8\u306E\
+    \u3059\u3079\u3066\u306E\u96C6\u5408 S \u3068\u3001\u305D\u306E\u90E8\u5206\u96C6\
+    \u5408 T \u306E\u7D44 (S, T) \u3092\u5217\u6319\u3059\u308B \u5168\u4F53\u3067\
+    \ O(3^n)\n * S \u306F 0 \u304B\u3089\u6607\u9806\u3001\u5404 S \u306E\u4E2D\u3067\
+    \ T \u306F S \u304B\u3089 0 \u307E\u3067\u964D\u9806\n */\ninline constexpr auto\
+    \ subset_pairs(long long n) {\n    assert(0 <= n && n <= 62);\n    return internal_bit::SubsetPairs{n};\n\
     }\n#line 8 \"test/unittest/utility/bit.test.cpp\"\n\n#include <algorithm>\n#include\
     \ <iostream>\n#include <limits>\n#include <random>\n#line 14 \"test/unittest/utility/bit.test.cpp\"\
     \n#include <type_traits>\n#line 16 \"test/unittest/utility/bit.test.cpp\"\n#include\
-    \ <vector>\n\nbool ok = true;\n\nvoid check(bool cond, const char* what) {\n \
-    \   if (!cond) {\n        if (ok) std::cerr << \"failed: \" << what << std::endl;\n\
-    \        ok = false;\n    }\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n\
-    \n    for (int rep = 0; rep < 100000 && ok; rep++) {\n        // 0 \u4EE5\u4E0A\
-    \u306E long long (\u30D3\u30C3\u30C8\u6570\u3082\u3070\u3089\u3064\u304B\u305B\
-    \u308B)\n        int width = rng() % 63 + 1;\n        long long a = static_cast<long\
-    \ long>(rng() >> (64 - width));\n\n        int pc = 0, clz = 0, ctz = 0;\n   \
-    \     for (int i = 0; i < 63; i++) pc += a >> i & 1;\n        for (int i = 63;\
-    \ i >= 0 && !(a >> i & 1); i--) clz++;\n        for (int i = 0; i < 64 && !(a\
-    \ >> i & 1); i++) ctz++;\n        check(popcount(a) == pc, \"popcount\");\n  \
-    \      if (a > 0) {\n            check(countl_zero(a) == clz, \"countl_zero\"\
-    );\n            check(countr_zero(a) == ctz, \"countr_zero\");\n        }\n\n\
-    \        // btoll: 2 \u9032\u6570\u306E\u6587\u5B57\u5217 (\u4E0A\u4F4D\u6841\u304B\
-    \u3089)\n        std::string s;\n        for (int i = width - 1; i >= 0; i--)\
-    \ s += (a >> i & 1) ? '1' : '0';\n        check(btoll(s) == a, \"btoll\");\n \
-    \       // 1 \u3092\u8868\u3059\u6587\u5B57\u3092\u6307\u5B9A\u3059\u308B\n  \
-    \      std::string t = s;\n        for (char& c : t) c = (c == '1') ? '#' : '.';\n\
-    \        check(btoll(t, '#') == a, \"btoll(s, one)\");\n\n        // hamming_distance:\
-    \ \u30D3\u30C3\u30C8\u3054\u3068\u306B\u6BD4\u3079\u308B\n        long long b\
-    \ = static_cast<long long>(rng() >> (64 - width));\n        int hd = 0;\n    \
-    \    for (int i = 0; i < 63; i++) hd += (a >> i & 1) != (b >> i & 1);\n      \
-    \  check(hamming_distance(a, b) == hd, \"hamming_distance\");\n    }\n\n    //\
-    \ countl_one / countr_one / bit_width / bit_ceil / bit_floor \u3092\u611A\u76F4\
-    \u306A\u5B9F\u88C5\u3068\u6BD4\u3079\u308B\n    for (int rep = 0; rep < 100000\
-    \ && ok; rep++) {\n        int width = rng() % 64;\n        long long a = width\
-    \ == 0 ? 0 : static_cast<long long>(rng() >> (64 - width));\n        if (rep %\
-    \ 4 == 0) a = (1LL << (rng() % 63)) - rng() % 2;  // 2 \u306E\u7D2F\u4E57\u3068\
-    \u305D\u306E\u524D\u5F8C\n        if (a < 0) a = 0;\n        int clo = 0, cto\
-    \ = 0, bw = 0;\n        for (int i = 63; i >= 0 && (a >> i & 1); i--) clo++;\n\
-    \        for (int i = 0; i < 64 && (a >> i & 1); i++) cto++;\n        for (int\
-    \ i = 0; i < 63; i++) {\n            if (a >> i & 1) bw = i + 1;\n        }\n\
-    \        long long ceil = 1, floor = 0;\n        while (ceil < a && ceil <= (1LL\
-    \ << 61)) ceil *= 2;  // a > 2^62 \u306A\u3089\u4F7F\u308F\u306A\u3044\n     \
-    \   for (int i = 0; i < 63; i++) {\n            if ((1LL << i) <= a) floor = 1LL\
-    \ << i;\n        }\n        check(countl_one(a) == clo, \"countl_one\");\n   \
-    \     check(countr_one(a) == cto, \"countr_one\");\n        check(bit_width(a)\
-    \ == bw, \"bit_width\");\n        if (a <= (1LL << 62)) check(bit_ceil(a) == ceil,\
-    \ \"bit_ceil\");\n        check(bit_floor(a) == floor, \"bit_floor\");\n    }\n\
-    \n    // 1 \u30D3\u30C3\u30C8\u306E\u64CD\u4F5C\u30FB\u4F4D\u7F6E\u30FB\u5909\u63DB\
-    \u3092\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u6BD4\u3079\u308B\n    for (int rep\
-    \ = 0; rep < 100000 && ok; rep++) {\n        int width = rng() % 64;\n       \
-    \ long long a = width == 0 ? 0 : static_cast<long long>(rng() >> (64 - width));\n\
-    \        if (rep % 4 == 0) a = 1LL << (rng() % 63);\n        int top = -1, low\
-    \ = -1, pc = 0;\n        for (int i = 0; i < 63; i++) {\n            if (a >>\
-    \ i & 1) {\n                top = i;\n                if (low < 0) low = i;\n\
-    \                pc++;\n            }\n        }\n        check(has_single_bit(a)\
-    \ == (pc == 1), \"has_single_bit\");\n        check(msb(a) == top && lsb(a) ==\
-    \ low, \"msb / lsb\");\n        check(lowbit(a) == (low < 0 ? 0 : 1LL << low),\
-    \ \"lowbit\");\n        check(parity(a) == pc % 2, \"parity\");\n        long\
-    \ long i = rng() % 63;\n        bool on = a >> i & 1;\n        check(test_bit(a,\
-    \ i) == on, \"test_bit\");\n        check(set_bit(a, i) == (on ? a : a + (1LL\
-    \ << i)), \"set_bit\");\n        check(reset_bit(a, i) == (on ? a - (1LL << i)\
-    \ : a), \"reset_bit\");\n        check(flip_bit(a, i) == (on ? a - (1LL << i)\
-    \ : a + (1LL << i)), \"flip_bit\");\n\n        // lltob: \u6841\u6570\u3092\u7701\
-    \u7565\u3059\u308B\u3068\u5148\u982D\u306B 0 \u3092\u4ED8\u3051\u306A\u3044\n\
-    \        std::string s;\n        for (int j = std::max(top, 0); j >= 0; j--) s\
-    \ += (a >> j & 1) ? '1' : '0';\n        check(lltob(a) == s && btoll(lltob(a))\
+    \ <vector>\n#if __cplusplus >= 202002L\n#include <ranges>\n#endif\n\nbool ok =\
+    \ true;\n\nvoid check(bool cond, const char* what) {\n    if (!cond) {\n     \
+    \   if (ok) std::cerr << \"failed: \" << what << std::endl;\n        ok = false;\n\
+    \    }\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n\n    for (int rep =\
+    \ 0; rep < 100000 && ok; rep++) {\n        // 0 \u4EE5\u4E0A\u306E long long (\u30D3\
+    \u30C3\u30C8\u6570\u3082\u3070\u3089\u3064\u304B\u305B\u308B)\n        int width\
+    \ = rng() % 63 + 1;\n        long long a = static_cast<long long>(rng() >> (64\
+    \ - width));\n\n        int pc = 0, clz = 0, ctz = 0;\n        for (int i = 0;\
+    \ i < 63; i++) pc += a >> i & 1;\n        for (int i = 63; i >= 0 && !(a >> i\
+    \ & 1); i--) clz++;\n        for (int i = 0; i < 64 && !(a >> i & 1); i++) ctz++;\n\
+    \        check(popcount(a) == pc, \"popcount\");\n        if (a > 0) {\n     \
+    \       check(countl_zero(a) == clz, \"countl_zero\");\n            check(countr_zero(a)\
+    \ == ctz, \"countr_zero\");\n        }\n\n        // btoll: 2 \u9032\u6570\u306E\
+    \u6587\u5B57\u5217 (\u4E0A\u4F4D\u6841\u304B\u3089)\n        std::string s;\n\
+    \        for (int i = width - 1; i >= 0; i--) s += (a >> i & 1) ? '1' : '0';\n\
+    \        check(btoll(s) == a, \"btoll\");\n        // 1 \u3092\u8868\u3059\u6587\
+    \u5B57\u3092\u6307\u5B9A\u3059\u308B\n        std::string t = s;\n        for\
+    \ (char& c : t) c = (c == '1') ? '#' : '.';\n        check(btoll(t, '#') == a,\
+    \ \"btoll(s, one)\");\n\n        // hamming_distance: \u30D3\u30C3\u30C8\u3054\
+    \u3068\u306B\u6BD4\u3079\u308B\n        long long b = static_cast<long long>(rng()\
+    \ >> (64 - width));\n        int hd = 0;\n        for (int i = 0; i < 63; i++)\
+    \ hd += (a >> i & 1) != (b >> i & 1);\n        check(hamming_distance(a, b) ==\
+    \ hd, \"hamming_distance\");\n    }\n\n    // countl_one / countr_one / bit_width\
+    \ / bit_ceil / bit_floor \u3092\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u6BD4\u3079\
+    \u308B\n    for (int rep = 0; rep < 100000 && ok; rep++) {\n        int width\
+    \ = rng() % 64;\n        long long a = width == 0 ? 0 : static_cast<long long>(rng()\
+    \ >> (64 - width));\n        if (rep % 4 == 0) a = (1LL << (rng() % 63)) - rng()\
+    \ % 2;  // 2 \u306E\u7D2F\u4E57\u3068\u305D\u306E\u524D\u5F8C\n        if (a <\
+    \ 0) a = 0;\n        int clo = 0, cto = 0, bw = 0;\n        for (int i = 63; i\
+    \ >= 0 && (a >> i & 1); i--) clo++;\n        for (int i = 0; i < 64 && (a >> i\
+    \ & 1); i++) cto++;\n        for (int i = 0; i < 63; i++) {\n            if (a\
+    \ >> i & 1) bw = i + 1;\n        }\n        long long ceil = 1, floor = 0;\n \
+    \       while (ceil < a && ceil <= (1LL << 61)) ceil *= 2;  // a > 2^62 \u306A\
+    \u3089\u4F7F\u308F\u306A\u3044\n        for (int i = 0; i < 63; i++) {\n     \
+    \       if ((1LL << i) <= a) floor = 1LL << i;\n        }\n        check(countl_one(a)\
+    \ == clo, \"countl_one\");\n        check(countr_one(a) == cto, \"countr_one\"\
+    );\n        check(bit_width(a) == bw, \"bit_width\");\n        if (a <= (1LL <<\
+    \ 62)) check(bit_ceil(a) == ceil, \"bit_ceil\");\n        check(bit_floor(a) ==\
+    \ floor, \"bit_floor\");\n    }\n\n    // 1 \u30D3\u30C3\u30C8\u306E\u64CD\u4F5C\
+    \u30FB\u4F4D\u7F6E\u30FB\u5909\u63DB\u3092\u611A\u76F4\u306A\u5B9F\u88C5\u3068\
+    \u6BD4\u3079\u308B\n    for (int rep = 0; rep < 100000 && ok; rep++) {\n     \
+    \   int width = rng() % 64;\n        long long a = width == 0 ? 0 : static_cast<long\
+    \ long>(rng() >> (64 - width));\n        if (rep % 4 == 0) a = 1LL << (rng() %\
+    \ 63);\n        int top = -1, low = -1, pc = 0;\n        for (int i = 0; i < 63;\
+    \ i++) {\n            if (a >> i & 1) {\n                top = i;\n          \
+    \      if (low < 0) low = i;\n                pc++;\n            }\n        }\n\
+    \        check(has_single_bit(a) == (pc == 1), \"has_single_bit\");\n        check(msb(a)\
+    \ == top && lsb(a) == low, \"msb / lsb\");\n        check(lowbit(a) == (low <\
+    \ 0 ? 0 : 1LL << low), \"lowbit\");\n        check(parity(a) == pc % 2, \"parity\"\
+    );\n        long long i = rng() % 63;\n        bool on = a >> i & 1;\n       \
+    \ check(test_bit(a, i) == on, \"test_bit\");\n        check(set_bit(a, i) == (on\
+    \ ? a : a + (1LL << i)), \"set_bit\");\n        check(reset_bit(a, i) == (on ?\
+    \ a - (1LL << i) : a), \"reset_bit\");\n        check(flip_bit(a, i) == (on ?\
+    \ a - (1LL << i) : a + (1LL << i)), \"flip_bit\");\n\n        // lltob: \u6841\
+    \u6570\u3092\u7701\u7565\u3059\u308B\u3068\u5148\u982D\u306B 0 \u3092\u4ED8\u3051\
+    \u306A\u3044\n        std::string s;\n        for (int j = std::max(top, 0); j\
+    \ >= 0; j--) s += (a >> j & 1) ? '1' : '0';\n        check(lltob(a) == s && btoll(lltob(a))\
     \ == a, \"lltob\");\n        long long n = std::max(top + 1, 0) + rng() % 3;\n\
     \        if (n > 63) n = 63;\n        if (n == 0) n = 1;\n        check(lltob(a,\
     \ n) == std::string(n - s.size(), '0') + s, \"lltob(a, n)\");\n        std::string\
@@ -484,16 +507,40 @@ data:
     \  static_assert(sum == (5 + 9 + 12) + (0 + 11 + 10 + 22 + 20 + 33 + 32 + 31 +\
     \ 30));\n        static_assert(has_single_bit(64) && !has_single_bit(0) && !has_single_bit(6));\n\
     \        static_assert(gray_code(5) == 7 && inverse_gray_code(7) == 5 && rotate_left(0b0011,\
-    \ 3, 4) == 0b1001);\n    }\n\n    // 0 \u306E\u3068\u304D\u306F C++20 \u306E <bit>\
-    \ \u3068\u540C\u3058\u5024\n    check(countl_zero(0) == 64 && countr_zero(0) ==\
-    \ 64, \"countl_zero / countr_zero(0)\");\n    check(countl_one(0) == 0 && countr_one(0)\
-    \ == 0, \"countl_one / countr_one(0)\");\n    check(bit_width(0) == 0 && bit_ceil(0)\
-    \ == 1 && bit_floor(0) == 0, \"bit_width / bit_ceil / bit_floor(0)\");\n    check(bit_ceil(1LL\
-    \ << 62) == (1LL << 62) && bit_ceil((1LL << 61) + 1) == (1LL << 62), \"bit_ceil\
-    \ \u4E0A\u9650\");\n    check(countr_one(std::numeric_limits<long long>::max())\
-    \ == 63 && bit_width(std::numeric_limits<long long>::max()) == 63, \"\u6700\u5927\
-    \u5024\");\n\n    // \u623B\u308A\u5024\u306E\u578B\u306F C++17 \u3067\u3082 C++20\
-    \ \u3067\u3082 long long\n    static_assert(std::is_same_v<decltype(popcount(1)),\
+    \ 3, 4) == 0b1001);\n    }\n\n    {\n        auto verify_range = [&](auto range,\
+    \ const auto& expected) {\n            using Value = decltype(*range.begin());\n\
+    \            check(std::vector<Value>(range.begin(), range.end()) == expected,\
+    \ \"iterator range constructor\");\n            auto it = range.begin(), independent\
+    \ = it;\n            decltype(it) assigned;\n            assigned = it;\n    \
+    \        if (it != range.end()) {\n                const auto first = *it++;\n\
+    \                check(first == *independent && first == *assigned, \"copy / postfix\
+    \ increment\");\n                ++independent;\n                check(it == independent,\
+    \ \"independent iterators\");\n            }\n#if __cplusplus >= 202002L\n   \
+    \         static_assert(std::ranges::forward_range<decltype(range)>);\n      \
+    \      static_assert(std::ranges::viewable_range<decltype(range)>);\n        \
+    \    auto selected = std::move(range) | std::views::filter([](const auto&) { return\
+    \ true; });\n            std::vector<Value> actual;\n            std::ranges::copy(selected,\
+    \ std::back_inserter(actual));\n            check(actual == expected, \"rvalue\
+    \ range / views::filter\");\n#endif\n        };\n        verify_range(subsets(5),\
+    \ std::vector<long long>{5, 4, 1, 0});\n        verify_range(supersets(1, 3),\
+    \ std::vector<long long>{1, 3, 5, 7});\n        verify_range(bits(5), std::vector<long\
+    \ long>{0, 2});\n        verify_range(bits(0), std::vector<long long>{});\n  \
+    \      verify_range(combinations_mask(3, 2), std::vector<long long>{3, 5, 6});\n\
+    \        verify_range(combinations_mask(2, 3), std::vector<long long>{});\n  \
+    \      verify_range(subsets_of_size(5, 1), std::vector<long long>{1, 4});\n  \
+    \      verify_range(add_one(1, 3), std::vector<std::pair<long long, long long>>{{1,\
+    \ 3}, {2, 5}});\n        verify_range(remove_one(5), std::vector<std::pair<long\
+    \ long, long long>>{{0, 4}, {2, 1}});\n        verify_range(subset_pairs(1), std::vector<std::pair<long\
+    \ long, long long>>{{0, 0}, {1, 1}, {1, 0}});\n    }\n\n    // 0 \u306E\u3068\u304D\
+    \u306F C++20 \u306E <bit> \u3068\u540C\u3058\u5024\n    check(countl_zero(0) ==\
+    \ 64 && countr_zero(0) == 64, \"countl_zero / countr_zero(0)\");\n    check(countl_one(0)\
+    \ == 0 && countr_one(0) == 0, \"countl_one / countr_one(0)\");\n    check(bit_width(0)\
+    \ == 0 && bit_ceil(0) == 1 && bit_floor(0) == 0, \"bit_width / bit_ceil / bit_floor(0)\"\
+    );\n    check(bit_ceil(1LL << 62) == (1LL << 62) && bit_ceil((1LL << 61) + 1)\
+    \ == (1LL << 62), \"bit_ceil \u4E0A\u9650\");\n    check(countr_one(std::numeric_limits<long\
+    \ long>::max()) == 63 && bit_width(std::numeric_limits<long long>::max()) == 63,\
+    \ \"\u6700\u5927\u5024\");\n\n    // \u623B\u308A\u5024\u306E\u578B\u306F C++17\
+    \ \u3067\u3082 C++20 \u3067\u3082 long long\n    static_assert(std::is_same_v<decltype(popcount(1)),\
     \ long long>);\n    static_assert(std::is_same_v<decltype(countl_zero(1)), long\
     \ long>);\n    static_assert(std::is_same_v<decltype(countr_zero(1)), long long>);\n\
     \    static_assert(std::is_same_v<decltype(countl_one(1)), long long>);\n    static_assert(std::is_same_v<decltype(countr_one(1)),\
@@ -517,42 +564,42 @@ data:
     \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../../src/utility/bit.hpp\"\
     \n\n#include <algorithm>\n#include <iostream>\n#include <limits>\n#include <random>\n\
     #include <string>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\
-    \nbool ok = true;\n\nvoid check(bool cond, const char* what) {\n    if (!cond)\
-    \ {\n        if (ok) std::cerr << \"failed: \" << what << std::endl;\n       \
-    \ ok = false;\n    }\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n\n   \
-    \ for (int rep = 0; rep < 100000 && ok; rep++) {\n        // 0 \u4EE5\u4E0A\u306E\
-    \ long long (\u30D3\u30C3\u30C8\u6570\u3082\u3070\u3089\u3064\u304B\u305B\u308B\
-    )\n        int width = rng() % 63 + 1;\n        long long a = static_cast<long\
-    \ long>(rng() >> (64 - width));\n\n        int pc = 0, clz = 0, ctz = 0;\n   \
-    \     for (int i = 0; i < 63; i++) pc += a >> i & 1;\n        for (int i = 63;\
-    \ i >= 0 && !(a >> i & 1); i--) clz++;\n        for (int i = 0; i < 64 && !(a\
-    \ >> i & 1); i++) ctz++;\n        check(popcount(a) == pc, \"popcount\");\n  \
-    \      if (a > 0) {\n            check(countl_zero(a) == clz, \"countl_zero\"\
-    );\n            check(countr_zero(a) == ctz, \"countr_zero\");\n        }\n\n\
-    \        // btoll: 2 \u9032\u6570\u306E\u6587\u5B57\u5217 (\u4E0A\u4F4D\u6841\u304B\
-    \u3089)\n        std::string s;\n        for (int i = width - 1; i >= 0; i--)\
-    \ s += (a >> i & 1) ? '1' : '0';\n        check(btoll(s) == a, \"btoll\");\n \
-    \       // 1 \u3092\u8868\u3059\u6587\u5B57\u3092\u6307\u5B9A\u3059\u308B\n  \
-    \      std::string t = s;\n        for (char& c : t) c = (c == '1') ? '#' : '.';\n\
-    \        check(btoll(t, '#') == a, \"btoll(s, one)\");\n\n        // hamming_distance:\
-    \ \u30D3\u30C3\u30C8\u3054\u3068\u306B\u6BD4\u3079\u308B\n        long long b\
-    \ = static_cast<long long>(rng() >> (64 - width));\n        int hd = 0;\n    \
-    \    for (int i = 0; i < 63; i++) hd += (a >> i & 1) != (b >> i & 1);\n      \
-    \  check(hamming_distance(a, b) == hd, \"hamming_distance\");\n    }\n\n    //\
-    \ countl_one / countr_one / bit_width / bit_ceil / bit_floor \u3092\u611A\u76F4\
-    \u306A\u5B9F\u88C5\u3068\u6BD4\u3079\u308B\n    for (int rep = 0; rep < 100000\
-    \ && ok; rep++) {\n        int width = rng() % 64;\n        long long a = width\
-    \ == 0 ? 0 : static_cast<long long>(rng() >> (64 - width));\n        if (rep %\
-    \ 4 == 0) a = (1LL << (rng() % 63)) - rng() % 2;  // 2 \u306E\u7D2F\u4E57\u3068\
-    \u305D\u306E\u524D\u5F8C\n        if (a < 0) a = 0;\n        int clo = 0, cto\
-    \ = 0, bw = 0;\n        for (int i = 63; i >= 0 && (a >> i & 1); i--) clo++;\n\
-    \        for (int i = 0; i < 64 && (a >> i & 1); i++) cto++;\n        for (int\
-    \ i = 0; i < 63; i++) {\n            if (a >> i & 1) bw = i + 1;\n        }\n\
-    \        long long ceil = 1, floor = 0;\n        while (ceil < a && ceil <= (1LL\
-    \ << 61)) ceil *= 2;  // a > 2^62 \u306A\u3089\u4F7F\u308F\u306A\u3044\n     \
-    \   for (int i = 0; i < 63; i++) {\n            if ((1LL << i) <= a) floor = 1LL\
-    \ << i;\n        }\n        check(countl_one(a) == clo, \"countl_one\");\n   \
-    \     check(countr_one(a) == cto, \"countr_one\");\n        check(bit_width(a)\
+    #if __cplusplus >= 202002L\n#include <ranges>\n#endif\n\nbool ok = true;\n\nvoid\
+    \ check(bool cond, const char* what) {\n    if (!cond) {\n        if (ok) std::cerr\
+    \ << \"failed: \" << what << std::endl;\n        ok = false;\n    }\n}\n\nint\
+    \ main() {\n    std::mt19937_64 rng(314);\n\n    for (int rep = 0; rep < 100000\
+    \ && ok; rep++) {\n        // 0 \u4EE5\u4E0A\u306E long long (\u30D3\u30C3\u30C8\
+    \u6570\u3082\u3070\u3089\u3064\u304B\u305B\u308B)\n        int width = rng() %\
+    \ 63 + 1;\n        long long a = static_cast<long long>(rng() >> (64 - width));\n\
+    \n        int pc = 0, clz = 0, ctz = 0;\n        for (int i = 0; i < 63; i++)\
+    \ pc += a >> i & 1;\n        for (int i = 63; i >= 0 && !(a >> i & 1); i--) clz++;\n\
+    \        for (int i = 0; i < 64 && !(a >> i & 1); i++) ctz++;\n        check(popcount(a)\
+    \ == pc, \"popcount\");\n        if (a > 0) {\n            check(countl_zero(a)\
+    \ == clz, \"countl_zero\");\n            check(countr_zero(a) == ctz, \"countr_zero\"\
+    );\n        }\n\n        // btoll: 2 \u9032\u6570\u306E\u6587\u5B57\u5217 (\u4E0A\
+    \u4F4D\u6841\u304B\u3089)\n        std::string s;\n        for (int i = width\
+    \ - 1; i >= 0; i--) s += (a >> i & 1) ? '1' : '0';\n        check(btoll(s) ==\
+    \ a, \"btoll\");\n        // 1 \u3092\u8868\u3059\u6587\u5B57\u3092\u6307\u5B9A\
+    \u3059\u308B\n        std::string t = s;\n        for (char& c : t) c = (c ==\
+    \ '1') ? '#' : '.';\n        check(btoll(t, '#') == a, \"btoll(s, one)\");\n\n\
+    \        // hamming_distance: \u30D3\u30C3\u30C8\u3054\u3068\u306B\u6BD4\u3079\
+    \u308B\n        long long b = static_cast<long long>(rng() >> (64 - width));\n\
+    \        int hd = 0;\n        for (int i = 0; i < 63; i++) hd += (a >> i & 1)\
+    \ != (b >> i & 1);\n        check(hamming_distance(a, b) == hd, \"hamming_distance\"\
+    );\n    }\n\n    // countl_one / countr_one / bit_width / bit_ceil / bit_floor\
+    \ \u3092\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u6BD4\u3079\u308B\n    for (int rep\
+    \ = 0; rep < 100000 && ok; rep++) {\n        int width = rng() % 64;\n       \
+    \ long long a = width == 0 ? 0 : static_cast<long long>(rng() >> (64 - width));\n\
+    \        if (rep % 4 == 0) a = (1LL << (rng() % 63)) - rng() % 2;  // 2 \u306E\
+    \u7D2F\u4E57\u3068\u305D\u306E\u524D\u5F8C\n        if (a < 0) a = 0;\n      \
+    \  int clo = 0, cto = 0, bw = 0;\n        for (int i = 63; i >= 0 && (a >> i &\
+    \ 1); i--) clo++;\n        for (int i = 0; i < 64 && (a >> i & 1); i++) cto++;\n\
+    \        for (int i = 0; i < 63; i++) {\n            if (a >> i & 1) bw = i +\
+    \ 1;\n        }\n        long long ceil = 1, floor = 0;\n        while (ceil <\
+    \ a && ceil <= (1LL << 61)) ceil *= 2;  // a > 2^62 \u306A\u3089\u4F7F\u308F\u306A\
+    \u3044\n        for (int i = 0; i < 63; i++) {\n            if ((1LL << i) <=\
+    \ a) floor = 1LL << i;\n        }\n        check(countl_one(a) == clo, \"countl_one\"\
+    );\n        check(countr_one(a) == cto, \"countr_one\");\n        check(bit_width(a)\
     \ == bw, \"bit_width\");\n        if (a <= (1LL << 62)) check(bit_ceil(a) == ceil,\
     \ \"bit_ceil\");\n        check(bit_floor(a) == floor, \"bit_floor\");\n    }\n\
     \n    // 1 \u30D3\u30C3\u30C8\u306E\u64CD\u4F5C\u30FB\u4F4D\u7F6E\u30FB\u5909\u63DB\
@@ -715,16 +762,40 @@ data:
     \  static_assert(sum == (5 + 9 + 12) + (0 + 11 + 10 + 22 + 20 + 33 + 32 + 31 +\
     \ 30));\n        static_assert(has_single_bit(64) && !has_single_bit(0) && !has_single_bit(6));\n\
     \        static_assert(gray_code(5) == 7 && inverse_gray_code(7) == 5 && rotate_left(0b0011,\
-    \ 3, 4) == 0b1001);\n    }\n\n    // 0 \u306E\u3068\u304D\u306F C++20 \u306E <bit>\
-    \ \u3068\u540C\u3058\u5024\n    check(countl_zero(0) == 64 && countr_zero(0) ==\
-    \ 64, \"countl_zero / countr_zero(0)\");\n    check(countl_one(0) == 0 && countr_one(0)\
-    \ == 0, \"countl_one / countr_one(0)\");\n    check(bit_width(0) == 0 && bit_ceil(0)\
-    \ == 1 && bit_floor(0) == 0, \"bit_width / bit_ceil / bit_floor(0)\");\n    check(bit_ceil(1LL\
-    \ << 62) == (1LL << 62) && bit_ceil((1LL << 61) + 1) == (1LL << 62), \"bit_ceil\
-    \ \u4E0A\u9650\");\n    check(countr_one(std::numeric_limits<long long>::max())\
-    \ == 63 && bit_width(std::numeric_limits<long long>::max()) == 63, \"\u6700\u5927\
-    \u5024\");\n\n    // \u623B\u308A\u5024\u306E\u578B\u306F C++17 \u3067\u3082 C++20\
-    \ \u3067\u3082 long long\n    static_assert(std::is_same_v<decltype(popcount(1)),\
+    \ 3, 4) == 0b1001);\n    }\n\n    {\n        auto verify_range = [&](auto range,\
+    \ const auto& expected) {\n            using Value = decltype(*range.begin());\n\
+    \            check(std::vector<Value>(range.begin(), range.end()) == expected,\
+    \ \"iterator range constructor\");\n            auto it = range.begin(), independent\
+    \ = it;\n            decltype(it) assigned;\n            assigned = it;\n    \
+    \        if (it != range.end()) {\n                const auto first = *it++;\n\
+    \                check(first == *independent && first == *assigned, \"copy / postfix\
+    \ increment\");\n                ++independent;\n                check(it == independent,\
+    \ \"independent iterators\");\n            }\n#if __cplusplus >= 202002L\n   \
+    \         static_assert(std::ranges::forward_range<decltype(range)>);\n      \
+    \      static_assert(std::ranges::viewable_range<decltype(range)>);\n        \
+    \    auto selected = std::move(range) | std::views::filter([](const auto&) { return\
+    \ true; });\n            std::vector<Value> actual;\n            std::ranges::copy(selected,\
+    \ std::back_inserter(actual));\n            check(actual == expected, \"rvalue\
+    \ range / views::filter\");\n#endif\n        };\n        verify_range(subsets(5),\
+    \ std::vector<long long>{5, 4, 1, 0});\n        verify_range(supersets(1, 3),\
+    \ std::vector<long long>{1, 3, 5, 7});\n        verify_range(bits(5), std::vector<long\
+    \ long>{0, 2});\n        verify_range(bits(0), std::vector<long long>{});\n  \
+    \      verify_range(combinations_mask(3, 2), std::vector<long long>{3, 5, 6});\n\
+    \        verify_range(combinations_mask(2, 3), std::vector<long long>{});\n  \
+    \      verify_range(subsets_of_size(5, 1), std::vector<long long>{1, 4});\n  \
+    \      verify_range(add_one(1, 3), std::vector<std::pair<long long, long long>>{{1,\
+    \ 3}, {2, 5}});\n        verify_range(remove_one(5), std::vector<std::pair<long\
+    \ long, long long>>{{0, 4}, {2, 1}});\n        verify_range(subset_pairs(1), std::vector<std::pair<long\
+    \ long, long long>>{{0, 0}, {1, 1}, {1, 0}});\n    }\n\n    // 0 \u306E\u3068\u304D\
+    \u306F C++20 \u306E <bit> \u3068\u540C\u3058\u5024\n    check(countl_zero(0) ==\
+    \ 64 && countr_zero(0) == 64, \"countl_zero / countr_zero(0)\");\n    check(countl_one(0)\
+    \ == 0 && countr_one(0) == 0, \"countl_one / countr_one(0)\");\n    check(bit_width(0)\
+    \ == 0 && bit_ceil(0) == 1 && bit_floor(0) == 0, \"bit_width / bit_ceil / bit_floor(0)\"\
+    );\n    check(bit_ceil(1LL << 62) == (1LL << 62) && bit_ceil((1LL << 61) + 1)\
+    \ == (1LL << 62), \"bit_ceil \u4E0A\u9650\");\n    check(countr_one(std::numeric_limits<long\
+    \ long>::max()) == 63 && bit_width(std::numeric_limits<long long>::max()) == 63,\
+    \ \"\u6700\u5927\u5024\");\n\n    // \u623B\u308A\u5024\u306E\u578B\u306F C++17\
+    \ \u3067\u3082 C++20 \u3067\u3082 long long\n    static_assert(std::is_same_v<decltype(popcount(1)),\
     \ long long>);\n    static_assert(std::is_same_v<decltype(countl_zero(1)), long\
     \ long>);\n    static_assert(std::is_same_v<decltype(countr_zero(1)), long long>);\n\
     \    static_assert(std::is_same_v<decltype(countl_one(1)), long long>);\n    static_assert(std::is_same_v<decltype(countr_one(1)),\
@@ -744,7 +815,7 @@ data:
   isVerificationFile: true
   path: test/unittest/utility/bit.test.cpp
   requiredBy: []
-  timestamp: '2026-11-03 08:52:44+09:00'
+  timestamp: '2026-11-10 04:55:25+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/utility/bit.test.cpp

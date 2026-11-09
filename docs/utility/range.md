@@ -94,6 +94,7 @@ Grid({1, 4}, {10, 0, -5}) // {1, 2, 3} × {10, 5}
 
 ## 関連
 
+- 文字列盤面の壁を除いてグラフを作るには [GridGraph](../graph/grid-graph.hpp)
 - `sum(r)`、`max(r)` などのコンテナ全般の関数は [コンテナに対する関数](container_func.hpp)
 - `repr(r)` で文字列にするなら [repr](repr.hpp)
 - 範囲内の判定だけなら [汎用関数](../base/functions.hpp) の `inrange`、`inrect`

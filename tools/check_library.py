@@ -119,7 +119,7 @@ def check_docs():
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("checks", nargs="+", choices=["headers", "unittests", "sanitizers", "docs"])
-    parser.add_argument("--std", choices=["gnu++17", "gnu++20"], default="gnu++17")
+    parser.add_argument("--std", choices=["gnu++17", "gnu++20", "gnu++23"], default="gnu++17")
     parser.add_argument("--cxx", default="g++")
     parser.add_argument("--jobs", type=int, default=2)
     args = parser.parse_args()

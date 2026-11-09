@@ -111,6 +111,17 @@ int main() {
     FPS deduced(coefficients);
     static_assert(std::is_same_v<decltype(deduced), F>);
     if (deduced != F{1, -2, 0}) ok = false;
+    P mutable_coefficients = coefficients;
+    FPS deduced_mutable(mutable_coefficients);
+    FPS deduced_temporary(P{1, -2, 0});
+    FPS deduced_const_rvalue(std::move(coefficients));
+    FPS deduced_copy(deduced);
+    FPS deduced_move(std::move(deduced_copy));
+    static_assert(std::is_same_v<decltype(deduced_mutable), F>);
+    static_assert(std::is_same_v<decltype(deduced_temporary), F>);
+    static_assert(std::is_same_v<decltype(deduced_const_rvalue), F>);
+    static_assert(std::is_same_v<decltype(deduced_move), F>);
+    if (deduced_mutable != deduced || deduced_temporary != deduced || deduced_const_rvalue != deduced || deduced_move != deduced) ok = false;
     static_assert(!std::is_constructible_v<F, std::forward_list<int>&>);
     static_assert(!std::is_constructible_v<F, std::array<std::string, 3>&>);
 #if __cplusplus >= 202002L

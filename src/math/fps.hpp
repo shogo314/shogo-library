@@ -649,5 +649,9 @@ SumOfFractions<mint> sum_of_fractions(const std::vector<FPS<mint>>& nums, const 
     return rec(rec, 0, nums.size());
 }
 
+// C++23 では継承した vector の推論ガイドも候補になるため、vector からの推論を明示する。
+template <typename mint>
+FPS(std::vector<mint>) -> FPS<mint>;
+
 template <class R>
 FPS(R&&) -> FPS<internal_traits::range_value_t<R>>;

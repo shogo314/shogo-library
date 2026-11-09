@@ -29,6 +29,10 @@ data:
     path: src/graph/graph_util.hpp
     title: "\u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570"
   - icon: ':heavy_check_mark:'
+    path: src/graph/grid-graph.hpp
+    title: "\u6587\u5B57\u5217\u76E4\u9762\u306E\u30B0\u30EA\u30C3\u30C9\u30B0\u30E9\
+      \u30D5"
+  - icon: ':heavy_check_mark:'
     path: src/graph/heavy-light-decomposition.hpp
     title: "HL \u5206\u89E3 (Heavy-Light Decomposition)"
   - icon: ':heavy_check_mark:'
@@ -124,6 +128,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/graph/graph.test.cpp
     title: test/unittest/graph/graph.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/graph/grid-graph.test.cpp
+    title: test/unittest/graph/grid-graph.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/graph/heavy-light-decomposition.test.cpp
     title: test/unittest/graph/heavy-light-decomposition.test.cpp
@@ -470,6 +477,7 @@ data:
   - src/graph/lowlink.hpp
   - src/graph/eulerian-trail.hpp
   - src/graph/dominator-tree.hpp
+  - src/graph/grid-graph.hpp
   - src/graph/tree.hpp
   - src/graph/heavy-light-decomposition.hpp
   - src/graph/centroid-decomposition.hpp
@@ -481,6 +489,7 @@ data:
   - test/yukicoder/898.test.cpp
   - test/unittest/geometry/manhattan-mst.test.cpp
   - test/unittest/graph/tree_util.test.cpp
+  - test/unittest/graph/grid-graph.test.cpp
   - test/unittest/graph/minimum-arborescence.test.cpp
   - test/unittest/graph/tree.test.cpp
   - test/unittest/graph/graph-edges.test.cpp

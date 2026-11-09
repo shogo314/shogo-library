@@ -325,6 +325,10 @@ data:
       path: src/graph/graph_util.hpp
       title: "\u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570"
     - icon: ':heavy_check_mark:'
+      path: src/graph/grid-graph.hpp
+      title: "\u6587\u5B57\u5217\u76E4\u9762\u306E\u30B0\u30EA\u30C3\u30C9\u30B0\u30E9\
+        \u30D5"
+    - icon: ':heavy_check_mark:'
       path: src/graph/heavy-light-decomposition.hpp
       title: "HL \u5206\u89E3 (Heavy-Light Decomposition)"
     - icon: ':heavy_check_mark:'
@@ -1233,6 +1237,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/graph/graph.test.cpp
       title: test/unittest/graph/graph.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/graph/grid-graph.test.cpp
+      title: test/unittest/graph/grid-graph.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/graph/heavy-light-decomposition.test.cpp
       title: test/unittest/graph/heavy-light-decomposition.test.cpp

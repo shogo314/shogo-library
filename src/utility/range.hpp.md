@@ -10,6 +10,10 @@ data:
     title: "\u30D2\u30B9\u30C8\u30B0\u30E9\u30E0\u30FB\u30B0\u30EA\u30C3\u30C9\u306E\
       \u6700\u5927\u9577\u65B9\u5F62\u3068\u6700\u5927\u6B63\u65B9\u5F62"
   - icon: ':heavy_check_mark:'
+    path: src/graph/grid-graph.hpp
+    title: "\u6587\u5B57\u5217\u76E4\u9762\u306E\u30B0\u30EA\u30C3\u30C9\u30B0\u30E9\
+      \u30D5"
+  - icon: ':heavy_check_mark:'
     path: src/string/rolling-hash.hpp
     title: "\u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5"
   _extendedVerifiedWith:
@@ -52,6 +56,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/dp/largest-rectangle.test.cpp
     title: test/unittest/dp/largest-rectangle.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/graph/grid-graph.test.cpp
+    title: test/unittest/graph/grid-graph.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/string/aho-corasick.test.cpp
     title: test/unittest/string/aho-corasick.test.cpp
@@ -707,12 +714,14 @@ data:
   path: src/utility/range.hpp
   requiredBy:
   - src/dp/largest-rectangle.hpp
+  - src/graph/grid-graph.hpp
   - src/data_structures/imos-2d.hpp
   - src/string/rolling-hash.hpp
   timestamp: '2026-11-10 04:55:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/dp/largest-rectangle.test.cpp
+  - test/unittest/graph/grid-graph.test.cpp
   - test/unittest/utility/range-grid.test.cpp
   - test/unittest/utility/range.test.cpp
   - test/unittest/utility/repr.test.cpp
@@ -828,6 +837,7 @@ Grid({1, 4}, {10, 0, -5}) // {1, 2, 3} × {10, 5}
 
 ## 関連
 
+- 文字列盤面の壁を除いてグラフを作るには [GridGraph](../graph/grid-graph.hpp)
 - `sum(r)`、`max(r)` などのコンテナ全般の関数は [コンテナに対する関数](container_func.hpp)
 - `repr(r)` で文字列にするなら [repr](repr.hpp)
 - 範囲内の判定だけなら [汎用関数](../base/functions.hpp) の `inrange`、`inrect`

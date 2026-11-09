@@ -207,6 +207,7 @@
 "test/unittest/graph/general-matching.test.cpp": "2026-11-09 05:14:57 +0900",
 "test/unittest/graph/graph-edges.test.cpp": "2026-11-09 05:14:57 +0900",
 "test/unittest/graph/graph.test.cpp": "2026-11-09 05:14:57 +0900",
+"test/unittest/graph/grid-graph.test.cpp": "2026-11-10 05:56:29 +0900",
 "test/unittest/graph/heavy-light-decomposition.test.cpp": "2026-11-10 03:47:45 +0900",
 "test/unittest/graph/hungarian.test.cpp": "2026-10-23 13:33:10 +0900",
 "test/unittest/graph/lowlink.test.cpp": "2026-11-10 03:47:45 +0900",

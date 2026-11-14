@@ -34,7 +34,7 @@ struct Counter {
     std::set<value_type, CompareFrequency> frequency;
 
    public:
-    void inc(const key_type& key, const mapped_type& t) {
+    void inc(const key_type& key, const mapped_type& t = 1) {
         set(key, get(key) + t);
     }
     Counter() = default;
@@ -53,7 +53,7 @@ struct Counter {
 #endif
     explicit Counter(C&& v) {
         for (const key_type& a : v) {
-            inc(a, 1);
+            inc(a);
         }
     }
     Counter(std::initializer_list<value_type> init) {

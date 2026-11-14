@@ -36,7 +36,7 @@ Counter<int> d = c + Counter<int>(3);  // 3 を 1 個足した Counter
 | `Counter<T> c(v)` | コンテナ `v` の要素を数える | $O(\lvert v \rvert \log n)$ |
 | `c[x]` / `c.get(x)` | `x` の個数 (なければ 0) | $O(\log n)$ |
 | `c[x] = k` / `c.set(x, k)` | `x` の個数を `k` にする (`k >= 0`) | $O(\log n)$ |
-| `c[x] += k`、`c[x] -= k` / `c.inc(x, k)` | `x` の個数を増減する (負になると assert で落ちる) | $O(\log n)$ |
+| `c[x] += k`、`c[x] -= k` / `c.inc(x, k = 1)` | `x` の個数を増減する (`k` を省略すると 1 増やす。負になると assert で落ちる) | $O(\log n)$ |
 | `c + d`、`c += d` | 個数を足し合わせる | $O(m \log (n + m))$ ($m$ は `d` の異なる値の個数) |
 | `c - d`、`c -= d` | 個数を引く (負になると assert で落ちる)。`c -= c` で空になる | $O(m \log n)$ |
 | `for (auto [x, cnt] : c)` | `{値, 個数}` を値の昇順に走査 | $O(n)$ |

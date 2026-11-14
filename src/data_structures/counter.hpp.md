@@ -135,19 +135,19 @@ data:
     \ value_type& b) const {\n            return a.second > b.second || (a.second\
     \ == b.second && a.first < b.first);\n        }\n    };\n    std::map<key_type,\
     \ mapped_type> data;\n    std::set<value_type, CompareFrequency> frequency;\n\n\
-    \   public:\n    void inc(const key_type& key, const mapped_type& t) {\n     \
-    \   set(key, get(key) + t);\n    }\n    Counter() = default;\n    explicit Counter(const\
-    \ key_type& x) { set(x, 1); }\n    /**\n     * @brief \u7BC4\u56F2\u306E\u8981\
-    \u7D20\u3092\u6570\u3048\u308B\n     * Counter \u81EA\u8EAB\u3068 key_type (std::string\
-    \ \u306A\u3069\u7BC4\u56F2\u3067\u3082\u3042\u308B\u3082\u306E) \u306F\u3053\u3061\
-    \u3089\u3067\u53D7\u3051\u53D6\u3089\u306A\u3044\n     */\n#if __cplusplus >=\
-    \ 202002L\n    template <class C>\n        requires(!std::same_as<std::decay_t<C>,\
+    \   public:\n    void inc(const key_type& key, const mapped_type& t = 1) {\n \
+    \       set(key, get(key) + t);\n    }\n    Counter() = default;\n    explicit\
+    \ Counter(const key_type& x) { set(x, 1); }\n    /**\n     * @brief \u7BC4\u56F2\
+    \u306E\u8981\u7D20\u3092\u6570\u3048\u308B\n     * Counter \u81EA\u8EAB\u3068\
+    \ key_type (std::string \u306A\u3069\u7BC4\u56F2\u3067\u3082\u3042\u308B\u3082\
+    \u306E) \u306F\u3053\u3061\u3089\u3067\u53D7\u3051\u53D6\u3089\u306A\u3044\n \
+    \    */\n#if __cplusplus >= 202002L\n    template <class C>\n        requires(!std::same_as<std::decay_t<C>,\
     \ Counter> && !std::convertible_to<C, key_type> &&\n                 requires(C&\
     \ c) { std::begin(c); std::end(c); })\n#else\n    template <class C, ENABLE_IF_T(!std::is_same_v<std::decay_t<C>,\
     \ Counter> && !std::is_convertible_v<C, key_type>),\n              class = decltype(std::begin(std::declval<C&>()),\
     \ std::end(std::declval<C&>()))>\n#endif\n    explicit Counter(C&& v) {\n    \
-    \    for (const key_type& a : v) {\n            inc(a, 1);\n        }\n    }\n\
-    \    Counter(std::initializer_list<value_type> init) {\n        for (const auto&\
+    \    for (const key_type& a : v) {\n            inc(a);\n        }\n    }\n  \
+    \  Counter(std::initializer_list<value_type> init) {\n        for (const auto&\
     \ p : init) {\n            inc(p.first, p.second);\n        }\n    }\n    Counter&\
     \ operator+=(const Counter& o) {\n        for (const auto& [i, c] : o.data) {\n\
     \            inc(i, c);\n        }\n        return *this;\n    }\n    friend Counter\
@@ -227,19 +227,19 @@ data:
     \ a, const value_type& b) const {\n            return a.second > b.second || (a.second\
     \ == b.second && a.first < b.first);\n        }\n    };\n    std::map<key_type,\
     \ mapped_type> data;\n    std::set<value_type, CompareFrequency> frequency;\n\n\
-    \   public:\n    void inc(const key_type& key, const mapped_type& t) {\n     \
-    \   set(key, get(key) + t);\n    }\n    Counter() = default;\n    explicit Counter(const\
-    \ key_type& x) { set(x, 1); }\n    /**\n     * @brief \u7BC4\u56F2\u306E\u8981\
-    \u7D20\u3092\u6570\u3048\u308B\n     * Counter \u81EA\u8EAB\u3068 key_type (std::string\
-    \ \u306A\u3069\u7BC4\u56F2\u3067\u3082\u3042\u308B\u3082\u306E) \u306F\u3053\u3061\
-    \u3089\u3067\u53D7\u3051\u53D6\u3089\u306A\u3044\n     */\n#if __cplusplus >=\
-    \ 202002L\n    template <class C>\n        requires(!std::same_as<std::decay_t<C>,\
+    \   public:\n    void inc(const key_type& key, const mapped_type& t = 1) {\n \
+    \       set(key, get(key) + t);\n    }\n    Counter() = default;\n    explicit\
+    \ Counter(const key_type& x) { set(x, 1); }\n    /**\n     * @brief \u7BC4\u56F2\
+    \u306E\u8981\u7D20\u3092\u6570\u3048\u308B\n     * Counter \u81EA\u8EAB\u3068\
+    \ key_type (std::string \u306A\u3069\u7BC4\u56F2\u3067\u3082\u3042\u308B\u3082\
+    \u306E) \u306F\u3053\u3061\u3089\u3067\u53D7\u3051\u53D6\u3089\u306A\u3044\n \
+    \    */\n#if __cplusplus >= 202002L\n    template <class C>\n        requires(!std::same_as<std::decay_t<C>,\
     \ Counter> && !std::convertible_to<C, key_type> &&\n                 requires(C&\
     \ c) { std::begin(c); std::end(c); })\n#else\n    template <class C, ENABLE_IF_T(!std::is_same_v<std::decay_t<C>,\
     \ Counter> && !std::is_convertible_v<C, key_type>),\n              class = decltype(std::begin(std::declval<C&>()),\
     \ std::end(std::declval<C&>()))>\n#endif\n    explicit Counter(C&& v) {\n    \
-    \    for (const key_type& a : v) {\n            inc(a, 1);\n        }\n    }\n\
-    \    Counter(std::initializer_list<value_type> init) {\n        for (const auto&\
+    \    for (const key_type& a : v) {\n            inc(a);\n        }\n    }\n  \
+    \  Counter(std::initializer_list<value_type> init) {\n        for (const auto&\
     \ p : init) {\n            inc(p.first, p.second);\n        }\n    }\n    Counter&\
     \ operator+=(const Counter& o) {\n        for (const auto& [i, c] : o.data) {\n\
     \            inc(i, c);\n        }\n        return *this;\n    }\n    friend Counter\
@@ -313,7 +313,7 @@ data:
   isVerificationFile: false
   path: src/data_structures/counter.hpp
   requiredBy: []
-  timestamp: '2026-11-10 04:55:25+09:00'
+  timestamp: '2026-11-14 23:53:14+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/counter.test.cpp
@@ -358,7 +358,7 @@ Counter<int> d = c + Counter<int>(3);  // 3 を 1 個足した Counter
 | `Counter<T> c(v)` | コンテナ `v` の要素を数える | $O(\lvert v \rvert \log n)$ |
 | `c[x]` / `c.get(x)` | `x` の個数 (なければ 0) | $O(\log n)$ |
 | `c[x] = k` / `c.set(x, k)` | `x` の個数を `k` にする (`k >= 0`) | $O(\log n)$ |
-| `c[x] += k`、`c[x] -= k` / `c.inc(x, k)` | `x` の個数を増減する (負になると assert で落ちる) | $O(\log n)$ |
+| `c[x] += k`、`c[x] -= k` / `c.inc(x, k = 1)` | `x` の個数を増減する (`k` を省略すると 1 増やす。負になると assert で落ちる) | $O(\log n)$ |
 | `c + d`、`c += d` | 個数を足し合わせる | $O(m \log (n + m))$ ($m$ は `d` の異なる値の個数) |
 | `c - d`、`c -= d` | 個数を引く (負になると assert で落ちる)。`c -= c` で空になる | $O(m \log n)$ |
 | `for (auto [x, cnt] : c)` | `{値, 個数}` を値の昇順に走査 | $O(n)$ |

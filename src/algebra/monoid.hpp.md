@@ -464,7 +464,7 @@ data:
     }  // namespace internal_monoid\n\nnamespace monoid {\n\n/**\n * @brief \u548C\
     \n */\ntemplate <typename T>\nstruct Sum {\n    using S = T;\n    static constexpr\
     \ S op(const S& a, const S& b) { return a + b; }\n    static constexpr S e() {\
-    \ return S(0); }\n};\n\n/**\n * @brief \u7A4D\n */\ntemplate <typename T>\nstruct\
+    \ return S{}; }\n};\n\n/**\n * @brief \u7A4D\n */\ntemplate <typename T>\nstruct\
     \ Prod {\n    using S = T;\n    static constexpr S op(const S& a, const S& b)\
     \ { return a * b; }\n    static constexpr S e() { return S(1); }\n};\n\n/**\n\
     \ * @brief \u6700\u5927\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\u6700\u5C0F\
@@ -668,9 +668,9 @@ data:
     \ constexpr S op(const S& a, const S& b) { return S(a.sum + b.sum, std::min(b.min,\
     \ a.min + b.sum)); }\n    static constexpr S e() { return S(); }\n};\n\n/**\n\
     \ * @brief \u533A\u9593\u306E\u548C\u3001\u7A7A\u3092\u542B\u3080 prefix\u30FB\
-    suffix \u306E\u548C\u306E\u6700\u5927\u5024\u3001\u7A7A\u3092\u542B\u3080\u9023\
-    \u7D9A\u90E8\u5206\u5217\u306E\u548C\u306E\u6700\u5927\u5024\n * S(x) \u3067\u5024\
-    \ x \u306E1\u8981\u7D20\u3092\u8868\u3059\u8981\u7D20\u3092\u4F5C\u308B\u3002\u5358\
+    suffix \u306E\u548C\u306E\u6700\u5927\u5024\u3001\u7A7A\u3092\u542B\u3080\u90E8\
+    \u5206\u914D\u5217\u306E\u548C\u306E\u6700\u5927\u5024\n * S(x) \u3067\u5024 x\
+    \ \u306E1\u8981\u7D20\u3092\u8868\u3059\u8981\u7D20\u3092\u4F5C\u308B\u3002\u5358\
     \u4F4D\u5143\u306F\u7A7A\u306E\u533A\u9593 {0, 0, 0, 0}\n * \u9759\u7684\u306A\
     \u5217\u306B\u5BFE\u3057\u3066\u4E00\u5EA6\u3060\u3051\u6C42\u3081\u308B\u306A\
     \u3089 dp/maximum-subarray.hpp \u306E maximum_subarray\n */\ntemplate <typename\
@@ -678,8 +678,8 @@ data:
     \u306E\u548C\n        T prefix;  // \u7A7A\u3092\u542B\u3080 prefix \u306E\u548C\
     \u306E\u6700\u5927\u5024 (0 \u4EE5\u4E0A)\n        T suffix;  // \u7A7A\u3092\u542B\
     \u3080 suffix \u306E\u548C\u306E\u6700\u5927\u5024 (0 \u4EE5\u4E0A)\n        T\
-    \ best;    // \u7A7A\u3092\u542B\u3080\u9023\u7D9A\u90E8\u5206\u5217\u306E\u548C\
-    \u306E\u6700\u5927\u5024 (0 \u4EE5\u4E0A)\n        constexpr S() : sum(0), prefix(0),\
+    \ best;    // \u7A7A\u3092\u542B\u3080\u90E8\u5206\u914D\u5217\u306E\u548C\u306E\
+    \u6700\u5927\u5024 (0 \u4EE5\u4E0A)\n        constexpr S() : sum(0), prefix(0),\
     \ suffix(0), best(0) {}\n        constexpr S(const T& x) : sum(x), prefix(x <\
     \ T(0) ? T(0) : x), suffix(prefix), best(prefix) {}\n        constexpr S(const\
     \ T& sum, const T& prefix, const T& suffix, const T& best)\n            : sum(sum),\
@@ -801,7 +801,7 @@ data:
     }  // namespace internal_monoid\n\nnamespace monoid {\n\n/**\n * @brief \u548C\
     \n */\ntemplate <typename T>\nstruct Sum {\n    using S = T;\n    static constexpr\
     \ S op(const S& a, const S& b) { return a + b; }\n    static constexpr S e() {\
-    \ return S(0); }\n};\n\n/**\n * @brief \u7A4D\n */\ntemplate <typename T>\nstruct\
+    \ return S{}; }\n};\n\n/**\n * @brief \u7A4D\n */\ntemplate <typename T>\nstruct\
     \ Prod {\n    using S = T;\n    static constexpr S op(const S& a, const S& b)\
     \ { return a * b; }\n    static constexpr S e() { return S(1); }\n};\n\n/**\n\
     \ * @brief \u6700\u5927\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\u6700\u5C0F\
@@ -1005,9 +1005,9 @@ data:
     \ constexpr S op(const S& a, const S& b) { return S(a.sum + b.sum, std::min(b.min,\
     \ a.min + b.sum)); }\n    static constexpr S e() { return S(); }\n};\n\n/**\n\
     \ * @brief \u533A\u9593\u306E\u548C\u3001\u7A7A\u3092\u542B\u3080 prefix\u30FB\
-    suffix \u306E\u548C\u306E\u6700\u5927\u5024\u3001\u7A7A\u3092\u542B\u3080\u9023\
-    \u7D9A\u90E8\u5206\u5217\u306E\u548C\u306E\u6700\u5927\u5024\n * S(x) \u3067\u5024\
-    \ x \u306E1\u8981\u7D20\u3092\u8868\u3059\u8981\u7D20\u3092\u4F5C\u308B\u3002\u5358\
+    suffix \u306E\u548C\u306E\u6700\u5927\u5024\u3001\u7A7A\u3092\u542B\u3080\u90E8\
+    \u5206\u914D\u5217\u306E\u548C\u306E\u6700\u5927\u5024\n * S(x) \u3067\u5024 x\
+    \ \u306E1\u8981\u7D20\u3092\u8868\u3059\u8981\u7D20\u3092\u4F5C\u308B\u3002\u5358\
     \u4F4D\u5143\u306F\u7A7A\u306E\u533A\u9593 {0, 0, 0, 0}\n * \u9759\u7684\u306A\
     \u5217\u306B\u5BFE\u3057\u3066\u4E00\u5EA6\u3060\u3051\u6C42\u3081\u308B\u306A\
     \u3089 dp/maximum-subarray.hpp \u306E maximum_subarray\n */\ntemplate <typename\
@@ -1015,8 +1015,8 @@ data:
     \u306E\u548C\n        T prefix;  // \u7A7A\u3092\u542B\u3080 prefix \u306E\u548C\
     \u306E\u6700\u5927\u5024 (0 \u4EE5\u4E0A)\n        T suffix;  // \u7A7A\u3092\u542B\
     \u3080 suffix \u306E\u548C\u306E\u6700\u5927\u5024 (0 \u4EE5\u4E0A)\n        T\
-    \ best;    // \u7A7A\u3092\u542B\u3080\u9023\u7D9A\u90E8\u5206\u5217\u306E\u548C\
-    \u306E\u6700\u5927\u5024 (0 \u4EE5\u4E0A)\n        constexpr S() : sum(0), prefix(0),\
+    \ best;    // \u7A7A\u3092\u542B\u3080\u90E8\u5206\u914D\u5217\u306E\u548C\u306E\
+    \u6700\u5927\u5024 (0 \u4EE5\u4E0A)\n        constexpr S() : sum(0), prefix(0),\
     \ suffix(0), best(0) {}\n        constexpr S(const T& x) : sum(x), prefix(x <\
     \ T(0) ? T(0) : x), suffix(prefix), best(prefix) {}\n        constexpr S(const\
     \ T& sum, const T& prefix, const T& suffix, const T& best)\n            : sum(sum),\
@@ -1051,128 +1051,128 @@ data:
   isVerificationFile: false
   path: src/algebra/monoid.hpp
   requiredBy:
+  - src/geometry/axis-parallel-segments.hpp
+  - src/data_structures/dynamic-segtree.hpp
+  - src/data_structures/monoid-unionfind.hpp
+  - src/data_structures/segtree.hpp
+  - src/data_structures/fenwick-tree.hpp
   - src/data_structures/segtree-2d.hpp
+  - src/data_structures/rbst.hpp
   - src/data_structures/sparse-table.hpp
-  - src/data_structures/dual-segtree-2d.hpp
-  - src/data_structures/segtree-beats.hpp
-  - src/data_structures/persistent-segtree.hpp
-  - src/data_structures/persistent-lazy-segtree.hpp
-  - src/data_structures/lazy-segtree.hpp
-  - src/data_structures/potentialized-unionfind.hpp
   - src/data_structures/dual-segtree.hpp
   - src/data_structures/imos.hpp
-  - src/data_structures/sortable-segtree.hpp
-  - src/data_structures/disjoint-sparse-table.hpp
-  - src/data_structures/sliding-window-aggregation.hpp
-  - src/data_structures/merge-sort-tree.hpp
-  - src/data_structures/segtree.hpp
   - src/data_structures/dynamic-lazy-segtree.hpp
-  - src/data_structures/fenwick-tree.hpp
-  - src/data_structures/rbst.hpp
-  - src/data_structures/monoid-unionfind.hpp
-  - src/data_structures/dynamic-segtree.hpp
+  - src/data_structures/sortable-segtree.hpp
+  - src/data_structures/potentialized-unionfind.hpp
+  - src/data_structures/persistent-lazy-segtree.hpp
+  - src/data_structures/dual-segtree-2d.hpp
+  - src/data_structures/lazy-segtree.hpp
+  - src/data_structures/merge-sort-tree.hpp
+  - src/data_structures/sliding-window-aggregation.hpp
+  - src/data_structures/segtree-beats.hpp
+  - src/data_structures/disjoint-sparse-table.hpp
+  - src/data_structures/persistent-segtree.hpp
   - src/algebra/beats-acted-monoid.hpp
-  - src/algebra/acted-monoid.hpp
   - src/algebra/group.hpp
-  - src/geometry/axis-parallel-segments.hpp
-  timestamp: '2026-11-08 19:03:35+09:00'
+  - src/algebra/acted-monoid.hpp
+  timestamp: '2026-11-14 23:03:37+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/data_structures/dual-segtree-2d.test.cpp
-  - test/unittest/data_structures/link-cut-tree.test.cpp
-  - test/unittest/data_structures/sparse-table.test.cpp
-  - test/unittest/data_structures/imos.test.cpp
-  - test/unittest/data_structures/rbst.test.cpp
-  - test/unittest/data_structures/dynamic-lazy-segtree.test.cpp
+  - test/yukicoder/3652.test.cpp
+  - test/yukicoder/1641.test.cpp
+  - test/yukicoder/1036.1.test.cpp
+  - test/yukicoder/2292.test.cpp
+  - test/yukicoder/1036.2.test.cpp
+  - test/yukicoder/674.1.test.cpp
+  - test/unittest/geometry/axis-parallel-segments.test.cpp
   - test/unittest/data_structures/persistent-segtree.test.cpp
-  - test/unittest/data_structures/dual-segtree.test.cpp
   - test/unittest/data_structures/persistent-lazy-segtree.test.cpp
   - test/unittest/data_structures/monoid-unionfind.test.cpp
   - test/unittest/data_structures/sliding-window-aggregation.test.cpp
-  - test/unittest/data_structures/segtree-2d.test.cpp
-  - test/unittest/data_structures/fenwick-tree.test.cpp
-  - test/unittest/data_structures/segtree-beats.test.cpp
-  - test/unittest/data_structures/sortable-segtree.test.cpp
   - test/unittest/data_structures/potentialized-unionfind.test.cpp
-  - test/unittest/data_structures/disjoint-sparse-table.test.cpp
+  - test/unittest/data_structures/dynamic-lazy-segtree.test.cpp
   - test/unittest/data_structures/dynamic-segtree.test.cpp
+  - test/unittest/data_structures/link-cut-tree.test.cpp
+  - test/unittest/data_structures/disjoint-sparse-table.test.cpp
+  - test/unittest/data_structures/segtree-beats.test.cpp
+  - test/unittest/data_structures/imos.test.cpp
+  - test/unittest/data_structures/dual-segtree-2d.test.cpp
+  - test/unittest/data_structures/fenwick-tree.test.cpp
+  - test/unittest/data_structures/sortable-segtree.test.cpp
+  - test/unittest/data_structures/rbst.test.cpp
+  - test/unittest/data_structures/segtree-2d.test.cpp
+  - test/unittest/data_structures/sparse-table.test.cpp
+  - test/unittest/data_structures/dual-segtree.test.cpp
+  - test/unittest/algebra/acted-monoid.test.cpp
+  - test/unittest/algebra/mapping.test.cpp
   - test/unittest/algebra/beats-acted-monoid.test.cpp
   - test/unittest/algebra/monoid.test.cpp
-  - test/unittest/algebra/mapping.test.cpp
-  - test/unittest/algebra/acted-monoid.test.cpp
-  - test/unittest/geometry/axis-parallel-segments.test.cpp
-  - test/aoj/ntl/ntl-1-c.test.cpp
-  - test/aoj/grl/grl-5-d.test.cpp
-  - test/aoj/cgl/cgl-6-a.test.cpp
-  - test/aoj/dsl/dsl-2-b.2.test.cpp
-  - test/aoj/dsl/dsl-2-d.test.cpp
-  - test/aoj/dsl/dsl-2-b.1.test.cpp
-  - test/aoj/dsl/dsl-1-b.2.test.cpp
-  - test/aoj/dsl/dsl-1-b.1.test.cpp
-  - test/aoj/dsl/dsl-2-e.test.cpp
-  - test/aoj/dsl/dsl-3-d.test.cpp
-  - test/aoj/dsl/dsl-2-a.test.cpp
-  - test/aoj/dsl/dsl-2-h.2.test.cpp
-  - test/aoj/dsl/dsl-2-g.test.cpp
-  - test/aoj/dsl/dsl-2-i.test.cpp
-  - test/aoj/dsl/dsl-5-a.test.cpp
-  - test/aoj/dsl/dsl-2-f.test.cpp
-  - test/aoj/dsl/dsl-2-h.1.test.cpp
-  - test/aoj/volume29/2971.test.cpp
-  - test/aoj/itp2/itp2-3-b.1.test.cpp
-  - test/aoj/itp2/itp2-3-b.2.test.cpp
-  - test/aoj/itp2/itp2-3-b.3.test.cpp
-  - test/yosupo/data_structure/area-of-union-of-rectangles.2.test.cpp
-  - test/yosupo/data_structure/range-affine-point-get.1.test.cpp
+  - test/yosupo/data_structure/queue-operate-all-composite.test.cpp
+  - test/yosupo/data_structure/point-set-range-composite-large-array.test.cpp
   - test/yosupo/data_structure/range-affine-range-sum.3.test.cpp
-  - test/yosupo/data_structure/point-add-range-sum.2.test.cpp
-  - test/yosupo/data_structure/rectangle-add-point-get.2.test.cpp
-  - test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
+  - test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
+  - test/yosupo/data_structure/range-affine-point-get.1.test.cpp
+  - test/yosupo/data_structure/unionfind-with-potential.test.cpp
+  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.2.test.cpp
+  - test/yosupo/data_structure/point-add-rectangle-sum.test.cpp
   - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.1.test.cpp
   - test/yosupo/data_structure/rectangle-sum.1.test.cpp
-  - test/yosupo/data_structure/staticrmq.test.cpp
-  - test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
-  - test/yosupo/data_structure/rectangle-sum.2.test.cpp
-  - test/yosupo/data_structure/range-affine-point-get.2.test.cpp
-  - test/yosupo/data_structure/range-reverse-range-sum.test.cpp
-  - test/yosupo/data_structure/point-set-range-composite.4.test.cpp
-  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.2.test.cpp
-  - test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
-  - test/yosupo/data_structure/point-set-range-composite-large-array.test.cpp
-  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
-  - test/yosupo/data_structure/point-add-range-sum.3.test.cpp
-  - test/yosupo/data_structure/point-set-range-composite.1.test.cpp
-  - test/yosupo/data_structure/area-of-union-of-rectangles.1.test.cpp
-  - test/yosupo/data_structure/unionfind-with-potential.test.cpp
-  - test/yosupo/data_structure/rectangle-sum.3.test.cpp
-  - test/yosupo/data_structure/point-add-range-sum.1.test.cpp
-  - test/yosupo/data_structure/range-set-range-composite.test.cpp
-  - test/yosupo/data_structure/point-add-rectangle-sum.test.cpp
-  - test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
-  - test/yosupo/data_structure/rectangle-sum.4.test.cpp
-  - test/yosupo/data_structure/range-affine-range-sum.1.test.cpp
-  - test/yosupo/data_structure/queue-operate-all-composite.test.cpp
-  - test/yosupo/data_structure/range-affine-range-sum-large-array.test.cpp
+  - test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
   - test/yosupo/data_structure/point-set-range-composite.2.test.cpp
-  - test/yosupo/data_structure/point-set-range-composite.3.test.cpp
+  - test/yosupo/data_structure/point-set-range-composite.1.test.cpp
+  - test/yosupo/data_structure/point-set-range-composite.4.test.cpp
+  - test/yosupo/data_structure/rectangle-sum.2.test.cpp
+  - test/yosupo/data_structure/range-affine-range-sum.1.test.cpp
   - test/yosupo/data_structure/deque-operate-all-composite.test.cpp
+  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
+  - test/yosupo/data_structure/point-add-range-sum.2.test.cpp
+  - test/yosupo/data_structure/range-reverse-range-sum.test.cpp
   - test/yosupo/data_structure/range-add-range-min.test.cpp
-  - test/yosupo/data_structure/range-affine-range-sum.2.test.cpp
+  - test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
+  - test/yosupo/data_structure/range-affine-point-get.2.test.cpp
+  - test/yosupo/data_structure/area-of-union-of-rectangles.2.test.cpp
   - test/yosupo/data_structure/persistent-range-affine-range-sum.test.cpp
-  - test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp
+  - test/yosupo/data_structure/range-affine-range-sum.2.test.cpp
+  - test/yosupo/data_structure/staticrmq.test.cpp
+  - test/yosupo/data_structure/range-affine-range-sum-large-array.test.cpp
+  - test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
+  - test/yosupo/data_structure/rectangle-sum.3.test.cpp
+  - test/yosupo/data_structure/range-set-range-composite.test.cpp
+  - test/yosupo/data_structure/rectangle-sum.4.test.cpp
+  - test/yosupo/data_structure/area-of-union-of-rectangles.1.test.cpp
+  - test/yosupo/data_structure/point-add-range-sum.1.test.cpp
+  - test/yosupo/data_structure/point-set-range-composite.3.test.cpp
+  - test/yosupo/data_structure/rectangle-add-point-get.2.test.cpp
+  - test/yosupo/data_structure/point-add-range-sum.3.test.cpp
+  - test/yosupo/tree/vertex-add-subtree-sum.1.test.cpp
+  - test/yosupo/tree/vertex-set-path-composite.test.cpp
+  - test/yosupo/tree/dynamic-tree-vertex-add-subtree-sum.test.cpp
   - test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
+  - test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp
+  - test/yosupo/tree/dynamic-tree-vertex-add-path-sum.test.cpp
   - test/yosupo/tree/lca.2.test.cpp
   - test/yosupo/tree/vertex-add-path-sum.test.cpp
-  - test/yosupo/tree/vertex-add-subtree-sum.1.test.cpp
-  - test/yosupo/tree/dynamic-tree-vertex-add-subtree-sum.test.cpp
-  - test/yosupo/tree/vertex-set-path-composite.test.cpp
-  - test/yosupo/tree/dynamic-tree-vertex-add-path-sum.test.cpp
-  - test/yukicoder/1036.1.test.cpp
-  - test/yukicoder/1641.test.cpp
-  - test/yukicoder/1036.2.test.cpp
-  - test/yukicoder/674.1.test.cpp
-  - test/yukicoder/2292.test.cpp
-  - test/yukicoder/3652.test.cpp
+  - test/aoj/itp2/itp2-3-b.1.test.cpp
+  - test/aoj/itp2/itp2-3-b.3.test.cpp
+  - test/aoj/itp2/itp2-3-b.2.test.cpp
+  - test/aoj/dsl/dsl-2-h.2.test.cpp
+  - test/aoj/dsl/dsl-2-e.test.cpp
+  - test/aoj/dsl/dsl-2-f.test.cpp
+  - test/aoj/dsl/dsl-3-d.test.cpp
+  - test/aoj/dsl/dsl-1-b.1.test.cpp
+  - test/aoj/dsl/dsl-5-a.test.cpp
+  - test/aoj/dsl/dsl-2-a.test.cpp
+  - test/aoj/dsl/dsl-2-h.1.test.cpp
+  - test/aoj/dsl/dsl-2-b.2.test.cpp
+  - test/aoj/dsl/dsl-2-i.test.cpp
+  - test/aoj/dsl/dsl-2-g.test.cpp
+  - test/aoj/dsl/dsl-2-d.test.cpp
+  - test/aoj/dsl/dsl-1-b.2.test.cpp
+  - test/aoj/dsl/dsl-2-b.1.test.cpp
+  - test/aoj/volume29/2971.test.cpp
+  - test/aoj/grl/grl-5-d.test.cpp
+  - test/aoj/ntl/ntl-1-c.test.cpp
+  - test/aoj/cgl/cgl-6-a.test.cpp
 documentation_of: src/algebra/monoid.hpp
 layout: document
 title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
@@ -1195,7 +1195,7 @@ SegTree seg2(v, Monoid([](int a, int b) { return a + b; }, 0));  // ラムダ式
 
 | モノイド | 要素の型 `S` | 積 | 単位元 |
 |---|---|---|---|
-| `Sum<T>` | `T` | `a + b` | `0` |
+| `Sum<T>` | `T` | `a + b` | `T{}` (数値型なら `0`) |
 | `Prod<T>` | `T` | `a * b` | `1` |
 | `Max<T>` | `T` | `max(a, b)` | 型の最小値 |
 | `Min<T>` | `T` | `min(a, b)` | 型の最大値 |
@@ -1217,16 +1217,18 @@ SegTree seg2(v, Monoid([](int a, int b) { return a + b; }, 0));  // ラムダ式
 | `PrefixSumMax<T>` / `PrefixSumMin<T>` | `PrefixSumMax<T>::S` など | 区間の和 `sum` と、空を含む prefix の和の最大値 `max` (最小値 `min`) | 空の区間 `{0, 0}` |
 | `PrefixSumMinMax<T = long long>` | `PrefixSumMinMax<T>::S` | 区間の和 `sum` と、空を含む prefix の和の最小値 `min`・最大値 `max` | 空の区間 `{0, 0, 0}` |
 | `SuffixSumMax<T>` / `SuffixSumMin<T>` | `SuffixSumMax<T>::S` など | 区間の和 `sum` と、空を含む suffix の和の最大値 `max` (最小値 `min`) | 空の区間 `{0, 0}` |
-| `MaxSubarraySum<T>` | `MaxSubarraySum<T>::S` | 区間の和 `sum`、空を含む prefix・suffix の和の最大値 `prefix`・`suffix`、空を含む連続部分列の和の最大値 `best` | 空の区間 `{0, 0, 0, 0}` |
+| `MaxSubarraySum<T>` | `MaxSubarraySum<T>::S` | 区間の和 `sum`、空を含む prefix・suffix の和の最大値 `prefix`・`suffix`、空を含む部分配列の和の最大値 `best` | 空の区間 `{0, 0, 0, 0}` |
 | `Reverse<M>` | `M::S` | `M::op(b, a)` (積の順序を逆にする) | `M::e()` |
 
 `MinWith`・`MaxWith` は、位置が -1 の要素を単位元とみなします。そのため、値が型の最大値 (`MaxWith` なら最小値) の要素があっても、空区間の積は `{型の最大値, -1}` (`MaxWith` なら `{型の最小値, -1}`) になり、その要素の位置が正しく返ります。位置に -1 は使わないでください。`U` が整数型でないとき (`bool` も含む) は、単位元は `{型の最大値, U{}}` (`MaxWith` なら `{型の最小値, U{}}`) で、値が型の最大値 (最小値) の要素は置けません。
 
 `Parenthesis::S` は文字 `'('`、`')'` から作れます。`is_valid()` で正しい括弧列かどうかを判定できます。
 
-## prefix・suffix の和と連続部分列の和
+`Sum<T>` は、引数なしで値初期化した `T{}` を和の単位元として使います。`PriorityCounter` のような型も、その空の値を単位元にできます。
 
-`PrefixSumMax<T>`、`PrefixSumMin<T>`、`PrefixSumMinMax<T>`、`SuffixSumMax<T>`、`SuffixSumMin<T>`、`MaxSubarraySum<T>` は、区間の和と一緒に prefix の和などの最大値・最小値を持ちます。どれも**空の prefix・suffix・部分列を含めて**数えるので、最大値は 0 以上、最小値は 0 以下になり、単位元は空の区間 (すべて 0) です。値の prefix max ではなく、prefix の**和**の最大値であることに注意してください。
+## prefix・suffix の和と部分配列の和
+
+`PrefixSumMax<T>`、`PrefixSumMin<T>`、`PrefixSumMinMax<T>`、`SuffixSumMax<T>`、`SuffixSumMin<T>`、`MaxSubarraySum<T>` は、区間の和と一緒に prefix の和などの最大値・最小値を持ちます。どれも**空の prefix・suffix・部分配列を含めて**数えるので、最大値は 0 以上、最小値は 0 以下になり、単位元は空の区間 (すべて 0) です。値の prefix max ではなく、prefix の**和**の最大値であることに注意してください。
 
 要素は `S(x)` で値 `x` の1要素から作れます。`std::vector<T>` から `std::vector<S>(a.begin(), a.end())` で変換することもできます。`==`、`!=` で比較できます。
 
@@ -1244,10 +1246,10 @@ both.set(i, x);
 
 SegTree<monoid::MaxSubarraySum<long long>> seg2(n);
 seg2.set(i, x);
-long long best = seg2.prod(l, r).best;  // [l, r) の連続部分列の和の最大値 (空なら 0)
+long long best = seg2.prod(l, r).best;  // [l, r) の部分配列の和の最大値 (空なら 0)
 ```
 
-空の部分列を許さない最大値が欲しい場合は、区間の最大値 (`Max<T>`) が負かどうかで場合分けします。
+空の部分配列を許さない最大値が欲しい場合は、区間の最大値 (`Max<T>`) が負かどうかで場合分けします。
 
 ## 1次関数 `Affine<T>`
 

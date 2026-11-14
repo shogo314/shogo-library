@@ -200,7 +200,7 @@ data:
       title: "\u6700\u9577\u5897\u52A0\u90E8\u5206\u5217 (LIS)"
     - icon: ':heavy_check_mark:'
       path: src/dp/maximum-subarray.hpp
-      title: "\u9023\u7D9A\u90E8\u5206\u5217\u306E\u548C\u306E\u6700\u5927\u5024 (Kadane\
+      title: "\u90E8\u5206\u914D\u5217\u306E\u548C\u306E\u6700\u5927\u5024 (Kadane\
         \ \u306E\u30A2\u30EB\u30B4\u30EA\u30BA\u30E0)"
     - icon: ':heavy_check_mark:'
       path: src/dp/monge.hpp

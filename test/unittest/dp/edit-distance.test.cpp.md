@@ -110,17 +110,17 @@ data:
     \ dp(n + 1, std::vector<int>(m + 1));\n    for (long long i = 1; i <= n; i++)\
     \ {\n        for (long long j = 1; j <= m; j++) {\n            dp[i][j] = a[i\
     \ - 1] == b[j - 1] ? dp[i - 1][j - 1] + 1 : std::max(dp[i - 1][j], dp[i][j - 1]);\n\
-    \        }\n    }\n    // \u5F8C\u308D\u304B\u3089\u305F\u3069\u308B\n    std::vector<std::pair<long\
-    \ long, long long>> res;\n    for (long long i = n, j = m; i > 0 && j > 0;) {\n\
-    \        if (a[i - 1] == b[j - 1]) {\n            res.emplace_back(i - 1, j -\
-    \ 1);\n            i--, j--;\n        } else if (dp[i - 1][j] >= dp[i][j - 1])\
-    \ {\n            i--;\n        } else {\n            j--;\n        }\n    }\n\
-    \    std::reverse(res.begin(), res.end());\n    return {static_cast<long long>(res.size()),\
-    \ res};\n}\n#line 16 \"test/unittest/dp/edit-distance.test.cpp\"\n\n// s[i:] \u3068\
-    \ t[j:] \u306E\u7DE8\u96C6\u8DDD\u96E2\nint naive_edit(const std::string& s, const\
-    \ std::string& t, int i, int j) {\n    if (i == static_cast<int>(s.size())) return\
-    \ t.size() - j;\n    if (j == static_cast<int>(t.size())) return s.size() - i;\n\
-    \    int res = naive_edit(s, t, i + 1, j + 1) + (s[i] != t[j]);\n    res = std::min(res,\
+    \        }\n    }\n    std::vector<std::pair<long long, long long>> res;\n   \
+    \ for (long long i = n, j = m; i > 0 && j > 0;) {\n        if (a[i - 1] == b[j\
+    \ - 1]) {\n            res.emplace_back(i - 1, j - 1);\n            i--, j--;\n\
+    \        } else if (dp[i - 1][j] >= dp[i][j - 1]) {\n            i--;\n      \
+    \  } else {\n            j--;\n        }\n    }\n    std::reverse(res.begin(),\
+    \ res.end());\n    return {static_cast<long long>(res.size()), res};\n}\n#line\
+    \ 16 \"test/unittest/dp/edit-distance.test.cpp\"\n\n// s[i:] \u3068 t[j:] \u306E\
+    \u7DE8\u96C6\u8DDD\u96E2\nint naive_edit(const std::string& s, const std::string&\
+    \ t, int i, int j) {\n    if (i == static_cast<int>(s.size())) return t.size()\
+    \ - j;\n    if (j == static_cast<int>(t.size())) return s.size() - i;\n    int\
+    \ res = naive_edit(s, t, i + 1, j + 1) + (s[i] != t[j]);\n    res = std::min(res,\
     \ naive_edit(s, t, i + 1, j) + 1);\n    res = std::min(res, naive_edit(s, t, i,\
     \ j + 1) + 1);\n    return res;\n}\n\n// s[i:] \u3068 t[j:] \u306E LCS \u306E\u9577\
     \u3055\nint naive_lcs(const std::string& s, const std::string& t, int i, int j)\
@@ -263,7 +263,7 @@ data:
   isVerificationFile: true
   path: test/unittest/dp/edit-distance.test.cpp
   requiredBy: []
-  timestamp: '2026-11-08 23:25:06+09:00'
+  timestamp: '2026-11-14 22:55:27+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/dp/edit-distance.test.cpp

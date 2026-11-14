@@ -601,9 +601,9 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/graph/tree_util.test.cpp
-  - test/aoj/grl/grl-5-a.test.cpp
-  - test/yosupo/tree/tree-diameter.test.cpp
   - test/yosupo/tree/rooted-tree-isomorphism-classification.test.cpp
+  - test/yosupo/tree/tree-diameter.test.cpp
+  - test/aoj/grl/grl-5-a.test.cpp
 documentation_of: src/graph/tree_util.hpp
 layout: document
 title: "\u6728\u306B\u95A2\u3059\u308B\u95A2\u6570"

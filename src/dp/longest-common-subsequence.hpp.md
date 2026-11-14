@@ -47,13 +47,13 @@ data:
     \ LCS \u306E\u9577\u3055\n    std::vector<std::vector<int>> dp(n + 1, std::vector<int>(m\
     \ + 1));\n    for (long long i = 1; i <= n; i++) {\n        for (long long j =\
     \ 1; j <= m; j++) {\n            dp[i][j] = a[i - 1] == b[j - 1] ? dp[i - 1][j\
-    \ - 1] + 1 : std::max(dp[i - 1][j], dp[i][j - 1]);\n        }\n    }\n    // \u5F8C\
-    \u308D\u304B\u3089\u305F\u3069\u308B\n    std::vector<std::pair<long long, long\
-    \ long>> res;\n    for (long long i = n, j = m; i > 0 && j > 0;) {\n        if\
-    \ (a[i - 1] == b[j - 1]) {\n            res.emplace_back(i - 1, j - 1);\n    \
-    \        i--, j--;\n        } else if (dp[i - 1][j] >= dp[i][j - 1]) {\n     \
-    \       i--;\n        } else {\n            j--;\n        }\n    }\n    std::reverse(res.begin(),\
-    \ res.end());\n    return {static_cast<long long>(res.size()), res};\n}\n"
+    \ - 1] + 1 : std::max(dp[i - 1][j], dp[i][j - 1]);\n        }\n    }\n    std::vector<std::pair<long\
+    \ long, long long>> res;\n    for (long long i = n, j = m; i > 0 && j > 0;) {\n\
+    \        if (a[i - 1] == b[j - 1]) {\n            res.emplace_back(i - 1, j -\
+    \ 1);\n            i--, j--;\n        } else if (dp[i - 1][j] >= dp[i][j - 1])\
+    \ {\n            i--;\n        } else {\n            j--;\n        }\n    }\n\
+    \    std::reverse(res.begin(), res.end());\n    return {static_cast<long long>(res.size()),\
+    \ res};\n}\n"
   code: "#pragma once\n\n/**\n * @file longest-common-subsequence.hpp\n * @brief \u6700\
     \u9577\u5171\u901A\u90E8\u5206\u5217 (LCS)\n */\n\n#include <algorithm>\n#include\
     \ <iterator>\n#include <utility>\n#include <vector>\n\n/**\n * @brief s \u3068\
@@ -86,18 +86,17 @@ data:
     \ dp(n + 1, std::vector<int>(m + 1));\n    for (long long i = 1; i <= n; i++)\
     \ {\n        for (long long j = 1; j <= m; j++) {\n            dp[i][j] = a[i\
     \ - 1] == b[j - 1] ? dp[i - 1][j - 1] + 1 : std::max(dp[i - 1][j], dp[i][j - 1]);\n\
-    \        }\n    }\n    // \u5F8C\u308D\u304B\u3089\u305F\u3069\u308B\n    std::vector<std::pair<long\
-    \ long, long long>> res;\n    for (long long i = n, j = m; i > 0 && j > 0;) {\n\
-    \        if (a[i - 1] == b[j - 1]) {\n            res.emplace_back(i - 1, j -\
-    \ 1);\n            i--, j--;\n        } else if (dp[i - 1][j] >= dp[i][j - 1])\
-    \ {\n            i--;\n        } else {\n            j--;\n        }\n    }\n\
-    \    std::reverse(res.begin(), res.end());\n    return {static_cast<long long>(res.size()),\
-    \ res};\n}\n"
+    \        }\n    }\n    std::vector<std::pair<long long, long long>> res;\n   \
+    \ for (long long i = n, j = m; i > 0 && j > 0;) {\n        if (a[i - 1] == b[j\
+    \ - 1]) {\n            res.emplace_back(i - 1, j - 1);\n            i--, j--;\n\
+    \        } else if (dp[i - 1][j] >= dp[i][j - 1]) {\n            i--;\n      \
+    \  } else {\n            j--;\n        }\n    }\n    std::reverse(res.begin(),\
+    \ res.end());\n    return {static_cast<long long>(res.size()), res};\n}\n"
   dependsOn: []
   isVerificationFile: false
   path: src/dp/longest-common-subsequence.hpp
   requiredBy: []
-  timestamp: '2026-11-03 08:17:29+09:00'
+  timestamp: '2026-11-14 22:55:27+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/dp/edit-distance.test.cpp

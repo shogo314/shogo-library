@@ -32,9 +32,10 @@ data:
     \u30EB\n    std::vector<long long> _group_id;              //!< \u305D\u306E\u9802\
     \u70B9\u304C\u5C5E\u3059\u308B\u9023\u7D50\u6210\u5206\u306Eindex\n    std::vector<long\
     \ long> _root_index;            //!< root\u306Ecycles\u4E0A\u306Eindex\n    std::vector<std::vector<long\
-    \ long>> doubling;  //!< DoublingClimbTree\n\n    bool built = false;\n\n    void\
-    \ build() {\n        assert(static_cast<long long>(g.size()) == n);\n        for\
-    \ (long long i = 0; i < n; i++) assert(0 <= g[i] && g[i] < n);\n        _is_cycle.assign(n,\
+    \ long>> doubling;  //!< doubling[v][k] \u306F v \u304B\u3089 2^k \u56DE\u9032\
+    \u3093\u3060\u9802\u70B9\n\n    bool built = false;\n\n    void build() {\n  \
+    \      assert(static_cast<long long>(g.size()) == n);\n        for (long long\
+    \ i = 0; i < n; i++) assert(0 <= g[i] && g[i] < n);\n        _is_cycle.assign(n,\
     \ false);\n        _depth.assign(n, 0);\n        _root.assign(n, -1);\n      \
     \  _group_id.assign(n, 0);\n        _root_index.assign(n, 0);\n        _groups.clear();\n\
     \        _cycles.clear();\n        std::vector<bool> visited(n);\n        for\
@@ -140,19 +141,20 @@ data:
     \            //!< \u305D\u306E\u9802\u70B9\u304C\u5C5E\u3059\u308B\u9023\u7D50\
     \u6210\u5206\u306Eindex\n    std::vector<long long> _root_index;            //!<\
     \ root\u306Ecycles\u4E0A\u306Eindex\n    std::vector<std::vector<long long>> doubling;\
-    \  //!< DoublingClimbTree\n\n    bool built = false;\n\n    void build() {\n \
-    \       assert(static_cast<long long>(g.size()) == n);\n        for (long long\
-    \ i = 0; i < n; i++) assert(0 <= g[i] && g[i] < n);\n        _is_cycle.assign(n,\
-    \ false);\n        _depth.assign(n, 0);\n        _root.assign(n, -1);\n      \
-    \  _group_id.assign(n, 0);\n        _root_index.assign(n, 0);\n        _groups.clear();\n\
-    \        _cycles.clear();\n        std::vector<bool> visited(n);\n        for\
-    \ (long long i = 0; i < n; i++) {\n            if (visited[i]) continue;\n   \
-    \         std::vector<long long> v;\n            long long u = i;\n          \
-    \  while (!visited[u]) {\n                visited[u] = true;\n               \
-    \ v.push_back(u);\n                u = g[u];\n            }\n            if (_root[u]\
-    \ == -1) {\n                long long k = std::find(v.begin(), v.end(), u) - v.begin();\n\
-    \                _cycles.push_back({});\n                _groups.push_back({});\n\
-    \                for (long long j = 0; j < k; j++) {\n                    _is_cycle[v[j]]\
+    \  //!< doubling[v][k] \u306F v \u304B\u3089 2^k \u56DE\u9032\u3093\u3060\u9802\
+    \u70B9\n\n    bool built = false;\n\n    void build() {\n        assert(static_cast<long\
+    \ long>(g.size()) == n);\n        for (long long i = 0; i < n; i++) assert(0 <=\
+    \ g[i] && g[i] < n);\n        _is_cycle.assign(n, false);\n        _depth.assign(n,\
+    \ 0);\n        _root.assign(n, -1);\n        _group_id.assign(n, 0);\n       \
+    \ _root_index.assign(n, 0);\n        _groups.clear();\n        _cycles.clear();\n\
+    \        std::vector<bool> visited(n);\n        for (long long i = 0; i < n; i++)\
+    \ {\n            if (visited[i]) continue;\n            std::vector<long long>\
+    \ v;\n            long long u = i;\n            while (!visited[u]) {\n      \
+    \          visited[u] = true;\n                v.push_back(u);\n             \
+    \   u = g[u];\n            }\n            if (_root[u] == -1) {\n            \
+    \    long long k = std::find(v.begin(), v.end(), u) - v.begin();\n           \
+    \     _cycles.push_back({});\n                _groups.push_back({});\n       \
+    \         for (long long j = 0; j < k; j++) {\n                    _is_cycle[v[j]]\
     \ = false;\n                    _root[v[j]] = u;\n                    _root_index[v[j]]\
     \ = 0;\n                    _group_id[v[j]] = _cycles.size() - 1;\n          \
     \          _depth[v[j]] = k - j;\n                    _groups.back().push_back(v[j]);\n\
@@ -235,11 +237,11 @@ data:
   isVerificationFile: false
   path: src/graph/functional-graph.hpp
   requiredBy: []
-  timestamp: '2026-11-09 05:12:43+09:00'
+  timestamp: '2026-11-14 22:55:27+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/graph/functional-graph.1.test.cpp
   - test/unittest/graph/functional-graph.2.test.cpp
+  - test/unittest/graph/functional-graph.1.test.cpp
 documentation_of: src/graph/functional-graph.hpp
 layout: document
 title: "\u30D5\u30A1\u30F3\u30AF\u30B7\u30E7\u30CA\u30EB\u30B0\u30E9\u30D5"

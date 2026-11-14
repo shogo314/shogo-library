@@ -380,8 +380,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/string/aho-corasick.test.cpp
-  - test/aoj/volume28/2873.test.cpp
   - test/yosupo/string/aho-corasick.test.cpp
+  - test/aoj/volume28/2873.test.cpp
 documentation_of: src/string/aho-corasick.hpp
 layout: document
 title: Aho-Corasick

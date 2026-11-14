@@ -188,7 +188,7 @@ data:
     }  // namespace internal_monoid\n\nnamespace monoid {\n\n/**\n * @brief \u548C\
     \n */\ntemplate <typename T>\nstruct Sum {\n    using S = T;\n    static constexpr\
     \ S op(const S& a, const S& b) { return a + b; }\n    static constexpr S e() {\
-    \ return S(0); }\n};\n\n/**\n * @brief \u7A4D\n */\ntemplate <typename T>\nstruct\
+    \ return S{}; }\n};\n\n/**\n * @brief \u7A4D\n */\ntemplate <typename T>\nstruct\
     \ Prod {\n    using S = T;\n    static constexpr S op(const S& a, const S& b)\
     \ { return a * b; }\n    static constexpr S e() { return S(1); }\n};\n\n/**\n\
     \ * @brief \u6700\u5927\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\u6700\u5C0F\
@@ -392,9 +392,9 @@ data:
     \ constexpr S op(const S& a, const S& b) { return S(a.sum + b.sum, std::min(b.min,\
     \ a.min + b.sum)); }\n    static constexpr S e() { return S(); }\n};\n\n/**\n\
     \ * @brief \u533A\u9593\u306E\u548C\u3001\u7A7A\u3092\u542B\u3080 prefix\u30FB\
-    suffix \u306E\u548C\u306E\u6700\u5927\u5024\u3001\u7A7A\u3092\u542B\u3080\u9023\
-    \u7D9A\u90E8\u5206\u5217\u306E\u548C\u306E\u6700\u5927\u5024\n * S(x) \u3067\u5024\
-    \ x \u306E1\u8981\u7D20\u3092\u8868\u3059\u8981\u7D20\u3092\u4F5C\u308B\u3002\u5358\
+    suffix \u306E\u548C\u306E\u6700\u5927\u5024\u3001\u7A7A\u3092\u542B\u3080\u90E8\
+    \u5206\u914D\u5217\u306E\u548C\u306E\u6700\u5927\u5024\n * S(x) \u3067\u5024 x\
+    \ \u306E1\u8981\u7D20\u3092\u8868\u3059\u8981\u7D20\u3092\u4F5C\u308B\u3002\u5358\
     \u4F4D\u5143\u306F\u7A7A\u306E\u533A\u9593 {0, 0, 0, 0}\n * \u9759\u7684\u306A\
     \u5217\u306B\u5BFE\u3057\u3066\u4E00\u5EA6\u3060\u3051\u6C42\u3081\u308B\u306A\
     \u3089 dp/maximum-subarray.hpp \u306E maximum_subarray\n */\ntemplate <typename\
@@ -402,8 +402,8 @@ data:
     \u306E\u548C\n        T prefix;  // \u7A7A\u3092\u542B\u3080 prefix \u306E\u548C\
     \u306E\u6700\u5927\u5024 (0 \u4EE5\u4E0A)\n        T suffix;  // \u7A7A\u3092\u542B\
     \u3080 suffix \u306E\u548C\u306E\u6700\u5927\u5024 (0 \u4EE5\u4E0A)\n        T\
-    \ best;    // \u7A7A\u3092\u542B\u3080\u9023\u7D9A\u90E8\u5206\u5217\u306E\u548C\
-    \u306E\u6700\u5927\u5024 (0 \u4EE5\u4E0A)\n        constexpr S() : sum(0), prefix(0),\
+    \ best;    // \u7A7A\u3092\u542B\u3080\u90E8\u5206\u914D\u5217\u306E\u548C\u306E\
+    \u6700\u5927\u5024 (0 \u4EE5\u4E0A)\n        constexpr S() : sum(0), prefix(0),\
     \ suffix(0), best(0) {}\n        constexpr S(const T& x) : sum(x), prefix(x <\
     \ T(0) ? T(0) : x), suffix(prefix), best(prefix) {}\n        constexpr S(const\
     \ T& sum, const T& prefix, const T& suffix, const T& best)\n            : sum(sum),\
@@ -1090,28 +1090,28 @@ data:
   isVerificationFile: false
   path: src/data_structures/lazy-segtree.hpp
   requiredBy: []
-  timestamp: '2026-11-10 04:55:25+09:00'
+  timestamp: '2026-11-14 23:03:37+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/yukicoder/2292.test.cpp
   - test/unittest/data_structures/dual-segtree.test.cpp
-  - test/unittest/algebra/monoid.test.cpp
   - test/unittest/algebra/acted-monoid.test.cpp
-  - test/aoj/dsl/dsl-2-h.2.test.cpp
-  - test/aoj/dsl/dsl-2-g.test.cpp
-  - test/aoj/dsl/dsl-2-i.test.cpp
-  - test/aoj/dsl/dsl-2-f.test.cpp
-  - test/aoj/dsl/dsl-2-h.1.test.cpp
-  - test/yosupo/data_structure/area-of-union-of-rectangles.2.test.cpp
-  - test/yosupo/data_structure/range-affine-point-get.1.test.cpp
+  - test/unittest/algebra/monoid.test.cpp
   - test/yosupo/data_structure/range-affine-range-sum.3.test.cpp
+  - test/yosupo/data_structure/range-affine-point-get.1.test.cpp
   - test/yosupo/data_structure/point-set-range-composite.4.test.cpp
-  - test/yosupo/data_structure/area-of-union-of-rectangles.1.test.cpp
-  - test/yosupo/data_structure/point-add-range-sum.1.test.cpp
-  - test/yosupo/data_structure/range-set-range-composite.test.cpp
   - test/yosupo/data_structure/range-affine-range-sum.1.test.cpp
   - test/yosupo/data_structure/range-add-range-min.test.cpp
+  - test/yosupo/data_structure/area-of-union-of-rectangles.2.test.cpp
   - test/yosupo/data_structure/range-affine-range-sum.2.test.cpp
-  - test/yukicoder/2292.test.cpp
+  - test/yosupo/data_structure/range-set-range-composite.test.cpp
+  - test/yosupo/data_structure/area-of-union-of-rectangles.1.test.cpp
+  - test/yosupo/data_structure/point-add-range-sum.1.test.cpp
+  - test/aoj/dsl/dsl-2-h.2.test.cpp
+  - test/aoj/dsl/dsl-2-f.test.cpp
+  - test/aoj/dsl/dsl-2-h.1.test.cpp
+  - test/aoj/dsl/dsl-2-i.test.cpp
+  - test/aoj/dsl/dsl-2-g.test.cpp
 documentation_of: src/data_structures/lazy-segtree.hpp
 layout: document
 title: "\u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"

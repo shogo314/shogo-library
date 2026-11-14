@@ -46,6 +46,9 @@ data:
     path: src/data_structures/potentialized-unionfind.hpp
     title: "\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind"
   - icon: ':heavy_check_mark:'
+    path: src/data_structures/priority_counter.hpp
+    title: "\u4E0A\u4F4D K \u500B\u306E\u5024\u3068\u305D\u306E\u500B\u6570"
+  - icon: ':heavy_check_mark:'
     path: src/data_structures/rbst.hpp
     title: "\u5E73\u8861\u4E8C\u5206\u6728 (RBST)"
   - icon: ':heavy_check_mark:'
@@ -175,7 +178,7 @@ data:
     }  // namespace internal_monoid\n\nnamespace monoid {\n\n/**\n * @brief \u548C\
     \n */\ntemplate <typename T>\nstruct Sum {\n    using S = T;\n    static constexpr\
     \ S op(const S& a, const S& b) { return a + b; }\n    static constexpr S e() {\
-    \ return S(0); }\n};\n\n/**\n * @brief \u7A4D\n */\ntemplate <typename T>\nstruct\
+    \ return S{}; }\n};\n\n/**\n * @brief \u7A4D\n */\ntemplate <typename T>\nstruct\
     \ Prod {\n    using S = T;\n    static constexpr S op(const S& a, const S& b)\
     \ { return a * b; }\n    static constexpr S e() { return S(1); }\n};\n\n/**\n\
     \ * @brief \u6700\u5927\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\u6700\u5C0F\
@@ -379,9 +382,9 @@ data:
     \ constexpr S op(const S& a, const S& b) { return S(a.sum + b.sum, std::min(b.min,\
     \ a.min + b.sum)); }\n    static constexpr S e() { return S(); }\n};\n\n/**\n\
     \ * @brief \u533A\u9593\u306E\u548C\u3001\u7A7A\u3092\u542B\u3080 prefix\u30FB\
-    suffix \u306E\u548C\u306E\u6700\u5927\u5024\u3001\u7A7A\u3092\u542B\u3080\u9023\
-    \u7D9A\u90E8\u5206\u5217\u306E\u548C\u306E\u6700\u5927\u5024\n * S(x) \u3067\u5024\
-    \ x \u306E1\u8981\u7D20\u3092\u8868\u3059\u8981\u7D20\u3092\u4F5C\u308B\u3002\u5358\
+    suffix \u306E\u548C\u306E\u6700\u5927\u5024\u3001\u7A7A\u3092\u542B\u3080\u90E8\
+    \u5206\u914D\u5217\u306E\u548C\u306E\u6700\u5927\u5024\n * S(x) \u3067\u5024 x\
+    \ \u306E1\u8981\u7D20\u3092\u8868\u3059\u8981\u7D20\u3092\u4F5C\u308B\u3002\u5358\
     \u4F4D\u5143\u306F\u7A7A\u306E\u533A\u9593 {0, 0, 0, 0}\n * \u9759\u7684\u306A\
     \u5217\u306B\u5BFE\u3057\u3066\u4E00\u5EA6\u3060\u3051\u6C42\u3081\u308B\u306A\
     \u3089 dp/maximum-subarray.hpp \u306E maximum_subarray\n */\ntemplate <typename\
@@ -389,8 +392,8 @@ data:
     \u306E\u548C\n        T prefix;  // \u7A7A\u3092\u542B\u3080 prefix \u306E\u548C\
     \u306E\u6700\u5927\u5024 (0 \u4EE5\u4E0A)\n        T suffix;  // \u7A7A\u3092\u542B\
     \u3080 suffix \u306E\u548C\u306E\u6700\u5927\u5024 (0 \u4EE5\u4E0A)\n        T\
-    \ best;    // \u7A7A\u3092\u542B\u3080\u9023\u7D9A\u90E8\u5206\u5217\u306E\u548C\
-    \u306E\u6700\u5927\u5024 (0 \u4EE5\u4E0A)\n        constexpr S() : sum(0), prefix(0),\
+    \ best;    // \u7A7A\u3092\u542B\u3080\u90E8\u5206\u914D\u5217\u306E\u548C\u306E\
+    \u6700\u5927\u5024 (0 \u4EE5\u4E0A)\n        constexpr S() : sum(0), prefix(0),\
     \ suffix(0), best(0) {}\n        constexpr S(const T& x) : sum(x), prefix(x <\
     \ T(0) ? T(0) : x), suffix(prefix), best(prefix) {}\n        constexpr S(const\
     \ T& sum, const T& prefix, const T& suffix, const T& best)\n            : sum(sum),\
@@ -1868,17 +1871,60 @@ data:
     \ a) { return leader(a); });\n    }\n\n   private:\n    S weight(long long a)\
     \ {\n        leader(a);\n        return diff_weight[a];\n    }\n};\n\ntemplate\
     \ <typename G>\nPotentializedUnionFind(long long, G) -> PotentializedUnionFind<G>;\n\
-    #line 2 \"src/data_structures/rbst.hpp\"\n\n/**\n * @file rbst.hpp\n * @brief\
-    \ \u5E73\u8861\u4E8C\u5206\u6728 (RBST) \u306B\u3088\u308B\u5217\n */\n\n#line\
-    \ 10 \"src/data_structures/rbst.hpp\"\n#include <cstdint>\n#line 16 \"src/data_structures/rbst.hpp\"\
-    \n\n#line 19 \"src/data_structures/rbst.hpp\"\n\nnamespace internal_rbst {\n#if\
-    \ __cplusplus < 202002L\ntemplate <typename M, typename = void>\nstruct has_acted\
-    \ : std::false_type {};\ntemplate <typename M>\nstruct has_acted<M, std::void_t<typename\
-    \ M::F>> : std::true_type {};\n#endif\n// \u4F5C\u7528\u7D20\u4ED8\u304D\u3067\
-    \u306A\u3044\u30E2\u30CE\u30A4\u30C9\u306E\u3068\u304D\u306E\u4F5C\u7528\u7D20\
-    \u306E\u578B\nstruct NoAct {\n    using F = NoAct;\n};\n}  // namespace internal_rbst\n\
-    \n/**\n * @brief \u5E73\u8861\u4E8C\u5206\u6728 (RBST) \u306B\u3088\u308B\u5217\
-    \n *\n * \u4F4D\u7F6E\u3067\u6271\u3046\u5217\u3002k \u756A\u76EE\u3078\u306E\u633F\
+    #line 2 \"src/data_structures/priority_counter.hpp\"\n\n/**\n * @file priority_counter.hpp\n\
+    \ * @brief \u4E0A\u4F4D K \u500B\u306E\u5024\u3068\u305D\u306E\u500B\u6570\n */\n\
+    \n#line 14 \"src/data_structures/priority_counter.hpp\"\n\n#line 16 \"src/data_structures/priority_counter.hpp\"\
+    \n\ntemplate <typename T, std::size_t K = 1, class Compare = std::less<T>, ENABLE_IF_T(K\
+    \ >= 1)>\nstruct PriorityCounter {\n    using key_type = T;\n    using mapped_type\
+    \ = long long;\n    using value_type = std::pair<key_type, mapped_type>;\n   \
+    \ inline constexpr static std::size_t k = K;\n\n   private:\n    // C++17 \u306E\
+    \ constexpr \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u306F\u3059\u3079\
+    \u3066\u306E\u30E1\u30F3\u30D0\u306E\u521D\u671F\u5316\u304C\u5FC5\u8981\u306A\
+    \u306E\u3067\u3001\u5024\u521D\u671F\u5316\u3057\u3066\u304A\u304F\n    std::array<value_type,\
+    \ K> data{};\n\n   public:\n    /** @brief \u4E0A\u4F4D\u304B\u3089 i \u756A\u76EE\
+    \u306E\u5024\u3068\u500B\u6570\u3002size() <= i < K \u3067\u306F\u500B\u6570\u306F\
+    \ 0 */\n    constexpr const value_type& operator[](long long i) const {\n    \
+    \    assert(0 <= i && i < static_cast<long long>(K));\n        return data[i];\n\
+    \    }\n\n    constexpr PriorityCounter() {}\n    explicit constexpr PriorityCounter(const\
+    \ key_type& x) : PriorityCounter() {\n        data[0].first = x;\n        data[0].second\
+    \ = 1;\n    }\n\n    constexpr long long size() const {\n        for (std::size_t\
+    \ i = 0; i < k; i++) {\n            if (data[i].second == 0) {\n             \
+    \   return static_cast<long long>(i);\n            }\n        }\n        return\
+    \ k;\n    }\n\n    constexpr void inc(const key_type& x, const mapped_type& c\
+    \ = 1) {\n        assert(c > 0);\n        bool f = false;\n        key_type pre_key{};\n\
+    \        mapped_type pre_mapped{};\n        for (std::size_t i = 0; i < k; i++)\
+    \ {\n            if (f) {\n                // std::swap \u306F C++17 \u3067\u306F\
+    \ constexpr \u3067\u306A\u3044\u306E\u3067\u624B\u3067\u5165\u308C\u66FF\u3048\
+    \u308B\n                key_type tmp_key = data[i].first;\n                data[i].first\
+    \ = pre_key;\n                pre_key = tmp_key;\n                mapped_type\
+    \ tmp_mapped = data[i].second;\n                data[i].second = pre_mapped;\n\
+    \                pre_mapped = tmp_mapped;\n                continue;\n       \
+    \     }\n            if (data[i].second == 0) {\n                data[i].first\
+    \ = x;\n                data[i].second += c;\n                return;\n      \
+    \      }\n            if (Compare()(data[i].first, x)) {\n                pre_key\
+    \ = data[i].first;\n                pre_mapped = data[i].second;\n           \
+    \     data[i].first = x;\n                data[i].second = c;\n              \
+    \  f = true;\n            } else if (!Compare()(x, data[i].first)) {\n       \
+    \         data[i].second += c;\n                return;\n            }\n     \
+    \   }\n    }\n\n    constexpr PriorityCounter& operator+=(const PriorityCounter&\
+    \ o) {\n        for (std::size_t i = 0; i < k; i++) {\n            if (o.data[i].second\
+    \ == 0) break;\n            this->inc(o.data[i].first, o.data[i].second);\n  \
+    \      }\n        return *this;\n    }\n    constexpr friend PriorityCounter operator+(const\
+    \ PriorityCounter& a, const PriorityCounter& b) {\n        PriorityCounter res(a);\n\
+    \        return res += b;\n    }\n};\n\ntemplate <typename T, std::size_t K =\
+    \ 1>\nusing MaxCounter = PriorityCounter<T, K>;\n\ntemplate <typename T, std::size_t\
+    \ K = 1>\nusing MinCounter = PriorityCounter<T, K, std::greater<T>>;\n#line 2\
+    \ \"src/data_structures/rbst.hpp\"\n\n/**\n * @file rbst.hpp\n * @brief \u5E73\
+    \u8861\u4E8C\u5206\u6728 (RBST) \u306B\u3088\u308B\u5217\n */\n\n#line 10 \"src/data_structures/rbst.hpp\"\
+    \n#include <cstdint>\n#line 16 \"src/data_structures/rbst.hpp\"\n\n#line 19 \"\
+    src/data_structures/rbst.hpp\"\n\nnamespace internal_rbst {\n#if __cplusplus <\
+    \ 202002L\ntemplate <typename M, typename = void>\nstruct has_acted : std::false_type\
+    \ {};\ntemplate <typename M>\nstruct has_acted<M, std::void_t<typename M::F>>\
+    \ : std::true_type {};\n#endif\n// \u4F5C\u7528\u7D20\u4ED8\u304D\u3067\u306A\u3044\
+    \u30E2\u30CE\u30A4\u30C9\u306E\u3068\u304D\u306E\u4F5C\u7528\u7D20\u306E\u578B\
+    \nstruct NoAct {\n    using F = NoAct;\n};\n}  // namespace internal_rbst\n\n\
+    /**\n * @brief \u5E73\u8861\u4E8C\u5206\u6728 (RBST) \u306B\u3088\u308B\u5217\n\
+    \ *\n * \u4F4D\u7F6E\u3067\u6271\u3046\u5217\u3002k \u756A\u76EE\u3078\u306E\u633F\
     \u5165\u30FB\u524A\u9664\u3001\u533A\u9593\u7A4D\u3001\u533A\u9593\u53CD\u8EE2\
     \u3001split\u30FBmerge \u3092\u671F\u5F85 O(log n) \u3067\u884C\u3046\n * \u30E2\
     \u30CE\u30A4\u30C9 (algebra/monoid.hpp) \u304B\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
@@ -2730,7 +2776,7 @@ data:
     \ l];\n        return op(table[k][l], table[k][r - (1LL << k)]);\n    }\n    S\
     \ all_prod() const { return prod(0, n); }\n};\n\ntemplate <class R, typename M>\n\
     SparseTable(R&&, M) -> SparseTable<M>;\ntemplate <typename M>\nSparseTable(std::initializer_list<typename\
-    \ M::S>, M) -> SparseTable<M>;\n#line 36 \"test/unittest/algebra/monoid.test.cpp\"\
+    \ M::S>, M) -> SparseTable<M>;\n#line 37 \"test/unittest/algebra/monoid.test.cpp\"\
     \n\nbool ok = true;\nvoid check(bool cond, const char* what) {\n    if (!cond\
     \ && ok) std::cerr << \"failed: \" << what << std::endl;\n    if (!cond) ok =\
     \ false;\n}\n\n// SegTree<M> \u3092\u3001\u914D\u5217\u3068\u6F14\u7B97 op \u3067\
@@ -2882,10 +2928,24 @@ data:
     \ ordinary({1, 2, 3});\n        check(ordinary.all_prod() == 6, \"SegTree initializer\
     \ list\");\n        SegTree<monoid::Sum<long long>> widened(std::vector<int>{1,\
     \ 2, 3});\n        check(widened.all_prod() == 6, \"SegTree arithmetic conversion\"\
-    );\n    }\n\n    std::mt19937_64 rng(314);\n\n    // And / Or: \u5358\u4F4D\u5143\
-    \u306F\u305D\u308C\u305E\u308C\u5168\u30D3\u30C3\u30C8 1 \u3068 0\n    check(monoid::And<unsigned>::e()\
-    \ == ~0u, \"And::e\");\n    check(monoid::Or<unsigned>::e() == 0u, \"Or::e\");\n\
-    \    auto gen_bits = [&] { return static_cast<unsigned>(rng() % 64); };\n    test_segtree<monoid::And<unsigned>>([](unsigned\
+    );\n    }\n\n    {\n        using PC = MaxCounter<int, 3>;\n        using M =\
+    \ monoid::Sum<PC>;\n        static_assert(M::e().size() == 0);\n        static_assert(group::Sum<long\
+    \ long>::e() == 0);\n        SegTree<M> empty(3);\n        check(empty.all_prod().size()\
+    \ == 0, \"Sum<PriorityCounter> \u521D\u671F\u5024\u306F\u7A7A\");\n        SegTree<M>\
+    \ seg(std::vector<int>{-5, -5, -2});\n        const std::vector<int> values =\
+    \ {-5, -5, -2};\n        for (long long l = 0; l <= 3; l++) {\n            for\
+    \ (long long r = l; r <= 3; r++) {\n                PC expect;\n             \
+    \   for (long long i = l; i < r; i++) expect.inc(values[i]);\n               \
+    \ const auto actual = seg.prod(l, r);\n                check(actual.size() ==\
+    \ expect.size(), \"Sum<PriorityCounter> \u7A2E\u985E\u6570\");\n             \
+    \   for (long long i = 0; i < 3; i++) {\n                    check(actual[i].second\
+    \ == expect[i].second, \"Sum<PriorityCounter> \u500B\u6570\");\n             \
+    \       if (expect[i].second) check(actual[i].first == expect[i].first, \"Sum<PriorityCounter>\
+    \ \u5024\");\n                }\n            }\n        }\n    }\n\n    std::mt19937_64\
+    \ rng(314);\n\n    // And / Or: \u5358\u4F4D\u5143\u306F\u305D\u308C\u305E\u308C\
+    \u5168\u30D3\u30C3\u30C8 1 \u3068 0\n    check(monoid::And<unsigned>::e() == ~0u,\
+    \ \"And::e\");\n    check(monoid::Or<unsigned>::e() == 0u, \"Or::e\");\n    auto\
+    \ gen_bits = [&] { return static_cast<unsigned>(rng() % 64); };\n    test_segtree<monoid::And<unsigned>>([](unsigned\
     \ a, unsigned b) { return a & b; }, ~0u, gen_bits, rng, \"And\");\n    test_segtree<monoid::Or<unsigned>>([](unsigned\
     \ a, unsigned b) { return a | b; }, 0u, gen_bits, rng, \"Or\");\n\n    // Parenthesis:\
     \ \u533A\u9593\u304C\u6B63\u3057\u3044\u62EC\u5F27\u5217\u304B\u3092 is_valid\
@@ -3017,8 +3077,8 @@ data:
     \       int x = rng() % 1024;\n        check(group::Xor<int>::inv(x) == x, \"\
     group::Xor::inv\");\n    }\n\n    // PrefixSumMax / PrefixSumMin / PrefixSumMinMax\
     \ / SuffixSumMax / SuffixSumMin / MaxSubarraySum: \u7A7A\u3092\u542B\u3080 prefix\u30FB\
-    suffix\u30FB\u9023\u7D9A\u90E8\u5206\u5217\u306E\u548C\n    for (int rep = 0;\
-    \ rep < 300 && ok; rep++) {\n        int n = rng() % 12 + 1;\n        std::vector<long\
+    suffix\u30FB\u90E8\u5206\u914D\u5217\u306E\u548C\n    for (int rep = 0; rep <\
+    \ 300 && ok; rep++) {\n        int n = rng() % 12 + 1;\n        std::vector<long\
     \ long> a(n);\n        for (auto& x : a) x = static_cast<long long>(rng() % 21)\
     \ - 10;\n        SegTree<monoid::PrefixSumMax<long long>> pmax(a);\n        SegTree<monoid::PrefixSumMin<long\
     \ long>> pmin(a);\n        using PM = monoid::PrefixSumMinMax<>;\n        SegTree<PM>\
@@ -3103,15 +3163,16 @@ data:
     \n#include \"../../../src/data_structures/monoid-unionfind.hpp\"\n#include \"\
     ../../../src/data_structures/persistent-lazy-segtree.hpp\"\n#include \"../../../src/data_structures/persistent-segtree.hpp\"\
     \n#include \"../../../src/data_structures/potentialized-unionfind.hpp\"\n#include\
-    \ \"../../../src/data_structures/rbst.hpp\"\n#include \"../../../src/data_structures/segtree-beats.hpp\"\
-    \n#include \"../../../src/data_structures/segtree.hpp\"\n#include \"../../../src/data_structures/sortable-segtree.hpp\"\
-    \n#include \"../../../src/data_structures/sparse-table.hpp\"\n\nbool ok = true;\n\
-    void check(bool cond, const char* what) {\n    if (!cond && ok) std::cerr << \"\
-    failed: \" << what << std::endl;\n    if (!cond) ok = false;\n}\n\n// SegTree<M>\
-    \ \u3092\u3001\u914D\u5217\u3068\u6F14\u7B97 op \u3067\u611A\u76F4\u306B\u8A08\
-    \u7B97\u3057\u305F\u7D50\u679C\u3068\u30E9\u30F3\u30C0\u30E0\u306A\u64CD\u4F5C\
-    \u5217\u3067\u6BD4\u3079\u308B\n// size\u30FBconst \u306A operator[]\u30FBall_prod\u30FB\
-    os << seg \u3082\u78BA\u304B\u3081\u308B\ntemplate <typename M, typename Op, typename\
+    \ \"../../../src/data_structures/priority_counter.hpp\"\n#include \"../../../src/data_structures/rbst.hpp\"\
+    \n#include \"../../../src/data_structures/segtree-beats.hpp\"\n#include \"../../../src/data_structures/segtree.hpp\"\
+    \n#include \"../../../src/data_structures/sortable-segtree.hpp\"\n#include \"\
+    ../../../src/data_structures/sparse-table.hpp\"\n\nbool ok = true;\nvoid check(bool\
+    \ cond, const char* what) {\n    if (!cond && ok) std::cerr << \"failed: \" <<\
+    \ what << std::endl;\n    if (!cond) ok = false;\n}\n\n// SegTree<M> \u3092\u3001\
+    \u914D\u5217\u3068\u6F14\u7B97 op \u3067\u611A\u76F4\u306B\u8A08\u7B97\u3057\u305F\
+    \u7D50\u679C\u3068\u30E9\u30F3\u30C0\u30E0\u306A\u64CD\u4F5C\u5217\u3067\u6BD4\
+    \u3079\u308B\n// size\u30FBconst \u306A operator[]\u30FBall_prod\u30FBos << seg\
+    \ \u3082\u78BA\u304B\u3081\u308B\ntemplate <typename M, typename Op, typename\
     \ Gen>\nvoid test_segtree(Op op, typename M::S e, Gen gen, std::mt19937_64& rng,\
     \ const char* name) {\n    using S = typename M::S;\n    for (int rep = 0; rep\
     \ < 200 && ok; rep++) {\n        int n = rng() % 20 + 1;\n        std::vector<S>\
@@ -3257,10 +3318,24 @@ data:
     \ ordinary({1, 2, 3});\n        check(ordinary.all_prod() == 6, \"SegTree initializer\
     \ list\");\n        SegTree<monoid::Sum<long long>> widened(std::vector<int>{1,\
     \ 2, 3});\n        check(widened.all_prod() == 6, \"SegTree arithmetic conversion\"\
-    );\n    }\n\n    std::mt19937_64 rng(314);\n\n    // And / Or: \u5358\u4F4D\u5143\
-    \u306F\u305D\u308C\u305E\u308C\u5168\u30D3\u30C3\u30C8 1 \u3068 0\n    check(monoid::And<unsigned>::e()\
-    \ == ~0u, \"And::e\");\n    check(monoid::Or<unsigned>::e() == 0u, \"Or::e\");\n\
-    \    auto gen_bits = [&] { return static_cast<unsigned>(rng() % 64); };\n    test_segtree<monoid::And<unsigned>>([](unsigned\
+    );\n    }\n\n    {\n        using PC = MaxCounter<int, 3>;\n        using M =\
+    \ monoid::Sum<PC>;\n        static_assert(M::e().size() == 0);\n        static_assert(group::Sum<long\
+    \ long>::e() == 0);\n        SegTree<M> empty(3);\n        check(empty.all_prod().size()\
+    \ == 0, \"Sum<PriorityCounter> \u521D\u671F\u5024\u306F\u7A7A\");\n        SegTree<M>\
+    \ seg(std::vector<int>{-5, -5, -2});\n        const std::vector<int> values =\
+    \ {-5, -5, -2};\n        for (long long l = 0; l <= 3; l++) {\n            for\
+    \ (long long r = l; r <= 3; r++) {\n                PC expect;\n             \
+    \   for (long long i = l; i < r; i++) expect.inc(values[i]);\n               \
+    \ const auto actual = seg.prod(l, r);\n                check(actual.size() ==\
+    \ expect.size(), \"Sum<PriorityCounter> \u7A2E\u985E\u6570\");\n             \
+    \   for (long long i = 0; i < 3; i++) {\n                    check(actual[i].second\
+    \ == expect[i].second, \"Sum<PriorityCounter> \u500B\u6570\");\n             \
+    \       if (expect[i].second) check(actual[i].first == expect[i].first, \"Sum<PriorityCounter>\
+    \ \u5024\");\n                }\n            }\n        }\n    }\n\n    std::mt19937_64\
+    \ rng(314);\n\n    // And / Or: \u5358\u4F4D\u5143\u306F\u305D\u308C\u305E\u308C\
+    \u5168\u30D3\u30C3\u30C8 1 \u3068 0\n    check(monoid::And<unsigned>::e() == ~0u,\
+    \ \"And::e\");\n    check(monoid::Or<unsigned>::e() == 0u, \"Or::e\");\n    auto\
+    \ gen_bits = [&] { return static_cast<unsigned>(rng() % 64); };\n    test_segtree<monoid::And<unsigned>>([](unsigned\
     \ a, unsigned b) { return a & b; }, ~0u, gen_bits, rng, \"And\");\n    test_segtree<monoid::Or<unsigned>>([](unsigned\
     \ a, unsigned b) { return a | b; }, 0u, gen_bits, rng, \"Or\");\n\n    // Parenthesis:\
     \ \u533A\u9593\u304C\u6B63\u3057\u3044\u62EC\u5F27\u5217\u304B\u3092 is_valid\
@@ -3392,8 +3467,8 @@ data:
     \       int x = rng() % 1024;\n        check(group::Xor<int>::inv(x) == x, \"\
     group::Xor::inv\");\n    }\n\n    // PrefixSumMax / PrefixSumMin / PrefixSumMinMax\
     \ / SuffixSumMax / SuffixSumMin / MaxSubarraySum: \u7A7A\u3092\u542B\u3080 prefix\u30FB\
-    suffix\u30FB\u9023\u7D9A\u90E8\u5206\u5217\u306E\u548C\n    for (int rep = 0;\
-    \ rep < 300 && ok; rep++) {\n        int n = rng() % 12 + 1;\n        std::vector<long\
+    suffix\u30FB\u90E8\u5206\u914D\u5217\u306E\u548C\n    for (int rep = 0; rep <\
+    \ 300 && ok; rep++) {\n        int n = rng() % 12 + 1;\n        std::vector<long\
     \ long> a(n);\n        for (auto& x : a) x = static_cast<long long>(rng() % 21)\
     \ - 10;\n        SegTree<monoid::PrefixSumMax<long long>> pmax(a);\n        SegTree<monoid::PrefixSumMin<long\
     \ long>> pmin(a);\n        using PM = monoid::PrefixSumMinMax<>;\n        SegTree<PM>\
@@ -3478,6 +3553,7 @@ data:
   - src/data_structures/persistent-lazy-segtree.hpp
   - src/data_structures/persistent-segtree.hpp
   - src/data_structures/potentialized-unionfind.hpp
+  - src/data_structures/priority_counter.hpp
   - src/data_structures/rbst.hpp
   - src/data_structures/segtree-beats.hpp
   - src/algebra/beats-acted-monoid.hpp
@@ -3488,7 +3564,7 @@ data:
   isVerificationFile: true
   path: test/unittest/algebra/monoid.test.cpp
   requiredBy: []
-  timestamp: '2026-11-10 04:55:25+09:00'
+  timestamp: '2026-11-14 23:03:37+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/algebra/monoid.test.cpp

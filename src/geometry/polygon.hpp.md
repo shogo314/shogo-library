@@ -592,20 +592,20 @@ data:
   timestamp: '2026-11-10 04:55:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/geometry/polygon-centroid.test.cpp
   - test/unittest/geometry/point-pair.test.cpp
   - test/unittest/geometry/polygon-convex-cut.test.cpp
-  - test/unittest/geometry/polygon-centroid.test.cpp
   - test/unittest/geometry/plane.test.cpp
-  - test/aoj/cgl/cgl-3-c.test.cpp
-  - test/aoj/cgl/cgl-5-a.test.cpp
-  - test/aoj/cgl/cgl-4-b.test.cpp
-  - test/aoj/cgl/cgl-4-a.test.cpp
-  - test/aoj/cgl/cgl-3-b.test.cpp
-  - test/aoj/cgl/cgl-4-c.test.cpp
-  - test/aoj/cgl/cgl-3-a.test.cpp
-  - test/yosupo/geo/furthest-pair.test.cpp
   - test/yosupo/geo/static-convex-hull.test.cpp
+  - test/yosupo/geo/furthest-pair.test.cpp
   - test/yosupo/geo/closest-pair.test.cpp
+  - test/aoj/cgl/cgl-4-c.test.cpp
+  - test/aoj/cgl/cgl-4-b.test.cpp
+  - test/aoj/cgl/cgl-3-a.test.cpp
+  - test/aoj/cgl/cgl-5-a.test.cpp
+  - test/aoj/cgl/cgl-3-c.test.cpp
+  - test/aoj/cgl/cgl-3-b.test.cpp
+  - test/aoj/cgl/cgl-4-a.test.cpp
 documentation_of: src/geometry/polygon.hpp
 layout: document
 title: "\u591A\u89D2\u5F62 (\u9762\u7A4D\u3001\u91CD\u5FC3\u3001\u5185\u5916\u5224\

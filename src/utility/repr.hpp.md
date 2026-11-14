@@ -119,8 +119,7 @@ data:
     \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
     \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
     inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
-    #line 19 \"src/utility/repr.hpp\"\n\nnamespace internal_repr {\n\n///////////////////////////////////////////////////////////////////\n\
-    /////////////////////////// declaration ///////////////////////////\n///////////////////////////////////////////////////////////////////\n\
+    #line 19 \"src/utility/repr.hpp\"\n\nnamespace internal_repr {\n\n// declaration\n\
     \ninline std::string type_str(const char*);\ninline std::string initializer_str(const\
     \ char*);\ninline std::string repr(const char*);\n\ninline std::string type_str(const\
     \ char&);\ninline std::string initializer_str(const char&);\ninline std::string\
@@ -162,22 +161,21 @@ data:
     \ N>\ninline std::string type_str(const std::array<T, N>&);\ntemplate <typename\
     \ T, std::size_t N>\ninline std::string initializer_str(const std::array<T, N>&);\n\
     template <typename T, std::size_t N>\ninline std::string repr(const std::array<T,\
-    \ N>&);\n\n///////////////////////////////////////////////////////////////////\n\
-    /////////////////////////// definition ////////////////////////////\n///////////////////////////////////////////////////////////////////\n\
-    \n#if __cplusplus >= 202002L\ntemplate <typename T>\n    requires(!has_type_str_v<T>)\n\
-    #else\ntemplate <typename T, ENABLE_IF_T(!has_type_str_v<T>)>\n#endif\ninline\
-    \ std::string type_str(const T&) {\n    return \"T\";\n}\n#if __cplusplus >= 202002L\n\
-    template <typename T>\n    requires(has_type_str_v<T>)\n#else\ntemplate <typename\
-    \ T, ENABLE_IF_T(has_type_str_v<T>)>\n#endif\ninline std::string type_str(const\
-    \ T& t) {\n    return t.type_str();\n}\n#if __cplusplus >= 202002L\ntemplate <typename\
-    \ T>\n    requires(!has_initializer_str_v<T>)\n#else\ntemplate <typename T, ENABLE_IF_T(!has_initializer_str_v<T>)>\n\
-    #endif\ninline std::string initializer_str(const T&) {\n    return \"{}\";\n}\n\
-    #if __cplusplus >= 202002L\ntemplate <typename T>\n    requires(has_initializer_str_v<T>)\n\
-    #else\ntemplate <typename T, ENABLE_IF_T(has_initializer_str_v<T>)>\n#endif\n\
-    inline std::string initializer_str(const T& t) {\n    return t.initializer_str();\n\
-    }\n#if __cplusplus >= 202002L\ntemplate <typename T>\n    requires(!has_repr_v<T>)\n\
-    #else\ntemplate <typename T, ENABLE_IF_T(!has_repr_v<T>)>\n#endif\ninline std::string\
-    \ repr(const T& t) {\n    return internal_repr::type_str(t) + internal_repr::initializer_str(t);\n\
+    \ N>&);\n\n// definition\n\n#if __cplusplus >= 202002L\ntemplate <typename T>\n\
+    \    requires(!has_type_str_v<T>)\n#else\ntemplate <typename T, ENABLE_IF_T(!has_type_str_v<T>)>\n\
+    #endif\ninline std::string type_str(const T&) {\n    return \"T\";\n}\n#if __cplusplus\
+    \ >= 202002L\ntemplate <typename T>\n    requires(has_type_str_v<T>)\n#else\n\
+    template <typename T, ENABLE_IF_T(has_type_str_v<T>)>\n#endif\ninline std::string\
+    \ type_str(const T& t) {\n    return t.type_str();\n}\n#if __cplusplus >= 202002L\n\
+    template <typename T>\n    requires(!has_initializer_str_v<T>)\n#else\ntemplate\
+    \ <typename T, ENABLE_IF_T(!has_initializer_str_v<T>)>\n#endif\ninline std::string\
+    \ initializer_str(const T&) {\n    return \"{}\";\n}\n#if __cplusplus >= 202002L\n\
+    template <typename T>\n    requires(has_initializer_str_v<T>)\n#else\ntemplate\
+    \ <typename T, ENABLE_IF_T(has_initializer_str_v<T>)>\n#endif\ninline std::string\
+    \ initializer_str(const T& t) {\n    return t.initializer_str();\n}\n#if __cplusplus\
+    \ >= 202002L\ntemplate <typename T>\n    requires(!has_repr_v<T>)\n#else\ntemplate\
+    \ <typename T, ENABLE_IF_T(!has_repr_v<T>)>\n#endif\ninline std::string repr(const\
+    \ T& t) {\n    return internal_repr::type_str(t) + internal_repr::initializer_str(t);\n\
     }\n#if __cplusplus >= 202002L\ntemplate <typename T>\n    requires(has_repr_v<T>)\n\
     #else\ntemplate <typename T, ENABLE_IF_T(has_repr_v<T>)>\n#endif\ninline std::string\
     \ repr(const T& t) {\n    return t.repr();\n}\n\ninline std::string type_str(const\
@@ -308,41 +306,40 @@ data:
     \u308B\u6587\u5B57\u5217\u5316 (repr)\n */\n\n#include <array>\n#include <cstddef>\n\
     #include <iostream>\n#include <map>\n#include <set>\n#include <string>\n#include\
     \ <type_traits>\n#include <utility>\n#include <vector>\n\n#include \"traits.hpp\"\
-    \n\nnamespace internal_repr {\n\n///////////////////////////////////////////////////////////////////\n\
-    /////////////////////////// declaration ///////////////////////////\n///////////////////////////////////////////////////////////////////\n\
-    \ninline std::string type_str(const char*);\ninline std::string initializer_str(const\
-    \ char*);\ninline std::string repr(const char*);\n\ninline std::string type_str(const\
-    \ char&);\ninline std::string initializer_str(const char&);\ninline std::string\
-    \ repr(const char&);\n\ninline std::string type_str(const int&);\ninline std::string\
-    \ initializer_str(const int&);\ninline std::string repr(const int&);\n\ninline\
-    \ std::string type_str(const long&);\ninline std::string initializer_str(const\
-    \ long&);\ninline std::string repr(const long&);\n\ninline std::string type_str(const\
-    \ long long&);\ninline std::string initializer_str(const long long&);\ninline\
-    \ std::string repr(const long long&);\n\ninline std::string type_str(const unsigned\
-    \ int&);\ninline std::string initializer_str(const unsigned int&);\ninline std::string\
-    \ repr(const unsigned int&);\n\ninline std::string type_str(const unsigned long&);\n\
-    inline std::string initializer_str(const unsigned long&);\ninline std::string\
-    \ repr(const unsigned long&);\n\ninline std::string type_str(const unsigned long\
-    \ long&);\ninline std::string initializer_str(const unsigned long long&);\ninline\
-    \ std::string repr(const unsigned long long&);\n\ninline std::string type_str(const\
-    \ __int128_t&);\ninline std::string initializer_str(const __int128_t&);\ninline\
-    \ std::string repr(const __int128_t&);\n\ninline std::string type_str(const __uint128_t&);\n\
-    inline std::string initializer_str(const __uint128_t&);\ninline std::string repr(const\
-    \ __uint128_t&);\n\ninline std::string type_str(const std::string&);\ninline std::string\
-    \ initializer_str(const std::string&);\ninline std::string repr(const std::string&);\n\
-    \ninline std::string type_str(const float&);\ninline std::string initializer_str(const\
-    \ float&);\ninline std::string repr(const float&);\n\ninline std::string type_str(const\
-    \ double&);\ninline std::string initializer_str(const double&);\ninline std::string\
-    \ repr(const double&);\n\ninline std::string type_str(const long double&);\ninline\
-    \ std::string initializer_str(const long double&);\ninline std::string repr(const\
-    \ long double&);\n\ntemplate <typename T>\ninline std::string type_str(const std::vector<T>&);\n\
-    template <typename T>\ninline std::string initializer_str(const std::vector<T>&);\n\
-    template <typename T>\ninline std::string repr(const std::vector<T>&);\n\ntemplate\
-    \ <typename T>\ninline std::string type_str(const std::set<T>&);\ntemplate <typename\
-    \ T>\ninline std::string initializer_str(const std::set<T>&);\ntemplate <typename\
-    \ T>\ninline std::string repr(const std::set<T>&);\n\ntemplate <typename T1, typename\
-    \ T2>\ninline std::string type_str(const std::pair<T1, T2>&);\ntemplate <typename\
-    \ T1, typename T2>\ninline std::string initializer_str(const std::pair<T1, T2>&);\n\
+    \n\nnamespace internal_repr {\n\n// declaration\n\ninline std::string type_str(const\
+    \ char*);\ninline std::string initializer_str(const char*);\ninline std::string\
+    \ repr(const char*);\n\ninline std::string type_str(const char&);\ninline std::string\
+    \ initializer_str(const char&);\ninline std::string repr(const char&);\n\ninline\
+    \ std::string type_str(const int&);\ninline std::string initializer_str(const\
+    \ int&);\ninline std::string repr(const int&);\n\ninline std::string type_str(const\
+    \ long&);\ninline std::string initializer_str(const long&);\ninline std::string\
+    \ repr(const long&);\n\ninline std::string type_str(const long long&);\ninline\
+    \ std::string initializer_str(const long long&);\ninline std::string repr(const\
+    \ long long&);\n\ninline std::string type_str(const unsigned int&);\ninline std::string\
+    \ initializer_str(const unsigned int&);\ninline std::string repr(const unsigned\
+    \ int&);\n\ninline std::string type_str(const unsigned long&);\ninline std::string\
+    \ initializer_str(const unsigned long&);\ninline std::string repr(const unsigned\
+    \ long&);\n\ninline std::string type_str(const unsigned long long&);\ninline std::string\
+    \ initializer_str(const unsigned long long&);\ninline std::string repr(const unsigned\
+    \ long long&);\n\ninline std::string type_str(const __int128_t&);\ninline std::string\
+    \ initializer_str(const __int128_t&);\ninline std::string repr(const __int128_t&);\n\
+    \ninline std::string type_str(const __uint128_t&);\ninline std::string initializer_str(const\
+    \ __uint128_t&);\ninline std::string repr(const __uint128_t&);\n\ninline std::string\
+    \ type_str(const std::string&);\ninline std::string initializer_str(const std::string&);\n\
+    inline std::string repr(const std::string&);\n\ninline std::string type_str(const\
+    \ float&);\ninline std::string initializer_str(const float&);\ninline std::string\
+    \ repr(const float&);\n\ninline std::string type_str(const double&);\ninline std::string\
+    \ initializer_str(const double&);\ninline std::string repr(const double&);\n\n\
+    inline std::string type_str(const long double&);\ninline std::string initializer_str(const\
+    \ long double&);\ninline std::string repr(const long double&);\n\ntemplate <typename\
+    \ T>\ninline std::string type_str(const std::vector<T>&);\ntemplate <typename\
+    \ T>\ninline std::string initializer_str(const std::vector<T>&);\ntemplate <typename\
+    \ T>\ninline std::string repr(const std::vector<T>&);\n\ntemplate <typename T>\n\
+    inline std::string type_str(const std::set<T>&);\ntemplate <typename T>\ninline\
+    \ std::string initializer_str(const std::set<T>&);\ntemplate <typename T>\ninline\
+    \ std::string repr(const std::set<T>&);\n\ntemplate <typename T1, typename T2>\n\
+    inline std::string type_str(const std::pair<T1, T2>&);\ntemplate <typename T1,\
+    \ typename T2>\ninline std::string initializer_str(const std::pair<T1, T2>&);\n\
     template <typename T1, typename T2>\ninline std::string repr(const std::pair<T1,\
     \ T2>&);\n\ntemplate <typename T1, typename T2>\ninline std::string type_str(const\
     \ std::map<T1, T2>&);\ntemplate <typename T1, typename T2>\ninline std::string\
@@ -351,22 +348,21 @@ data:
     \ N>\ninline std::string type_str(const std::array<T, N>&);\ntemplate <typename\
     \ T, std::size_t N>\ninline std::string initializer_str(const std::array<T, N>&);\n\
     template <typename T, std::size_t N>\ninline std::string repr(const std::array<T,\
-    \ N>&);\n\n///////////////////////////////////////////////////////////////////\n\
-    /////////////////////////// definition ////////////////////////////\n///////////////////////////////////////////////////////////////////\n\
-    \n#if __cplusplus >= 202002L\ntemplate <typename T>\n    requires(!has_type_str_v<T>)\n\
-    #else\ntemplate <typename T, ENABLE_IF_T(!has_type_str_v<T>)>\n#endif\ninline\
-    \ std::string type_str(const T&) {\n    return \"T\";\n}\n#if __cplusplus >= 202002L\n\
-    template <typename T>\n    requires(has_type_str_v<T>)\n#else\ntemplate <typename\
-    \ T, ENABLE_IF_T(has_type_str_v<T>)>\n#endif\ninline std::string type_str(const\
-    \ T& t) {\n    return t.type_str();\n}\n#if __cplusplus >= 202002L\ntemplate <typename\
-    \ T>\n    requires(!has_initializer_str_v<T>)\n#else\ntemplate <typename T, ENABLE_IF_T(!has_initializer_str_v<T>)>\n\
-    #endif\ninline std::string initializer_str(const T&) {\n    return \"{}\";\n}\n\
-    #if __cplusplus >= 202002L\ntemplate <typename T>\n    requires(has_initializer_str_v<T>)\n\
-    #else\ntemplate <typename T, ENABLE_IF_T(has_initializer_str_v<T>)>\n#endif\n\
-    inline std::string initializer_str(const T& t) {\n    return t.initializer_str();\n\
-    }\n#if __cplusplus >= 202002L\ntemplate <typename T>\n    requires(!has_repr_v<T>)\n\
-    #else\ntemplate <typename T, ENABLE_IF_T(!has_repr_v<T>)>\n#endif\ninline std::string\
-    \ repr(const T& t) {\n    return internal_repr::type_str(t) + internal_repr::initializer_str(t);\n\
+    \ N>&);\n\n// definition\n\n#if __cplusplus >= 202002L\ntemplate <typename T>\n\
+    \    requires(!has_type_str_v<T>)\n#else\ntemplate <typename T, ENABLE_IF_T(!has_type_str_v<T>)>\n\
+    #endif\ninline std::string type_str(const T&) {\n    return \"T\";\n}\n#if __cplusplus\
+    \ >= 202002L\ntemplate <typename T>\n    requires(has_type_str_v<T>)\n#else\n\
+    template <typename T, ENABLE_IF_T(has_type_str_v<T>)>\n#endif\ninline std::string\
+    \ type_str(const T& t) {\n    return t.type_str();\n}\n#if __cplusplus >= 202002L\n\
+    template <typename T>\n    requires(!has_initializer_str_v<T>)\n#else\ntemplate\
+    \ <typename T, ENABLE_IF_T(!has_initializer_str_v<T>)>\n#endif\ninline std::string\
+    \ initializer_str(const T&) {\n    return \"{}\";\n}\n#if __cplusplus >= 202002L\n\
+    template <typename T>\n    requires(has_initializer_str_v<T>)\n#else\ntemplate\
+    \ <typename T, ENABLE_IF_T(has_initializer_str_v<T>)>\n#endif\ninline std::string\
+    \ initializer_str(const T& t) {\n    return t.initializer_str();\n}\n#if __cplusplus\
+    \ >= 202002L\ntemplate <typename T>\n    requires(!has_repr_v<T>)\n#else\ntemplate\
+    \ <typename T, ENABLE_IF_T(!has_repr_v<T>)>\n#endif\ninline std::string repr(const\
+    \ T& t) {\n    return internal_repr::type_str(t) + internal_repr::initializer_str(t);\n\
     }\n#if __cplusplus >= 202002L\ntemplate <typename T>\n    requires(has_repr_v<T>)\n\
     #else\ntemplate <typename T, ENABLE_IF_T(has_repr_v<T>)>\n#endif\ninline std::string\
     \ repr(const T& t) {\n    return t.repr();\n}\n\ninline std::string type_str(const\
@@ -497,7 +493,7 @@ data:
   isVerificationFile: false
   path: src/utility/repr.hpp
   requiredBy: []
-  timestamp: '2026-11-10 04:55:25+09:00'
+  timestamp: '2026-11-14 22:55:27+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/utility/repr.test.cpp

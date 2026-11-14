@@ -666,17 +666,17 @@ data:
   - test/unittest/geometry/triangle.test.cpp
   - test/unittest/geometry/plane.test.cpp
   - test/unittest/geometry/circle.test.cpp
-  - test/aoj/cgl/cgl-7-f.test.cpp
-  - test/aoj/cgl/cgl-7-i.test.cpp
-  - test/aoj/cgl/cgl-7-b.test.cpp
-  - test/aoj/cgl/cgl-7-d.test.cpp
-  - test/aoj/cgl/cgl-7-e.test.cpp
-  - test/aoj/cgl/cgl-7-a.test.cpp
-  - test/aoj/cgl/cgl-7-c.test.cpp
-  - test/aoj/cgl/cgl-7-g.test.cpp
-  - test/aoj/cgl/cgl-7-h.test.cpp
-  - test/aoj/volume1/0115.test.cpp
   - test/yosupo/geo/minimum-enclosing-circle.test.cpp
+  - test/aoj/volume1/0115.test.cpp
+  - test/aoj/cgl/cgl-7-d.test.cpp
+  - test/aoj/cgl/cgl-7-b.test.cpp
+  - test/aoj/cgl/cgl-7-a.test.cpp
+  - test/aoj/cgl/cgl-7-i.test.cpp
+  - test/aoj/cgl/cgl-7-g.test.cpp
+  - test/aoj/cgl/cgl-7-e.test.cpp
+  - test/aoj/cgl/cgl-7-c.test.cpp
+  - test/aoj/cgl/cgl-7-f.test.cpp
+  - test/aoj/cgl/cgl-7-h.test.cpp
 documentation_of: src/geometry/triangle.hpp
 layout: document
 title: "2 \u6B21\u5143\u30FB3 \u6B21\u5143\u306E\u4E09\u89D2\u5F62"

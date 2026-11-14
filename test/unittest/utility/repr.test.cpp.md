@@ -137,8 +137,7 @@ data:
     \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
     \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
     inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
-    #line 19 \"src/utility/repr.hpp\"\n\nnamespace internal_repr {\n\n///////////////////////////////////////////////////////////////////\n\
-    /////////////////////////// declaration ///////////////////////////\n///////////////////////////////////////////////////////////////////\n\
+    #line 19 \"src/utility/repr.hpp\"\n\nnamespace internal_repr {\n\n// declaration\n\
     \ninline std::string type_str(const char*);\ninline std::string initializer_str(const\
     \ char*);\ninline std::string repr(const char*);\n\ninline std::string type_str(const\
     \ char&);\ninline std::string initializer_str(const char&);\ninline std::string\
@@ -180,22 +179,21 @@ data:
     \ N>\ninline std::string type_str(const std::array<T, N>&);\ntemplate <typename\
     \ T, std::size_t N>\ninline std::string initializer_str(const std::array<T, N>&);\n\
     template <typename T, std::size_t N>\ninline std::string repr(const std::array<T,\
-    \ N>&);\n\n///////////////////////////////////////////////////////////////////\n\
-    /////////////////////////// definition ////////////////////////////\n///////////////////////////////////////////////////////////////////\n\
-    \n#if __cplusplus >= 202002L\ntemplate <typename T>\n    requires(!has_type_str_v<T>)\n\
-    #else\ntemplate <typename T, ENABLE_IF_T(!has_type_str_v<T>)>\n#endif\ninline\
-    \ std::string type_str(const T&) {\n    return \"T\";\n}\n#if __cplusplus >= 202002L\n\
-    template <typename T>\n    requires(has_type_str_v<T>)\n#else\ntemplate <typename\
-    \ T, ENABLE_IF_T(has_type_str_v<T>)>\n#endif\ninline std::string type_str(const\
-    \ T& t) {\n    return t.type_str();\n}\n#if __cplusplus >= 202002L\ntemplate <typename\
-    \ T>\n    requires(!has_initializer_str_v<T>)\n#else\ntemplate <typename T, ENABLE_IF_T(!has_initializer_str_v<T>)>\n\
-    #endif\ninline std::string initializer_str(const T&) {\n    return \"{}\";\n}\n\
-    #if __cplusplus >= 202002L\ntemplate <typename T>\n    requires(has_initializer_str_v<T>)\n\
-    #else\ntemplate <typename T, ENABLE_IF_T(has_initializer_str_v<T>)>\n#endif\n\
-    inline std::string initializer_str(const T& t) {\n    return t.initializer_str();\n\
-    }\n#if __cplusplus >= 202002L\ntemplate <typename T>\n    requires(!has_repr_v<T>)\n\
-    #else\ntemplate <typename T, ENABLE_IF_T(!has_repr_v<T>)>\n#endif\ninline std::string\
-    \ repr(const T& t) {\n    return internal_repr::type_str(t) + internal_repr::initializer_str(t);\n\
+    \ N>&);\n\n// definition\n\n#if __cplusplus >= 202002L\ntemplate <typename T>\n\
+    \    requires(!has_type_str_v<T>)\n#else\ntemplate <typename T, ENABLE_IF_T(!has_type_str_v<T>)>\n\
+    #endif\ninline std::string type_str(const T&) {\n    return \"T\";\n}\n#if __cplusplus\
+    \ >= 202002L\ntemplate <typename T>\n    requires(has_type_str_v<T>)\n#else\n\
+    template <typename T, ENABLE_IF_T(has_type_str_v<T>)>\n#endif\ninline std::string\
+    \ type_str(const T& t) {\n    return t.type_str();\n}\n#if __cplusplus >= 202002L\n\
+    template <typename T>\n    requires(!has_initializer_str_v<T>)\n#else\ntemplate\
+    \ <typename T, ENABLE_IF_T(!has_initializer_str_v<T>)>\n#endif\ninline std::string\
+    \ initializer_str(const T&) {\n    return \"{}\";\n}\n#if __cplusplus >= 202002L\n\
+    template <typename T>\n    requires(has_initializer_str_v<T>)\n#else\ntemplate\
+    \ <typename T, ENABLE_IF_T(has_initializer_str_v<T>)>\n#endif\ninline std::string\
+    \ initializer_str(const T& t) {\n    return t.initializer_str();\n}\n#if __cplusplus\
+    \ >= 202002L\ntemplate <typename T>\n    requires(!has_repr_v<T>)\n#else\ntemplate\
+    \ <typename T, ENABLE_IF_T(!has_repr_v<T>)>\n#endif\ninline std::string repr(const\
+    \ T& t) {\n    return internal_repr::type_str(t) + internal_repr::initializer_str(t);\n\
     }\n#if __cplusplus >= 202002L\ntemplate <typename T>\n    requires(has_repr_v<T>)\n\
     #else\ntemplate <typename T, ENABLE_IF_T(has_repr_v<T>)>\n#endif\ninline std::string\
     \ repr(const T& t) {\n    return t.repr();\n}\n\ninline std::string type_str(const\
@@ -898,7 +896,7 @@ data:
   isVerificationFile: true
   path: test/unittest/utility/repr.test.cpp
   requiredBy: []
-  timestamp: '2026-11-10 04:55:25+09:00'
+  timestamp: '2026-11-14 22:55:27+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/utility/repr.test.cpp

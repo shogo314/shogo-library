@@ -7,6 +7,9 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/unittest/algebra/monoid.test.cpp
+    title: test/unittest/algebra/monoid.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/priority_counter.test.cpp
     title: test/unittest/data_structures/priority_counter.test.cpp
   _isVerificationFailed: false
@@ -211,6 +214,7 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/priority_counter.test.cpp
+  - test/unittest/algebra/monoid.test.cpp
 documentation_of: src/data_structures/priority_counter.hpp
 layout: document
 title: "\u4E0A\u4F4D K \u500B\u306E\u5024\u3068\u305D\u306E\u500B\u6570"

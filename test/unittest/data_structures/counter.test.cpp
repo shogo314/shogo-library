@@ -106,6 +106,8 @@ int main() {
         check(same(empty, {}), "default constructor");
         Counter<int> one(5);
         check(same(one, {{5, 1}}), "Counter(x)");
+        one.dec(5);
+        check(same(one, {}), "dec 省略時は 1、0 になった値を削除");
         std::vector<int> v = {3, 1, 3, 2, 3};
         Counter from_vec(v);
         check(same(from_vec, {{1, 1}, {2, 1}, {3, 3}}), "Counter(range)");

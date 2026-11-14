@@ -18,7 +18,7 @@ for (auto [x, cnt] : c.by_frequency()) { }  // 個数の降順、同数なら値
 Counter<int> d = c + Counter<int>(3);  // 3 を 1 個足した Counter
 ```
 
-空の `Counter` の `mode()` は `std::nullopt` を返します。同数なら最小の値を選びます。個数の変更には `[]`・`set`・`inc` を使います。
+空の `Counter` の `mode()` は `std::nullopt` を返します。同数なら最小の値を選びます。個数の変更には `[]`・`set`・`inc`・`dec` を使います。
 
 `by_frequency()` は内部の `std::set<value_type, CompareFrequency>` の const 参照を返します (`value_type` は `{値, 個数}` の組)。保持するときは `const auto& freq = c.by_frequency();` と書きます。`begin()`・`rbegin()`・`lower_bound()` などを使え、境界検索の順序も個数の降順・同数なら値の昇順です。
 
@@ -36,7 +36,8 @@ Counter<int> d = c + Counter<int>(3);  // 3 を 1 個足した Counter
 | `Counter<T> c(v)` | コンテナ `v` の要素を数える | $O(\lvert v \rvert \log n)$ |
 | `c[x]` / `c.get(x)` | `x` の個数 (なければ 0) | $O(\log n)$ |
 | `c[x] = k` / `c.set(x, k)` | `x` の個数を `k` にする (`k >= 0`) | $O(\log n)$ |
-| `c[x] += k`、`c[x] -= k` / `c.inc(x, k = 1)` | `x` の個数を増減する (`k` を省略すると 1 増やす。負になると assert で落ちる) | $O(\log n)$ |
+| `c[x] += k` / `c.inc(x, k = 1)` | `x` の個数を `k` 増やす (省略時は 1。個数が負になると assert で落ちる) | $O(\log n)$ |
+| `c[x] -= k` / `c.dec(x, k = 1)` | `x` の個数を `k` 減らす (省略時は 1。個数が負になると assert で落ちる)。0 になった値は取り除く | $O(\log n)$ |
 | `c + d`、`c += d` | 個数を足し合わせる | $O(m \log (n + m))$ ($m$ は `d` の異なる値の個数) |
 | `c - d`、`c -= d` | 個数を引く (負になると assert で落ちる)。`c -= c` で空になる | $O(m \log n)$ |
 | `for (auto [x, cnt] : c)` | `{値, 個数}` を値の昇順に走査 | $O(n)$ |

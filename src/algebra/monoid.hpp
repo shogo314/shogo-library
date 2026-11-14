@@ -136,7 +136,7 @@ template <typename T>
 struct Sum {
     using S = T;
     static constexpr S op(const S& a, const S& b) { return a + b; }
-    static constexpr S e() { return S(0); }
+    static constexpr S e() { return S{}; }
 };
 
 /**

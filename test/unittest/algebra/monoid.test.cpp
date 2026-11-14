@@ -28,6 +28,7 @@
 #include "../../../src/data_structures/persistent-lazy-segtree.hpp"
 #include "../../../src/data_structures/persistent-segtree.hpp"
 #include "../../../src/data_structures/potentialized-unionfind.hpp"
+#include "../../../src/data_structures/priority_counter.hpp"
 #include "../../../src/data_structures/rbst.hpp"
 #include "../../../src/data_structures/segtree-beats.hpp"
 #include "../../../src/data_structures/segtree.hpp"
@@ -294,6 +295,29 @@ int main() {
         check(ordinary.all_prod() == 6, "SegTree initializer list");
         SegTree<monoid::Sum<long long>> widened(std::vector<int>{1, 2, 3});
         check(widened.all_prod() == 6, "SegTree arithmetic conversion");
+    }
+
+    {
+        using PC = MaxCounter<int, 3>;
+        using M = monoid::Sum<PC>;
+        static_assert(M::e().size() == 0);
+        static_assert(group::Sum<long long>::e() == 0);
+        SegTree<M> empty(3);
+        check(empty.all_prod().size() == 0, "Sum<PriorityCounter> 初期値は空");
+        SegTree<M> seg(std::vector<int>{-5, -5, -2});
+        const std::vector<int> values = {-5, -5, -2};
+        for (long long l = 0; l <= 3; l++) {
+            for (long long r = l; r <= 3; r++) {
+                PC expect;
+                for (long long i = l; i < r; i++) expect.inc(values[i]);
+                const auto actual = seg.prod(l, r);
+                check(actual.size() == expect.size(), "Sum<PriorityCounter> 種類数");
+                for (long long i = 0; i < 3; i++) {
+                    check(actual[i].second == expect[i].second, "Sum<PriorityCounter> 個数");
+                    if (expect[i].second) check(actual[i].first == expect[i].first, "Sum<PriorityCounter> 値");
+                }
+            }
+        }
     }
 
     std::mt19937_64 rng(314);

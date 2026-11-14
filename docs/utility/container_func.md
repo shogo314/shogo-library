@@ -37,7 +37,7 @@ C++20 以降では、要件を満たすコンテナに ranges アルゴリズム
 | `product_xor(c)` | 総 xor | $O(n)$ |
 | `gcd(c)` | 全要素の gcd (空なら 0) | $O(n \log \max)$ |
 | `average(c)` | 平均 (`sum(c) / size`、整数型なら 0 方向に切り捨て。空なら assert で落ちる) | $O(n)$ |
-| `median(c)` | 中央値 (要素数が偶数なら中央 2 つの平均。空なら assert で落ちる) | $O(n \log n)$ |
+| `median(c)` | 中央値 (要素数が偶数なら中央 2 つの平均。整数型の端数は小さい方へ丸める。空なら assert で落ちる) | $O(n \log n)$ |
 | `mex(c)` | 含まれない最小の非負整数 | $O(n)$ |
 | `hamming_distance(s, t)` | 同じ長さの列 `s` と `t` で要素が異なる位置の数 (`long long`。型が違ってもよく、`string` と `vector<int>` なども比べられる。長さが違うと assert で落ちる) | $O(n)$ |
 

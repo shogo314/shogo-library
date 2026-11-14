@@ -10,7 +10,7 @@ int main() {
     while (std::cin >> n && n != 0) {
         std::vector<long long> a(n);
         for (auto& x : a) std::cin >> x;
-        // 1 項以上の連続部分列の和の最大値
+        // 1 項以上の部分配列の和の最大値
         std::cout << maximum_subarray(a) << '\n';
     }
 }

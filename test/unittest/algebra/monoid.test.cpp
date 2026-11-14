@@ -465,7 +465,7 @@ int main() {
         check(group::Xor<int>::inv(x) == x, "group::Xor::inv");
     }
 
-    // PrefixSumMax / PrefixSumMin / PrefixSumMinMax / SuffixSumMax / SuffixSumMin / MaxSubarraySum: 空を含む prefix・suffix・連続部分列の和
+    // PrefixSumMax / PrefixSumMin / PrefixSumMinMax / SuffixSumMax / SuffixSumMin / MaxSubarraySum: 空を含む prefix・suffix・部分配列の和
     for (int rep = 0; rep < 300 && ok; rep++) {
         int n = rng() % 12 + 1;
         std::vector<long long> a(n);

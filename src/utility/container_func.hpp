@@ -15,6 +15,7 @@
 #include <type_traits>
 #include <vector>
 
+#include "../base/functions.hpp"
 #include "traits.hpp"
 
 #if __cplusplus >= 202002L
@@ -296,9 +297,7 @@ inline constexpr mem_value_type<C> median(const C& v) {
     if (v.size() & 1) {
         return v[u[v.size() / 2]];
     }
-    // C++20
-    // return std::midpoint(v[u[v.size() / 2]], v[u[v.size() / 2 - 1]]);
-    return (v[u[v.size() / 2]] + v[u[v.size() / 2 - 1]]) / 2;
+    return midpoint(v[u[v.size() / 2 - 1]], v[u[v.size() / 2]]);
 }
 
 // x が最初に現れる位置。なければ -1

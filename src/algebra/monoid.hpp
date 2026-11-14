@@ -498,7 +498,7 @@ struct SuffixSumMin {
 };
 
 /**
- * @brief 区間の和、空を含む prefix・suffix の和の最大値、空を含む連続部分列の和の最大値
+ * @brief 区間の和、空を含む prefix・suffix の和の最大値、空を含む部分配列の和の最大値
  * S(x) で値 x の1要素を表す要素を作る。単位元は空の区間 {0, 0, 0, 0}
  * 静的な列に対して一度だけ求めるなら dp/maximum-subarray.hpp の maximum_subarray
  */
@@ -508,7 +508,7 @@ struct MaxSubarraySum {
         T sum;     // 区間の和
         T prefix;  // 空を含む prefix の和の最大値 (0 以上)
         T suffix;  // 空を含む suffix の和の最大値 (0 以上)
-        T best;    // 空を含む連続部分列の和の最大値 (0 以上)
+        T best;    // 空を含む部分配列の和の最大値 (0 以上)
         constexpr S() : sum(0), prefix(0), suffix(0), best(0) {}
         constexpr S(const T& x) : sum(x), prefix(x < T(0) ? T(0) : x), suffix(prefix), best(prefix) {}
         constexpr S(const T& sum, const T& prefix, const T& suffix, const T& best)

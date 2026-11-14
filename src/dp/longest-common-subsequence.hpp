@@ -58,7 +58,6 @@ LongestCommonSubsequence longest_common_subsequence_restore(const R1& s, const R
             dp[i][j] = a[i - 1] == b[j - 1] ? dp[i - 1][j - 1] + 1 : std::max(dp[i - 1][j], dp[i][j - 1]);
         }
     }
-    // 後ろからたどる
     std::vector<std::pair<long long, long long>> res;
     for (long long i = n, j = m; i > 0 && j > 0;) {
         if (a[i - 1] == b[j - 1]) {

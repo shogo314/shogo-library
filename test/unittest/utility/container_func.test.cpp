@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <functional>
 #include <iostream>
+#include <limits>
 #include <memory>
 #include <numeric>
 #include <random>
@@ -112,11 +113,11 @@ int main() {
             check(product_xor(nonneg) == y, "product_xor(c) large");
         }
 
-        // median: 偶数個なら中央 2 つの平均 (整数型は 0 方向に切り捨て)
+        // median: 偶数個なら中央 2 つの平均 (整数型は小さい方へ丸める)
         {
             std::vector<long long> w = v;
             std::sort(w.begin(), w.end());
-            long long expect = n % 2 ? w[n / 2] : (w[n / 2 - 1] + w[n / 2]) / 2;
+            long long expect = n % 2 ? w[n / 2] : w[n / 2 - 1] + (w[n / 2] - w[n / 2 - 1]) / 2;
             check(median(v) == expect, "median(vector<long long>)");
             std::vector<double> d(v.begin(), v.end());
             std::vector<double> dw = d;
@@ -205,6 +206,12 @@ int main() {
     check(average(std::vector<int>{-1, -2}) == -1, "average 負の和、切り捨て");
     check(average(std::vector<int>{1, 2, 4}) == 2, "average 正の和");
     check(average(std::vector<double>{-1, -2}) == -1.5, "average(vector<double>)");
+    const auto lo = std::numeric_limits<long long>::min();
+    const auto hi = std::numeric_limits<long long>::max();
+    check(median(std::vector<long long>{lo, hi}) == -1, "median 最小値と最大値");
+    check(median(std::vector<long long>{hi - 1, hi}) == hi - 1, "median 最大値付近");
+    check(median(std::vector<long long>{lo, lo + 1}) == lo, "median 最小値付近");
+    check(median(std::vector<int>{-2, -1}) == -2, "median 負の端数");
     check(median(std::vector<int>{4}) == 4, "median 1 要素");
     check(median(std::vector<int>{1, 4}) == 2, "median 2 要素");
     check(mex(std::vector<int>{}) == 0, "mex 空");

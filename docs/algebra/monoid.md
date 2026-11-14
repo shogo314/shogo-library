@@ -42,16 +42,16 @@ SegTree seg2(v, Monoid([](int a, int b) { return a + b; }, 0));  // ラムダ式
 | `PrefixSumMax<T>` / `PrefixSumMin<T>` | `PrefixSumMax<T>::S` など | 区間の和 `sum` と、空を含む prefix の和の最大値 `max` (最小値 `min`) | 空の区間 `{0, 0}` |
 | `PrefixSumMinMax<T = long long>` | `PrefixSumMinMax<T>::S` | 区間の和 `sum` と、空を含む prefix の和の最小値 `min`・最大値 `max` | 空の区間 `{0, 0, 0}` |
 | `SuffixSumMax<T>` / `SuffixSumMin<T>` | `SuffixSumMax<T>::S` など | 区間の和 `sum` と、空を含む suffix の和の最大値 `max` (最小値 `min`) | 空の区間 `{0, 0}` |
-| `MaxSubarraySum<T>` | `MaxSubarraySum<T>::S` | 区間の和 `sum`、空を含む prefix・suffix の和の最大値 `prefix`・`suffix`、空を含む連続部分列の和の最大値 `best` | 空の区間 `{0, 0, 0, 0}` |
+| `MaxSubarraySum<T>` | `MaxSubarraySum<T>::S` | 区間の和 `sum`、空を含む prefix・suffix の和の最大値 `prefix`・`suffix`、空を含む部分配列の和の最大値 `best` | 空の区間 `{0, 0, 0, 0}` |
 | `Reverse<M>` | `M::S` | `M::op(b, a)` (積の順序を逆にする) | `M::e()` |
 
 `MinWith`・`MaxWith` は、位置が -1 の要素を単位元とみなします。そのため、値が型の最大値 (`MaxWith` なら最小値) の要素があっても、空区間の積は `{型の最大値, -1}` (`MaxWith` なら `{型の最小値, -1}`) になり、その要素の位置が正しく返ります。位置に -1 は使わないでください。`U` が整数型でないとき (`bool` も含む) は、単位元は `{型の最大値, U{}}` (`MaxWith` なら `{型の最小値, U{}}`) で、値が型の最大値 (最小値) の要素は置けません。
 
 `Parenthesis::S` は文字 `'('`、`')'` から作れます。`is_valid()` で正しい括弧列かどうかを判定できます。
 
-## prefix・suffix の和と連続部分列の和
+## prefix・suffix の和と部分配列の和
 
-`PrefixSumMax<T>`、`PrefixSumMin<T>`、`PrefixSumMinMax<T>`、`SuffixSumMax<T>`、`SuffixSumMin<T>`、`MaxSubarraySum<T>` は、区間の和と一緒に prefix の和などの最大値・最小値を持ちます。どれも**空の prefix・suffix・部分列を含めて**数えるので、最大値は 0 以上、最小値は 0 以下になり、単位元は空の区間 (すべて 0) です。値の prefix max ではなく、prefix の**和**の最大値であることに注意してください。
+`PrefixSumMax<T>`、`PrefixSumMin<T>`、`PrefixSumMinMax<T>`、`SuffixSumMax<T>`、`SuffixSumMin<T>`、`MaxSubarraySum<T>` は、区間の和と一緒に prefix の和などの最大値・最小値を持ちます。どれも**空の prefix・suffix・部分配列を含めて**数えるので、最大値は 0 以上、最小値は 0 以下になり、単位元は空の区間 (すべて 0) です。値の prefix max ではなく、prefix の**和**の最大値であることに注意してください。
 
 要素は `S(x)` で値 `x` の1要素から作れます。`std::vector<T>` から `std::vector<S>(a.begin(), a.end())` で変換することもできます。`==`、`!=` で比較できます。
 
@@ -69,10 +69,10 @@ both.set(i, x);
 
 SegTree<monoid::MaxSubarraySum<long long>> seg2(n);
 seg2.set(i, x);
-long long best = seg2.prod(l, r).best;  // [l, r) の連続部分列の和の最大値 (空なら 0)
+long long best = seg2.prod(l, r).best;  // [l, r) の部分配列の和の最大値 (空なら 0)
 ```
 
-空の部分列を許さない最大値が欲しい場合は、区間の最大値 (`Max<T>`) が負かどうかで場合分けします。
+空の部分配列を許さない最大値が欲しい場合は、区間の最大値 (`Max<T>`) が負かどうかで場合分けします。
 
 ## 1次関数 `Affine<T>`
 

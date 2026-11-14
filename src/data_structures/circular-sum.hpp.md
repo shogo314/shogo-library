@@ -64,8 +64,8 @@ data:
   timestamp: '2026-10-31 15:34:18+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/geometry/polygon-centroid.test.cpp
   - test/unittest/data_structures/circular-sum.test.cpp
+  - test/unittest/geometry/polygon-centroid.test.cpp
 documentation_of: src/data_structures/circular-sum.hpp
 layout: document
 title: "\u5186\u74B0\u4E0A\u306E\u533A\u9593\u548C"

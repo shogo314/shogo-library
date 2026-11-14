@@ -1191,9 +1191,9 @@ data:
   - test/unittest/data_structures/segtree-beats.test.cpp
   - test/unittest/algebra/beats-acted-monoid.test.cpp
   - test/unittest/algebra/monoid.test.cpp
+  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.1.test.cpp
   - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.2.test.cpp
   - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
-  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.1.test.cpp
 documentation_of: src/data_structures/segtree-beats.hpp
 layout: document
 title: Segment Tree Beats

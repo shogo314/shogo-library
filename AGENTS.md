@@ -87,6 +87,8 @@
 
 ## push の前に
 
+push の前に、前回の push に対する CI がすべて完了していることを確認する。実行中や待機中なら、完了を待ってから push する。
+
 `main` に push すると CI の verify が走り、終わると auto-verifier が `.verify-helper/timestamps.remote.json` を更新するコミット (`[auto-verifier] verify commit ...`) を `origin/main` に積む。手元はたいていその分遅れているので、push の前に毎回確かめる。
 
 ```sh

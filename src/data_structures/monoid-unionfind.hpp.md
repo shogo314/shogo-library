@@ -609,9 +609,9 @@ data:
   timestamp: '2026-11-10 04:55:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/yukicoder/674.1.test.cpp
   - test/unittest/data_structures/monoid-unionfind.test.cpp
   - test/unittest/algebra/monoid.test.cpp
+  - test/yukicoder/674.1.test.cpp
 documentation_of: src/data_structures/monoid-unionfind.hpp
 layout: document
 title: "\u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\u3092\u4E57\u305B\u308BUnionFind"

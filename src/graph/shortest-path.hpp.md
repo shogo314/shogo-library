@@ -458,9 +458,9 @@ data:
   timestamp: '2026-11-09 05:14:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/graph/grid-graph.test.cpp
-  - test/unittest/graph/tree.test.cpp
   - test/unittest/graph/chinese-postman.test.cpp
+  - test/unittest/graph/tree.test.cpp
+  - test/unittest/graph/grid-graph.test.cpp
   - test/unittest/graph/shortest-path.test.cpp
   - test/aoj/grl/grl-1-b.test.cpp
   - test/aoj/grl/grl-1-c.2.test.cpp

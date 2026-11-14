@@ -599,8 +599,8 @@ data:
   timestamp: '2026-11-10 04:55:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/utility/bit.test.cpp
   - test/unittest/data_structures/disjoint-sparse-table.test.cpp
+  - test/unittest/utility/bit.test.cpp
   - test/aoj/itp2/itp2-10-c.test.cpp
 documentation_of: src/utility/bit.hpp
 layout: document

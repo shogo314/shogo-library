@@ -84,8 +84,8 @@ data:
   timestamp: '2026-10-24 23:17:26+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/utility/two-pointers.test.cpp
   - test/unittest/others/subarray-sum.test.cpp
+  - test/unittest/utility/two-pointers.test.cpp
 documentation_of: src/utility/two-pointers.hpp
 layout: document
 title: "\u5C3A\u53D6\u308A\u6CD5"

@@ -420,45 +420,45 @@ data:
   isVerificationFile: false
   path: src/geometry/internal/predicates.hpp
   requiredBy:
-  - src/geometry/line.hpp
-  - src/geometry/triangle.hpp
   - src/geometry/segment.hpp
-  - src/geometry/circle.hpp
-  - src/geometry/sphere.hpp
+  - src/geometry/triangle.hpp
   - src/geometry/axis-parallel-segments.hpp
   - src/geometry/plane.hpp
+  - src/geometry/circle.hpp
+  - src/geometry/sphere.hpp
+  - src/geometry/line.hpp
   timestamp: '2026-11-10 04:55:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/yukicoder/3672.test.cpp
-  - test/yukicoder/132.test.cpp
-  - test/unittest/geometry/sphere.test.cpp
-  - test/unittest/geometry/circle.test.cpp
-  - test/unittest/geometry/plane.test.cpp
   - test/unittest/geometry/triangle.test.cpp
-  - test/unittest/geometry/axis-parallel-segments.test.cpp
+  - test/unittest/geometry/sphere.test.cpp
+  - test/unittest/geometry/plane.test.cpp
   - test/unittest/geometry/segment.test.cpp
-  - test/aoj/volume1/0115.test.cpp
-  - test/aoj/volume1/0177.test.cpp
+  - test/unittest/geometry/circle.test.cpp
+  - test/unittest/geometry/axis-parallel-segments.test.cpp
+  - test/aoj/volume12/1289.test.cpp
+  - test/aoj/volume26/2641.test.cpp
+  - test/aoj/cgl/cgl-2-d.test.cpp
   - test/aoj/cgl/cgl-6-a.test.cpp
+  - test/aoj/cgl/cgl-1-a.test.cpp
+  - test/aoj/cgl/cgl-2-c.test.cpp
+  - test/aoj/cgl/cgl-2-b.test.cpp
+  - test/aoj/cgl/cgl-7-f.test.cpp
+  - test/aoj/cgl/cgl-7-i.test.cpp
   - test/aoj/cgl/cgl-7-b.test.cpp
   - test/aoj/cgl/cgl-7-d.test.cpp
-  - test/aoj/cgl/cgl-1-b.test.cpp
-  - test/aoj/cgl/cgl-2-a.test.cpp
-  - test/aoj/cgl/cgl-7-g.test.cpp
-  - test/aoj/cgl/cgl-2-c.test.cpp
   - test/aoj/cgl/cgl-7-e.test.cpp
-  - test/aoj/cgl/cgl-7-c.test.cpp
   - test/aoj/cgl/cgl-7-a.test.cpp
-  - test/aoj/cgl/cgl-2-b.test.cpp
+  - test/aoj/cgl/cgl-7-c.test.cpp
+  - test/aoj/cgl/cgl-7-g.test.cpp
   - test/aoj/cgl/cgl-7-h.test.cpp
-  - test/aoj/cgl/cgl-7-f.test.cpp
-  - test/aoj/cgl/cgl-1-a.test.cpp
-  - test/aoj/cgl/cgl-7-i.test.cpp
-  - test/aoj/cgl/cgl-2-d.test.cpp
-  - test/aoj/volume26/2641.test.cpp
-  - test/aoj/volume12/1289.test.cpp
+  - test/aoj/cgl/cgl-2-a.test.cpp
+  - test/aoj/cgl/cgl-1-b.test.cpp
+  - test/aoj/volume1/0177.test.cpp
+  - test/aoj/volume1/0115.test.cpp
   - test/yosupo/geo/minimum-enclosing-circle.test.cpp
+  - test/yukicoder/3672.test.cpp
+  - test/yukicoder/132.test.cpp
 documentation_of: src/geometry/internal/predicates.hpp
 layout: document
 redirect_from:

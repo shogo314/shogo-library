@@ -853,8 +853,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/segtree-2d.test.cpp
-  - test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
   - test/yosupo/data_structure/point-add-rectangle-sum.test.cpp
+  - test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
 documentation_of: src/data_structures/segtree-2d.hpp
 layout: document
 title: "2\u6B21\u5143\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"

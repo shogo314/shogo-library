@@ -875,8 +875,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/math/linear-recurrence.test.cpp
-  - test/yosupo/other/kth-term-of-linearly-recurrent-sequence.test.cpp
   - test/yosupo/other/find-linear-recurrence.test.cpp
+  - test/yosupo/other/kth-term-of-linearly-recurrent-sequence.test.cpp
 documentation_of: src/math/linear-recurrence.hpp
 layout: document
 title: "\u7DDA\u5F62\u6F38\u5316\u5F0F (Bostan-Mori\u30FBBerlekamp-Massey)"

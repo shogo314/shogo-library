@@ -564,8 +564,8 @@ data:
   timestamp: '2026-11-08 19:03:35+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/yosupo/data_structure/rectangle-sum.2.test.cpp
   - test/yosupo/data_structure/rectangle-sum.1.test.cpp
+  - test/yosupo/data_structure/rectangle-sum.2.test.cpp
 documentation_of: src/data_structures/merge-sort-tree.hpp
 layout: document
 title: "\u30DE\u30FC\u30B8\u30BD\u30FC\u30C8\u30C4\u30EA\u30FC"

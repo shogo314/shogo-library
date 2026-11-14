@@ -383,28 +383,28 @@ data:
   isVerificationFile: false
   path: src/geometry/rectangle.hpp
   requiredBy:
-  - src/geometry/rectangle-union.hpp
-  - src/data_structures/kd-tree.hpp
-  - src/data_structures/dual-segtree-2d.hpp
   - src/data_structures/segtree-2d.hpp
+  - src/data_structures/dual-segtree-2d.hpp
+  - src/data_structures/kd-tree.hpp
+  - src/geometry/rectangle-union.hpp
   timestamp: '2026-11-10 04:55:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/geometry/rectangle-union.test.cpp
-  - test/unittest/geometry/rectangle.test.cpp
   - test/unittest/data_structures/dual-segtree-2d.test.cpp
   - test/unittest/data_structures/kd-tree.test.cpp
   - test/unittest/data_structures/segtree-2d.test.cpp
-  - test/aoj/dsl/dsl-2-c.test.cpp
+  - test/unittest/geometry/rectangle-union.test.cpp
+  - test/unittest/geometry/rectangle.test.cpp
   - test/aoj/dsl/dsl-4-a.3.test.cpp
-  - test/aoj/dsl/dsl-4-a.1.test.cpp
+  - test/aoj/dsl/dsl-2-c.test.cpp
   - test/aoj/dsl/dsl-4-a.2.test.cpp
-  - test/yosupo/data_structure/rectangle-add-point-get.2.test.cpp
-  - test/yosupo/data_structure/area-of-union-of-rectangles.1.test.cpp
-  - test/yosupo/data_structure/area-of-union-of-rectangles.3.test.cpp
-  - test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
+  - test/aoj/dsl/dsl-4-a.1.test.cpp
   - test/yosupo/data_structure/area-of-union-of-rectangles.2.test.cpp
+  - test/yosupo/data_structure/rectangle-add-point-get.2.test.cpp
+  - test/yosupo/data_structure/area-of-union-of-rectangles.3.test.cpp
+  - test/yosupo/data_structure/area-of-union-of-rectangles.1.test.cpp
   - test/yosupo/data_structure/point-add-rectangle-sum.test.cpp
+  - test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
 documentation_of: src/geometry/rectangle.hpp
 layout: document
 title: "\u8EF8\u306B\u5E73\u884C\u306A\u9577\u65B9\u5F62"

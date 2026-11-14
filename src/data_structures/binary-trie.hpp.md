@@ -238,8 +238,8 @@ data:
   timestamp: '2026-11-08 23:03:03+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/data_structures/binary-trie.2.test.cpp
   - test/unittest/data_structures/binary-trie.1.test.cpp
+  - test/unittest/data_structures/binary-trie.2.test.cpp
   - test/yosupo/data_structure/set-xor-min.test.cpp
   - test/yosupo/data_structure/ordered-set.test.cpp
 documentation_of: src/data_structures/binary-trie.hpp

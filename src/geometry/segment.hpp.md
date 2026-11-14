@@ -662,31 +662,31 @@ data:
   path: src/geometry/segment.hpp
   requiredBy:
   - src/geometry/triangle.hpp
-  - src/geometry/circle.hpp
   - src/geometry/axis-parallel-segments.hpp
+  - src/geometry/circle.hpp
   timestamp: '2026-11-10 04:55:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/geometry/circle.test.cpp
-  - test/unittest/geometry/plane.test.cpp
   - test/unittest/geometry/triangle.test.cpp
-  - test/unittest/geometry/axis-parallel-segments.test.cpp
+  - test/unittest/geometry/plane.test.cpp
   - test/unittest/geometry/segment.test.cpp
-  - test/aoj/volume1/0115.test.cpp
+  - test/unittest/geometry/circle.test.cpp
+  - test/unittest/geometry/axis-parallel-segments.test.cpp
+  - test/aoj/volume26/2641.test.cpp
+  - test/aoj/cgl/cgl-2-d.test.cpp
   - test/aoj/cgl/cgl-6-a.test.cpp
-  - test/aoj/cgl/cgl-7-b.test.cpp
-  - test/aoj/cgl/cgl-7-d.test.cpp
-  - test/aoj/cgl/cgl-7-g.test.cpp
   - test/aoj/cgl/cgl-2-c.test.cpp
-  - test/aoj/cgl/cgl-7-e.test.cpp
-  - test/aoj/cgl/cgl-7-c.test.cpp
-  - test/aoj/cgl/cgl-7-a.test.cpp
   - test/aoj/cgl/cgl-2-b.test.cpp
-  - test/aoj/cgl/cgl-7-h.test.cpp
   - test/aoj/cgl/cgl-7-f.test.cpp
   - test/aoj/cgl/cgl-7-i.test.cpp
-  - test/aoj/cgl/cgl-2-d.test.cpp
-  - test/aoj/volume26/2641.test.cpp
+  - test/aoj/cgl/cgl-7-b.test.cpp
+  - test/aoj/cgl/cgl-7-d.test.cpp
+  - test/aoj/cgl/cgl-7-e.test.cpp
+  - test/aoj/cgl/cgl-7-a.test.cpp
+  - test/aoj/cgl/cgl-7-c.test.cpp
+  - test/aoj/cgl/cgl-7-g.test.cpp
+  - test/aoj/cgl/cgl-7-h.test.cpp
+  - test/aoj/volume1/0115.test.cpp
   - test/yosupo/geo/minimum-enclosing-circle.test.cpp
 documentation_of: src/geometry/segment.hpp
 layout: document

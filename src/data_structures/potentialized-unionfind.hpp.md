@@ -597,13 +597,13 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/potentialized-unionfind.test.cpp
-  - test/unittest/algebra/mapping.test.cpp
   - test/unittest/algebra/monoid.test.cpp
-  - test/aoj/volume29/2971.test.cpp
-  - test/aoj/dsl/dsl-1-b.1.test.cpp
+  - test/unittest/algebra/mapping.test.cpp
   - test/aoj/dsl/dsl-1-b.2.test.cpp
-  - test/yosupo/data_structure/unionfind-with-potential.test.cpp
+  - test/aoj/dsl/dsl-1-b.1.test.cpp
+  - test/aoj/volume29/2971.test.cpp
   - test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
+  - test/yosupo/data_structure/unionfind-with-potential.test.cpp
 documentation_of: src/data_structures/potentialized-unionfind.hpp
 layout: document
 title: "\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind"

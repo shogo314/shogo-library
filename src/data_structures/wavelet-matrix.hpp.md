@@ -424,19 +424,19 @@ data:
   isVerificationFile: false
   path: src/data_structures/wavelet-matrix.hpp
   requiredBy:
-  - src/data_structures/range-count-distinct.hpp
   - src/data_structures/range-lis.hpp
+  - src/data_structures/range-count-distinct.hpp
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/range-count-distinct.test.cpp
-  - test/unittest/data_structures/wavelet-matrix.test.cpp
   - test/unittest/data_structures/range-lis.test.cpp
-  - test/yosupo/data_structure/static-range-lis-query.test.cpp
+  - test/unittest/data_structures/wavelet-matrix.test.cpp
   - test/yosupo/data_structure/range-kth-smallest.test.cpp
-  - test/yosupo/data_structure/static-range-sum-with-upper-bound.test.cpp
   - test/yosupo/data_structure/static-range-count-distinct.test.cpp
+  - test/yosupo/data_structure/static-range-lis-query.test.cpp
   - test/yosupo/data_structure/static-range-frequency.test.cpp
+  - test/yosupo/data_structure/static-range-sum-with-upper-bound.test.cpp
   - test/yosupo/data_structure/rectangle-sum.5.test.cpp
 documentation_of: src/data_structures/wavelet-matrix.hpp
 layout: document

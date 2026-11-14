@@ -281,8 +281,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/graph/chinese-postman.test.cpp
-  - test/yosupo/graph/eulerian-trail-undirected.test.cpp
   - test/yosupo/graph/eulerian-trail-directed.test.cpp
+  - test/yosupo/graph/eulerian-trail-undirected.test.cpp
 documentation_of: src/graph/eulerian-trail.hpp
 layout: document
 title: "\u30AA\u30A4\u30E9\u30FC\u8DEF"

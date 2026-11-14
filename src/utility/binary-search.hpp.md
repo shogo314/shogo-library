@@ -237,8 +237,8 @@ data:
   timestamp: '2026-11-10 04:55:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/base/functions.test.cpp
   - test/unittest/utility/binary-search.test.cpp
+  - test/unittest/base/functions.test.cpp
   - test/aoj/alds1/alds1-4-d.test.cpp
 documentation_of: src/utility/binary-search.hpp
 layout: document

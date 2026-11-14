@@ -663,19 +663,19 @@ data:
   timestamp: '2026-11-10 04:55:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/geometry/circle.test.cpp
-  - test/unittest/geometry/plane.test.cpp
   - test/unittest/geometry/triangle.test.cpp
-  - test/aoj/volume1/0115.test.cpp
-  - test/aoj/cgl/cgl-7-b.test.cpp
-  - test/aoj/cgl/cgl-7-d.test.cpp
-  - test/aoj/cgl/cgl-7-g.test.cpp
-  - test/aoj/cgl/cgl-7-e.test.cpp
-  - test/aoj/cgl/cgl-7-c.test.cpp
-  - test/aoj/cgl/cgl-7-a.test.cpp
-  - test/aoj/cgl/cgl-7-h.test.cpp
+  - test/unittest/geometry/plane.test.cpp
+  - test/unittest/geometry/circle.test.cpp
   - test/aoj/cgl/cgl-7-f.test.cpp
   - test/aoj/cgl/cgl-7-i.test.cpp
+  - test/aoj/cgl/cgl-7-b.test.cpp
+  - test/aoj/cgl/cgl-7-d.test.cpp
+  - test/aoj/cgl/cgl-7-e.test.cpp
+  - test/aoj/cgl/cgl-7-a.test.cpp
+  - test/aoj/cgl/cgl-7-c.test.cpp
+  - test/aoj/cgl/cgl-7-g.test.cpp
+  - test/aoj/cgl/cgl-7-h.test.cpp
+  - test/aoj/volume1/0115.test.cpp
   - test/yosupo/geo/minimum-enclosing-circle.test.cpp
 documentation_of: src/geometry/triangle.hpp
 layout: document

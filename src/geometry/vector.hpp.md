@@ -669,93 +669,93 @@ data:
   isVerificationFile: false
   path: src/geometry/vector.hpp
   requiredBy:
-  - src/geometry/point-pair.hpp
-  - src/geometry/rectangle-union.hpp
-  - src/geometry/line.hpp
-  - src/geometry/polygon.hpp
-  - src/geometry/triangle.hpp
-  - src/geometry/manhattan.hpp
+  - src/data_structures/segtree-2d.hpp
+  - src/data_structures/dual-segtree-2d.hpp
+  - src/data_structures/kd-tree.hpp
   - src/geometry/segment.hpp
   - src/geometry/internal/predicates.hpp
-  - src/geometry/circle.hpp
-  - src/geometry/sphere.hpp
+  - src/geometry/point-pair.hpp
   - src/geometry/rectangle.hpp
+  - src/geometry/polygon.hpp
+  - src/geometry/triangle.hpp
   - src/geometry/axis-parallel-segments.hpp
   - src/geometry/plane.hpp
+  - src/geometry/circle.hpp
+  - src/geometry/sphere.hpp
+  - src/geometry/manhattan.hpp
   - src/geometry/manhattan-mst.hpp
-  - src/data_structures/kd-tree.hpp
-  - src/data_structures/dual-segtree-2d.hpp
-  - src/data_structures/segtree-2d.hpp
+  - src/geometry/line.hpp
+  - src/geometry/rectangle-union.hpp
   timestamp: '2026-11-10 04:55:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/yukicoder/3672.test.cpp
-  - test/yukicoder/132.test.cpp
-  - test/unittest/geometry/manhattan.test.cpp
+  - test/unittest/data_structures/dual-segtree-2d.test.cpp
+  - test/unittest/data_structures/circular-sum.test.cpp
+  - test/unittest/data_structures/kd-tree.test.cpp
+  - test/unittest/data_structures/dual-segtree.test.cpp
+  - test/unittest/data_structures/segtree-2d.test.cpp
   - test/unittest/geometry/point-pair.test.cpp
-  - test/unittest/geometry/manhattan-mst.test.cpp
-  - test/unittest/geometry/sphere.test.cpp
+  - test/unittest/geometry/polygon-convex-cut.test.cpp
+  - test/unittest/geometry/triangle.test.cpp
   - test/unittest/geometry/vector.test.cpp
   - test/unittest/geometry/rectangle-union.test.cpp
+  - test/unittest/geometry/manhattan-mst.test.cpp
   - test/unittest/geometry/angle.test.cpp
-  - test/unittest/geometry/circle.test.cpp
-  - test/unittest/geometry/rectangle.test.cpp
+  - test/unittest/geometry/sphere.test.cpp
   - test/unittest/geometry/polygon-centroid.test.cpp
   - test/unittest/geometry/plane.test.cpp
-  - test/unittest/geometry/triangle.test.cpp
-  - test/unittest/geometry/axis-parallel-segments.test.cpp
-  - test/unittest/geometry/polygon-convex-cut.test.cpp
+  - test/unittest/geometry/rectangle.test.cpp
   - test/unittest/geometry/segment.test.cpp
-  - test/unittest/data_structures/dual-segtree-2d.test.cpp
-  - test/unittest/data_structures/dual-segtree.test.cpp
-  - test/unittest/data_structures/kd-tree.test.cpp
-  - test/unittest/data_structures/circular-sum.test.cpp
-  - test/unittest/data_structures/segtree-2d.test.cpp
-  - test/aoj/volume1/0115.test.cpp
-  - test/aoj/volume1/0177.test.cpp
-  - test/aoj/cgl/cgl-6-a.test.cpp
-  - test/aoj/cgl/cgl-3-b.test.cpp
-  - test/aoj/cgl/cgl-7-b.test.cpp
-  - test/aoj/cgl/cgl-7-d.test.cpp
-  - test/aoj/cgl/cgl-5-a.test.cpp
-  - test/aoj/cgl/cgl-1-c.test.cpp
-  - test/aoj/cgl/cgl-1-b.test.cpp
-  - test/aoj/cgl/cgl-2-a.test.cpp
-  - test/aoj/cgl/cgl-7-g.test.cpp
-  - test/aoj/cgl/cgl-2-c.test.cpp
-  - test/aoj/cgl/cgl-7-e.test.cpp
-  - test/aoj/cgl/cgl-3-a.test.cpp
-  - test/aoj/cgl/cgl-7-c.test.cpp
-  - test/aoj/cgl/cgl-7-a.test.cpp
-  - test/aoj/cgl/cgl-4-c.test.cpp
-  - test/aoj/cgl/cgl-2-b.test.cpp
-  - test/aoj/cgl/cgl-7-h.test.cpp
-  - test/aoj/cgl/cgl-7-f.test.cpp
-  - test/aoj/cgl/cgl-3-c.test.cpp
-  - test/aoj/cgl/cgl-1-a.test.cpp
-  - test/aoj/cgl/cgl-4-b.test.cpp
-  - test/aoj/cgl/cgl-7-i.test.cpp
-  - test/aoj/cgl/cgl-4-a.test.cpp
-  - test/aoj/cgl/cgl-2-d.test.cpp
-  - test/aoj/volume26/2641.test.cpp
+  - test/unittest/geometry/circle.test.cpp
+  - test/unittest/geometry/manhattan.test.cpp
+  - test/unittest/geometry/axis-parallel-segments.test.cpp
   - test/aoj/volume12/1289.test.cpp
   - test/aoj/volume33/3314.test.cpp
-  - test/aoj/dsl/dsl-2-c.test.cpp
+  - test/aoj/volume26/2641.test.cpp
+  - test/aoj/cgl/cgl-2-d.test.cpp
+  - test/aoj/cgl/cgl-6-a.test.cpp
+  - test/aoj/cgl/cgl-1-a.test.cpp
+  - test/aoj/cgl/cgl-3-c.test.cpp
+  - test/aoj/cgl/cgl-2-c.test.cpp
+  - test/aoj/cgl/cgl-2-b.test.cpp
+  - test/aoj/cgl/cgl-7-f.test.cpp
+  - test/aoj/cgl/cgl-7-i.test.cpp
+  - test/aoj/cgl/cgl-7-b.test.cpp
+  - test/aoj/cgl/cgl-5-a.test.cpp
+  - test/aoj/cgl/cgl-1-c.test.cpp
+  - test/aoj/cgl/cgl-4-b.test.cpp
+  - test/aoj/cgl/cgl-7-d.test.cpp
+  - test/aoj/cgl/cgl-7-e.test.cpp
+  - test/aoj/cgl/cgl-7-a.test.cpp
+  - test/aoj/cgl/cgl-4-a.test.cpp
+  - test/aoj/cgl/cgl-3-b.test.cpp
+  - test/aoj/cgl/cgl-4-c.test.cpp
+  - test/aoj/cgl/cgl-7-c.test.cpp
+  - test/aoj/cgl/cgl-3-a.test.cpp
+  - test/aoj/cgl/cgl-7-g.test.cpp
+  - test/aoj/cgl/cgl-7-h.test.cpp
+  - test/aoj/cgl/cgl-2-a.test.cpp
+  - test/aoj/cgl/cgl-1-b.test.cpp
   - test/aoj/dsl/dsl-4-a.3.test.cpp
-  - test/aoj/dsl/dsl-4-a.1.test.cpp
+  - test/aoj/dsl/dsl-2-c.test.cpp
   - test/aoj/dsl/dsl-4-a.2.test.cpp
+  - test/aoj/dsl/dsl-4-a.1.test.cpp
+  - test/aoj/volume1/0177.test.cpp
+  - test/aoj/volume1/0115.test.cpp
+  - test/yosupo/geo/manhattanmst.test.cpp
   - test/yosupo/geo/furthest-pair.test.cpp
   - test/yosupo/geo/static-convex-hull.test.cpp
   - test/yosupo/geo/sort-points-by-argument.1.test.cpp
   - test/yosupo/geo/closest-pair.test.cpp
-  - test/yosupo/geo/manhattanmst.test.cpp
   - test/yosupo/geo/minimum-enclosing-circle.test.cpp
-  - test/yosupo/data_structure/rectangle-add-point-get.2.test.cpp
-  - test/yosupo/data_structure/area-of-union-of-rectangles.1.test.cpp
-  - test/yosupo/data_structure/area-of-union-of-rectangles.3.test.cpp
-  - test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
   - test/yosupo/data_structure/area-of-union-of-rectangles.2.test.cpp
+  - test/yosupo/data_structure/rectangle-add-point-get.2.test.cpp
+  - test/yosupo/data_structure/area-of-union-of-rectangles.3.test.cpp
+  - test/yosupo/data_structure/area-of-union-of-rectangles.1.test.cpp
   - test/yosupo/data_structure/point-add-rectangle-sum.test.cpp
+  - test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
+  - test/yukicoder/3672.test.cpp
+  - test/yukicoder/132.test.cpp
 documentation_of: src/geometry/vector.hpp
 layout: document
 title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"

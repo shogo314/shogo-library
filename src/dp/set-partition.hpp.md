@@ -72,8 +72,8 @@ data:
   timestamp: '2026-11-03 08:30:39+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/dp/set-partition.test.cpp
   - test/unittest/dp/set-cover.test.cpp
+  - test/unittest/dp/set-partition.test.cpp
 documentation_of: src/dp/set-partition.hpp
 layout: document
 title: "\u96C6\u5408\u306E\u5206\u5272 (\u4F7F\u3063\u3066\u3088\u3044\u96C6\u5408\

@@ -833,8 +833,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/imos.test.cpp
-  - test/unittest/algebra/acted-monoid.test.cpp
   - test/unittest/algebra/monoid.test.cpp
+  - test/unittest/algebra/acted-monoid.test.cpp
   - test/aoj/dsl/dsl-5-a.test.cpp
 documentation_of: src/data_structures/imos.hpp
 layout: document

@@ -473,8 +473,8 @@ data:
   timestamp: '2026-11-10 04:55:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/geometry/manhattan.test.cpp
   - test/unittest/geometry/manhattan-mst.test.cpp
+  - test/unittest/geometry/manhattan.test.cpp
   - test/yosupo/geo/manhattanmst.test.cpp
 documentation_of: src/geometry/manhattan.hpp
 layout: document

@@ -593,16 +593,16 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/geometry/point-pair.test.cpp
+  - test/unittest/geometry/polygon-convex-cut.test.cpp
   - test/unittest/geometry/polygon-centroid.test.cpp
   - test/unittest/geometry/plane.test.cpp
-  - test/unittest/geometry/polygon-convex-cut.test.cpp
-  - test/aoj/cgl/cgl-3-b.test.cpp
-  - test/aoj/cgl/cgl-5-a.test.cpp
-  - test/aoj/cgl/cgl-3-a.test.cpp
-  - test/aoj/cgl/cgl-4-c.test.cpp
   - test/aoj/cgl/cgl-3-c.test.cpp
+  - test/aoj/cgl/cgl-5-a.test.cpp
   - test/aoj/cgl/cgl-4-b.test.cpp
   - test/aoj/cgl/cgl-4-a.test.cpp
+  - test/aoj/cgl/cgl-3-b.test.cpp
+  - test/aoj/cgl/cgl-4-c.test.cpp
+  - test/aoj/cgl/cgl-3-a.test.cpp
   - test/yosupo/geo/furthest-pair.test.cpp
   - test/yosupo/geo/static-convex-hull.test.cpp
   - test/yosupo/geo/closest-pair.test.cpp

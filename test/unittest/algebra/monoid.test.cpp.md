@@ -1890,61 +1890,64 @@ data:
     \ = 1;\n    }\n\n    constexpr long long size() const {\n        for (std::size_t\
     \ i = 0; i < k; i++) {\n            if (data[i].second == 0) {\n             \
     \   return static_cast<long long>(i);\n            }\n        }\n        return\
-    \ k;\n    }\n\n    constexpr void inc(const key_type& x, const mapped_type& c\
-    \ = 1) {\n        assert(c > 0);\n        bool f = false;\n        key_type pre_key{};\n\
-    \        mapped_type pre_mapped{};\n        for (std::size_t i = 0; i < k; i++)\
-    \ {\n            if (f) {\n                // std::swap \u306F C++17 \u3067\u306F\
-    \ constexpr \u3067\u306A\u3044\u306E\u3067\u624B\u3067\u5165\u308C\u66FF\u3048\
-    \u308B\n                key_type tmp_key = data[i].first;\n                data[i].first\
-    \ = pre_key;\n                pre_key = tmp_key;\n                mapped_type\
-    \ tmp_mapped = data[i].second;\n                data[i].second = pre_mapped;\n\
-    \                pre_mapped = tmp_mapped;\n                continue;\n       \
-    \     }\n            if (data[i].second == 0) {\n                data[i].first\
-    \ = x;\n                data[i].second += c;\n                return;\n      \
-    \      }\n            if (Compare()(data[i].first, x)) {\n                pre_key\
-    \ = data[i].first;\n                pre_mapped = data[i].second;\n           \
-    \     data[i].first = x;\n                data[i].second = c;\n              \
-    \  f = true;\n            } else if (!Compare()(x, data[i].first)) {\n       \
-    \         data[i].second += c;\n                return;\n            }\n     \
-    \   }\n    }\n\n    constexpr PriorityCounter& operator+=(const PriorityCounter&\
-    \ o) {\n        for (std::size_t i = 0; i < k; i++) {\n            if (o.data[i].second\
-    \ == 0) break;\n            this->inc(o.data[i].first, o.data[i].second);\n  \
-    \      }\n        return *this;\n    }\n    constexpr friend PriorityCounter operator+(const\
-    \ PriorityCounter& a, const PriorityCounter& b) {\n        PriorityCounter res(a);\n\
-    \        return res += b;\n    }\n};\n\ntemplate <typename T, std::size_t K =\
-    \ 1>\nusing MaxCounter = PriorityCounter<T, K>;\n\ntemplate <typename T, std::size_t\
-    \ K = 1>\nusing MinCounter = PriorityCounter<T, K, std::greater<T>>;\n#line 2\
-    \ \"src/data_structures/rbst.hpp\"\n\n/**\n * @file rbst.hpp\n * @brief \u5E73\
-    \u8861\u4E8C\u5206\u6728 (RBST) \u306B\u3088\u308B\u5217\n */\n\n#line 10 \"src/data_structures/rbst.hpp\"\
-    \n#include <cstdint>\n#line 16 \"src/data_structures/rbst.hpp\"\n\n#line 19 \"\
-    src/data_structures/rbst.hpp\"\n\nnamespace internal_rbst {\n#if __cplusplus <\
-    \ 202002L\ntemplate <typename M, typename = void>\nstruct has_acted : std::false_type\
-    \ {};\ntemplate <typename M>\nstruct has_acted<M, std::void_t<typename M::F>>\
-    \ : std::true_type {};\n#endif\n// \u4F5C\u7528\u7D20\u4ED8\u304D\u3067\u306A\u3044\
-    \u30E2\u30CE\u30A4\u30C9\u306E\u3068\u304D\u306E\u4F5C\u7528\u7D20\u306E\u578B\
-    \nstruct NoAct {\n    using F = NoAct;\n};\n}  // namespace internal_rbst\n\n\
-    /**\n * @brief \u5E73\u8861\u4E8C\u5206\u6728 (RBST) \u306B\u3088\u308B\u5217\n\
-    \ *\n * \u4F4D\u7F6E\u3067\u6271\u3046\u5217\u3002k \u756A\u76EE\u3078\u306E\u633F\
-    \u5165\u30FB\u524A\u9664\u3001\u533A\u9593\u7A4D\u3001\u533A\u9593\u53CD\u8EE2\
-    \u3001split\u30FBmerge \u3092\u671F\u5F85 O(log n) \u3067\u884C\u3046\n * \u30E2\
-    \u30CE\u30A4\u30C9 (algebra/monoid.hpp) \u304B\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
-    \u30CE\u30A4\u30C9 (algebra/acted-monoid.hpp) \u3092\u4E57\u305B\u308B\u3002\u4F5C\
-    \u7528\u7D20\u4ED8\u304D\u306A\u3089\u533A\u9593\u4F5C\u7528\u3082\u3067\u304D\
-    \u308B\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E mapping\
-    \ \u306F (f, x) \u304B (f, x, sz) \u306E\u5F62\u306B\u3059\u308B (\u5217\u306E\
-    \u4F4D\u7F6E\u306F\u633F\u5165\u30FB\u524A\u9664\u3067\u5909\u308F\u308B\u306E\
-    \u3067 (f, x, l, r) \u306F\u4F7F\u3048\u306A\u3044)\n * \u9802\u70B9\u306F\u578B\
-    \u3054\u3068\u306B\u5171\u6709\u3059\u308B\u914D\u5217\u306B\u7F6E\u304F\u306E\
-    \u3067\u3001\u540C\u3058\u578B\u306E\u6728\u3069\u3046\u3057\u3067 split\u30FB\
-    merge \u3067\u304D\u308B\n * \u4F8B:\n * RBST<acted_monoid::AddSum<long long>>\
-    \ t(v);\n * t.insert(2, x); t.erase(0); t.reverse(1, 4); t.apply(0, 3, 10); t.prod(1,\
-    \ 3);\n * RBST<acted_monoid::AddSum<long long>> u = t.split(2);  // t \u306F\u5148\
-    \u982D 2 \u500B\u3001u \u306F\u6B8B\u308A\n * t.merge(std::move(u));         \
-    \                        // \u5143\u306B\u623B\u3059\n *\n * @tparam M \u30E2\u30CE\
-    \u30A4\u30C9\u304B\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n */\n\
-    template <typename M>\nclass RBST {\n   public:\n    using S = typename M::S;\n\
-    #if __cplusplus >= 202002L\n    static constexpr bool acted = requires { typename\
-    \ M::F; };\n#else\n    static constexpr bool acted = internal_rbst::has_acted<M>::value;\n\
+    \ k;\n    }\n\n    /** @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u4E0A\u4F4D\
+    \ K \u7A2E\u985E\u306E\u500B\u6570\u306E\u7DCF\u548C O(K) */\n    constexpr mapped_type\
+    \ total() const {\n        mapped_type result = 0;\n        for (const auto& entry\
+    \ : data) result += entry.second;\n        return result;\n    }\n\n    constexpr\
+    \ void inc(const key_type& x, const mapped_type& c = 1) {\n        assert(c >\
+    \ 0);\n        bool f = false;\n        key_type pre_key{};\n        mapped_type\
+    \ pre_mapped{};\n        for (std::size_t i = 0; i < k; i++) {\n            if\
+    \ (f) {\n                // std::swap \u306F C++17 \u3067\u306F constexpr \u3067\
+    \u306A\u3044\u306E\u3067\u624B\u3067\u5165\u308C\u66FF\u3048\u308B\n         \
+    \       key_type tmp_key = data[i].first;\n                data[i].first = pre_key;\n\
+    \                pre_key = tmp_key;\n                mapped_type tmp_mapped =\
+    \ data[i].second;\n                data[i].second = pre_mapped;\n            \
+    \    pre_mapped = tmp_mapped;\n                continue;\n            }\n    \
+    \        if (data[i].second == 0) {\n                data[i].first = x;\n    \
+    \            data[i].second += c;\n                return;\n            }\n  \
+    \          if (Compare()(data[i].first, x)) {\n                pre_key = data[i].first;\n\
+    \                pre_mapped = data[i].second;\n                data[i].first =\
+    \ x;\n                data[i].second = c;\n                f = true;\n       \
+    \     } else if (!Compare()(x, data[i].first)) {\n                data[i].second\
+    \ += c;\n                return;\n            }\n        }\n    }\n\n    constexpr\
+    \ PriorityCounter& operator+=(const PriorityCounter& o) {\n        for (std::size_t\
+    \ i = 0; i < k; i++) {\n            if (o.data[i].second == 0) break;\n      \
+    \      this->inc(o.data[i].first, o.data[i].second);\n        }\n        return\
+    \ *this;\n    }\n    constexpr friend PriorityCounter operator+(const PriorityCounter&\
+    \ a, const PriorityCounter& b) {\n        PriorityCounter res(a);\n        return\
+    \ res += b;\n    }\n};\n\ntemplate <typename T, std::size_t K = 1>\nusing MaxCounter\
+    \ = PriorityCounter<T, K>;\n\ntemplate <typename T, std::size_t K = 1>\nusing\
+    \ MinCounter = PriorityCounter<T, K, std::greater<T>>;\n#line 2 \"src/data_structures/rbst.hpp\"\
+    \n\n/**\n * @file rbst.hpp\n * @brief \u5E73\u8861\u4E8C\u5206\u6728 (RBST) \u306B\
+    \u3088\u308B\u5217\n */\n\n#line 10 \"src/data_structures/rbst.hpp\"\n#include\
+    \ <cstdint>\n#line 16 \"src/data_structures/rbst.hpp\"\n\n#line 19 \"src/data_structures/rbst.hpp\"\
+    \n\nnamespace internal_rbst {\n#if __cplusplus < 202002L\ntemplate <typename M,\
+    \ typename = void>\nstruct has_acted : std::false_type {};\ntemplate <typename\
+    \ M>\nstruct has_acted<M, std::void_t<typename M::F>> : std::true_type {};\n#endif\n\
+    // \u4F5C\u7528\u7D20\u4ED8\u304D\u3067\u306A\u3044\u30E2\u30CE\u30A4\u30C9\u306E\
+    \u3068\u304D\u306E\u4F5C\u7528\u7D20\u306E\u578B\nstruct NoAct {\n    using F\
+    \ = NoAct;\n};\n}  // namespace internal_rbst\n\n/**\n * @brief \u5E73\u8861\u4E8C\
+    \u5206\u6728 (RBST) \u306B\u3088\u308B\u5217\n *\n * \u4F4D\u7F6E\u3067\u6271\u3046\
+    \u5217\u3002k \u756A\u76EE\u3078\u306E\u633F\u5165\u30FB\u524A\u9664\u3001\u533A\
+    \u9593\u7A4D\u3001\u533A\u9593\u53CD\u8EE2\u3001split\u30FBmerge \u3092\u671F\u5F85\
+    \ O(log n) \u3067\u884C\u3046\n * \u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\
+    \ \u304B\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9 (algebra/acted-monoid.hpp)\
+    \ \u3092\u4E57\u305B\u308B\u3002\u4F5C\u7528\u7D20\u4ED8\u304D\u306A\u3089\u533A\
+    \u9593\u4F5C\u7528\u3082\u3067\u304D\u308B\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
+    \u30CE\u30A4\u30C9\u306E mapping \u306F (f, x) \u304B (f, x, sz) \u306E\u5F62\u306B\
+    \u3059\u308B (\u5217\u306E\u4F4D\u7F6E\u306F\u633F\u5165\u30FB\u524A\u9664\u3067\
+    \u5909\u308F\u308B\u306E\u3067 (f, x, l, r) \u306F\u4F7F\u3048\u306A\u3044)\n\
+    \ * \u9802\u70B9\u306F\u578B\u3054\u3068\u306B\u5171\u6709\u3059\u308B\u914D\u5217\
+    \u306B\u7F6E\u304F\u306E\u3067\u3001\u540C\u3058\u578B\u306E\u6728\u3069\u3046\
+    \u3057\u3067 split\u30FBmerge \u3067\u304D\u308B\n * \u4F8B:\n * RBST<acted_monoid::AddSum<long\
+    \ long>> t(v);\n * t.insert(2, x); t.erase(0); t.reverse(1, 4); t.apply(0, 3,\
+    \ 10); t.prod(1, 3);\n * RBST<acted_monoid::AddSum<long long>> u = t.split(2);\
+    \  // t \u306F\u5148\u982D 2 \u500B\u3001u \u306F\u6B8B\u308A\n * t.merge(std::move(u));\
+    \                                 // \u5143\u306B\u623B\u3059\n *\n * @tparam\
+    \ M \u30E2\u30CE\u30A4\u30C9\u304B\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\
+    \u30C9\n */\ntemplate <typename M>\nclass RBST {\n   public:\n    using S = typename\
+    \ M::S;\n#if __cplusplus >= 202002L\n    static constexpr bool acted = requires\
+    \ { typename M::F; };\n#else\n    static constexpr bool acted = internal_rbst::has_acted<M>::value;\n\
     #endif\n    using F = typename std::conditional_t<acted, M, internal_rbst::NoAct>::F;\n\
     \n   private:\n#if __cplusplus >= 202002L\n    static_assert(!acted || !requires(const\
     \ M& m, const F& f, const S& x) { m.mapping(f, x, 0LL, 0LL); }, \"RBST: mapping(f,\
@@ -3564,7 +3567,7 @@ data:
   isVerificationFile: true
   path: test/unittest/algebra/monoid.test.cpp
   requiredBy: []
-  timestamp: '2026-11-14 23:03:37+09:00'
+  timestamp: '2026-11-15 09:59:26+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/algebra/monoid.test.cpp

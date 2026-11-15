@@ -25,9 +25,12 @@ template <size_t K, class Compare>
 bool same(const PriorityCounter<int, K, Compare>& pc, const std::map<int, long long>& m) {
     auto expect = top_k<K, Compare>(m);
     if (pc.size() != static_cast<int>(expect.size())) return false;
+    long long total = 0;
     for (size_t i = 0; i < expect.size(); i++) {
         if (pc[i] != expect[i]) return false;
+        total += expect[i].second;
     }
+    if (pc.total() != total) return false;
     // 使われていない場所の個数は 0
     for (size_t i = expect.size(); i < K; i++) {
         if (pc[i].second != 0) return false;
@@ -84,7 +87,7 @@ constexpr bool constexpr_check() {
     MaxCounter<int, 2> c = a + b;  // {9, 7}
     return a.size() == 2 && a[0] == std::pair<int, long long>(9, 1) && a[1] == std::pair<int, long long>(5, 3) &&
            c[0] == std::pair<int, long long>(9, 1) && c[1] == std::pair<int, long long>(7, 1) &&
-           MinCounter<int, 3>().size() == 0;
+           a.total() == 4 && c.total() == 2 && MinCounter<int, 3>().size() == 0 && MinCounter<int, 3>().total() == 0;
 }
 static_assert(constexpr_check());
 

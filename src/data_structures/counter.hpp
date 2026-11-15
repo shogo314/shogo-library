@@ -32,6 +32,7 @@ struct Counter {
     };
     std::map<key_type, mapped_type> data;
     std::set<value_type, CompareFrequency> frequency;
+    mapped_type total_count = 0;
 
    public:
     void inc(const key_type& key, const mapped_type& t = 1) {
@@ -75,10 +76,11 @@ struct Counter {
         return res += b;
     }
     Counter& operator-=(const Counter& o) {
-        // 自分自身を引くと、走査中の o.data の要素を inc が消してしまう
+        // 自分自身を引くと、走査中の o.data の要素を dec が消してしまう
         if (this == &o) {
             data.clear();
             frequency.clear();
+            total_count = 0;
             return *this;
         }
         for (const auto& [i, c] : o.data) {
@@ -104,12 +106,10 @@ struct Counter {
     }
     /**
      * @brief 重複を含めた要素数 (個数の総和)
-     * @note Python の collections.Counter.total() と同じ。O(異なる値の個数)
+     * @note Python の collections.Counter.total() と同じ。O(1)
      */
     mapped_type total() const {
-        mapped_type ret = 0;
-        for (const auto& [key, cnt] : data) ret += cnt;
-        return ret;
+        return total_count;
     }
     mapped_type get(const key_type& key) const {
         auto itr = data.find(key);
@@ -119,6 +119,7 @@ struct Counter {
     void set(const key_type& key, const mapped_type& t) {
         assert(t >= 0);
         auto itr = data.find(key);
+        total_count += t - (itr == data.end() ? 0 : itr->second);
         if (itr != data.end()) frequency.erase(*itr);
         if (t > 0) {
             data[key] = t;

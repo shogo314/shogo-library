@@ -47,6 +47,13 @@ struct PriorityCounter {
         return k;
     }
 
+    /** @brief 保持している上位 K 種類の個数の総和 O(K) */
+    constexpr mapped_type total() const {
+        mapped_type result = 0;
+        for (const auto& entry : data) result += entry.second;
+        return result;
+    }
+
     constexpr void inc(const key_type& x, const mapped_type& c = 1) {
         assert(c > 0);
         bool f = false;

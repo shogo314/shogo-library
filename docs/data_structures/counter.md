@@ -43,7 +43,7 @@ Counter<int> d = c + Counter<int>(3);  // 3 を 1 個足した Counter
 | `for (auto [x, cnt] : c)` | `{値, 個数}` を値の昇順に走査 | $O(n)$ |
 | `c.lower_bound(x)` / `c.upper_bound(x)` | 値が `x` 以上 / より大きい最初の要素の読み取り専用イテレータ。なければ `end()` | $O(\log n)$ |
 | `c.size()` | 異なる値の個数 (重複は数えない) | $O(1)$ |
-| `c.total()` | 重複を含めた要素数 (個数の総和。Python の `Counter.total()` と同じ) | $O(n)$ |
+| `c.total()` | 重複を含めた要素数 (個数の総和。Python の `Counter.total()` と同じ) | $O(1)$ |
 | `c.mode()` | 最頻値と個数を `std::optional<Mode>` (`Mode {value, count}`) で返す。同数なら最小の値を選び、空なら `std::nullopt` を返す | $O(1)$ |
 | `c.by_frequency()` | 頻度順の内部 set の const 参照。個数の降順、同数なら値の昇順 | $O(1)$ |
 | `c.most_common()` | `{値, 個数}` のリスト。個数の降順、同数なら値の昇順 | $O(n)$ |

@@ -131,14 +131,16 @@ data:
     \ == b.second && a.first < b.first);\n        }\n    };\n    std::map<key_type,\
     \ mapped_type> data;\n    std::set<value_type, CompareFrequency> frequency;\n\n\
     \   public:\n    void inc(const key_type& key, const mapped_type& t = 1) {\n \
-    \       set(key, get(key) + t);\n    }\n    Counter() = default;\n    explicit\
-    \ Counter(const key_type& x) { set(x, 1); }\n    /**\n     * @brief \u7BC4\u56F2\
-    \u306E\u8981\u7D20\u3092\u6570\u3048\u308B\n     * Counter \u81EA\u8EAB\u3068\
-    \ key_type (std::string \u306A\u3069\u7BC4\u56F2\u3067\u3082\u3042\u308B\u3082\
-    \u306E) \u306F\u3053\u3061\u3089\u3067\u53D7\u3051\u53D6\u3089\u306A\u3044\n \
-    \    */\n#if __cplusplus >= 202002L\n    template <class C>\n        requires(!std::same_as<std::decay_t<C>,\
-    \ Counter> && !std::convertible_to<C, key_type> &&\n                 requires(C&\
-    \ c) { std::begin(c); std::end(c); })\n#else\n    template <class C, ENABLE_IF_T(!std::is_same_v<std::decay_t<C>,\
+    \       set(key, get(key) + t);\n    }\n    void dec(const key_type& key, const\
+    \ mapped_type& t = 1) {\n        set(key, get(key) - t);\n    }\n    Counter()\
+    \ = default;\n    explicit Counter(const key_type& x) { set(x, 1); }\n    /**\n\
+    \     * @brief \u7BC4\u56F2\u306E\u8981\u7D20\u3092\u6570\u3048\u308B\n     *\
+    \ Counter \u81EA\u8EAB\u3068 key_type (std::string \u306A\u3069\u7BC4\u56F2\u3067\
+    \u3082\u3042\u308B\u3082\u306E) \u306F\u3053\u3061\u3089\u3067\u53D7\u3051\u53D6\
+    \u3089\u306A\u3044\n     */\n#if __cplusplus >= 202002L\n    template <class C>\n\
+    \        requires(!std::same_as<std::decay_t<C>, Counter> && !std::convertible_to<C,\
+    \ key_type> &&\n                 requires(C& c) { std::begin(c); std::end(c);\
+    \ })\n#else\n    template <class C, ENABLE_IF_T(!std::is_same_v<std::decay_t<C>,\
     \ Counter> && !std::is_convertible_v<C, key_type>),\n              class = decltype(std::begin(std::declval<C&>()),\
     \ std::end(std::declval<C&>()))>\n#endif\n    explicit Counter(C&& v) {\n    \
     \    for (const key_type& a : v) {\n            inc(a);\n        }\n    }\n  \
@@ -152,7 +154,7 @@ data:
     \u4E2D\u306E o.data \u306E\u8981\u7D20\u3092 inc \u304C\u6D88\u3057\u3066\u3057\
     \u307E\u3046\n        if (this == &o) {\n            data.clear();\n         \
     \   frequency.clear();\n            return *this;\n        }\n        for (const\
-    \ auto& [i, c] : o.data) {\n            inc(i, -c);\n        }\n        return\
+    \ auto& [i, c] : o.data) {\n            dec(i, c);\n        }\n        return\
     \ *this;\n    }\n    friend Counter operator-(const Counter& a, const Counter&\
     \ b) {\n        Counter res(a);\n        return res -= b;\n    }\n    auto begin()\
     \ const { return data.begin(); }\n    auto end() const { return data.end(); }\n\
@@ -205,7 +207,7 @@ data:
     \ x);\n            return *this;\n        }\n        CounterReference& operator+=(const\
     \ mapped_type& x) {\n            base.inc(key, x);\n            return *this;\n\
     \        }\n        CounterReference& operator-=(const mapped_type& x) {\n   \
-    \         base.inc(key, -x);\n            return *this;\n        }\n        operator\
+    \         base.dec(key, x);\n            return *this;\n        }\n        operator\
     \ mapped_type() const {\n            return base.get(key);\n        }\n    };\n\
     \    mapped_type operator[](const key_type& key) const {\n        return get(key);\n\
     \    }\n    CounterReference operator[](const key_type& key) {\n        return\
@@ -235,7 +237,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/data_structure/associative-array.test.cpp
   requiredBy: []
-  timestamp: '2026-11-14 23:53:14+09:00'
+  timestamp: '2026-11-15 08:58:46+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/data_structure/associative-array.test.cpp

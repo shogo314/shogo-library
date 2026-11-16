@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: src/others/inversion-number.hpp
+    path: src/utility/inversion-number.hpp
     title: "\u8EE2\u5012\u6570"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -14,14 +14,14 @@ data:
     PROBLEM: https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
     links:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
-  bundledCode: "#line 1 \"test/unittest/others/inversion-number.test.cpp\"\n#define\
+  bundledCode: "#line 1 \"test/unittest/utility/inversion-number.test.cpp\"\n#define\
     \ PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// inversion_number \u3092\u3001\u3059\u3079\u3066\u306E\u7D44\u3092\u8ABF\
     \u3079\u308B\u611A\u76F4\u306A\u65B9\u6CD5\u3068\u30E9\u30F3\u30C0\u30E0\u306B\
     \u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\
     \u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\
-    \u529B\u3059\u308B\n\n#line 2 \"src/others/inversion-number.hpp\"\n\n/**\n * @file\
-    \ inversion-number.hpp\n * @brief \u8EE2\u5012\u6570\n */\n\n#include <algorithm>\n\
+    \u529B\u3059\u308B\n\n#line 2 \"src/utility/inversion-number.hpp\"\n\n/**\n *\
+    \ @file inversion-number.hpp\n * @brief \u8EE2\u5012\u6570\n */\n\n#include <algorithm>\n\
     #include <functional>\n#include <utility>\n#include <vector>\n\n/**\n * @brief\
     \ \u8EE2\u5012\u6570 (i < j \u304B\u3064 comp(a[j], a[i]) \u3068\u306A\u308B\u7D44\
     \ (i, j) \u306E\u500B\u6570) \u3092\u6C42\u3081\u308B O(n log n)\n *\n * \u30DE\
@@ -43,9 +43,9 @@ data:
     \                } else {\n                    buf[k++] = std::move(a[i++]);\n\
     \                }\n            }\n            while (i < m) buf[k++] = std::move(a[i++]);\n\
     \            while (j < r) buf[k++] = std::move(a[j++]);\n        }\n        std::swap(a,\
-    \ buf);\n    }\n    return res;\n}\n#line 7 \"test/unittest/others/inversion-number.test.cpp\"\
-    \n\n#line 9 \"test/unittest/others/inversion-number.test.cpp\"\n#include <iostream>\n\
-    #include <random>\n#include <string>\n#line 13 \"test/unittest/others/inversion-number.test.cpp\"\
+    \ buf);\n    }\n    return res;\n}\n#line 7 \"test/unittest/utility/inversion-number.test.cpp\"\
+    \n\n#line 9 \"test/unittest/utility/inversion-number.test.cpp\"\n#include <iostream>\n\
+    #include <random>\n#include <string>\n#line 13 \"test/unittest/utility/inversion-number.test.cpp\"\
     \n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int\
     \ rep = 0; rep < 3000 && ok; rep++) {\n        int n = rng() % 40;\n        int\
     \ range = rng() % 10 + 1;\n        std::vector<int> a(n);\n        for (auto&\
@@ -66,8 +66,8 @@ data:
     \u3079\u308B\u611A\u76F4\u306A\u65B9\u6CD5\u3068\u30E9\u30F3\u30C0\u30E0\u306B\
     \u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\
     \u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\
-    \u529B\u3059\u308B\n\n#include \"../../../src/others/inversion-number.hpp\"\n\n\
-    #include <functional>\n#include <iostream>\n#include <random>\n#include <string>\n\
+    \u529B\u3059\u308B\n\n#include \"../../../src/utility/inversion-number.hpp\"\n\
+    \n#include <functional>\n#include <iostream>\n#include <random>\n#include <string>\n\
     #include <vector>\n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n\
     \    for (int rep = 0; rep < 3000 && ok; rep++) {\n        int n = rng() % 40;\n\
     \        int range = rng() % 10 + 1;\n        std::vector<int> a(n);\n       \
@@ -85,17 +85,17 @@ data:
     \        std::cout << \"Hello World\" << std::endl;\n    else\n        std::cerr\
     \ << \"failed\" << std::endl;\n}\n"
   dependsOn:
-  - src/others/inversion-number.hpp
+  - src/utility/inversion-number.hpp
   isVerificationFile: true
-  path: test/unittest/others/inversion-number.test.cpp
+  path: test/unittest/utility/inversion-number.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:32:25+09:00'
+  timestamp: '2026-11-16 20:46:23+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/unittest/others/inversion-number.test.cpp
+documentation_of: test/unittest/utility/inversion-number.test.cpp
 layout: document
 redirect_from:
-- /verify/test/unittest/others/inversion-number.test.cpp
-- /verify/test/unittest/others/inversion-number.test.cpp.html
-title: test/unittest/others/inversion-number.test.cpp
+- /verify/test/unittest/utility/inversion-number.test.cpp
+- /verify/test/unittest/utility/inversion-number.test.cpp.html
+title: test/unittest/utility/inversion-number.test.cpp
 ---

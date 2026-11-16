@@ -3,13 +3,13 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
-    path: src/others/subarray-sum.hpp
+    path: src/utility/subarray-sum.hpp
     title: "\u548C\u304C\u6761\u4EF6\u3092\u6E80\u305F\u3059\u533A\u9593\u306E\u500B\
       \u6570"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/others/subarray-sum.test.cpp
-    title: test/unittest/others/subarray-sum.test.cpp
+    path: test/unittest/utility/subarray-sum.test.cpp
+    title: test/unittest/utility/subarray-sum.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/utility/two-pointers.test.cpp
     title: test/unittest/utility/two-pointers.test.cpp
@@ -80,12 +80,12 @@ data:
   isVerificationFile: false
   path: src/utility/two-pointers.hpp
   requiredBy:
-  - src/others/subarray-sum.hpp
+  - src/utility/subarray-sum.hpp
   timestamp: '2026-10-24 23:17:26+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/others/subarray-sum.test.cpp
   - test/unittest/utility/two-pointers.test.cpp
+  - test/unittest/utility/subarray-sum.test.cpp
 documentation_of: src/utility/two-pointers.hpp
 layout: document
 title: "\u5C3A\u53D6\u308A\u6CD5"
@@ -129,5 +129,5 @@ auto r3 = two_pointers(2 * n, [&](long long l, long long r) { return c[r] - c[l]
 
 ## 関連
 
-- 和が条件を満たす区間の個数は [和が条件を満たす区間の個数](../others/subarray-sum.hpp)
+- 和が条件を満たす区間の個数は [和が条件を満たす区間の個数](../utility/subarray-sum.hpp)
 - 答えで二分探索をするなら [二分探索](binary-search.hpp)

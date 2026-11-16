@@ -4,8 +4,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/others/mo.test.cpp
-    title: test/unittest/others/mo.test.cpp
+    path: test/unittest/offline/mo.test.cpp
+    title: test/unittest/offline/mo.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/static-range-inversions-query.test.cpp
     title: test/yosupo/data_structure/static-range-inversions-query.test.cpp
@@ -15,8 +15,8 @@ data:
   attributes:
     document_title: Mo's algorithm
     links: []
-  bundledCode: "#line 2 \"src/others/mo.hpp\"\n\n/**\n * @file mo.hpp\n * @brief Mo's\
-    \ algorithm\n */\n\n#include <algorithm>\n#include <array>\n#include <cassert>\n\
+  bundledCode: "#line 2 \"src/offline/mo.hpp\"\n\n/**\n * @file mo.hpp\n * @brief\
+    \ Mo's algorithm\n */\n\n#include <algorithm>\n#include <array>\n#include <cassert>\n\
     #include <cmath>\n#include <type_traits>\n#include <vector>\n\ntemplate <typename\
     \ U, class ADD_LEFT, class DELETE_LEFT, class ADD_RIGHT = ADD_LEFT, class DELETE_RIGHT\
     \ = DELETE_LEFT>\nclass Mo {\n   private:\n    long long _n;\n    std::vector<std::array<long\
@@ -95,14 +95,14 @@ data:
     \            res[i] = f(tmp);\n        }\n        return res;\n    }\n};\n"
   dependsOn: []
   isVerificationFile: false
-  path: src/others/mo.hpp
+  path: src/offline/mo.hpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-11-16 20:46:23+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/others/mo.test.cpp
+  - test/unittest/offline/mo.test.cpp
   - test/yosupo/data_structure/static-range-inversions-query.test.cpp
-documentation_of: src/others/mo.hpp
+documentation_of: src/offline/mo.hpp
 layout: document
 title: Mo's algorithm
 ---

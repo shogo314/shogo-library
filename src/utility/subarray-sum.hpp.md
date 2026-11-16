@@ -7,8 +7,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/others/subarray-sum.test.cpp
-    title: test/unittest/others/subarray-sum.test.cpp
+    path: test/unittest/utility/subarray-sum.test.cpp
+    title: test/unittest/utility/subarray-sum.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -16,7 +16,7 @@ data:
     document_title: "\u548C\u304C\u6761\u4EF6\u3092\u6E80\u305F\u3059\u533A\u9593\u306E\
       \u500B\u6570"
     links: []
-  bundledCode: "#line 2 \"src/others/subarray-sum.hpp\"\n\n/**\n * @file subarray-sum.hpp\n\
+  bundledCode: "#line 2 \"src/utility/subarray-sum.hpp\"\n\n/**\n * @file subarray-sum.hpp\n\
     \ * @brief \u548C\u304C\u6761\u4EF6\u3092\u6E80\u305F\u3059\u533A\u9593\u306E\u500B\
     \u6570\n */\n\n#include <algorithm>\n#include <type_traits>\n#include <vector>\n\
     \n#line 2 \"src/utility/two-pointers.hpp\"\n\n/**\n * @file two-pointers.hpp\n\
@@ -47,7 +47,7 @@ data:
     \u5C3A\u53D6\u308A\u6CD5 (can_add(l, r) \u304C l \u3068 r \u3060\u3051\u3067\u6C7A\
     \u307E\u308B\u3068\u304D)\n */\ntemplate <class CanAdd>\nstd::vector<long long>\
     \ two_pointers(long long n, CanAdd can_add) {\n    return two_pointers(n, can_add,\
-    \ [](long long) {}, [](long long) {});\n}\n#line 13 \"src/others/subarray-sum.hpp\"\
+    \ [](long long) {}, [](long long) {});\n}\n#line 13 \"src/utility/subarray-sum.hpp\"\
     \n\nnamespace internal_subarray_sum {\n// i < j \u304B\u3064 p[j] - p[i] <= k\
     \ \u3068\u306A\u308B\u7D44 (i, j) \u306E\u500B\u6570\n// p \u304C\u5E83\u7FA9\u5358\
     \u8ABF\u5897\u52A0\u306A\u3089\u5C3A\u53D6\u308A\u6CD5\u3067 O(n)\u3001\u305D\u3046\
@@ -94,7 +94,7 @@ data:
     \ k - 1);\n}\n"
   code: "#pragma once\n\n/**\n * @file subarray-sum.hpp\n * @brief \u548C\u304C\u6761\
     \u4EF6\u3092\u6E80\u305F\u3059\u533A\u9593\u306E\u500B\u6570\n */\n\n#include\
-    \ <algorithm>\n#include <type_traits>\n#include <vector>\n\n#include \"../utility/two-pointers.hpp\"\
+    \ <algorithm>\n#include <type_traits>\n#include <vector>\n\n#include \"two-pointers.hpp\"\
     \n\nnamespace internal_subarray_sum {\n// i < j \u304B\u3064 p[j] - p[i] <= k\
     \ \u3068\u306A\u308B\u7D44 (i, j) \u306E\u500B\u6570\n// p \u304C\u5E83\u7FA9\u5358\
     \u8ABF\u5897\u52A0\u306A\u3089\u5C3A\u53D6\u308A\u6CD5\u3067 O(n)\u3001\u305D\u3046\
@@ -142,13 +142,13 @@ data:
   dependsOn:
   - src/utility/two-pointers.hpp
   isVerificationFile: false
-  path: src/others/subarray-sum.hpp
+  path: src/utility/subarray-sum.hpp
   requiredBy: []
-  timestamp: '2026-11-03 08:52:44+09:00'
+  timestamp: '2026-11-16 20:46:23+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/others/subarray-sum.test.cpp
-documentation_of: src/others/subarray-sum.hpp
+  - test/unittest/utility/subarray-sum.test.cpp
+documentation_of: src/utility/subarray-sum.hpp
 layout: document
 title: "\u548C\u304C\u6761\u4EF6\u3092\u6E80\u305F\u3059\u533A\u9593\u306E\u500B\u6570"
 ---

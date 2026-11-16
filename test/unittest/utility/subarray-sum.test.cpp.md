@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: src/others/subarray-sum.hpp
+    path: src/utility/subarray-sum.hpp
     title: "\u548C\u304C\u6761\u4EF6\u3092\u6E80\u305F\u3059\u533A\u9593\u306E\u500B\
       \u6570"
   - icon: ':heavy_check_mark:'
@@ -18,7 +18,7 @@ data:
     PROBLEM: https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
     links:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
-  bundledCode: "#line 1 \"test/unittest/others/subarray-sum.test.cpp\"\n#define PROBLEM\
+  bundledCode: "#line 1 \"test/unittest/utility/subarray-sum.test.cpp\"\n#define PROBLEM\
     \ \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\n\n//\
     \ subarray-sum.hpp \u306E subarray_sum_count\u30FBsubarray_sum_count_at_most \u3092\
     \u3001\u3059\u3079\u3066\u306E\u533A\u9593\u306E\u548C\u3092\u8ABF\u3079\u308B\
@@ -28,7 +28,7 @@ data:
     \u3067\u3001k \u3082\u8CA0\u304B\u3089\u6B63\u307E\u3067\u8ABF\u3079\u308B\n//\
     \ \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\
     \u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n\
-    #line 2 \"src/others/subarray-sum.hpp\"\n\n/**\n * @file subarray-sum.hpp\n *\
+    #line 2 \"src/utility/subarray-sum.hpp\"\n\n/**\n * @file subarray-sum.hpp\n *\
     \ @brief \u548C\u304C\u6761\u4EF6\u3092\u6E80\u305F\u3059\u533A\u9593\u306E\u500B\
     \u6570\n */\n\n#include <algorithm>\n#include <type_traits>\n#include <vector>\n\
     \n#line 2 \"src/utility/two-pointers.hpp\"\n\n/**\n * @file two-pointers.hpp\n\
@@ -59,7 +59,7 @@ data:
     \u5C3A\u53D6\u308A\u6CD5 (can_add(l, r) \u304C l \u3068 r \u3060\u3051\u3067\u6C7A\
     \u307E\u308B\u3068\u304D)\n */\ntemplate <class CanAdd>\nstd::vector<long long>\
     \ two_pointers(long long n, CanAdd can_add) {\n    return two_pointers(n, can_add,\
-    \ [](long long) {}, [](long long) {});\n}\n#line 13 \"src/others/subarray-sum.hpp\"\
+    \ [](long long) {}, [](long long) {});\n}\n#line 13 \"src/utility/subarray-sum.hpp\"\
     \n\nnamespace internal_subarray_sum {\n// i < j \u304B\u3064 p[j] - p[i] <= k\
     \ \u3068\u306A\u308B\u7D44 (i, j) \u306E\u500B\u6570\n// p \u304C\u5E83\u7FA9\u5358\
     \u8ABF\u5897\u52A0\u306A\u3089\u5C3A\u53D6\u308A\u6CD5\u3067 O(n)\u3001\u305D\u3046\
@@ -103,8 +103,8 @@ data:
     \ T>\nlong long subarray_sum_count(const std::vector<T>& a, T k) {\n    static_assert(std::is_integral_v<T>,\
     \ \"subarray_sum_count: T must be an integer type\");\n    const auto p = internal_subarray_sum::prefix_sums(a);\n\
     \    return internal_subarray_sum::count_pairs_at_most(p, k) - internal_subarray_sum::count_pairs_at_most(p,\
-    \ k - 1);\n}\n#line 8 \"test/unittest/others/subarray-sum.test.cpp\"\n\n#include\
-    \ <iostream>\n#include <random>\n#line 12 \"test/unittest/others/subarray-sum.test.cpp\"\
+    \ k - 1);\n}\n#line 8 \"test/unittest/utility/subarray-sum.test.cpp\"\n\n#include\
+    \ <iostream>\n#include <random>\n#line 12 \"test/unittest/utility/subarray-sum.test.cpp\"\
     \n\nint main() {\n    std::mt19937_64 rng(314);\n    bool ok = true;\n    for\
     \ (int rep = 0; rep < 3000 && ok; rep++) {\n        int n = rng() % 15;\n    \
     \    bool nonneg = rep % 2 == 0;\n        std::vector<long long> a(n);\n     \
@@ -129,7 +129,7 @@ data:
     \u65B9\u3067\u3001k \u3082\u8CA0\u304B\u3089\u6B63\u307E\u3067\u8ABF\u3079\u308B\
     \n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\
     \u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n\
-    #include \"../../../src/others/subarray-sum.hpp\"\n\n#include <iostream>\n#include\
+    #include \"../../../src/utility/subarray-sum.hpp\"\n\n#include <iostream>\n#include\
     \ <random>\n#include <vector>\n\nint main() {\n    std::mt19937_64 rng(314);\n\
     \    bool ok = true;\n    for (int rep = 0; rep < 3000 && ok; rep++) {\n     \
     \   int n = rng() % 15;\n        bool nonneg = rep % 2 == 0;\n        std::vector<long\
@@ -147,18 +147,18 @@ data:
     \ -1.5, 2.0}, 0.5) != 4) ok = false;\n    if (ok) std::cout << \"Hello World\"\
     \ << std::endl;\n}\n"
   dependsOn:
-  - src/others/subarray-sum.hpp
+  - src/utility/subarray-sum.hpp
   - src/utility/two-pointers.hpp
   isVerificationFile: true
-  path: test/unittest/others/subarray-sum.test.cpp
+  path: test/unittest/utility/subarray-sum.test.cpp
   requiredBy: []
-  timestamp: '2026-11-03 08:52:44+09:00'
+  timestamp: '2026-11-16 20:46:23+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/unittest/others/subarray-sum.test.cpp
+documentation_of: test/unittest/utility/subarray-sum.test.cpp
 layout: document
 redirect_from:
-- /verify/test/unittest/others/subarray-sum.test.cpp
-- /verify/test/unittest/others/subarray-sum.test.cpp.html
-title: test/unittest/others/subarray-sum.test.cpp
+- /verify/test/unittest/utility/subarray-sum.test.cpp
+- /verify/test/unittest/utility/subarray-sum.test.cpp.html
+title: test/unittest/utility/subarray-sum.test.cpp
 ---

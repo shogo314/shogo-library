@@ -164,6 +164,10 @@ data:
     title: "\u758E\u306A\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570 (inv\u30FBlog\u30FBexp\u30FB\
       pow\u30FBsqrt)"
   - icon: ':heavy_check_mark:'
+    path: src/offline/static-rectangle-add-rectangle-sum.hpp
+    title: "\u30AA\u30D5\u30E9\u30A4\u30F3\u306E\u9577\u65B9\u5F62\u52A0\u7B97\u30FB\
+      \u9577\u65B9\u5F62\u548C"
+  - icon: ':heavy_check_mark:'
     path: src/string/rolling-hash.hpp
     title: "\u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5"
   - icon: ':heavy_check_mark:'
@@ -585,6 +589,9 @@ data:
     path: test/unittest/math/sum-of-exp-times-poly.test.cpp
     title: test/unittest/math/sum-of-exp-times-poly.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/offline/static-rectangle-add-rectangle-sum.test.cpp
+    title: test/unittest/offline/static-rectangle-add-rectangle-sum.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/string/rolling-hash.test.cpp
     title: test/unittest/string/rolling-hash.test.cpp
   - icon: ':heavy_check_mark:'
@@ -743,6 +750,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/static-range-sum.test.cpp
     title: test/yosupo/data_structure/static-range-sum.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/static-rectangle-add-rectangle-sum.test.cpp
+    title: test/yosupo/data_structure/static-rectangle-add-rectangle-sum.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/staticrmq.test.cpp
     title: test/yosupo/data_structure/staticrmq.test.cpp
@@ -1242,6 +1252,7 @@ data:
   - src/geometry/rectangle.hpp
   - src/geometry/manhattan-mst.hpp
   - src/dp/subset-sum-count.hpp
+  - src/offline/static-rectangle-add-rectangle-sum.hpp
   - src/string/wildcard-matching.hpp
   - src/string/rolling-hash.hpp
   - src/data_structures/monoid-unionfind.hpp
@@ -1310,6 +1321,7 @@ data:
   - test/unittest/geometry/axis-parallel-segments.test.cpp
   - test/unittest/geometry/sphere.test.cpp
   - test/unittest/dp/subset-sum.test.cpp
+  - test/unittest/offline/static-rectangle-add-rectangle-sum.test.cpp
   - test/unittest/string/wildcard-matching.test.cpp
   - test/unittest/string/rolling-hash.test.cpp
   - test/unittest/data_structures/persistent-segtree.test.cpp
@@ -1391,6 +1403,7 @@ data:
   - test/yosupo/data_structure/range-affine-range-sum.2.test.cpp
   - test/yosupo/data_structure/staticrmq.test.cpp
   - test/yosupo/data_structure/range-affine-range-sum-large-array.test.cpp
+  - test/yosupo/data_structure/static-rectangle-add-rectangle-sum.test.cpp
   - test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
   - test/yosupo/data_structure/rectangle-sum.3.test.cpp
   - test/yosupo/data_structure/range-set-range-composite.test.cpp

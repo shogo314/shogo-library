@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: src/others/mo.hpp
+    path: src/offline/mo.hpp
     title: Mo's algorithm
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -17,9 +17,9 @@ data:
   bundledCode: "#line 1 \"test/yosupo/data_structure/static-range-inversions-query.test.cpp\"\
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/static_range_inversions_query\"\
     \n\n#include <algorithm>\n#include <iostream>\n#include <vector>\n\n#line 2 \"\
-    src/others/mo.hpp\"\n\n/**\n * @file mo.hpp\n * @brief Mo's algorithm\n */\n\n\
-    #line 9 \"src/others/mo.hpp\"\n#include <array>\n#include <cassert>\n#include\
-    \ <cmath>\n#include <type_traits>\n#line 14 \"src/others/mo.hpp\"\n\ntemplate\
+    src/offline/mo.hpp\"\n\n/**\n * @file mo.hpp\n * @brief Mo's algorithm\n */\n\n\
+    #line 9 \"src/offline/mo.hpp\"\n#include <array>\n#include <cassert>\n#include\
+    \ <cmath>\n#include <type_traits>\n#line 14 \"src/offline/mo.hpp\"\n\ntemplate\
     \ <typename U, class ADD_LEFT, class DELETE_LEFT, class ADD_RIGHT = ADD_LEFT,\
     \ class DELETE_RIGHT = DELETE_LEFT>\nclass Mo {\n   private:\n    long long _n;\n\
     \    std::vector<std::array<long long, 3>> lri;\n    U _e;\n    ADD_LEFT _add_left;\n\
@@ -78,8 +78,8 @@ data:
     \ { return inv; })) {\n        std::cout << ans << '\\n';\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/static_range_inversions_query\"\
     \n\n#include <algorithm>\n#include <iostream>\n#include <vector>\n\n#include \"\
-    ../../../src/others/mo.hpp\"\n\nint main() {\n    std::cin.tie(nullptr);\n   \
-    \ std::ios_base::sync_with_stdio(false);\n    int n, q;\n    std::cin >> n >>\
+    ../../../src/offline/mo.hpp\"\n\nint main() {\n    std::cin.tie(nullptr);\n  \
+    \  std::ios_base::sync_with_stdio(false);\n    int n, q;\n    std::cin >> n >>\
     \ q;\n    std::vector<int> a(n);\n    for (int& x : a) std::cin >> x;\n    //\
     \ \u5EA7\u6A19\u5727\u7E2E\n    std::vector<int> xs = a;\n    std::sort(xs.begin(),\
     \ xs.end());\n    xs.erase(std::unique(xs.begin(), xs.end()), xs.end());\n   \
@@ -99,11 +99,11 @@ data:
     \ long>([](long long& inv) { return inv; })) {\n        std::cout << ans << '\\\
     n';\n    }\n}\n"
   dependsOn:
-  - src/others/mo.hpp
+  - src/offline/mo.hpp
   isVerificationFile: true
   path: test/yosupo/data_structure/static-range-inversions-query.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:37:20+09:00'
+  timestamp: '2026-11-16 20:46:23+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/data_structure/static-range-inversions-query.test.cpp

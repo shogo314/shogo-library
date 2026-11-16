@@ -18,6 +18,10 @@ data:
     path: src/geometry/axis-parallel-segments.hpp
     title: "\u8EF8\u306B\u5E73\u884C\u306A\u7DDA\u5206\u306E\u4EA4\u70B9\u306E\u500B\
       \u6570"
+  - icon: ':heavy_check_mark:'
+    path: src/offline/static-rectangle-add-rectangle-sum.hpp
+    title: "\u30AA\u30D5\u30E9\u30A4\u30F3\u306E\u9577\u65B9\u5F62\u52A0\u7B97\u30FB\
+      \u9577\u65B9\u5F62\u548C"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/cgl/cgl-6-a.test.cpp
@@ -56,6 +60,9 @@ data:
     path: test/unittest/geometry/axis-parallel-segments.test.cpp
     title: test/unittest/geometry/axis-parallel-segments.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/offline/static-rectangle-add-rectangle-sum.test.cpp
+    title: test/unittest/offline/static-rectangle-add-rectangle-sum.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/point-add-range-sum.3.test.cpp
     title: test/yosupo/data_structure/point-add-range-sum.3.test.cpp
   - icon: ':heavy_check_mark:'
@@ -64,6 +71,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/rectangle-sum.2.test.cpp
     title: test/yosupo/data_structure/rectangle-sum.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/static-rectangle-add-rectangle-sum.test.cpp
+    title: test/yosupo/data_structure/static-rectangle-add-rectangle-sum.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
     title: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
@@ -498,6 +508,7 @@ data:
   path: src/algebra/group.hpp
   requiredBy:
   - src/geometry/axis-parallel-segments.hpp
+  - src/offline/static-rectangle-add-rectangle-sum.hpp
   - src/data_structures/fenwick-tree.hpp
   - src/data_structures/potentialized-unionfind.hpp
   - src/data_structures/merge-sort-tree.hpp
@@ -505,6 +516,7 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/geometry/axis-parallel-segments.test.cpp
+  - test/unittest/offline/static-rectangle-add-rectangle-sum.test.cpp
   - test/unittest/data_structures/potentialized-unionfind.test.cpp
   - test/unittest/data_structures/link-cut-tree.test.cpp
   - test/unittest/data_structures/fenwick-tree.test.cpp
@@ -514,6 +526,7 @@ data:
   - test/yosupo/data_structure/rectangle-sum.1.test.cpp
   - test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
   - test/yosupo/data_structure/rectangle-sum.2.test.cpp
+  - test/yosupo/data_structure/static-rectangle-add-rectangle-sum.test.cpp
   - test/yosupo/data_structure/point-add-range-sum.3.test.cpp
   - test/yosupo/tree/dynamic-tree-vertex-add-subtree-sum.test.cpp
   - test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp

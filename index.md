@@ -477,18 +477,15 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/math/xor-basis.hpp
       title: "XOR \u57FA\u5E95 (F2 \u4E0A\u306E\u7DDA\u5F62\u57FA\u5E95)"
-  - name: src/others
+  - name: src/offline
     pages:
     - icon: ':heavy_check_mark:'
-      path: src/others/inversion-number.hpp
-      title: "\u8EE2\u5012\u6570"
-    - icon: ':heavy_check_mark:'
-      path: src/others/mo.hpp
+      path: src/offline/mo.hpp
       title: Mo's algorithm
     - icon: ':heavy_check_mark:'
-      path: src/others/subarray-sum.hpp
-      title: "\u548C\u304C\u6761\u4EF6\u3092\u6E80\u305F\u3059\u533A\u9593\u306E\u500B\
-        \u6570"
+      path: src/offline/static-rectangle-add-rectangle-sum.hpp
+      title: "\u30AA\u30D5\u30E9\u30A4\u30F3\u306E\u9577\u65B9\u5F62\u52A0\u7B97\u30FB\
+        \u9577\u65B9\u5F62\u548C"
   - name: src/string
     pages:
     - icon: ':heavy_check_mark:'
@@ -545,6 +542,9 @@ data:
       title: "\u30B3\u30F3\u30C6\u30CA\u306B\u5BFE\u3059\u308B\u95A2\u6570 (sorted,\
         \ max, sum \u306A\u3069)"
     - icon: ':heavy_check_mark:'
+      path: src/utility/inversion-number.hpp
+      title: "\u8EE2\u5012\u6570"
+    - icon: ':heavy_check_mark:'
       path: src/utility/range.hpp
       title: "Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\u5217\u3068\
         \u3001\u305D\u306E\u76F4\u7A4D\u306E Grid"
@@ -552,6 +552,10 @@ data:
       path: src/utility/repr.hpp
       title: "\u51FA\u529B\u3092\u305D\u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\u30E9\
         \u30AF\u30BF\u306B\u4F7F\u3048\u308B\u6587\u5B57\u5217\u5316 (repr)"
+    - icon: ':heavy_check_mark:'
+      path: src/utility/subarray-sum.hpp
+      title: "\u548C\u304C\u6761\u4EF6\u3092\u6E80\u305F\u3059\u533A\u9593\u306E\u500B\
+        \u6570"
     - icon: ':heavy_check_mark:'
       path: src/utility/traits.hpp
       title: "\u578B\u7279\u6027"
@@ -1377,17 +1381,14 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/math/xor-basis.test.cpp
       title: test/unittest/math/xor-basis.test.cpp
-  - name: test/unittest/others
+  - name: test/unittest/offline
     pages:
     - icon: ':heavy_check_mark:'
-      path: test/unittest/others/inversion-number.test.cpp
-      title: test/unittest/others/inversion-number.test.cpp
+      path: test/unittest/offline/mo.test.cpp
+      title: test/unittest/offline/mo.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/unittest/others/mo.test.cpp
-      title: test/unittest/others/mo.test.cpp
-    - icon: ':heavy_check_mark:'
-      path: test/unittest/others/subarray-sum.test.cpp
-      title: test/unittest/others/subarray-sum.test.cpp
+      path: test/unittest/offline/static-rectangle-add-rectangle-sum.test.cpp
+      title: test/unittest/offline/static-rectangle-add-rectangle-sum.test.cpp
   - name: test/unittest/string
     pages:
     - icon: ':heavy_check_mark:'
@@ -1444,6 +1445,9 @@ data:
       path: test/unittest/utility/container_func.test.cpp
       title: test/unittest/utility/container_func.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/utility/inversion-number.test.cpp
+      title: test/unittest/utility/inversion-number.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/utility/range-grid.test.cpp
       title: test/unittest/utility/range-grid.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1452,6 +1456,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/utility/repr.test.cpp
       title: test/unittest/utility/repr.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/utility/subarray-sum.test.cpp
+      title: test/unittest/utility/subarray-sum.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/utility/two-pointers.test.cpp
       title: test/unittest/utility/two-pointers.test.cpp
@@ -1657,6 +1664,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/data_structure/static-range-sum.test.cpp
       title: test/yosupo/data_structure/static-range-sum.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/data_structure/static-rectangle-add-rectangle-sum.test.cpp
+      title: test/yosupo/data_structure/static-rectangle-add-rectangle-sum.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/data_structure/staticrmq.test.cpp
       title: test/yosupo/data_structure/staticrmq.test.cpp

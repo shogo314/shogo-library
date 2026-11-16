@@ -80,6 +80,10 @@ data:
     path: src/geometry/axis-parallel-segments.hpp
     title: "\u8EF8\u306B\u5E73\u884C\u306A\u7DDA\u5206\u306E\u4EA4\u70B9\u306E\u500B\
       \u6570"
+  - icon: ':heavy_check_mark:'
+    path: src/offline/static-rectangle-add-rectangle-sum.hpp
+    title: "\u30AA\u30D5\u30E9\u30A4\u30F3\u306E\u9577\u65B9\u5F62\u52A0\u7B97\u30FB\
+      \u9577\u65B9\u5F62\u548C"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/cgl/cgl-6-a.test.cpp
@@ -214,6 +218,9 @@ data:
     path: test/unittest/geometry/axis-parallel-segments.test.cpp
     title: test/unittest/geometry/axis-parallel-segments.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/offline/static-rectangle-add-rectangle-sum.test.cpp
+    title: test/unittest/offline/static-rectangle-add-rectangle-sum.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/area-of-union-of-rectangles.1.test.cpp
     title: test/yosupo/data_structure/area-of-union-of-rectangles.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -315,6 +322,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/rectangle-sum.4.test.cpp
     title: test/yosupo/data_structure/rectangle-sum.4.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/static-rectangle-add-rectangle-sum.test.cpp
+    title: test/yosupo/data_structure/static-rectangle-add-rectangle-sum.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/staticrmq.test.cpp
     title: test/yosupo/data_structure/staticrmq.test.cpp
@@ -1052,6 +1062,7 @@ data:
   path: src/algebra/monoid.hpp
   requiredBy:
   - src/geometry/axis-parallel-segments.hpp
+  - src/offline/static-rectangle-add-rectangle-sum.hpp
   - src/data_structures/dynamic-segtree.hpp
   - src/data_structures/monoid-unionfind.hpp
   - src/data_structures/segtree.hpp
@@ -1085,6 +1096,7 @@ data:
   - test/yukicoder/1036.2.test.cpp
   - test/yukicoder/674.1.test.cpp
   - test/unittest/geometry/axis-parallel-segments.test.cpp
+  - test/unittest/offline/static-rectangle-add-rectangle-sum.test.cpp
   - test/unittest/data_structures/persistent-segtree.test.cpp
   - test/unittest/data_structures/persistent-lazy-segtree.test.cpp
   - test/unittest/data_structures/monoid-unionfind.test.cpp
@@ -1135,6 +1147,7 @@ data:
   - test/yosupo/data_structure/range-affine-range-sum.2.test.cpp
   - test/yosupo/data_structure/staticrmq.test.cpp
   - test/yosupo/data_structure/range-affine-range-sum-large-array.test.cpp
+  - test/yosupo/data_structure/static-rectangle-add-rectangle-sum.test.cpp
   - test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
   - test/yosupo/data_structure/rectangle-sum.3.test.cpp
   - test/yosupo/data_structure/range-set-range-composite.test.cpp

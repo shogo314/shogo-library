@@ -152,6 +152,9 @@ data:
     path: test/unittest/math/sum-of-exp-times-poly.test.cpp
     title: test/unittest/math/sum-of-exp-times-poly.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/offline/static-rectangle-add-rectangle-sum.test.cpp
+    title: test/unittest/offline/static-rectangle-add-rectangle-sum.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/string/wildcard-matching.test.cpp
     title: test/unittest/string/wildcard-matching.test.cpp
   - icon: ':heavy_check_mark:'
@@ -229,6 +232,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/range-set-range-composite.test.cpp
     title: test/yosupo/data_structure/range-set-range-composite.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/static-rectangle-add-rectangle-sum.test.cpp
+    title: test/yosupo/data_structure/static-rectangle-add-rectangle-sum.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
     title: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
@@ -1025,6 +1031,7 @@ data:
   - test/yukicoder/3771.test.cpp
   - test/yukicoder/3770.test.cpp
   - test/unittest/dp/subset-sum.test.cpp
+  - test/unittest/offline/static-rectangle-add-rectangle-sum.test.cpp
   - test/unittest/string/wildcard-matching.test.cpp
   - test/unittest/data_structures/persistent-segtree.test.cpp
   - test/unittest/data_structures/persistent-lazy-segtree.test.cpp
@@ -1069,6 +1076,7 @@ data:
   - test/yosupo/data_structure/persistent-range-affine-range-sum.test.cpp
   - test/yosupo/data_structure/range-affine-range-sum.2.test.cpp
   - test/yosupo/data_structure/range-affine-range-sum-large-array.test.cpp
+  - test/yosupo/data_structure/static-rectangle-add-rectangle-sum.test.cpp
   - test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
   - test/yosupo/data_structure/range-set-range-composite.test.cpp
   - test/yosupo/data_structure/point-set-range-composite.3.test.cpp

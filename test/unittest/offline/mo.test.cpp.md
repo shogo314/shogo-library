@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: src/others/mo.hpp
+    path: src/offline/mo.hpp
     title: Mo's algorithm
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -14,14 +14,15 @@ data:
     PROBLEM: https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
     links:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
-  bundledCode: "#line 1 \"test/unittest/others/mo.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
-    \n\n// Mo \u3092\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u30E9\u30F3\u30C0\u30E0\u306B\
-    \u6BD4\u8F03\u3059\u308B\n// \u5DE6\u7AEF\u3068\u53F3\u7AEF\u3067\u5225\u306E\u64CD\
-    \u4F5C\u3092\u6E21\u3059\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF (6 \u5F15\u6570\
-    ) \u3092\u3001\u533A\u9593\u3092 deque \u306E\u307E\u307E\u6301\u3064\u5F62\u3067\
+  bundledCode: "#line 1 \"test/unittest/offline/mo.test.cpp\"\n#define PROBLEM \"\
+    https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\n\n// Mo\
+    \ \u3092\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\
+    \u8F03\u3059\u308B\n// \u5DE6\u7AEF\u3068\u53F3\u7AEF\u3067\u5225\u306E\u64CD\u4F5C\
+    \u3092\u6E21\u3059\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF (6 \u5F15\u6570)\
+    \ \u3092\u3001\u533A\u9593\u3092 deque \u306E\u307E\u307E\u6301\u3064\u5F62\u3067\
     \u78BA\u304B\u3081\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\
     \u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\
-    \u529B\u3059\u308B\n\n#line 2 \"src/others/mo.hpp\"\n\n/**\n * @file mo.hpp\n\
+    \u529B\u3059\u308B\n\n#line 2 \"src/offline/mo.hpp\"\n\n/**\n * @file mo.hpp\n\
     \ * @brief Mo's algorithm\n */\n\n#include <algorithm>\n#include <array>\n#include\
     \ <cassert>\n#include <cmath>\n#include <type_traits>\n#include <vector>\n\ntemplate\
     \ <typename U, class ADD_LEFT, class DELETE_LEFT, class ADD_RIGHT = ADD_LEFT,\
@@ -60,28 +61,28 @@ data:
     \                tmpl++;\n            }\n            while (tmpr > r) {\n    \
     \            tmpr--;\n                _delete_right(tmp, tmpr);\n            }\n\
     \            res[i] = f(tmp);\n        }\n        return res;\n    }\n};\n#line\
-    \ 8 \"test/unittest/others/mo.test.cpp\"\n\n#include <deque>\n#include <iostream>\n\
-    #include <random>\n#line 13 \"test/unittest/others/mo.test.cpp\"\n\n// \u533A\u9593\
-    \u306E\u8981\u7D20\u3092\u9806\u756A\u8FBC\u307F\u3067\u533A\u5225\u3059\u308B\
-    \u30CF\u30C3\u30B7\u30E5\nlong long ordered_hash(const std::deque<int>& d) {\n\
-    \    long long h = 0;\n    for (int x : d) h = (h * 1000003 + x + 1) % 998244353;\n\
-    \    return h;\n}\n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n\
-    \    for (int rep = 0; rep < 500 && ok; rep++) {\n        int n = rng() % 30 +\
-    \ 1;\n        std::vector<int> a(n);\n        for (int& x : a) x = rng() % 1000;\n\
-    \        // \u5DE6\u306B\u8DB3\u3059\u3068\u304D\u306F\u5148\u982D\u3001\u53F3\
-    \u306B\u8DB3\u3059\u3068\u304D\u306F\u672B\u5C3E\u306B\u5165\u308C\u308B\u3002\
-    \u5DE6\u53F3\u3092\u53D6\u308A\u9055\u3048\u308B\u3068\u9806\u756A\u304C\u5D29\
-    \u308C\u308B\n        auto add_left = [&](std::deque<int>& d, int i) { d.push_front(a[i]);\
-    \ };\n        auto delete_left = [&](std::deque<int>& d, int i) {\n          \
-    \  if (d.front() != a[i]) ok = false;\n            d.pop_front();\n        };\n\
-    \        // \u4F4D\u7F6E\u306F long long \u3067\u6E21\u3055\u308C\u308B\u3002\
-    int \u3067\u53D7\u3051\u53D6\u308B\u64CD\u4F5C (\u5DE6) \u3068 long long \u3067\
-    \u53D7\u3051\u53D6\u308B\u64CD\u4F5C (\u53F3) \u306E\u3069\u3061\u3089\u3082\u4F7F\
-    \u3048\u308B\n        auto add_right = [&](std::deque<int>& d, long long i) {\
-    \ d.push_back(a[i]); };\n        auto delete_right = [&](std::deque<int>& d, long\
-    \ long i) {\n            if (d.back() != a[i]) ok = false;\n            d.pop_back();\n\
-    \        };\n        Mo mo(n, std::deque<int>(), add_left, delete_left, add_right,\
-    \ delete_right);\n        int q = rng() % 30 + 1;\n        std::vector<std::pair<int,\
+    \ 8 \"test/unittest/offline/mo.test.cpp\"\n\n#include <deque>\n#include <iostream>\n\
+    #include <random>\n#line 13 \"test/unittest/offline/mo.test.cpp\"\n\n// \u533A\
+    \u9593\u306E\u8981\u7D20\u3092\u9806\u756A\u8FBC\u307F\u3067\u533A\u5225\u3059\
+    \u308B\u30CF\u30C3\u30B7\u30E5\nlong long ordered_hash(const std::deque<int>&\
+    \ d) {\n    long long h = 0;\n    for (int x : d) h = (h * 1000003 + x + 1) %\
+    \ 998244353;\n    return h;\n}\n\nint main() {\n    std::mt19937 rng(314);\n \
+    \   bool ok = true;\n    for (int rep = 0; rep < 500 && ok; rep++) {\n       \
+    \ int n = rng() % 30 + 1;\n        std::vector<int> a(n);\n        for (int& x\
+    \ : a) x = rng() % 1000;\n        // \u5DE6\u306B\u8DB3\u3059\u3068\u304D\u306F\
+    \u5148\u982D\u3001\u53F3\u306B\u8DB3\u3059\u3068\u304D\u306F\u672B\u5C3E\u306B\
+    \u5165\u308C\u308B\u3002\u5DE6\u53F3\u3092\u53D6\u308A\u9055\u3048\u308B\u3068\
+    \u9806\u756A\u304C\u5D29\u308C\u308B\n        auto add_left = [&](std::deque<int>&\
+    \ d, int i) { d.push_front(a[i]); };\n        auto delete_left = [&](std::deque<int>&\
+    \ d, int i) {\n            if (d.front() != a[i]) ok = false;\n            d.pop_front();\n\
+    \        };\n        // \u4F4D\u7F6E\u306F long long \u3067\u6E21\u3055\u308C\u308B\
+    \u3002int \u3067\u53D7\u3051\u53D6\u308B\u64CD\u4F5C (\u5DE6) \u3068 long long\
+    \ \u3067\u53D7\u3051\u53D6\u308B\u64CD\u4F5C (\u53F3) \u306E\u3069\u3061\u3089\
+    \u3082\u4F7F\u3048\u308B\n        auto add_right = [&](std::deque<int>& d, long\
+    \ long i) { d.push_back(a[i]); };\n        auto delete_right = [&](std::deque<int>&\
+    \ d, long long i) {\n            if (d.back() != a[i]) ok = false;\n         \
+    \   d.pop_back();\n        };\n        Mo mo(n, std::deque<int>(), add_left, delete_left,\
+    \ add_right, delete_right);\n        int q = rng() % 30 + 1;\n        std::vector<std::pair<int,\
     \ int>> qs(q);\n        for (auto& [l, r] : qs) {\n            l = rng() % (n\
     \ + 1);\n            r = rng() % (n + 1);\n            if (l > r) std::swap(l,\
     \ r);\n            mo.query(l, r);\n        }\n        auto res = mo.solve<long\
@@ -97,7 +98,7 @@ data:
     ) \u3092\u3001\u533A\u9593\u3092 deque \u306E\u307E\u307E\u6301\u3064\u5F62\u3067\
     \u78BA\u304B\u3081\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\
     \u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\
-    \u529B\u3059\u308B\n\n#include \"../../../src/others/mo.hpp\"\n\n#include <deque>\n\
+    \u529B\u3059\u308B\n\n#include \"../../../src/offline/mo.hpp\"\n\n#include <deque>\n\
     #include <iostream>\n#include <random>\n#include <vector>\n\n// \u533A\u9593\u306E\
     \u8981\u7D20\u3092\u9806\u756A\u8FBC\u307F\u3067\u533A\u5225\u3059\u308B\u30CF\
     \u30C3\u30B7\u30E5\nlong long ordered_hash(const std::deque<int>& d) {\n    long\
@@ -128,17 +129,17 @@ data:
     \ ok = false;\n        }\n    }\n    if (ok)\n        std::cout << \"Hello World\"\
     \ << std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
-  - src/others/mo.hpp
+  - src/offline/mo.hpp
   isVerificationFile: true
-  path: test/unittest/others/mo.test.cpp
+  path: test/unittest/offline/mo.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:32:25+09:00'
+  timestamp: '2026-11-16 20:46:23+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/unittest/others/mo.test.cpp
+documentation_of: test/unittest/offline/mo.test.cpp
 layout: document
 redirect_from:
-- /verify/test/unittest/others/mo.test.cpp
-- /verify/test/unittest/others/mo.test.cpp.html
-title: test/unittest/others/mo.test.cpp
+- /verify/test/unittest/offline/mo.test.cpp
+- /verify/test/unittest/offline/mo.test.cpp.html
+title: test/unittest/offline/mo.test.cpp
 ---

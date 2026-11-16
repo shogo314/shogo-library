@@ -7,15 +7,15 @@ data:
     path: test/aoj/alds1/alds1-5-d.test.cpp
     title: test/aoj/alds1/alds1-5-d.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/others/inversion-number.test.cpp
-    title: test/unittest/others/inversion-number.test.cpp
+    path: test/unittest/utility/inversion-number.test.cpp
+    title: test/unittest/utility/inversion-number.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "\u8EE2\u5012\u6570"
     links: []
-  bundledCode: "#line 2 \"src/others/inversion-number.hpp\"\n\n/**\n * @file inversion-number.hpp\n\
+  bundledCode: "#line 2 \"src/utility/inversion-number.hpp\"\n\n/**\n * @file inversion-number.hpp\n\
     \ * @brief \u8EE2\u5012\u6570\n */\n\n#include <algorithm>\n#include <functional>\n\
     #include <utility>\n#include <vector>\n\n/**\n * @brief \u8EE2\u5012\u6570 (i\
     \ < j \u304B\u3064 comp(a[j], a[i]) \u3068\u306A\u308B\u7D44 (i, j) \u306E\u500B\
@@ -64,14 +64,14 @@ data:
     \ buf);\n    }\n    return res;\n}\n"
   dependsOn: []
   isVerificationFile: false
-  path: src/others/inversion-number.hpp
+  path: src/utility/inversion-number.hpp
   requiredBy: []
-  timestamp: '2026-10-14 01:15:13+09:00'
+  timestamp: '2026-11-16 20:46:23+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/others/inversion-number.test.cpp
+  - test/unittest/utility/inversion-number.test.cpp
   - test/aoj/alds1/alds1-5-d.test.cpp
-documentation_of: src/others/inversion-number.hpp
+documentation_of: src/utility/inversion-number.hpp
 layout: document
 title: "\u8EE2\u5012\u6570"
 ---

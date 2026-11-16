@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: src/others/inversion-number.hpp
+    path: src/utility/inversion-number.hpp
     title: "\u8EE2\u5012\u6570"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -16,9 +16,9 @@ data:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_5_D
   bundledCode: "#line 1 \"test/aoj/alds1/alds1-5-d.test.cpp\"\n#define PROBLEM \"\
     https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_5_D\"\n\n#include\
-    \ <iostream>\n#include <vector>\n\n#line 2 \"src/others/inversion-number.hpp\"\
+    \ <iostream>\n#include <vector>\n\n#line 2 \"src/utility/inversion-number.hpp\"\
     \n\n/**\n * @file inversion-number.hpp\n * @brief \u8EE2\u5012\u6570\n */\n\n\
-    #include <algorithm>\n#include <functional>\n#include <utility>\n#line 12 \"src/others/inversion-number.hpp\"\
+    #include <algorithm>\n#include <functional>\n#include <utility>\n#line 12 \"src/utility/inversion-number.hpp\"\
     \n\n/**\n * @brief \u8EE2\u5012\u6570 (i < j \u304B\u3064 comp(a[j], a[i]) \u3068\
     \u306A\u308B\u7D44 (i, j) \u306E\u500B\u6570) \u3092\u6C42\u3081\u308B O(n log\
     \ n)\n *\n * \u30DE\u30FC\u30B8\u30BD\u30FC\u30C8\u3067\u6570\u3048\u308B\u306E\
@@ -44,16 +44,16 @@ data:
     \    int n;\n    std::cin >> n;\n    std::vector<int> a(n);\n    for (auto& x\
     \ : a) std::cin >> x;\n    std::cout << inversion_number(a) << '\\n';\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_5_D\"\
-    \n\n#include <iostream>\n#include <vector>\n\n#include \"../../../src/others/inversion-number.hpp\"\
+    \n\n#include <iostream>\n#include <vector>\n\n#include \"../../../src/utility/inversion-number.hpp\"\
     \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
     \    int n;\n    std::cin >> n;\n    std::vector<int> a(n);\n    for (auto& x\
     \ : a) std::cin >> x;\n    std::cout << inversion_number(a) << '\\n';\n}\n"
   dependsOn:
-  - src/others/inversion-number.hpp
+  - src/utility/inversion-number.hpp
   isVerificationFile: true
   path: test/aoj/alds1/alds1-5-d.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:37:20+09:00'
+  timestamp: '2026-11-16 20:46:23+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/alds1/alds1-5-d.test.cpp

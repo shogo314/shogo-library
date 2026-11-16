@@ -193,6 +193,32 @@ void test_segtree_range(R&& r) {
 
 int main() {
     {
+        using M = monoid::MinMax<>;
+        constexpr M::S single(7);
+        static_assert(single.min == 7 && single.max == 7);
+        static_assert(M::e() == M::S());
+        std::vector<long long> values = {3, -5, 8, 8, 0};
+        SegTree<M> seg(values);
+        for (long long l = 0; l <= 5; ++l) {
+            for (long long r = l; r <= 5; ++r) {
+                long long mn = std::numeric_limits<long long>::max(), mx = std::numeric_limits<long long>::lowest();
+                for (long long i = l; i < r; ++i) {
+                    mn = std::min(mn, values[i]);
+                    mx = std::max(mx, values[i]);
+                }
+                auto [actual_min, actual_max] = seg.prod(l, r);
+                check(actual_min == mn && actual_max == mx, "MinMax members and structured binding");
+                check(seg.prod(l, r) == M::S(mn, mx), "MinMax equality");
+                check(M::op(M::e(), seg.prod(l, r)) == seg.prod(l, r) && M::op(seg.prod(l, r), M::e()) == seg.prod(l, r), "MinMax identity");
+            }
+        }
+        check(!(M::S(1) != M::S(1)) && M::S(1) != M::S(2), "MinMax inequality");
+        using A = acted_monoid::ClampMinMax<long long>;
+        using B = acted_monoid::ClampAddMinMax<long long>;
+        check(A::mapping({0, 10}, M::e()) == M::e(), "ClampMinMax empty");
+        check(B::mapping({{}, {}, 3}, M::e()) == M::e(), "ClampAddMinMax empty");
+    }
+    {
         int a[] = {2, -5, 4};
         const std::array<int, 3> b = {2, -5, 4};
         test_segtree_range(a);

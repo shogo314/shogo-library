@@ -149,14 +149,14 @@ int main() {
     test_random<monoid::Composite<mint>>(gen_affine, [] { return 0; }, [](int, const Affine<mint>& x) { return x; }, rng, "Composite");
     // 区間 加算と clamp・区間最小値と最大値 (mapping が区間の長さを使わない)
     {
-        using P = std::pair<long long, long long>;
+        using P = monoid::MinMax<long long>::S;
         auto gen_p = [&] { long long x = small(); return P{x, x}; };
         auto gen_f = [&] {
             long long lb = small(), ub = small();
             if (lb > ub) std::swap(lb, ub);
             return ClampAdd<long long>{lb, ub, small()};
         };
-        test_random<acted_monoid::ClampAddMinMax<long long>>(gen_p, gen_f, [](const ClampAdd<long long>& f, const P& x) { return P{f(x.first), f(x.second)}; }, rng, "ClampAddMinMax");
+        test_random<acted_monoid::ClampAddMinMax<long long>>(gen_p, gen_f, [](const ClampAdd<long long>& f, const P& x) { return P{f(x.min), f(x.max)}; }, rng, "ClampAddMinMax");
     }
 
     // max_right / min_left: 負でない値の列で、和が w 以下となる最大の r と最小の l

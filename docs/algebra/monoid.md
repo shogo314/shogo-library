@@ -24,7 +24,7 @@ SegTree seg2(v, Monoid([](int a, int b) { return a + b; }, 0));  // ラムダ式
 | `Prod<T>` | `T` | `a * b` | `1` |
 | `Max<T>` | `T` | `max(a, b)` | 型の最小値 |
 | `Min<T>` | `T` | `min(a, b)` | 型の最大値 |
-| `MinMax<T>` | `pair<T, T>` | `{min, max}` の組 | `{最大値, 最小値}` |
+| `MinMax<T = long long>` | `MinMax<T>::S` | 最小値 `min`・最大値 `max` | `{最大値, 最小値}` |
 | `Xor<T>` | `T` | `a ^ b` | `0` |
 | `And<T>` | `T` | `a & b` | 全ビット 1 |
 | `Or<T>` | `T` | `a | b` | `0` |
@@ -75,6 +75,16 @@ long long best = seg2.prod(l, r).best;  // [l, r) の部分配列の和の最大
 ```
 
 空の部分配列を許さない最大値が欲しい場合は、区間の最大値 (`Max<T>`) が負かどうかで場合分けします。
+
+## 最小値・最大値 `MinMax<T>`
+
+`S(x)` で 1 要素、`S(min, max)` で最小値と最大値を指定して構築します。`S()` は空区間の単位元です。結果は `.min`・`.max` で参照でき、構造化束縛も使えます。
+
+```cpp
+SegTree<monoid::MinMax<>> seg(std::vector<long long>{3, 1, 4});
+auto s = seg.prod(0, 3);  // s.min = 1, s.max = 4
+auto [mn, mx] = seg.prod(0, 3);
+```
 
 ## 1次関数 `Affine<T>`
 

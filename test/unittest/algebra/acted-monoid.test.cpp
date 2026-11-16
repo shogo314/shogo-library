@@ -143,7 +143,7 @@ int main() {
         auto clamp_act = [](const Clamp<long long>& f, long long x) { return std::min(std::max(x, f.lb), f.ub); };
         test_lazy<acted_monoid::ClampMin<long long>, long long>(small, gen_clamp, id_s, min_fold, clamp_act, same, rng, "ClampMin");
         test_lazy<acted_monoid::ClampMax<long long>, long long>(small, gen_clamp, id_s, max_fold, clamp_act, same, rng, "ClampMax");
-        using P = std::pair<long long, long long>;
+        using P = monoid::MinMax<long long>::S;
         test_lazy<acted_monoid::ClampMinMax<long long>, long long>(
             small, gen_clamp, [](long long x, int) { return P{x, x}; },
             [&](const std::vector<long long>& a, int l, int r) { return P{min_fold(a, l, r), max_fold(a, l, r)}; },
@@ -162,7 +162,7 @@ int main() {
         auto clamp_add_act = [](const ClampAdd<long long>& f, long long x) { return std::min(std::max(x + f.add, f.lb), f.ub); };
         test_lazy<acted_monoid::ClampAddMin<long long>, long long>(small, gen_clamp_add, id_s, min_fold, clamp_add_act, same, rng, "ClampAddMin");
         test_lazy<acted_monoid::ClampAddMax<long long>, long long>(small, gen_clamp_add, id_s, max_fold, clamp_add_act, same, rng, "ClampAddMax");
-        using P = std::pair<long long, long long>;
+        using P = monoid::MinMax<long long>::S;
         test_lazy<acted_monoid::ClampAddMinMax<long long>, long long>(
             small, gen_clamp_add, [](long long x, int) { return P{x, x}; },
             [&](const std::vector<long long>& a, int l, int r) { return P{min_fold(a, l, r), max_fold(a, l, r)}; },

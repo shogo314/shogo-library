@@ -21,31 +21,32 @@ int main() {
     }
     std::vector<ll> v(s.begin(), s.end());
     std::vector<bool> f(s.size());
-    std::vector<std::pair<int, int>> init;
-    for (std::size_t i = 0; i < v.size(); i++) {
-        init.push_back({i, i});
+    using M = monoid::MinMax<int>;
+    std::vector<M::S> init;
+    for (long long i = 0; i < static_cast<long long>(v.size()); i++) {
+        init.emplace_back(static_cast<int>(i));
     }
-    MonoidUnionFind<monoid::MinMax<int>> uf(init);
+    MonoidUnionFind<M> uf(init);
     ll ans = 0;
     for (auto [A, B] : AB) {
         int k = std::lower_bound(v.begin(), v.end(), A) - v.begin();
-        std::pair<int, int> p = uf.prod(k);
-        while (v[p.second + 1] <= B) {
-            uf.merge(k, p.second + 1);
-            k = p.second + 1;
+        auto p = uf.prod(k);
+        while (v[p.max + 1] <= B) {
+            uf.merge(k, p.max + 1);
+            k = p.max + 1;
             p = uf.prod(k);
         }
-        if (f[p.first - 1]) {
-            uf.merge(p.first - 1, p.first);
+        if (f[p.min - 1]) {
+            uf.merge(p.min - 1, p.min);
         }
-        if (f[p.second + 1]) {
-            uf.merge(p.second, p.second + 1);
+        if (f[p.max + 1]) {
+            uf.merge(p.max, p.max + 1);
         }
-        f[p.first] = true;
-        f[p.second] = true;
+        f[p.min] = true;
+        f[p.max] = true;
         p = uf.prod(k);
-        if (ans < v[p.second] - v[p.first] + 1) {
-            ans = v[p.second] - v[p.first] + 1;
+        if (ans < v[p.max] - v[p.min] + 1) {
+            ans = v[p.max] - v[p.min] + 1;
         }
         std::cout << ans << std::endl;
     }

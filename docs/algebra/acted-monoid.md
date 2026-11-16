@@ -34,10 +34,10 @@ long long m = seg.prod(l, r);                         // [l, r) の最小値
 | `ChmaxMax<T>` | 区間 chmax | 区間最大値 | `T` | |
 | `ClampMin<T>` | 区間 clamp $x \leftarrow \min(\max(x, \mathit{lb}), \mathit{ub})$ | 区間最小値 | [`Clamp<T>`](monoid.hpp) | |
 | `ClampMax<T>` | 区間 clamp | 区間最大値 | [`Clamp<T>`](monoid.hpp) | |
-| `ClampMinMax<T>` | 区間 clamp | 区間最小値と最大値の組 `{min, max}` | [`Clamp<T>`](monoid.hpp) | |
+| `ClampMinMax<T>` | 区間 clamp | 区間最小値 `min`・最大値 `max` (`MinMax<T>::S`) | [`Clamp<T>`](monoid.hpp) | |
 | `ClampAddMin<T>` | 区間 加算と clamp $x \leftarrow \min(\max(x + \mathit{add}, \mathit{lb}), \mathit{ub})$ | 区間最小値 | [`ClampAdd<T>`](monoid.hpp) | |
 | `ClampAddMax<T>` | 区間 加算と clamp | 区間最大値 | [`ClampAdd<T>`](monoid.hpp) | |
-| `ClampAddMinMax<T>` | 区間 加算と clamp | 区間最小値と最大値の組 `{min, max}` | [`ClampAdd<T>`](monoid.hpp) | |
+| `ClampAddMinMax<T>` | 区間 加算と clamp | 区間最小値 `min`・最大値 `max` (`MinMax<T>::S`) | [`ClampAdd<T>`](monoid.hpp) | |
 | `AffineSum<T>` | 区間アフィン変換 $x \leftarrow ax + b$ | 区間和 | [`Affine<T>`](monoid.hpp) | |
 | `UpdateComposite<T>` | 区間代入 | 1次関数の合成 (`monoid::Composite`) | `optional<Affine<T>>` | |
 | `AddMinWith<T, U = long long>` | 区間加算 | 区間最小値とその位置 (空区間では `{型の最大値, -1}`) | `T` | |

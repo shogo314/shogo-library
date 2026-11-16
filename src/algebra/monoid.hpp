@@ -172,11 +172,18 @@ struct Min {
 /**
  * @brief 最小値と最大値の組 {min, max}
  */
-template <typename T>
+template <typename T = long long>
 struct MinMax {
-    using S = std::pair<T, T>;
-    static constexpr S op(const S& a, const S& b) { return {std::min(a.first, b.first), std::max(a.second, b.second)}; }
-    static constexpr S e() { return {std::numeric_limits<T>::max(), std::numeric_limits<T>::lowest()}; }
+    struct S {
+        T min, max;
+        constexpr S() : min(std::numeric_limits<T>::max()), max(std::numeric_limits<T>::lowest()) {}
+        constexpr S(const T& x) : min(x), max(x) {}
+        constexpr S(const T& min, const T& max) : min(min), max(max) {}
+        friend constexpr bool operator==(const S& a, const S& b) { return a.min == b.min && a.max == b.max; }
+        friend constexpr bool operator!=(const S& a, const S& b) { return !(a == b); }
+    };
+    static constexpr S op(const S& a, const S& b) { return {std::min(a.min, b.min), std::max(a.max, b.max)}; }
+    static constexpr S e() { return S(); }
 };
 
 /**

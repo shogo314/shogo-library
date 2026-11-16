@@ -203,9 +203,12 @@ struct ClampMax : monoid::Max<T> {
  */
 template <typename T>
 struct ClampMinMax : monoid::MinMax<T> {
-    using S = std::pair<T, T>;
+    using S = typename monoid::MinMax<T>::S;
     using F = Clamp<T>;
-    static constexpr S mapping(const F& f, const S& x) { return {f(x.first), f(x.second)}; }
+    static constexpr S mapping(const F& f, const S& x) {
+        if (x.min > x.max) return x;
+        return {f(x.min), f(x.max)};
+    }
     static constexpr F composition(const F& f, const F& g) { return monoid::ClampComposite<T>::op(f, g); }
     static constexpr F id() { return {}; }
 };
@@ -240,9 +243,12 @@ struct ClampAddMax : monoid::Max<T> {
  */
 template <typename T>
 struct ClampAddMinMax : monoid::MinMax<T> {
-    using S = std::pair<T, T>;
+    using S = typename monoid::MinMax<T>::S;
     using F = ClampAdd<T>;
-    static constexpr S mapping(const F& f, const S& x) { return {f(x.first), f(x.second)}; }
+    static constexpr S mapping(const F& f, const S& x) {
+        if (x.min > x.max) return x;
+        return {f(x.min), f(x.max)};
+    }
     static constexpr F composition(const F& f, const F& g) { return monoid::ClampAddComposite<T>::op(f, g); }
     static constexpr F id() { return {}; }
 };

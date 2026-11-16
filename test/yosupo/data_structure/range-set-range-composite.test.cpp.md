@@ -51,17 +51,17 @@ data:
     )\n * - F id(): \u6052\u7B49\u5199\u50CF\n * \u4F5C\u7528\u7D20\u304C\u7FA4\u3092\
     \u306A\u3059\u5834\u5408 (imos.hpp \u3067\u4F7F\u3046) \u306F\n * - F inv(const\
     \ F& f): \u9006\u4F5C\u7528\u7D20\n */\n\n#line 19 \"src/algebra/acted-monoid.hpp\"\
-    \n#include <array>\n#include <cstddef>\n#include <limits>\n#include <optional>\n\
-    #line 25 \"src/algebra/acted-monoid.hpp\"\n\n#line 2 \"src/algebra/monoid.hpp\"\
-    \n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
-    \n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
-    \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\
-    \n * - S op(const S& a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e():\
-    \ \u5358\u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\
-    \u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\
-    \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\
-    \u51FA\u3059)\n */\n\n#line 17 \"src/algebra/monoid.hpp\"\n#include <istream>\n\
-    #line 19 \"src/algebra/monoid.hpp\"\n#include <numeric>\n#line 24 \"src/algebra/monoid.hpp\"\
+    \n#include <array>\n#line 21 \"src/algebra/acted-monoid.hpp\"\n#include <cstddef>\n\
+    #include <limits>\n#include <numeric>\n#include <optional>\n#line 27 \"src/algebra/acted-monoid.hpp\"\
+    \n\n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n * @brief\
+    \ \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\
+    \u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\
+    \u3059\n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S& a, const S&\
+    \ b): \u7A4D (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n * op, e \u306F\
+    \ static \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\u30FC\u30BF\
+    \u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\
+    \u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\n#line 17\
+    \ \"src/algebra/monoid.hpp\"\n#include <istream>\n#line 24 \"src/algebra/monoid.hpp\"\
     \n\n/**\n * @brief 1\u6B21\u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite\
     \ \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\
     \u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\
@@ -393,7 +393,7 @@ data:
     \ Monoid(Op op, const S& e) : op_object(std::move(op)), identity(e) {}\n    constexpr\
     \ S op(const S& a, const S& b) const { return op_object(a, b); }\n    constexpr\
     \ S e() const { return identity; }\n};\ntemplate <typename Op, typename T>\nMonoid(Op,\
-    \ T) -> Monoid<T, Op>;\n#line 27 \"src/algebra/acted-monoid.hpp\"\n\n#if __cplusplus\
+    \ T) -> Monoid<T, Op>;\n#line 29 \"src/algebra/acted-monoid.hpp\"\n\n#if __cplusplus\
     \ < 202002L\nnamespace internal_acted_monoid {\ntemplate <typename A, typename\
     \ = void>\nstruct has_mapping_lr : std::false_type {};\ntemplate <typename A>\n\
     struct has_mapping_lr<A, std::void_t<decltype(std::declval<const A&>().mapping(std::declval<const\
@@ -419,10 +419,27 @@ data:
     \ long long sz) { return x + f * S(sz); }\n    static constexpr F composition(const\
     \ F& f, const F& g) { return f + g; }\n    static constexpr F id() { return F(0);\
     \ }\n    static constexpr F inv(const F& f) { return -f; }\n};\n\n/**\n * @brief\
-    \ \u533A\u9593\u4E57\u7B97\u3001\u533A\u9593\u548C\n */\ntemplate <typename T>\n\
-    struct MulSum : monoid::Sum<T> {\n    using S = T;\n    using F = T;\n    static\
-    \ constexpr S mapping(const F& f, const S& x) { return f * x; }\n    static constexpr\
-    \ F composition(const F& f, const F& g) { return f * g; }\n    static constexpr\
+    \ \u533A\u9593\u306E\u4F4D\u7F6E i \u306B constant + slope * i \u3092\u52A0\u7B97\
+    \u3001\u533A\u9593\u548C\n * arithmetic_progression(l, first, step) \u3067\u5DE6\
+    \u7AEF l \u306E\u521D\u9805 first\u3001\u516C\u5DEE step \u3092\u6307\u5B9A\u3059\
+    \u308B\n */\ntemplate <typename T = long long>\nstruct LinearAddSum : monoid::Sum<T>\
+    \ {\n    using S = T;\n    struct F {\n        T constant = T(0), slope = T(0);\n\
+    \    };\n    static constexpr F arithmetic_progression(long long l, const T& first,\
+    \ const T& step) {\n        assert(l >= 0);\n        return {first - step * T(l),\
+    \ step};\n    }\n    static constexpr S mapping(const F& f, const S& x, long long\
+    \ l, long long r) {\n        assert(0 <= l && l <= r);\n        const long long\
+    \ n = r - l;\n        if (n == 0) return x;\n        // sum i = l*n + n*(n-1)/2\u3002\
+    \u6574\u6570\u5074\u3067 2 \u3067\u5272\u308A\u3001\u548C\u30FB\u7A4D\u306F T\
+    \ \u3067\u8A08\u7B97\u3059\u308B\u3002\n        const T offset = n % 2 == 0 ?\
+    \ T(n / 2) * T(n - 1) : T(n) * T((n - 1) / 2);\n        return x + f.constant\
+    \ * T(n) + f.slope * (T(l) * T(n) + offset);\n    }\n    static constexpr F composition(const\
+    \ F& f, const F& g) { return {f.constant + g.constant, f.slope + g.slope}; }\n\
+    \    static constexpr F id() { return F(); }\n    static constexpr F inv(const\
+    \ F& f) { return {-f.constant, -f.slope}; }\n};\n\n/**\n * @brief \u533A\u9593\
+    \u4E57\u7B97\u3001\u533A\u9593\u548C\n */\ntemplate <typename T>\nstruct MulSum\
+    \ : monoid::Sum<T> {\n    using S = T;\n    using F = T;\n    static constexpr\
+    \ S mapping(const F& f, const S& x) { return f * x; }\n    static constexpr F\
+    \ composition(const F& f, const F& g) { return f * g; }\n    static constexpr\
     \ F id() { return F(1); }\n    static constexpr F inv(const F& f) { return F(1)\
     \ / f; }\n};\n\n/**\n * @brief \u533A\u9593\u52A0\u7B97\u3001\u533A\u9593\u6700\
     \u5C0F\u5024\n */\ntemplate <typename T>\nstruct AddMin : monoid::Min<T> {\n \
@@ -573,7 +590,101 @@ data:
     \ i <= K; i++) {\n            for (int j = 0; j <= i; j++) ret.val[i] += binom[i][j]\
     \ * pw[j] * x.val[i - j];\n        }\n        return ret;\n    }\n    static constexpr\
     \ F composition(const F& f, const F& g) { return f + g; }\n    static constexpr\
-    \ F id() { return F(0); }\n};\n\n/**\n * @brief \u6210\u5206\u306E\u4E26\u3079\
+    \ F id() { return F(0); }\n};\n\n/** @brief \u533A\u9593\u30A2\u30D5\u30A3\u30F3\
+    \u5909\u63DB\u3001\u533A\u9593\u6700\u5C0F\u5024\u30FB\u6700\u5927\u5024 (\u8CA0\
+    \u306E\u500D\u7387\u3082\u8A31\u3059) */\ntemplate <typename T = long long>\n\
+    struct AffineMinMax : monoid::MinMax<T> {\n    using S = typename monoid::MinMax<T>::S;\n\
+    \    using F = Affine<T>;\n    static constexpr S mapping(const F& f, const S&\
+    \ x) {\n        if (x.min > x.max) return x;\n        if (f.a < T(0)) return {f(x.max),\
+    \ f(x.min)};\n        return {f(x.min), f(x.max)};\n    }\n    static constexpr\
+    \ F composition(const F& f, const F& g) { return monoid::Composite<T>::op(f, g);\
+    \ }\n    static constexpr F id() { return F(); }\n};\n\n/** @brief \u533A\u9593\
+    \u30A2\u30D5\u30A3\u30F3\u5909\u63DB\u3001\u533A\u9593\u306E 0 \u4E57\u548C\u304B\
+    \u3089 K \u4E57\u548C */\ntemplate <typename T = long long, long long K = 2>\n\
+    struct AffinePowerSum : AddPowerSum<T, K> {\n    static_assert(K >= 0);\n    using\
+    \ S = typename AddPowerSum<T, K>::S;\n    using F = Affine<T>;\n    static S mapping(const\
+    \ F& f, const S& x) {\n        std::array<T, K + 1> pa{}, pb{}, binom{};\n   \
+    \     pa[0] = pb[0] = binom[0] = T(1);\n        for (long long i = 1; i <= K;\
+    \ ++i) {\n            pa[i] = pa[i - 1] * f.a;\n            pb[i] = pb[i - 1]\
+    \ * f.b;\n        }\n        S res;\n        for (long long i = 0; i <= K; ++i)\
+    \ {\n            for (long long j = 0; j <= i; ++j) res.val[i] += binom[j] * pa[j]\
+    \ * pb[i - j] * x[j];\n            if (i < K)\n                for (long long\
+    \ j = i + 1; j >= 1; --j) binom[j] += binom[j - 1];\n        }\n        return\
+    \ res;\n    }\n    static constexpr F composition(const F& f, const F& g) { return\
+    \ monoid::Composite<T>::op(f, g); }\n    static constexpr F id() { return F();\
+    \ }\n};\n\n/** @brief \u533A\u9593\u52A0\u7B97\u3001\u533A\u9593 gcd\u3002S::val()\
+    \ \u3067 gcd \u3092\u53D6\u5F97\u3059\u308B */\ntemplate <typename T = long long>\n\
+    struct AddGcd {\n    static_assert(std::is_integral_v<T> && std::is_signed_v<T>);\n\
+    \    struct S {\n        T first = T(0), last = T(0), differences_gcd = T(0);\n\
+    \        long long size = 0;\n        constexpr S() = default;\n        constexpr\
+    \ S(const T& x) : first(x), last(x), size(1) {}\n        constexpr T val() const\
+    \ { return std::gcd(first, differences_gcd); }\n    };\n    using F = T;\n   \
+    \ static constexpr S op(const S& a, const S& b) {\n        if (a.size == 0) return\
+    \ b;\n        if (b.size == 0) return a;\n        S res;\n        res.first =\
+    \ a.first;\n        res.last = b.last;\n        res.differences_gcd = std::gcd(std::gcd(a.differences_gcd,\
+    \ b.differences_gcd), b.first - a.last);\n        res.size = a.size + b.size;\n\
+    \        return res;\n    }\n    static constexpr S e() { return S(); }\n    static\
+    \ constexpr S mapping(const F& f, const S& x) {\n        S res = x;\n        if\
+    \ (res.size != 0) {\n            res.first += f;\n            res.last += f;\n\
+    \        }\n        return res;\n    }\n    static constexpr F composition(const\
+    \ F& f, const F& g) { return f + g; }\n    static constexpr F id() { return T(0);\
+    \ }\n    static constexpr F inv(const F& f) { return -f; }\n};\n\n/** @brief 2\
+    \ \u5217\u3078\u306E\u533A\u9593\u52A0\u7B97\u3001\u5404\u5217\u306E\u548C\u3068\
+    \u8981\u7D20\u3054\u3068\u306E\u7A4D\u306E\u548C */\ntemplate <typename T = long\
+    \ long>\nstruct AddProductSum {\n    struct S {\n        T sum_a = T(0), sum_b\
+    \ = T(0), product_sum = T(0);\n        constexpr S() = default;\n        constexpr\
+    \ S(const T& a, const T& b) : sum_a(a), sum_b(b), product_sum(a * b) {}\n    \
+    \    constexpr S(const std::array<T, 2>& x) : S(x[0], x[1]) {}\n    };\n    using\
+    \ F = std::array<T, 2>;\n    static constexpr S op(const S& a, const S& b) {\n\
+    \        S res;\n        res.sum_a = a.sum_a + b.sum_a;\n        res.sum_b = a.sum_b\
+    \ + b.sum_b;\n        res.product_sum = a.product_sum + b.product_sum;\n     \
+    \   return res;\n    }\n    static constexpr S e() { return S(); }\n    static\
+    \ constexpr S mapping(const F& f, const S& x, long long sz) {\n        S res;\n\
+    \        res.sum_a = x.sum_a + f[0] * T(sz);\n        res.sum_b = x.sum_b + f[1]\
+    \ * T(sz);\n        res.product_sum = x.product_sum + f[0] * x.sum_b + f[1] *\
+    \ x.sum_a + f[0] * f[1] * T(sz);\n        return res;\n    }\n    static constexpr\
+    \ F composition(const F& f, const F& g) { return {f[0] + g[0], f[1] + g[1]}; }\n\
+    \    static constexpr F id() { return {T(0), T(0)}; }\n    static constexpr F\
+    \ inv(const F& f) { return {-f[0], -f[1]}; }\n};\n\n/**\n * @brief \u533A\u9593\
+    \u306E\u4F4D\u7F6E i \u306B f[0] + f[1]*i + ... + f[K]*i^K \u3092\u52A0\u7B97\u3001\
+    \u533A\u9593\u548C\n * \u6574\u6570\u306E\u56E0\u5B50\u3092\u7D04\u5206\u3057\u3066\
+    \u4E8C\u9805\u4FC2\u6570\u3092\u6C42\u3081\u308B\u306E\u3067\u3001\u5076\u6570\
+    \u306E\u6CD5\u306E modint \u3067\u3082\u4F7F\u3048\u308B\n */\ntemplate <typename\
+    \ T = long long, long long K = 2>\nstruct PolynomialAddSum : monoid::Sum<T> {\n\
+    \    static_assert(K >= 0);\n    using S = T;\n    using F = std::array<T, K +\
+    \ 1>;\n\n   private:\n    // [0, n) \u306E\u6DFB\u5B57\u306E 0 \u4E57\u548C\u304B\
+    \u3089 K \u4E57\u548C\u3002\u6574\u6570\u306E\u5927\u304D\u306A\u7A4D\u3084 T\
+    \ \u3067\u306E\u9664\u7B97\u306F\u4F7F\u308F\u306A\u3044\u3002\n    static std::array<T,\
+    \ K + 1> index_power_sums(long long n, long long degree) {\n        assert(0 <=\
+    \ degree && degree <= K);\n        std::array<T, K + 2> binom{};\n        std::array<long\
+    \ long, K + 1> factors{};\n        for (long long k = 1; k <= K + 1 && k <= degree\
+    \ + 1 && k <= n; ++k) {\n            factors[k - 1] = n - k + 1;\n           \
+    \ long long divisor = k;\n            for (long long j = 0; j < k && divisor >\
+    \ 1; ++j) {\n                long long g = std::gcd(factors[j], divisor);\n  \
+    \              factors[j] /= g;\n                divisor /= g;\n            }\n\
+    \            assert(divisor == 1);\n            T value(1);\n            for (long\
+    \ long j = 0; j < k; ++j) value *= T(factors[j]);\n            binom[k] = value;\n\
+    \        }\n        // i^k = sum_j Stirling2(k, j) * j! * C(i, j)\n        //\
+    \ sum_{i=0}^{n-1} C(i, j) = C(n, j+1)\n        std::array<T, K + 1> stirling{},\
+    \ factorial{}, sums{};\n        stirling[0] = factorial[0] = T(1);\n        for\
+    \ (long long j = 1; j <= K && j <= degree; ++j) factorial[j] = factorial[j - 1]\
+    \ * T(j);\n        for (long long k = 0; k <= K && k <= degree; ++k) {\n     \
+    \       for (long long j = 0; j <= k; ++j) sums[k] += stirling[j] * factorial[j]\
+    \ * binom[j + 1];\n            if (k < K && k < degree) {\n                for\
+    \ (long long j = k + 1; j >= 1; --j) stirling[j] = T(j) * stirling[j] + stirling[j\
+    \ - 1];\n                stirling[0] = T(0);\n            }\n        }\n     \
+    \   return sums;\n    }\n\n   public:\n    static S mapping(const F& f, const\
+    \ S& x, long long l, long long r) {\n        assert(0 <= l && l <= r);\n     \
+    \   if (l == r) return x;\n        long long degree = K;\n        while (degree\
+    \ >= 0 && f[degree] == T(0)) --degree;\n        if (degree < 0) return x;\n  \
+    \      auto left = index_power_sums(l, degree), right = index_power_sums(r, degree);\n\
+    \        S res = x;\n        for (long long k = 0; k <= degree; ++k) res += f[k]\
+    \ * (right[k] - left[k]);\n        return res;\n    }\n    static constexpr F\
+    \ composition(const F& f, const F& g) {\n        F res{};\n        for (long long\
+    \ k = 0; k <= K; ++k) res[k] = f[k] + g[k];\n        return res;\n    }\n    static\
+    \ constexpr F id() { return F{}; }\n    static constexpr F inv(const F& f) {\n\
+    \        F res{};\n        for (long long k = 0; k <= K; ++k) res[k] = -f[k];\n\
+    \        return res;\n    }\n};\n\n/**\n * @brief \u6210\u5206\u306E\u4E26\u3079\
     \u66FF\u3048 (monoid::Mapping)\u3001\u30E2\u30CE\u30A4\u30C9 M \u306E N \u500B\
     \u306E\u76F4\u7A4D\n *\n * \u8981\u7D20\u306F M \u306E\u8981\u7D20\u3092 N \u500B\
     \u4E26\u3079\u305F std::array \u3067\u3001\u7A4D\u306F\u6210\u5206\u3054\u3068\
@@ -1152,7 +1263,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/data_structure/range-set-range-composite.test.cpp
   requiredBy: []
-  timestamp: '2026-11-16 21:26:45+09:00'
+  timestamp: '2026-11-17 00:43:04+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/data_structure/range-set-range-composite.test.cpp

@@ -388,8 +388,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/utility/vector_func.test.cpp
-  - test/aoj/dsl/dsl-4-a.1.test.cpp
   - test/yosupo/data_structure/static-range-sum.test.cpp
+  - test/aoj/dsl/dsl-4-a.1.test.cpp
 documentation_of: src/utility/vector_func.hpp
 layout: document
 title: "vector \u306B\u5BFE\u3059\u308B\u6F14\u7B97\u5B50\u3068\u95A2\u6570"

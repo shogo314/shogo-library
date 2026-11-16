@@ -651,22 +651,22 @@ data:
   isVerificationFile: false
   path: src/data_structures/fenwick-tree.hpp
   requiredBy:
-  - src/offline/static-rectangle-add-rectangle-sum.hpp
   - src/geometry/axis-parallel-segments.hpp
+  - src/offline/static-rectangle-add-rectangle-sum.hpp
   timestamp: '2026-11-16 21:26:45+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/geometry/axis-parallel-segments.test.cpp
   - test/unittest/offline/static-rectangle-add-rectangle-sum.test.cpp
   - test/unittest/data_structures/fenwick-tree.test.cpp
   - test/unittest/algebra/monoid.test.cpp
-  - test/unittest/geometry/axis-parallel-segments.test.cpp
-  - test/aoj/grl/grl-5-d.test.cpp
-  - test/aoj/cgl/cgl-6-a.test.cpp
-  - test/aoj/dsl/dsl-2-b.2.test.cpp
   - test/yosupo/data_structure/static-rectangle-add-rectangle-sum.test.cpp
   - test/yosupo/data_structure/point-add-range-sum.3.test.cpp
   - test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp
   - test/yosupo/tree/vertex-add-path-sum.test.cpp
+  - test/aoj/dsl/dsl-2-b.2.test.cpp
+  - test/aoj/grl/grl-5-d.test.cpp
+  - test/aoj/cgl/cgl-6-a.test.cpp
 documentation_of: src/data_structures/fenwick-tree.hpp
 layout: document
 title: Fenwick Tree (Binary Indexed Tree)

@@ -945,15 +945,15 @@ data:
   timestamp: '2026-11-16 21:26:45+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/data_structures/dual-segtree.test.cpp
   - test/unittest/data_structures/segtree-beats.test.cpp
+  - test/unittest/data_structures/dual-segtree.test.cpp
+  - test/unittest/algebra/beats-acted-monoid-extended.test.cpp
   - test/unittest/algebra/beats-acted-monoid.test.cpp
   - test/unittest/algebra/monoid.test.cpp
-  - test/unittest/algebra/beats-acted-monoid-extended.test.cpp
-  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.1.test.cpp
-  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.2.test.cpp
-  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
   - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.4.test.cpp
+  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.2.test.cpp
+  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.1.test.cpp
+  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
 documentation_of: src/algebra/beats-acted-monoid.hpp
 layout: document
 title: "Segment Tree Beats \u7528\u306E\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\

@@ -183,8 +183,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/graph/bipartite-matching.test.cpp
-  - test/aoj/grl/grl-7-a.test.cpp
   - test/yosupo/graph/bipartitematching.test.cpp
+  - test/aoj/grl/grl-7-a.test.cpp
 documentation_of: src/graph/bipartite-matching.hpp
 layout: document
 title: "\u4E8C\u90E8\u30B0\u30E9\u30D5\u306E\u6700\u5927\u30DE\u30C3\u30C1\u30F3\u30B0\

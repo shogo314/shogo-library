@@ -84,8 +84,8 @@ data:
   verifiedWith:
   - test/unittest/math/lagrange-interpolation.test.cpp
   - test/unittest/math/sum-of-exp-times-poly.test.cpp
-  - test/yosupo/other/sum-of-exponential-times-polynomial-limit.test.cpp
   - test/yosupo/other/sum-of-exponential-times-polynomial.test.cpp
+  - test/yosupo/other/sum-of-exponential-times-polynomial-limit.test.cpp
 documentation_of: src/math/lagrange-interpolation.hpp
 layout: document
 title: "\u30E9\u30B0\u30E9\u30F3\u30B8\u30E5\u88DC\u9593"

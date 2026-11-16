@@ -321,9 +321,9 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/counter.test.cpp
-  - test/aoj/volume0/0029.test.cpp
-  - test/aoj/itp2/itp2-7-d.test.cpp
   - test/yosupo/data_structure/associative-array.test.cpp
+  - test/aoj/itp2/itp2-7-d.test.cpp
+  - test/aoj/volume0/0029.test.cpp
 documentation_of: src/data_structures/counter.hpp
 layout: document
 title: "\u5024\u306E\u500B\u6570\u3092\u6570\u3048\u308B\u591A\u91CD\u96C6\u5408 (Counter)"

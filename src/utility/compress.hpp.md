@@ -122,8 +122,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/utility/compress.test.cpp
-  - test/aoj/dsl/dsl-4-a.2.test.cpp
   - test/yosupo/data_structure/rectangle-sum.3.test.cpp
+  - test/aoj/dsl/dsl-4-a.2.test.cpp
 documentation_of: src/utility/compress.hpp
 layout: document
 title: "\u5EA7\u6A19\u5727\u7E2E"

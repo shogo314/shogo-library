@@ -203,8 +203,8 @@ data:
   timestamp: '2026-10-20 00:24:39+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/data_structures/fast-set.test.cpp
   - test/unittest/data_structures/sortable-segtree.test.cpp
+  - test/unittest/data_structures/fast-set.test.cpp
   - test/unittest/algebra/monoid.test.cpp
   - test/yosupo/data_structure/predecessor-problem.test.cpp
   - test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp

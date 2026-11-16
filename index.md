@@ -968,6 +968,12 @@ data:
   - name: test/unittest/algebra
     pages:
     - icon: ':heavy_check_mark:'
+      path: test/unittest/algebra/acted-monoid-additional.test.cpp
+      title: test/unittest/algebra/acted-monoid-additional.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/algebra/acted-monoid-linear-add-sum.test.cpp
+      title: test/unittest/algebra/acted-monoid-linear-add-sum.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/algebra/acted-monoid.test.cpp
       title: test/unittest/algebra/acted-monoid.test.cpp
     - icon: ':heavy_check_mark:'

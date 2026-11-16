@@ -152,6 +152,9 @@ data:
     path: test/unittest/algebra/acted-monoid.test.cpp
     title: test/unittest/algebra/acted-monoid.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/algebra/beats-acted-monoid-extended.test.cpp
+    title: test/unittest/algebra/beats-acted-monoid-extended.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/algebra/beats-acted-monoid.test.cpp
     title: test/unittest/algebra/beats-acted-monoid.test.cpp
   - icon: ':heavy_check_mark:'
@@ -298,6 +301,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
     title: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.4.test.cpp
+    title: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.4.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/range-reverse-range-sum.test.cpp
     title: test/yosupo/data_structure/range-reverse-range-sum.test.cpp
@@ -486,46 +492,51 @@ data:
     \ S op(const S& a, const S& b) { return std::min(a, b); }\n    static constexpr\
     \ S e() { return std::numeric_limits<S>::max(); }\n};\n\n/**\n * @brief \u6700\
     \u5C0F\u5024\u3068\u6700\u5927\u5024\u306E\u7D44 {min, max}\n */\ntemplate <typename\
-    \ T>\nstruct MinMax {\n    using S = std::pair<T, T>;\n    static constexpr S\
-    \ op(const S& a, const S& b) { return {std::min(a.first, b.first), std::max(a.second,\
-    \ b.second)}; }\n    static constexpr S e() { return {std::numeric_limits<T>::max(),\
-    \ std::numeric_limits<T>::lowest()}; }\n};\n\n/**\n * @brief \u6392\u4ED6\u7684\
-    \u8AD6\u7406\u548C\n */\ntemplate <typename T>\nstruct Xor {\n    using S = T;\n\
-    \    static constexpr S op(const S& a, const S& b) { return a ^ b; }\n    static\
-    \ constexpr S e() { return S(0); }\n};\n\n/**\n * @brief \u8AD6\u7406\u7A4D\n\
-    \ */\ntemplate <typename T>\nstruct And {\n    using S = T;\n    static constexpr\
-    \ S op(const S& a, const S& b) { return a & b; }\n    static constexpr S e() {\
-    \ return ~S(0); }\n};\n\n/**\n * @brief \u8AD6\u7406\u548C\n */\ntemplate <typename\
-    \ T>\nstruct Or {\n    using S = T;\n    static constexpr S op(const S& a, const\
-    \ S& b) { return a | b; }\n    static constexpr S e() { return S(0); }\n};\n\n\
-    /**\n * @brief \u6700\u5927\u516C\u7D04\u6570 \u5358\u4F4D\u5143\u306F0\n */\n\
-    template <typename T>\nstruct Gcd {\n    static_assert(std::is_integral_v<T>);\n\
-    \    using S = T;\n    static constexpr S op(const S& a, const S& b) { return\
-    \ std::gcd(a, b); }\n    static constexpr S e() { return S(0); }\n};\n\n/**\n\
-    \ * @brief \u6700\u5C0F\u516C\u500D\u6570 \u5358\u4F4D\u5143\u306F1\n */\ntemplate\
-    \ <typename T>\nstruct Lcm {\n    static_assert(std::is_integral_v<T>);\n    using\
-    \ S = T;\n    static constexpr S op(const S& a, const S& b) { return std::lcm(a,\
-    \ b); }\n    static constexpr S e() { return S(1); }\n};\n\n/**\n * @brief {0,\
-    \ 1, ..., N-1} \u304B\u3089\u81EA\u5206\u81EA\u8EAB\u3078\u306E\u5199\u50CF\u306E\
-    \u5408\u6210 (\u5909\u63DB\u30E2\u30CE\u30A4\u30C9)\n *\n * \u8981\u7D20 f \u306F\
-    \ f[x] \u304C x \u306E\u884C\u304D\u5148\u3092\u8868\u3059 std::array<int, N>\u3002\
-    \u5168\u5358\u5C04\u3067\u306A\u304F\u3066\u3088\u3044\n * op(f, g) = f\u2218\
-    g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B)\u3002\u533A\u9593 [l, r) \u306E\
-    \u7A4D\u306F f_l(...f_{r-1}(x)) \u3092\u8868\u3059\n * \u5DE6\u304B\u3089\u9806\
-    \u306B\u9069\u7528\u3057\u305F\u3044\u5834\u5408\u306F monoid::Reverse<monoid::Mapping<N>>\
-    \ \u3092\u4F7F\u3046\n * \u4F8B: SegTree<monoid::Mapping<3>> seg(n); seg.set(i,\
-    \ {0, 2, 1});\n * swap(i, j) \u3067 i \u3068 j \u3092\u5165\u308C\u66FF\u3048\u308B\
-    \u5199\u50CF\u3092\u4F5C\u308C\u308B\n *\n * @tparam N \u5199\u50CF\u306E\u5B9A\
-    \u7FA9\u57DF\u30FB\u5024\u57DF\u306E\u5927\u304D\u3055\n */\ntemplate <std::size_t\
-    \ N>\nstruct Mapping {\n    using S = std::array<int, N>;\n    static constexpr\
-    \ S op(const S& f, const S& g) {\n        S h{};\n        for (std::size_t x =\
-    \ 0; x < N; x++) h[x] = f[g[x]];\n        return h;\n    }\n    static constexpr\
-    \ S e() {\n        S h{};\n        for (std::size_t x = 0; x < N; x++) h[x] =\
-    \ static_cast<int>(x);\n        return h;\n    }\n    // i \u3068 j \u3092\u5165\
-    \u308C\u66FF\u3048\u3001\u307B\u304B\u306F\u52D5\u304B\u3055\u306A\u3044\u5199\
-    \u50CF (\u4E92\u63DB)\n    static constexpr S swap(long long i, long long j) {\n\
-    \        S h = e();\n        h[i] = static_cast<int>(j);\n        h[j] = static_cast<int>(i);\n\
-    \        return h;\n    }\n};\n\n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\
+    \ T = long long>\nstruct MinMax {\n    struct S {\n        T min, max;\n     \
+    \   constexpr S() : min(std::numeric_limits<T>::max()), max(std::numeric_limits<T>::lowest())\
+    \ {}\n        constexpr S(const T& x) : min(x), max(x) {}\n        constexpr S(const\
+    \ T& min, const T& max) : min(min), max(max) {}\n        friend constexpr bool\
+    \ operator==(const S& a, const S& b) { return a.min == b.min && a.max == b.max;\
+    \ }\n        friend constexpr bool operator!=(const S& a, const S& b) { return\
+    \ !(a == b); }\n    };\n    static constexpr S op(const S& a, const S& b) { return\
+    \ {std::min(a.min, b.min), std::max(a.max, b.max)}; }\n    static constexpr S\
+    \ e() { return S(); }\n};\n\n/**\n * @brief \u6392\u4ED6\u7684\u8AD6\u7406\u548C\
+    \n */\ntemplate <typename T>\nstruct Xor {\n    using S = T;\n    static constexpr\
+    \ S op(const S& a, const S& b) { return a ^ b; }\n    static constexpr S e() {\
+    \ return S(0); }\n};\n\n/**\n * @brief \u8AD6\u7406\u7A4D\n */\ntemplate <typename\
+    \ T>\nstruct And {\n    using S = T;\n    static constexpr S op(const S& a, const\
+    \ S& b) { return a & b; }\n    static constexpr S e() { return ~S(0); }\n};\n\n\
+    /**\n * @brief \u8AD6\u7406\u548C\n */\ntemplate <typename T>\nstruct Or {\n \
+    \   using S = T;\n    static constexpr S op(const S& a, const S& b) { return a\
+    \ | b; }\n    static constexpr S e() { return S(0); }\n};\n\n/**\n * @brief \u6700\
+    \u5927\u516C\u7D04\u6570 \u5358\u4F4D\u5143\u306F0\n */\ntemplate <typename T>\n\
+    struct Gcd {\n    static_assert(std::is_integral_v<T>);\n    using S = T;\n  \
+    \  static constexpr S op(const S& a, const S& b) { return std::gcd(a, b); }\n\
+    \    static constexpr S e() { return S(0); }\n};\n\n/**\n * @brief \u6700\u5C0F\
+    \u516C\u500D\u6570 \u5358\u4F4D\u5143\u306F1\n */\ntemplate <typename T>\nstruct\
+    \ Lcm {\n    static_assert(std::is_integral_v<T>);\n    using S = T;\n    static\
+    \ constexpr S op(const S& a, const S& b) { return std::lcm(a, b); }\n    static\
+    \ constexpr S e() { return S(1); }\n};\n\n/**\n * @brief {0, 1, ..., N-1} \u304B\
+    \u3089\u81EA\u5206\u81EA\u8EAB\u3078\u306E\u5199\u50CF\u306E\u5408\u6210 (\u5909\
+    \u63DB\u30E2\u30CE\u30A4\u30C9)\n *\n * \u8981\u7D20 f \u306F f[x] \u304C x \u306E\
+    \u884C\u304D\u5148\u3092\u8868\u3059 std::array<int, N>\u3002\u5168\u5358\u5C04\
+    \u3067\u306A\u304F\u3066\u3088\u3044\n * op(f, g) = f\u2218g (g \u3092\u5148\u306B\
+    \u9069\u7528\u3059\u308B)\u3002\u533A\u9593 [l, r) \u306E\u7A4D\u306F f_l(...f_{r-1}(x))\
+    \ \u3092\u8868\u3059\n * \u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\u3057\u305F\
+    \u3044\u5834\u5408\u306F monoid::Reverse<monoid::Mapping<N>> \u3092\u4F7F\u3046\
+    \n * \u4F8B: SegTree<monoid::Mapping<3>> seg(n); seg.set(i, {0, 2, 1});\n * swap(i,\
+    \ j) \u3067 i \u3068 j \u3092\u5165\u308C\u66FF\u3048\u308B\u5199\u50CF\u3092\u4F5C\
+    \u308C\u308B\n *\n * @tparam N \u5199\u50CF\u306E\u5B9A\u7FA9\u57DF\u30FB\u5024\
+    \u57DF\u306E\u5927\u304D\u3055\n */\ntemplate <std::size_t N>\nstruct Mapping\
+    \ {\n    using S = std::array<int, N>;\n    static constexpr S op(const S& f,\
+    \ const S& g) {\n        S h{};\n        for (std::size_t x = 0; x < N; x++) h[x]\
+    \ = f[g[x]];\n        return h;\n    }\n    static constexpr S e() {\n       \
+    \ S h{};\n        for (std::size_t x = 0; x < N; x++) h[x] = static_cast<int>(x);\n\
+    \        return h;\n    }\n    // i \u3068 j \u3092\u5165\u308C\u66FF\u3048\u3001\
+    \u307B\u304B\u306F\u52D5\u304B\u3055\u306A\u3044\u5199\u50CF (\u4E92\u63DB)\n\
+    \    static constexpr S swap(long long i, long long j) {\n        S h = e();\n\
+    \        h[i] = static_cast<int>(j);\n        h[j] = static_cast<int>(i);\n  \
+    \      return h;\n    }\n};\n\n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\
     \u5408\u6210\n * op(f, g) = f\u2218g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B\
     )\n * \u533A\u9593 [l, r) \u306E\u7A4D\u306F f_l(...f_{r-1}(x)) \u3092\u8868\u3059\
     \n * \u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\u3057\u305F\u3044 (f_{r-1}(...f_l(x))\
@@ -823,46 +834,51 @@ data:
     \ S op(const S& a, const S& b) { return std::min(a, b); }\n    static constexpr\
     \ S e() { return std::numeric_limits<S>::max(); }\n};\n\n/**\n * @brief \u6700\
     \u5C0F\u5024\u3068\u6700\u5927\u5024\u306E\u7D44 {min, max}\n */\ntemplate <typename\
-    \ T>\nstruct MinMax {\n    using S = std::pair<T, T>;\n    static constexpr S\
-    \ op(const S& a, const S& b) { return {std::min(a.first, b.first), std::max(a.second,\
-    \ b.second)}; }\n    static constexpr S e() { return {std::numeric_limits<T>::max(),\
-    \ std::numeric_limits<T>::lowest()}; }\n};\n\n/**\n * @brief \u6392\u4ED6\u7684\
-    \u8AD6\u7406\u548C\n */\ntemplate <typename T>\nstruct Xor {\n    using S = T;\n\
-    \    static constexpr S op(const S& a, const S& b) { return a ^ b; }\n    static\
-    \ constexpr S e() { return S(0); }\n};\n\n/**\n * @brief \u8AD6\u7406\u7A4D\n\
-    \ */\ntemplate <typename T>\nstruct And {\n    using S = T;\n    static constexpr\
-    \ S op(const S& a, const S& b) { return a & b; }\n    static constexpr S e() {\
-    \ return ~S(0); }\n};\n\n/**\n * @brief \u8AD6\u7406\u548C\n */\ntemplate <typename\
-    \ T>\nstruct Or {\n    using S = T;\n    static constexpr S op(const S& a, const\
-    \ S& b) { return a | b; }\n    static constexpr S e() { return S(0); }\n};\n\n\
-    /**\n * @brief \u6700\u5927\u516C\u7D04\u6570 \u5358\u4F4D\u5143\u306F0\n */\n\
-    template <typename T>\nstruct Gcd {\n    static_assert(std::is_integral_v<T>);\n\
-    \    using S = T;\n    static constexpr S op(const S& a, const S& b) { return\
-    \ std::gcd(a, b); }\n    static constexpr S e() { return S(0); }\n};\n\n/**\n\
-    \ * @brief \u6700\u5C0F\u516C\u500D\u6570 \u5358\u4F4D\u5143\u306F1\n */\ntemplate\
-    \ <typename T>\nstruct Lcm {\n    static_assert(std::is_integral_v<T>);\n    using\
-    \ S = T;\n    static constexpr S op(const S& a, const S& b) { return std::lcm(a,\
-    \ b); }\n    static constexpr S e() { return S(1); }\n};\n\n/**\n * @brief {0,\
-    \ 1, ..., N-1} \u304B\u3089\u81EA\u5206\u81EA\u8EAB\u3078\u306E\u5199\u50CF\u306E\
-    \u5408\u6210 (\u5909\u63DB\u30E2\u30CE\u30A4\u30C9)\n *\n * \u8981\u7D20 f \u306F\
-    \ f[x] \u304C x \u306E\u884C\u304D\u5148\u3092\u8868\u3059 std::array<int, N>\u3002\
-    \u5168\u5358\u5C04\u3067\u306A\u304F\u3066\u3088\u3044\n * op(f, g) = f\u2218\
-    g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B)\u3002\u533A\u9593 [l, r) \u306E\
-    \u7A4D\u306F f_l(...f_{r-1}(x)) \u3092\u8868\u3059\n * \u5DE6\u304B\u3089\u9806\
-    \u306B\u9069\u7528\u3057\u305F\u3044\u5834\u5408\u306F monoid::Reverse<monoid::Mapping<N>>\
-    \ \u3092\u4F7F\u3046\n * \u4F8B: SegTree<monoid::Mapping<3>> seg(n); seg.set(i,\
-    \ {0, 2, 1});\n * swap(i, j) \u3067 i \u3068 j \u3092\u5165\u308C\u66FF\u3048\u308B\
-    \u5199\u50CF\u3092\u4F5C\u308C\u308B\n *\n * @tparam N \u5199\u50CF\u306E\u5B9A\
-    \u7FA9\u57DF\u30FB\u5024\u57DF\u306E\u5927\u304D\u3055\n */\ntemplate <std::size_t\
-    \ N>\nstruct Mapping {\n    using S = std::array<int, N>;\n    static constexpr\
-    \ S op(const S& f, const S& g) {\n        S h{};\n        for (std::size_t x =\
-    \ 0; x < N; x++) h[x] = f[g[x]];\n        return h;\n    }\n    static constexpr\
-    \ S e() {\n        S h{};\n        for (std::size_t x = 0; x < N; x++) h[x] =\
-    \ static_cast<int>(x);\n        return h;\n    }\n    // i \u3068 j \u3092\u5165\
-    \u308C\u66FF\u3048\u3001\u307B\u304B\u306F\u52D5\u304B\u3055\u306A\u3044\u5199\
-    \u50CF (\u4E92\u63DB)\n    static constexpr S swap(long long i, long long j) {\n\
-    \        S h = e();\n        h[i] = static_cast<int>(j);\n        h[j] = static_cast<int>(i);\n\
-    \        return h;\n    }\n};\n\n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\
+    \ T = long long>\nstruct MinMax {\n    struct S {\n        T min, max;\n     \
+    \   constexpr S() : min(std::numeric_limits<T>::max()), max(std::numeric_limits<T>::lowest())\
+    \ {}\n        constexpr S(const T& x) : min(x), max(x) {}\n        constexpr S(const\
+    \ T& min, const T& max) : min(min), max(max) {}\n        friend constexpr bool\
+    \ operator==(const S& a, const S& b) { return a.min == b.min && a.max == b.max;\
+    \ }\n        friend constexpr bool operator!=(const S& a, const S& b) { return\
+    \ !(a == b); }\n    };\n    static constexpr S op(const S& a, const S& b) { return\
+    \ {std::min(a.min, b.min), std::max(a.max, b.max)}; }\n    static constexpr S\
+    \ e() { return S(); }\n};\n\n/**\n * @brief \u6392\u4ED6\u7684\u8AD6\u7406\u548C\
+    \n */\ntemplate <typename T>\nstruct Xor {\n    using S = T;\n    static constexpr\
+    \ S op(const S& a, const S& b) { return a ^ b; }\n    static constexpr S e() {\
+    \ return S(0); }\n};\n\n/**\n * @brief \u8AD6\u7406\u7A4D\n */\ntemplate <typename\
+    \ T>\nstruct And {\n    using S = T;\n    static constexpr S op(const S& a, const\
+    \ S& b) { return a & b; }\n    static constexpr S e() { return ~S(0); }\n};\n\n\
+    /**\n * @brief \u8AD6\u7406\u548C\n */\ntemplate <typename T>\nstruct Or {\n \
+    \   using S = T;\n    static constexpr S op(const S& a, const S& b) { return a\
+    \ | b; }\n    static constexpr S e() { return S(0); }\n};\n\n/**\n * @brief \u6700\
+    \u5927\u516C\u7D04\u6570 \u5358\u4F4D\u5143\u306F0\n */\ntemplate <typename T>\n\
+    struct Gcd {\n    static_assert(std::is_integral_v<T>);\n    using S = T;\n  \
+    \  static constexpr S op(const S& a, const S& b) { return std::gcd(a, b); }\n\
+    \    static constexpr S e() { return S(0); }\n};\n\n/**\n * @brief \u6700\u5C0F\
+    \u516C\u500D\u6570 \u5358\u4F4D\u5143\u306F1\n */\ntemplate <typename T>\nstruct\
+    \ Lcm {\n    static_assert(std::is_integral_v<T>);\n    using S = T;\n    static\
+    \ constexpr S op(const S& a, const S& b) { return std::lcm(a, b); }\n    static\
+    \ constexpr S e() { return S(1); }\n};\n\n/**\n * @brief {0, 1, ..., N-1} \u304B\
+    \u3089\u81EA\u5206\u81EA\u8EAB\u3078\u306E\u5199\u50CF\u306E\u5408\u6210 (\u5909\
+    \u63DB\u30E2\u30CE\u30A4\u30C9)\n *\n * \u8981\u7D20 f \u306F f[x] \u304C x \u306E\
+    \u884C\u304D\u5148\u3092\u8868\u3059 std::array<int, N>\u3002\u5168\u5358\u5C04\
+    \u3067\u306A\u304F\u3066\u3088\u3044\n * op(f, g) = f\u2218g (g \u3092\u5148\u306B\
+    \u9069\u7528\u3059\u308B)\u3002\u533A\u9593 [l, r) \u306E\u7A4D\u306F f_l(...f_{r-1}(x))\
+    \ \u3092\u8868\u3059\n * \u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\u3057\u305F\
+    \u3044\u5834\u5408\u306F monoid::Reverse<monoid::Mapping<N>> \u3092\u4F7F\u3046\
+    \n * \u4F8B: SegTree<monoid::Mapping<3>> seg(n); seg.set(i, {0, 2, 1});\n * swap(i,\
+    \ j) \u3067 i \u3068 j \u3092\u5165\u308C\u66FF\u3048\u308B\u5199\u50CF\u3092\u4F5C\
+    \u308C\u308B\n *\n * @tparam N \u5199\u50CF\u306E\u5B9A\u7FA9\u57DF\u30FB\u5024\
+    \u57DF\u306E\u5927\u304D\u3055\n */\ntemplate <std::size_t N>\nstruct Mapping\
+    \ {\n    using S = std::array<int, N>;\n    static constexpr S op(const S& f,\
+    \ const S& g) {\n        S h{};\n        for (std::size_t x = 0; x < N; x++) h[x]\
+    \ = f[g[x]];\n        return h;\n    }\n    static constexpr S e() {\n       \
+    \ S h{};\n        for (std::size_t x = 0; x < N; x++) h[x] = static_cast<int>(x);\n\
+    \        return h;\n    }\n    // i \u3068 j \u3092\u5165\u308C\u66FF\u3048\u3001\
+    \u307B\u304B\u306F\u52D5\u304B\u3055\u306A\u3044\u5199\u50CF (\u4E92\u63DB)\n\
+    \    static constexpr S swap(long long i, long long j) {\n        S h = e();\n\
+    \        h[i] = static_cast<int>(j);\n        h[j] = static_cast<int>(i);\n  \
+    \      return h;\n    }\n};\n\n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\
     \u5408\u6210\n * op(f, g) = f\u2218g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B\
     )\n * \u533A\u9593 [l, r) \u306E\u7A4D\u306F f_l(...f_{r-1}(x)) \u3092\u8868\u3059\
     \n * \u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\u3057\u305F\u3044 (f_{r-1}(...f_l(x))\
@@ -1061,131 +1077,133 @@ data:
   isVerificationFile: false
   path: src/algebra/monoid.hpp
   requiredBy:
-  - src/geometry/axis-parallel-segments.hpp
   - src/offline/static-rectangle-add-rectangle-sum.hpp
-  - src/data_structures/dynamic-segtree.hpp
-  - src/data_structures/monoid-unionfind.hpp
-  - src/data_structures/segtree.hpp
-  - src/data_structures/fenwick-tree.hpp
   - src/data_structures/segtree-2d.hpp
-  - src/data_structures/rbst.hpp
   - src/data_structures/sparse-table.hpp
+  - src/data_structures/dual-segtree-2d.hpp
+  - src/data_structures/segtree-beats.hpp
+  - src/data_structures/persistent-segtree.hpp
+  - src/data_structures/persistent-lazy-segtree.hpp
+  - src/data_structures/lazy-segtree.hpp
+  - src/data_structures/potentialized-unionfind.hpp
   - src/data_structures/dual-segtree.hpp
   - src/data_structures/imos.hpp
-  - src/data_structures/dynamic-lazy-segtree.hpp
   - src/data_structures/sortable-segtree.hpp
-  - src/data_structures/potentialized-unionfind.hpp
-  - src/data_structures/persistent-lazy-segtree.hpp
-  - src/data_structures/dual-segtree-2d.hpp
-  - src/data_structures/lazy-segtree.hpp
-  - src/data_structures/merge-sort-tree.hpp
-  - src/data_structures/sliding-window-aggregation.hpp
-  - src/data_structures/segtree-beats.hpp
   - src/data_structures/disjoint-sparse-table.hpp
-  - src/data_structures/persistent-segtree.hpp
+  - src/data_structures/sliding-window-aggregation.hpp
+  - src/data_structures/merge-sort-tree.hpp
+  - src/data_structures/segtree.hpp
+  - src/data_structures/dynamic-lazy-segtree.hpp
+  - src/data_structures/fenwick-tree.hpp
+  - src/data_structures/rbst.hpp
+  - src/data_structures/monoid-unionfind.hpp
+  - src/data_structures/dynamic-segtree.hpp
   - src/algebra/beats-acted-monoid.hpp
-  - src/algebra/group.hpp
   - src/algebra/acted-monoid.hpp
-  timestamp: '2026-11-14 23:03:37+09:00'
+  - src/algebra/group.hpp
+  - src/geometry/axis-parallel-segments.hpp
+  timestamp: '2026-11-16 21:26:45+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/yukicoder/3652.test.cpp
-  - test/yukicoder/1641.test.cpp
-  - test/yukicoder/1036.1.test.cpp
-  - test/yukicoder/2292.test.cpp
-  - test/yukicoder/1036.2.test.cpp
-  - test/yukicoder/674.1.test.cpp
-  - test/unittest/geometry/axis-parallel-segments.test.cpp
   - test/unittest/offline/static-rectangle-add-rectangle-sum.test.cpp
+  - test/unittest/data_structures/dual-segtree-2d.test.cpp
+  - test/unittest/data_structures/link-cut-tree.test.cpp
+  - test/unittest/data_structures/sparse-table.test.cpp
+  - test/unittest/data_structures/imos.test.cpp
+  - test/unittest/data_structures/rbst.test.cpp
+  - test/unittest/data_structures/dynamic-lazy-segtree.test.cpp
   - test/unittest/data_structures/persistent-segtree.test.cpp
+  - test/unittest/data_structures/dual-segtree.test.cpp
   - test/unittest/data_structures/persistent-lazy-segtree.test.cpp
   - test/unittest/data_structures/monoid-unionfind.test.cpp
   - test/unittest/data_structures/sliding-window-aggregation.test.cpp
-  - test/unittest/data_structures/potentialized-unionfind.test.cpp
-  - test/unittest/data_structures/dynamic-lazy-segtree.test.cpp
-  - test/unittest/data_structures/dynamic-segtree.test.cpp
-  - test/unittest/data_structures/link-cut-tree.test.cpp
-  - test/unittest/data_structures/disjoint-sparse-table.test.cpp
-  - test/unittest/data_structures/segtree-beats.test.cpp
-  - test/unittest/data_structures/imos.test.cpp
-  - test/unittest/data_structures/dual-segtree-2d.test.cpp
-  - test/unittest/data_structures/fenwick-tree.test.cpp
-  - test/unittest/data_structures/sortable-segtree.test.cpp
-  - test/unittest/data_structures/rbst.test.cpp
   - test/unittest/data_structures/segtree-2d.test.cpp
-  - test/unittest/data_structures/sparse-table.test.cpp
-  - test/unittest/data_structures/dual-segtree.test.cpp
-  - test/unittest/algebra/acted-monoid.test.cpp
-  - test/unittest/algebra/mapping.test.cpp
+  - test/unittest/data_structures/fenwick-tree.test.cpp
+  - test/unittest/data_structures/segtree-beats.test.cpp
+  - test/unittest/data_structures/sortable-segtree.test.cpp
+  - test/unittest/data_structures/potentialized-unionfind.test.cpp
+  - test/unittest/data_structures/disjoint-sparse-table.test.cpp
+  - test/unittest/data_structures/dynamic-segtree.test.cpp
   - test/unittest/algebra/beats-acted-monoid.test.cpp
   - test/unittest/algebra/monoid.test.cpp
-  - test/yosupo/data_structure/queue-operate-all-composite.test.cpp
-  - test/yosupo/data_structure/point-set-range-composite-large-array.test.cpp
-  - test/yosupo/data_structure/range-affine-range-sum.3.test.cpp
-  - test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
-  - test/yosupo/data_structure/range-affine-point-get.1.test.cpp
-  - test/yosupo/data_structure/unionfind-with-potential.test.cpp
-  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.2.test.cpp
-  - test/yosupo/data_structure/point-add-rectangle-sum.test.cpp
-  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.1.test.cpp
-  - test/yosupo/data_structure/rectangle-sum.1.test.cpp
-  - test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
-  - test/yosupo/data_structure/point-set-range-composite.2.test.cpp
-  - test/yosupo/data_structure/point-set-range-composite.1.test.cpp
-  - test/yosupo/data_structure/point-set-range-composite.4.test.cpp
-  - test/yosupo/data_structure/rectangle-sum.2.test.cpp
-  - test/yosupo/data_structure/range-affine-range-sum.1.test.cpp
-  - test/yosupo/data_structure/deque-operate-all-composite.test.cpp
-  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
-  - test/yosupo/data_structure/point-add-range-sum.2.test.cpp
-  - test/yosupo/data_structure/range-reverse-range-sum.test.cpp
-  - test/yosupo/data_structure/range-add-range-min.test.cpp
-  - test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
-  - test/yosupo/data_structure/range-affine-point-get.2.test.cpp
+  - test/unittest/algebra/mapping.test.cpp
+  - test/unittest/algebra/acted-monoid.test.cpp
+  - test/unittest/algebra/beats-acted-monoid-extended.test.cpp
+  - test/unittest/geometry/axis-parallel-segments.test.cpp
+  - test/aoj/ntl/ntl-1-c.test.cpp
+  - test/aoj/grl/grl-5-d.test.cpp
+  - test/aoj/cgl/cgl-6-a.test.cpp
+  - test/aoj/dsl/dsl-2-b.2.test.cpp
+  - test/aoj/dsl/dsl-2-d.test.cpp
+  - test/aoj/dsl/dsl-2-b.1.test.cpp
+  - test/aoj/dsl/dsl-1-b.2.test.cpp
+  - test/aoj/dsl/dsl-1-b.1.test.cpp
+  - test/aoj/dsl/dsl-2-e.test.cpp
+  - test/aoj/dsl/dsl-3-d.test.cpp
+  - test/aoj/dsl/dsl-2-a.test.cpp
+  - test/aoj/dsl/dsl-2-h.2.test.cpp
+  - test/aoj/dsl/dsl-2-g.test.cpp
+  - test/aoj/dsl/dsl-2-i.test.cpp
+  - test/aoj/dsl/dsl-5-a.test.cpp
+  - test/aoj/dsl/dsl-2-f.test.cpp
+  - test/aoj/dsl/dsl-2-h.1.test.cpp
+  - test/aoj/volume29/2971.test.cpp
+  - test/aoj/itp2/itp2-3-b.1.test.cpp
+  - test/aoj/itp2/itp2-3-b.2.test.cpp
+  - test/aoj/itp2/itp2-3-b.3.test.cpp
   - test/yosupo/data_structure/area-of-union-of-rectangles.2.test.cpp
-  - test/yosupo/data_structure/persistent-range-affine-range-sum.test.cpp
-  - test/yosupo/data_structure/range-affine-range-sum.2.test.cpp
-  - test/yosupo/data_structure/staticrmq.test.cpp
-  - test/yosupo/data_structure/range-affine-range-sum-large-array.test.cpp
-  - test/yosupo/data_structure/static-rectangle-add-rectangle-sum.test.cpp
-  - test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
-  - test/yosupo/data_structure/rectangle-sum.3.test.cpp
-  - test/yosupo/data_structure/range-set-range-composite.test.cpp
-  - test/yosupo/data_structure/rectangle-sum.4.test.cpp
-  - test/yosupo/data_structure/area-of-union-of-rectangles.1.test.cpp
-  - test/yosupo/data_structure/point-add-range-sum.1.test.cpp
-  - test/yosupo/data_structure/point-set-range-composite.3.test.cpp
+  - test/yosupo/data_structure/range-affine-point-get.1.test.cpp
+  - test/yosupo/data_structure/range-affine-range-sum.3.test.cpp
+  - test/yosupo/data_structure/point-add-range-sum.2.test.cpp
   - test/yosupo/data_structure/rectangle-add-point-get.2.test.cpp
+  - test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
+  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.1.test.cpp
+  - test/yosupo/data_structure/static-rectangle-add-rectangle-sum.test.cpp
+  - test/yosupo/data_structure/rectangle-sum.1.test.cpp
+  - test/yosupo/data_structure/staticrmq.test.cpp
+  - test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
+  - test/yosupo/data_structure/rectangle-sum.2.test.cpp
+  - test/yosupo/data_structure/range-affine-point-get.2.test.cpp
+  - test/yosupo/data_structure/range-reverse-range-sum.test.cpp
+  - test/yosupo/data_structure/point-set-range-composite.4.test.cpp
+  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.2.test.cpp
+  - test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
+  - test/yosupo/data_structure/point-set-range-composite-large-array.test.cpp
+  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
   - test/yosupo/data_structure/point-add-range-sum.3.test.cpp
-  - test/yosupo/tree/vertex-add-subtree-sum.1.test.cpp
-  - test/yosupo/tree/vertex-set-path-composite.test.cpp
-  - test/yosupo/tree/dynamic-tree-vertex-add-subtree-sum.test.cpp
-  - test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
+  - test/yosupo/data_structure/point-set-range-composite.1.test.cpp
+  - test/yosupo/data_structure/area-of-union-of-rectangles.1.test.cpp
+  - test/yosupo/data_structure/unionfind-with-potential.test.cpp
+  - test/yosupo/data_structure/rectangle-sum.3.test.cpp
+  - test/yosupo/data_structure/point-add-range-sum.1.test.cpp
+  - test/yosupo/data_structure/range-set-range-composite.test.cpp
+  - test/yosupo/data_structure/point-add-rectangle-sum.test.cpp
+  - test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
+  - test/yosupo/data_structure/rectangle-sum.4.test.cpp
+  - test/yosupo/data_structure/range-affine-range-sum.1.test.cpp
+  - test/yosupo/data_structure/queue-operate-all-composite.test.cpp
+  - test/yosupo/data_structure/range-affine-range-sum-large-array.test.cpp
+  - test/yosupo/data_structure/point-set-range-composite.2.test.cpp
+  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.4.test.cpp
+  - test/yosupo/data_structure/point-set-range-composite.3.test.cpp
+  - test/yosupo/data_structure/deque-operate-all-composite.test.cpp
+  - test/yosupo/data_structure/range-add-range-min.test.cpp
+  - test/yosupo/data_structure/range-affine-range-sum.2.test.cpp
+  - test/yosupo/data_structure/persistent-range-affine-range-sum.test.cpp
   - test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp
-  - test/yosupo/tree/dynamic-tree-vertex-add-path-sum.test.cpp
+  - test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
   - test/yosupo/tree/lca.2.test.cpp
   - test/yosupo/tree/vertex-add-path-sum.test.cpp
-  - test/aoj/itp2/itp2-3-b.1.test.cpp
-  - test/aoj/itp2/itp2-3-b.3.test.cpp
-  - test/aoj/itp2/itp2-3-b.2.test.cpp
-  - test/aoj/dsl/dsl-2-h.2.test.cpp
-  - test/aoj/dsl/dsl-2-e.test.cpp
-  - test/aoj/dsl/dsl-2-f.test.cpp
-  - test/aoj/dsl/dsl-3-d.test.cpp
-  - test/aoj/dsl/dsl-1-b.1.test.cpp
-  - test/aoj/dsl/dsl-5-a.test.cpp
-  - test/aoj/dsl/dsl-2-a.test.cpp
-  - test/aoj/dsl/dsl-2-h.1.test.cpp
-  - test/aoj/dsl/dsl-2-b.2.test.cpp
-  - test/aoj/dsl/dsl-2-i.test.cpp
-  - test/aoj/dsl/dsl-2-g.test.cpp
-  - test/aoj/dsl/dsl-2-d.test.cpp
-  - test/aoj/dsl/dsl-1-b.2.test.cpp
-  - test/aoj/dsl/dsl-2-b.1.test.cpp
-  - test/aoj/volume29/2971.test.cpp
-  - test/aoj/grl/grl-5-d.test.cpp
-  - test/aoj/ntl/ntl-1-c.test.cpp
-  - test/aoj/cgl/cgl-6-a.test.cpp
+  - test/yosupo/tree/vertex-add-subtree-sum.1.test.cpp
+  - test/yosupo/tree/dynamic-tree-vertex-add-subtree-sum.test.cpp
+  - test/yosupo/tree/vertex-set-path-composite.test.cpp
+  - test/yosupo/tree/dynamic-tree-vertex-add-path-sum.test.cpp
+  - test/yukicoder/1036.1.test.cpp
+  - test/yukicoder/1641.test.cpp
+  - test/yukicoder/1036.2.test.cpp
+  - test/yukicoder/674.1.test.cpp
+  - test/yukicoder/2292.test.cpp
+  - test/yukicoder/3652.test.cpp
 documentation_of: src/algebra/monoid.hpp
 layout: document
 title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
@@ -1212,7 +1230,7 @@ SegTree seg2(v, Monoid([](int a, int b) { return a + b; }, 0));  // ラムダ式
 | `Prod<T>` | `T` | `a * b` | `1` |
 | `Max<T>` | `T` | `max(a, b)` | 型の最小値 |
 | `Min<T>` | `T` | `min(a, b)` | 型の最大値 |
-| `MinMax<T>` | `pair<T, T>` | `{min, max}` の組 | `{最大値, 最小値}` |
+| `MinMax<T = long long>` | `MinMax<T>::S` | 最小値 `min`・最大値 `max` | `{最大値, 最小値}` |
 | `Xor<T>` | `T` | `a ^ b` | `0` |
 | `And<T>` | `T` | `a & b` | 全ビット 1 |
 | `Or<T>` | `T` | `a | b` | `0` |
@@ -1263,6 +1281,16 @@ long long best = seg2.prod(l, r).best;  // [l, r) の部分配列の和の最大
 ```
 
 空の部分配列を許さない最大値が欲しい場合は、区間の最大値 (`Max<T>`) が負かどうかで場合分けします。
+
+## 最小値・最大値 `MinMax<T>`
+
+`S(x)` で 1 要素、`S(min, max)` で最小値と最大値を指定して構築します。`S()` は空区間の単位元です。結果は `.min`・`.max` で参照でき、構造化束縛も使えます。
+
+```cpp
+SegTree<monoid::MinMax<>> seg(std::vector<long long>{3, 1, 4});
+auto s = seg.prod(0, 3);  // s.min = 1, s.max = 4
+auto [mn, mx] = seg.prod(0, 3);
+```
 
 ## 1次関数 `Affine<T>`
 

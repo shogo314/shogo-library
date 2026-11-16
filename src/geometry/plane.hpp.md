@@ -548,8 +548,8 @@ data:
   timestamp: '2026-11-10 04:55:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/yukicoder/132.test.cpp
   - test/unittest/geometry/plane.test.cpp
+  - test/yukicoder/132.test.cpp
 documentation_of: src/geometry/plane.hpp
 layout: document
 title: "\u5E73\u9762 (\u5305\u542B\u30FB\u5E73\u884C\u5224\u5B9A\u3001\u8DDD\u96E2\

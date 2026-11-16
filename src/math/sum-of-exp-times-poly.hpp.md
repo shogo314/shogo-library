@@ -636,8 +636,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/math/sum-of-exp-times-poly.test.cpp
-  - test/yosupo/other/sum-of-exponential-times-polynomial.test.cpp
   - test/yosupo/other/sum-of-exponential-times-polynomial-limit.test.cpp
+  - test/yosupo/other/sum-of-exponential-times-polynomial.test.cpp
 documentation_of: src/math/sum-of-exp-times-poly.hpp
 layout: document
 title: "\u03A3 r^i f(i) (\u6307\u6570\u95A2\u6570\u3068\u591A\u9805\u5F0F\u306E\u7A4D\

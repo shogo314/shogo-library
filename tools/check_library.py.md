@@ -19,7 +19,8 @@ data:
     docs \u3092\u691C\u8A3C\u3059\u308B\u3002\"\"\"\n\nimport argparse\nfrom concurrent.futures\
     \ import ThreadPoolExecutor, as_completed\nfrom pathlib import Path\nimport os\n\
     import re\nimport subprocess\nimport tempfile\n\n\nROOT = Path(__file__).resolve().parents[1]\n\
-    SANITIZER_TESTS = (\n    \"algebra/monoid.test.cpp\",\n    \"data_structures/binary-trie.1.test.cpp\"\
+    SANITIZER_TESTS = (\n    \"algebra/beats-acted-monoid-extended.test.cpp\",\n \
+    \   \"algebra/monoid.test.cpp\",\n    \"data_structures/binary-trie.1.test.cpp\"\
     ,\n    \"data_structures/binary-trie.2.test.cpp\",\n    \"data_structures/disjoint-sparse-table.test.cpp\"\
     ,\n    \"data_structures/rollback-unionfind.test.cpp\",\n    \"dp/edit-distance.test.cpp\"\
     ,\n    \"graph/max-flow.test.cpp\",\n    \"math/modular-arithmetic.test.cpp\"\

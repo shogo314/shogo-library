@@ -971,6 +971,9 @@ data:
       path: test/unittest/algebra/acted-monoid.test.cpp
       title: test/unittest/algebra/acted-monoid.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/algebra/beats-acted-monoid-extended.test.cpp
+      title: test/unittest/algebra/beats-acted-monoid-extended.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/algebra/beats-acted-monoid.test.cpp
       title: test/unittest/algebra/beats-acted-monoid.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1607,6 +1610,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
       title: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.4.test.cpp
+      title: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.4.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/data_structure/range-kth-smallest.test.cpp
       title: test/yosupo/data_structure/range-kth-smallest.test.cpp

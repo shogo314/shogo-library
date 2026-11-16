@@ -394,8 +394,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/geometry/rectangle-union.test.cpp
-  - test/yosupo/data_structure/area-of-union-of-rectangles.3.test.cpp
   - test/aoj/dsl/dsl-4-a.3.test.cpp
+  - test/yosupo/data_structure/area-of-union-of-rectangles.3.test.cpp
 documentation_of: src/geometry/rectangle-union.hpp
 layout: document
 title: "\u9577\u65B9\u5F62\u306E\u548C\u96C6\u5408\u306E\u9762\u7A4D"

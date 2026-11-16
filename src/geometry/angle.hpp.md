@@ -224,8 +224,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/geometry/angle.test.cpp
-  - test/yosupo/geo/sort-points-by-argument.1.test.cpp
   - test/yosupo/geo/sort-points-by-argument.2.test.cpp
+  - test/yosupo/geo/sort-points-by-argument.1.test.cpp
 documentation_of: src/geometry/angle.hpp
 layout: document
 title: "\u504F\u89D2"

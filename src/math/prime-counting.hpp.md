@@ -270,9 +270,9 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/math/prime-counting.test.cpp
-  - test/yosupo/number_theory/counting-primes.test.cpp
   - test/yosupo/number_theory/sum-of-multiplicative-function.test.cpp
   - test/yosupo/number_theory/sum-of-totient-function.test.cpp
+  - test/yosupo/number_theory/counting-primes.test.cpp
 documentation_of: src/math/prime-counting.hpp
 layout: document
 title: "\u7D20\u6570\u306E\u500B\u6570\u30FB\u7D20\u6570\u306E\u548C (Lucy DP)\u30FB\

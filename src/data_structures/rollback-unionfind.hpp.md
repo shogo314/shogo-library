@@ -147,8 +147,8 @@ data:
   timestamp: '2026-11-08 23:19:19+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/data_structures/rollback-unionfind.test.cpp
   - test/unittest/graph/minimum-arborescence.test.cpp
+  - test/unittest/data_structures/rollback-unionfind.test.cpp
   - test/yosupo/graph/directedmst.test.cpp
 documentation_of: src/data_structures/rollback-unionfind.hpp
 layout: document

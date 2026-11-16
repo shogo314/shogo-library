@@ -300,8 +300,8 @@ data:
   verifiedWith:
   - test/unittest/math/stern-brocot.test.cpp
   - test/unittest/math/rational.test.cpp
-  - test/yosupo/number_theory/stern-brocot-tree.test.cpp
   - test/yosupo/number_theory/rational-approximation.test.cpp
+  - test/yosupo/number_theory/stern-brocot-tree.test.cpp
 documentation_of: src/math/rational.hpp
 layout: document
 title: "\u6709\u7406\u6570"

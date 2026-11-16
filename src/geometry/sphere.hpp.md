@@ -567,10 +567,10 @@ data:
   timestamp: '2026-11-10 04:55:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/yukicoder/3672.test.cpp
   - test/unittest/geometry/sphere.test.cpp
-  - test/aoj/volume1/0177.test.cpp
   - test/aoj/volume12/1289.test.cpp
+  - test/aoj/volume1/0177.test.cpp
+  - test/yukicoder/3672.test.cpp
 documentation_of: src/geometry/sphere.hpp
 layout: document
 title: "\u7403 (\u76F4\u7DDA\u3068\u306E\u4EA4\u70B9\u3001\u7403\u3069\u3046\u3057\

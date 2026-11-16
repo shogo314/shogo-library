@@ -638,10 +638,10 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/geometry/point-pair.test.cpp
+  - test/aoj/cgl/cgl-5-a.test.cpp
+  - test/aoj/cgl/cgl-4-b.test.cpp
   - test/yosupo/geo/furthest-pair.test.cpp
   - test/yosupo/geo/closest-pair.test.cpp
-  - test/aoj/cgl/cgl-4-b.test.cpp
-  - test/aoj/cgl/cgl-5-a.test.cpp
 documentation_of: src/geometry/point-pair.hpp
 layout: document
 title: "\u6700\u8FD1\u70B9\u5BFE\u30FB\u6700\u9060\u70B9\u5BFE"

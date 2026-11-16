@@ -147,8 +147,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/dp/longest-increasing-subsequence.test.cpp
-  - test/yosupo/other/longest-increasing-subsequence.test.cpp
   - test/aoj/dpl/dpl-1-d.test.cpp
+  - test/yosupo/other/longest-increasing-subsequence.test.cpp
 documentation_of: src/dp/longest-increasing-subsequence.hpp
 layout: document
 title: "\u6700\u9577\u5897\u52A0\u90E8\u5206\u5217 (LIS)"

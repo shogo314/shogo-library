@@ -337,9 +337,9 @@ data:
   verifiedWith:
   - test/unittest/dp/knapsack.test.cpp
   - test/aoj/dpl/dpl-1-f.test.cpp
-  - test/aoj/dpl/dpl-1-b.test.cpp
   - test/aoj/dpl/dpl-1-c.test.cpp
   - test/aoj/dpl/dpl-1-h.test.cpp
+  - test/aoj/dpl/dpl-1-b.test.cpp
   - test/aoj/dpl/dpl-1-g.test.cpp
 documentation_of: src/dp/knapsack.hpp
 layout: document

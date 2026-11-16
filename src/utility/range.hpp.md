@@ -713,33 +713,33 @@ data:
   isVerificationFile: false
   path: src/utility/range.hpp
   requiredBy:
-  - src/dp/largest-rectangle.hpp
-  - src/string/rolling-hash.hpp
-  - src/data_structures/imos-2d.hpp
   - src/graph/grid-graph.hpp
+  - src/data_structures/imos-2d.hpp
+  - src/string/rolling-hash.hpp
+  - src/dp/largest-rectangle.hpp
   timestamp: '2026-11-10 04:55:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/dp/largest-rectangle.test.cpp
-  - test/unittest/string/aho-corasick.test.cpp
-  - test/unittest/string/rolling-hash.test.cpp
+  - test/unittest/graph/grid-graph.test.cpp
   - test/unittest/data_structures/imos-2d.test.cpp
   - test/unittest/data_structures/counter.test.cpp
-  - test/unittest/graph/grid-graph.test.cpp
-  - test/unittest/utility/range-grid.test.cpp
-  - test/unittest/utility/range.test.cpp
   - test/unittest/utility/repr.test.cpp
-  - test/yosupo/string/enumerate-palindromes.1.test.cpp
-  - test/aoj/itp1/itp1-7-b.test.cpp
-  - test/aoj/dsl/dsl-5-b.test.cpp
-  - test/aoj/dsl/dsl-4-a.2.test.cpp
-  - test/aoj/dsl/dsl-4-a.1.test.cpp
-  - test/aoj/dpl/dpl-3-c.test.cpp
-  - test/aoj/dpl/dpl-3-b.test.cpp
-  - test/aoj/dpl/dpl-3-a.test.cpp
+  - test/unittest/utility/range.test.cpp
+  - test/unittest/utility/range-grid.test.cpp
+  - test/unittest/string/aho-corasick.test.cpp
+  - test/unittest/string/rolling-hash.test.cpp
+  - test/unittest/dp/largest-rectangle.test.cpp
   - test/aoj/alds1/alds1-14-c.test.cpp
   - test/aoj/alds1/alds1-14-b.1.test.cpp
+  - test/aoj/dsl/dsl-4-a.2.test.cpp
+  - test/aoj/dsl/dsl-5-b.test.cpp
+  - test/aoj/dsl/dsl-4-a.1.test.cpp
   - test/aoj/volume11/1160.test.cpp
+  - test/aoj/dpl/dpl-3-a.test.cpp
+  - test/aoj/dpl/dpl-3-c.test.cpp
+  - test/aoj/dpl/dpl-3-b.test.cpp
+  - test/aoj/itp1/itp1-7-b.test.cpp
+  - test/yosupo/string/enumerate-palindromes.1.test.cpp
 documentation_of: src/utility/range.hpp
 layout: document
 title: "Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\u5217\u3068\u3001\

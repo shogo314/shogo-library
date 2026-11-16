@@ -459,8 +459,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/graph/rerooting-dp.test.cpp
-  - test/yosupo/tree/tree-path-composite-sum.test.cpp
   - test/aoj/volume15/1595.test.cpp
+  - test/yosupo/tree/tree-path-composite-sum.test.cpp
 documentation_of: src/graph/rerooting-dp.hpp
 layout: document
 title: "\u5168\u65B9\u4F4D\u6728DP"

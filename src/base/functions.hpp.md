@@ -215,40 +215,40 @@ data:
   isVerificationFile: false
   path: src/base/functions.hpp
   requiredBy:
-  - src/math/stern-brocot.hpp
-  - src/math/quotients.hpp
-  - src/math/rational.hpp
   - src/utility/binary-search.hpp
   - src/utility/container_func.hpp
+  - src/math/rational.hpp
+  - src/math/quotients.hpp
+  - src/math/stern-brocot.hpp
   timestamp: '2026-10-20 02:23:35+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/utility/container_func.test.cpp
+  - test/unittest/utility/binary-search.test.cpp
+  - test/unittest/utility/container_func-member.test.cpp
+  - test/unittest/base/functions.test.cpp
   - test/unittest/math/stern-brocot.test.cpp
-  - test/unittest/math/rational.test.cpp
   - test/unittest/math/prime-counting.test.cpp
   - test/unittest/math/quotients.test.cpp
   - test/unittest/math/quotients-linear.test.cpp
-  - test/unittest/utility/container_func-member.test.cpp
-  - test/unittest/utility/binary-search.test.cpp
-  - test/unittest/utility/container_func.test.cpp
-  - test/unittest/base/functions.test.cpp
-  - test/yosupo/number_theory/stern-brocot-tree.test.cpp
-  - test/yosupo/number_theory/rational-approximation.test.cpp
-  - test/yosupo/number_theory/enumerate-quotients.2.test.cpp
-  - test/aoj/itp1/itp1-10-c.test.cpp
+  - test/unittest/math/rational.test.cpp
+  - test/aoj/ntl/ntl-1-e.test.cpp
+  - test/aoj/alds1/alds1-1-b.test.cpp
+  - test/aoj/alds1/alds1-4-d.test.cpp
+  - test/aoj/alds1/alds1-4-b.test.cpp
+  - test/aoj/dsl/dsl-5-a.test.cpp
+  - test/aoj/dsl/dsl-4-a.1.test.cpp
+  - test/aoj/itp2/itp2-3-c.test.cpp
+  - test/aoj/itp2/itp2-5-a.2.test.cpp
+  - test/aoj/itp2/itp2-5-a.1.test.cpp
+  - test/aoj/itp2/itp2-5-b.test.cpp
   - test/aoj/itp1/itp1-4-d.test.cpp
   - test/aoj/itp1/itp1-6-a.test.cpp
   - test/aoj/itp1/itp1-2-c.test.cpp
-  - test/aoj/itp2/itp2-3-c.test.cpp
-  - test/aoj/itp2/itp2-5-a.1.test.cpp
-  - test/aoj/itp2/itp2-5-b.test.cpp
-  - test/aoj/itp2/itp2-5-a.2.test.cpp
-  - test/aoj/dsl/dsl-5-a.test.cpp
-  - test/aoj/dsl/dsl-4-a.1.test.cpp
-  - test/aoj/ntl/ntl-1-e.test.cpp
-  - test/aoj/alds1/alds1-4-d.test.cpp
-  - test/aoj/alds1/alds1-4-b.test.cpp
-  - test/aoj/alds1/alds1-1-b.test.cpp
+  - test/aoj/itp1/itp1-10-c.test.cpp
+  - test/yosupo/number_theory/enumerate-quotients.2.test.cpp
+  - test/yosupo/number_theory/rational-approximation.test.cpp
+  - test/yosupo/number_theory/stern-brocot-tree.test.cpp
 documentation_of: src/base/functions.hpp
 layout: document
 title: "\u6C4E\u7528\u95A2\u6570 (chmin, chmax \u306A\u3069)"

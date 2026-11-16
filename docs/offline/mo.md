@@ -1,6 +1,6 @@
 ---
 title: Mo's algorithm
-documentation_of: //src/others/mo.hpp
+documentation_of: //src/offline/mo.hpp
 ---
 
 区間 $[l, r)$ に対するクエリをまとめて先読みし、区間の端を 1 つずつ伸び縮みさせながら答えます。区間に要素を 1 つ追加・削除する操作が速くできるときに使えます。

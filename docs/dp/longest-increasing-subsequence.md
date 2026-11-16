@@ -28,4 +28,4 @@ auto len = longest_increasing_subsequence_lengths(a); // {1, 1, 2, 1, 3, 4, 2, 4
 
 ## 関連
 
-- 列の大小関係を数えるには [転倒数](../others/inversion-number.hpp)
+- 列の大小関係を数えるには [転倒数](../utility/inversion-number.hpp)

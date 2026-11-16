@@ -27,4 +27,4 @@ long long m = rcd.count(1, 5);  // {1, 2, 3} の 3
 ## 関連
 
 - 区間の $k$ 番目や、値が範囲に入る要素の個数は [Wavelet Matrix](wavelet-matrix.hpp)
-- クエリを先読みしてよく、区間を伸び縮みさせて数えたいなら [Mo's algorithm](../others/mo.hpp)
+- クエリを先読みしてよく、区間を伸び縮みさせて数えたいなら [Mo's algorithm](../offline/mo.hpp)

@@ -1,6 +1,6 @@
 ---
 title: 和が条件を満たす区間の個数
-documentation_of: //src/others/subarray-sum.hpp
+documentation_of: //src/utility/subarray-sum.hpp
 ---
 
 列 `a` の区間 $[l, r)$ ($l < r$) のうち、和がちょうど $k$ のものと $k$ 以下のものの個数を数えます。

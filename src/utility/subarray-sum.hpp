@@ -9,7 +9,7 @@
 #include <type_traits>
 #include <vector>
 
-#include "../utility/two-pointers.hpp"
+#include "two-pointers.hpp"
 
 namespace internal_subarray_sum {
 // i < j かつ p[j] - p[i] <= k となる組 (i, j) の個数

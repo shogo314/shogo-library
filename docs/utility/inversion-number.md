@@ -1,6 +1,6 @@
 ---
 title: 転倒数
-documentation_of: //src/others/inversion-number.hpp
+documentation_of: //src/utility/inversion-number.hpp
 ---
 
 列 `a` の転倒数 ($i < j$ かつ $a_j < a_i$ となる組 $(i, j)$ の個数) を、マージソートで $O(n \log n)$ で求めます。

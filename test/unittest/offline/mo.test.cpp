@@ -4,7 +4,7 @@
 // 左端と右端で別の操作を渡すコンストラクタ (6 引数) を、区間を deque のまま持つ形で確かめる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
-#include "../../../src/others/mo.hpp"
+#include "../../../src/offline/mo.hpp"
 
 #include <deque>
 #include <iostream>

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../../../src/others/subarray-sum.hpp"
+#include "../../../src/utility/subarray-sum.hpp"
 
 int main() {
     std::cin.tie(nullptr);

@@ -41,5 +41,5 @@ auto r3 = two_pointers(2 * n, [&](long long l, long long r) { return c[r] - c[l]
 
 ## 関連
 
-- 和が条件を満たす区間の個数は [和が条件を満たす区間の個数](../others/subarray-sum.hpp)
+- 和が条件を満たす区間の個数は [和が条件を満たす区間の個数](../utility/subarray-sum.hpp)
 - 答えで二分探索をするなら [二分探索](binary-search.hpp)

@@ -4,7 +4,7 @@
 // 要素がすべて 0 以上の列 (尺取り法) と負を含む列 (マージソート) の両方で、k も負から正まで調べる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
-#include "../../../src/others/subarray-sum.hpp"
+#include "../../../src/utility/subarray-sum.hpp"
 
 #include <iostream>
 #include <random>

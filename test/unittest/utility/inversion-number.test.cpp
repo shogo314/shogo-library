@@ -3,7 +3,7 @@
 // inversion_number を、すべての組を調べる愚直な方法とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
-#include "../../../src/others/inversion-number.hpp"
+#include "../../../src/utility/inversion-number.hpp"
 
 #include <functional>
 #include <iostream>

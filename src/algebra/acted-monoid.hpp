@@ -17,8 +17,10 @@
 
 #include <algorithm>
 #include <array>
+#include <cassert>
 #include <cstddef>
 #include <limits>
+#include <numeric>
 #include <optional>
 #include <type_traits>
 #include <utility>
@@ -74,6 +76,33 @@ struct AddSum : monoid::Sum<T> {
     static constexpr F composition(const F& f, const F& g) { return f + g; }
     static constexpr F id() { return F(0); }
     static constexpr F inv(const F& f) { return -f; }
+};
+
+/**
+ * @brief 区間の位置 i に constant + slope * i を加算、区間和
+ * arithmetic_progression(l, first, step) で左端 l の初項 first、公差 step を指定する
+ */
+template <typename T = long long>
+struct LinearAddSum : monoid::Sum<T> {
+    using S = T;
+    struct F {
+        T constant = T(0), slope = T(0);
+    };
+    static constexpr F arithmetic_progression(long long l, const T& first, const T& step) {
+        assert(l >= 0);
+        return {first - step * T(l), step};
+    }
+    static constexpr S mapping(const F& f, const S& x, long long l, long long r) {
+        assert(0 <= l && l <= r);
+        const long long n = r - l;
+        if (n == 0) return x;
+        // sum i = l*n + n*(n-1)/2。整数側で 2 で割り、和・積は T で計算する。
+        const T offset = n % 2 == 0 ? T(n / 2) * T(n - 1) : T(n) * T((n - 1) / 2);
+        return x + f.constant * T(n) + f.slope * (T(l) * T(n) + offset);
+    }
+    static constexpr F composition(const F& f, const F& g) { return {f.constant + g.constant, f.slope + g.slope}; }
+    static constexpr F id() { return F(); }
+    static constexpr F inv(const F& f) { return {-f.constant, -f.slope}; }
 };
 
 /**
@@ -386,6 +415,180 @@ struct AddPowerSum {
     }
     static constexpr F composition(const F& f, const F& g) { return f + g; }
     static constexpr F id() { return F(0); }
+};
+
+/** @brief 区間アフィン変換、区間最小値・最大値 (負の倍率も許す) */
+template <typename T = long long>
+struct AffineMinMax : monoid::MinMax<T> {
+    using S = typename monoid::MinMax<T>::S;
+    using F = Affine<T>;
+    static constexpr S mapping(const F& f, const S& x) {
+        if (x.min > x.max) return x;
+        if (f.a < T(0)) return {f(x.max), f(x.min)};
+        return {f(x.min), f(x.max)};
+    }
+    static constexpr F composition(const F& f, const F& g) { return monoid::Composite<T>::op(f, g); }
+    static constexpr F id() { return F(); }
+};
+
+/** @brief 区間アフィン変換、区間の 0 乗和から K 乗和 */
+template <typename T = long long, long long K = 2>
+struct AffinePowerSum : AddPowerSum<T, K> {
+    static_assert(K >= 0);
+    using S = typename AddPowerSum<T, K>::S;
+    using F = Affine<T>;
+    static S mapping(const F& f, const S& x) {
+        std::array<T, K + 1> pa{}, pb{}, binom{};
+        pa[0] = pb[0] = binom[0] = T(1);
+        for (long long i = 1; i <= K; ++i) {
+            pa[i] = pa[i - 1] * f.a;
+            pb[i] = pb[i - 1] * f.b;
+        }
+        S res;
+        for (long long i = 0; i <= K; ++i) {
+            for (long long j = 0; j <= i; ++j) res.val[i] += binom[j] * pa[j] * pb[i - j] * x[j];
+            if (i < K)
+                for (long long j = i + 1; j >= 1; --j) binom[j] += binom[j - 1];
+        }
+        return res;
+    }
+    static constexpr F composition(const F& f, const F& g) { return monoid::Composite<T>::op(f, g); }
+    static constexpr F id() { return F(); }
+};
+
+/** @brief 区間加算、区間 gcd。S::val() で gcd を取得する */
+template <typename T = long long>
+struct AddGcd {
+    static_assert(std::is_integral_v<T> && std::is_signed_v<T>);
+    struct S {
+        T first = T(0), last = T(0), differences_gcd = T(0);
+        long long size = 0;
+        constexpr S() = default;
+        constexpr S(const T& x) : first(x), last(x), size(1) {}
+        constexpr T val() const { return std::gcd(first, differences_gcd); }
+    };
+    using F = T;
+    static constexpr S op(const S& a, const S& b) {
+        if (a.size == 0) return b;
+        if (b.size == 0) return a;
+        S res;
+        res.first = a.first;
+        res.last = b.last;
+        res.differences_gcd = std::gcd(std::gcd(a.differences_gcd, b.differences_gcd), b.first - a.last);
+        res.size = a.size + b.size;
+        return res;
+    }
+    static constexpr S e() { return S(); }
+    static constexpr S mapping(const F& f, const S& x) {
+        S res = x;
+        if (res.size != 0) {
+            res.first += f;
+            res.last += f;
+        }
+        return res;
+    }
+    static constexpr F composition(const F& f, const F& g) { return f + g; }
+    static constexpr F id() { return T(0); }
+    static constexpr F inv(const F& f) { return -f; }
+};
+
+/** @brief 2 列への区間加算、各列の和と要素ごとの積の和 */
+template <typename T = long long>
+struct AddProductSum {
+    struct S {
+        T sum_a = T(0), sum_b = T(0), product_sum = T(0);
+        constexpr S() = default;
+        constexpr S(const T& a, const T& b) : sum_a(a), sum_b(b), product_sum(a * b) {}
+        constexpr S(const std::array<T, 2>& x) : S(x[0], x[1]) {}
+    };
+    using F = std::array<T, 2>;
+    static constexpr S op(const S& a, const S& b) {
+        S res;
+        res.sum_a = a.sum_a + b.sum_a;
+        res.sum_b = a.sum_b + b.sum_b;
+        res.product_sum = a.product_sum + b.product_sum;
+        return res;
+    }
+    static constexpr S e() { return S(); }
+    static constexpr S mapping(const F& f, const S& x, long long sz) {
+        S res;
+        res.sum_a = x.sum_a + f[0] * T(sz);
+        res.sum_b = x.sum_b + f[1] * T(sz);
+        res.product_sum = x.product_sum + f[0] * x.sum_b + f[1] * x.sum_a + f[0] * f[1] * T(sz);
+        return res;
+    }
+    static constexpr F composition(const F& f, const F& g) { return {f[0] + g[0], f[1] + g[1]}; }
+    static constexpr F id() { return {T(0), T(0)}; }
+    static constexpr F inv(const F& f) { return {-f[0], -f[1]}; }
+};
+
+/**
+ * @brief 区間の位置 i に f[0] + f[1]*i + ... + f[K]*i^K を加算、区間和
+ * 整数の因子を約分して二項係数を求めるので、偶数の法の modint でも使える
+ */
+template <typename T = long long, long long K = 2>
+struct PolynomialAddSum : monoid::Sum<T> {
+    static_assert(K >= 0);
+    using S = T;
+    using F = std::array<T, K + 1>;
+
+   private:
+    // [0, n) の添字の 0 乗和から K 乗和。整数の大きな積や T での除算は使わない。
+    static std::array<T, K + 1> index_power_sums(long long n, long long degree) {
+        assert(0 <= degree && degree <= K);
+        std::array<T, K + 2> binom{};
+        std::array<long long, K + 1> factors{};
+        for (long long k = 1; k <= K + 1 && k <= degree + 1 && k <= n; ++k) {
+            factors[k - 1] = n - k + 1;
+            long long divisor = k;
+            for (long long j = 0; j < k && divisor > 1; ++j) {
+                long long g = std::gcd(factors[j], divisor);
+                factors[j] /= g;
+                divisor /= g;
+            }
+            assert(divisor == 1);
+            T value(1);
+            for (long long j = 0; j < k; ++j) value *= T(factors[j]);
+            binom[k] = value;
+        }
+        // i^k = sum_j Stirling2(k, j) * j! * C(i, j)
+        // sum_{i=0}^{n-1} C(i, j) = C(n, j+1)
+        std::array<T, K + 1> stirling{}, factorial{}, sums{};
+        stirling[0] = factorial[0] = T(1);
+        for (long long j = 1; j <= K && j <= degree; ++j) factorial[j] = factorial[j - 1] * T(j);
+        for (long long k = 0; k <= K && k <= degree; ++k) {
+            for (long long j = 0; j <= k; ++j) sums[k] += stirling[j] * factorial[j] * binom[j + 1];
+            if (k < K && k < degree) {
+                for (long long j = k + 1; j >= 1; --j) stirling[j] = T(j) * stirling[j] + stirling[j - 1];
+                stirling[0] = T(0);
+            }
+        }
+        return sums;
+    }
+
+   public:
+    static S mapping(const F& f, const S& x, long long l, long long r) {
+        assert(0 <= l && l <= r);
+        if (l == r) return x;
+        long long degree = K;
+        while (degree >= 0 && f[degree] == T(0)) --degree;
+        if (degree < 0) return x;
+        auto left = index_power_sums(l, degree), right = index_power_sums(r, degree);
+        S res = x;
+        for (long long k = 0; k <= degree; ++k) res += f[k] * (right[k] - left[k]);
+        return res;
+    }
+    static constexpr F composition(const F& f, const F& g) {
+        F res{};
+        for (long long k = 0; k <= K; ++k) res[k] = f[k] + g[k];
+        return res;
+    }
+    static constexpr F id() { return F{}; }
+    static constexpr F inv(const F& f) {
+        F res{};
+        for (long long k = 0; k <= K; ++k) res[k] = -f[k];
+        return res;
+    }
 };
 
 /**

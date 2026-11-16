@@ -12,6 +12,8 @@ import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
 SANITIZER_TESTS = (
+    "algebra/acted-monoid-additional.test.cpp",
+    "algebra/acted-monoid-linear-add-sum.test.cpp",
     "algebra/beats-acted-monoid-extended.test.cpp",
     "algebra/monoid.test.cpp",
     "data_structures/binary-trie.1.test.cpp",
